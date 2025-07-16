@@ -1,0 +1,42 @@
+{
+  "name": "bundle-wave",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@shopify/app-bridge": "^3.7.10",
+    "@shopify/app-bridge-react": "^4.1.10",
+    "@shopify/app-bridge-utils": "^3.5.1",
+    "@shopify/polaris": "^13.9.3",
+    "@shopify/polaris-icons": "^9.3.0",
+    "apexcharts": "^4.5.0",
+    "lodash": "^4.17.21",
+    "react": "^18.3.1",
+    "react-apexcharts": "^1.7.0",
+    "react-confetti": "^6.4.0",
+    "react-dom": "^18.3.1",
+    "react-pick-color": "^2.0.0",
+    "react-quill": "^2.0.0",
+    "react-router-dom": "^7.3.0",
+    "react-use": "^17.6.0",
+    "swiper": "^11.2.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@shopify/app-bridge-types": "^0.0.16",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "vite": "^6.2.0"
+  }
+}

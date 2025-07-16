@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const shop = params.get("shop");
+
+      if (shop) {
+        if (window.location.pathname === "/") {
+          window.location.href = `https://test-app.dotmagicinfotech.in/shopify_app/index?shop=${shop}`;
+        }
+      } else {
+        console.error("Missing 'shop' query param");
+      }
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="shopify-api-key" content="bdb934da12832cbfd0bcb7ce611d42f3" />
+    <!-- <meta name="shopify-shop" content="anuj-vadi01.myshopify.com" /> -->
+    <script src="https://cdn.shopify.com/shopifycloud/app-bridge.js"></script>
+    <title>Dotmagic Bundle</title>
+    <script type="module" crossorigin src="/assets/index-D5oyCyge.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CcmPrPuP.css">
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+  </body>
+</html>
