@@ -447,12 +447,6 @@ function Frequently() {
                                                     padding: "8px",
                                                     width: "100%"
                                                 }}>Add selected to cart</button>
-
-                                                <p style={{ textAlign: "center", marginTop: "10px" }}>Powered by{" "}
-                                                    <a style={{ color: `${data.button.buttonColor}`, textDecoration: "underline", cursor: "pointer" }} href='https://dotmagicinfotech.com/' target='_blank'>
-                                                        dotmagicinfotech
-                                                    </a>
-                                                </p>
                                             </div>
                                         </div>
                                     </div>

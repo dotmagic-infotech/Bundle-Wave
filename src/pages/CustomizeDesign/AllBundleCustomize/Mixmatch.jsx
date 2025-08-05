@@ -566,15 +566,6 @@ function Mixmatch() {
                       <button style={{
                         backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "12px", width: "100%", marginTop: "10px"
                       }}>Add to cart</button>
-                      <p style={{ textAlign: "center" }}>
-                        Powered by{" "}
-                        <a style={{ color: `${data.button.buttonColor}`, textDecoration: "underline", cursor: "pointer", }}
-                          href="https://dotmagicinfotech.com/"
-                          target="_blank"
-                        >
-                          dotmagicinfotech
-                        </a>
-                      </p>
                     </div>
                     :
                     <div style={{
@@ -661,15 +652,6 @@ function Mixmatch() {
                       <button style={{
                         backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "12px", width: "100%", marginTop: "20px"
                       }}>Go to Bundle Builder</button>
-                      <p style={{ textAlign: "center" }}>
-                        Powered by{" "}
-                        <a style={{ color: `${data.button.buttonColor}`, textDecoration: "underline", cursor: "pointer", }}
-                          href="https://dotmagicinfotech.com/"
-                          target="_blank"
-                        >
-                          dotmagicinfotech
-                        </a>
-                      </p>
                     </div>
                   }
                 </>

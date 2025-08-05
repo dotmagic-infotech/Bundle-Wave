@@ -352,11 +352,6 @@ function BuyXgetY() {
                     ))}
                   </div>
                   <button style={{ marginTop: "20px", backgroundColor: "black", color: "white", cursor: "pointer", width: "100%", borderRadius: "10px", padding: "8px" }}>Add to cart</button>
-                  <p style={{ textAlign: "center", marginTop: "10px" }}>Powered by{" "}
-                    <a style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }} href='https://dotmagicinfotech.com/' target='_blank'>
-                      dotmagicinfotech
-                    </a>
-                  </p>
                 </div>
               ) : data.selectDisplay.type === "pop_up" ? (
                 <div style={{ backgroundColor: "white", borderRadius: "10px", padding: "10px", position: "relative" }}>
@@ -420,12 +415,6 @@ function BuyXgetY() {
                   <button style={{ backgroundColor: "black", border: "none", color: `white`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", marginTop: "20px" }}>
                     Add to cart
                   </button>
-
-                  <p style={{ textAlign: "center", marginTop: "10px", color: data.title.fontColor }}>Powered by{" "}
-                    <a style={{ color: data.title.fontColor, textDecoration: "underline", cursor: "pointer" }} href='https://dotmagicinfotech.com/' target='_blank'>
-                      dotmagicinfotech
-                    </a>
-                  </p>
 
                   <div style={{ display: "flex", justifyContent: "end", margin: "10px 0px", position: "absolute", top: "-45px", right: "0px" }}>
                     <Button icon={XIcon} variant='secondary'></Button>

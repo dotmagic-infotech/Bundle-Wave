@@ -424,11 +424,6 @@ function Addons() {
                                         ))}
                                     </div>
                                     <button style={{ marginTop: "20px", backgroundColor: data.button.buttonColor, color: data.button.textColor, cursor: "pointer", width: "100%", borderRadius: "10px", padding: "8px", border: "none" }}>Add to cart</button>
-                                    <p style={{ textAlign: "center", marginTop: "10px" }}>Powered by{" "}
-                                        <a style={{ color: data.button.buttonColor, textDecoration: "underline", cursor: "pointer" }} href='https://dotmagicinfotech.com/' target='_blank'>
-                                            dotmagicinfotech
-                                        </a>
-                                    </p>
                                 </div>
                             ) : data.selectDisplay.type === "pop_up" ? (
                                 <div style={{ backgroundColor: "white", borderRadius: "10px", padding: "10px", position: "relative" }}>

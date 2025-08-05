@@ -499,20 +499,6 @@ function Fixedbundle() {
                     <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
                       Add to cart
                     </button>
-                    <p style={{ textAlign: "center" }}>
-                      Powered by{" "}
-                      <a
-                        style={{
-                          color: `${data.button.buttonColor}`,
-                          textDecoration: "underline",
-                          cursor: "pointer",
-                        }}
-                        href="https://dotmagicinfotech.com/"
-                        target="_blank"
-                      >
-                        dotmagicinfotech
-                      </a>
-                    </p>
                   </div>
                 </div>
               ) : data.selectDisplay.type === "included_product_page" ? (
@@ -565,20 +551,6 @@ function Fixedbundle() {
                       <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize}px`, cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
                         Add to cart
                       </button>
-                      <p style={{ textAlign: "center", marginTop: "10px" }}>
-                        Powered by{" "}
-                        <a
-                          style={{
-                            color: `${data.button.buttonColor}`,
-                            textDecoration: "underline",
-                            cursor: "pointer",
-                          }}
-                          href="https://dotmagicinfotech.com/"
-                          target="_blank"
-                        >
-                          dotmagicinfotech
-                        </a>
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -627,15 +599,6 @@ function Fixedbundle() {
                         <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
                           Add to cart
                         </button>
-                        <p style={{ textAlign: "center" }}>
-                          Powered by{" "}
-                          <a style={{ color: `${data.button.buttonColor}`, textDecoration: "underline", cursor: "pointer", }}
-                            href="https://dotmagicinfotech.com/"
-                            target="_blank"
-                          >
-                            dotmagicinfotech
-                          </a>
-                        </p>
                       </div>
                     </div>
                   </div>
@@ -683,15 +646,6 @@ function Fixedbundle() {
                         <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${`${data.button.textColor}`}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
                           Go To Bundle Builder
                         </button>
-                        <p style={{ textAlign: "center", marginTop: "10px" }}>
-                          Powered by{" "}
-                          <a style={{ color: `${data.button.buttonColor}`, textDecoration: "underline", cursor: "pointer", }}
-                            href="https://dotmagicinfotech.com/"
-                            target="_blank"
-                          >
-                            dotmagicinfotech
-                          </a>
-                        </p>
                       </div>
                     </div>
                   </div>
