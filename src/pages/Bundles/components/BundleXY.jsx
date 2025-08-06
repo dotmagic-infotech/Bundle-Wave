@@ -100,7 +100,6 @@ const BundleXY = () => {
           bundle_name: data?.bundle_name,
           discount_label: data.discount_label,
           bundle_description: data?.bundle_description,
-          show_bundle_widget: data?.show_bundle_widget,
           start_time: data?.start_time,
           endTime_status: data?.endTime_status || "0",
           end_time: data?.end_time,
@@ -187,7 +186,6 @@ const BundleXY = () => {
       formData.append("bundle_name", data.bundle_name);
       formData.append("discount_label", data.discount_label);
       formData.append("bundle_description", data.bundle_description || "");
-      formData.append("show_bundle_widget", data.show_bundle_widget);
       formData.append("start_date", formatDate(selectedDates?.start));
       formData.append("start_time", data.start_time || "00:00");
       formData.append("status", data.status || "Draft");

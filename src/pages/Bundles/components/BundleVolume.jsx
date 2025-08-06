@@ -90,7 +90,6 @@ const BundleVolume = () => {
           bundle_name: data?.bundle_name,
           discount_label: data.discount_label,
           bundle_info: data?.bundle_info,
-          show_bundle_widget: data?.show_bundle_widget,
           start_time: data?.start_time,
           endTime_status: data?.endTime_status || "0",
           end_time: data?.end_time,

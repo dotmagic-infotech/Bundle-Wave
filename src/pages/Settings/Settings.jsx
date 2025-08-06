@@ -2,20 +2,7 @@
 import { useState, useEffect, useContext } from "react";
 
 // Shopify Imports
-import {
-    Box,
-    Card,
-    Page,
-    Text,
-    BlockStack,
-    InlineGrid,
-    TextField,
-    Divider,
-    Button,
-    Checkbox,
-    Banner,
-    RadioButton,
-} from "@shopify/polaris";
+import { Box, Card, Page, Text, BlockStack, InlineGrid, TextField, Divider, Button, Checkbox, RadioButton } from "@shopify/polaris";
 
 // Custom Component
 import { ShopifyContext } from "../../components/ShopifyProvider/ShopifyProvider";
@@ -114,32 +101,6 @@ const Settings = () => {
                 }}></button>
             </SaveBar>
             <BlockStack gap={{ xs: "800", sm: "400" }}>
-                {/* Subscription */}
-                <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
-                    <Box as="section" paddingInlineStart={{ xs: "400", sm: "0" }} paddingInlineEnd={{ xs: "400", sm: "0" }}>
-                        <BlockStack gap="100">
-                            <Text as="h3" variant="headingMd">
-                                Subscription
-                            </Text>
-                            <Text as="p" variant="bodyMd">
-                                Install any subscription app and start selling your bundles weekly, monthly, yearly, etc.
-                            </Text>
-                        </BlockStack>
-                    </Box>
-                    <Card roundedAbove="sm">
-                        <BlockStack gap={300}>
-                            <Checkbox label="Enable subscriptions" checked={formState?.enable_subscription === 1} onChange={(value) => handleChangeValue("enable_subscription", value ? 1 : 0)} />
-                            <Banner onDismiss={() => { }} title={formState?.enable_subscription ? "" : "Install subscription app"}>
-                                {formState?.enable_subscription === 1 ?
-                                    <p>We are currently testing this feature and it is in beta. Keep in mind that it may undergo changes in the future.</p>
-                                    :
-                                    <p>Install any subscription app on your store to access this feature.</p>
-                                }
-                            </Banner>
-                        </BlockStack>
-                    </Card>
-                </InlineGrid>
-                <Divider borderWidth="050" borderColor="border-secondary" />
                 {/* Track inventory */}
                 <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
                     <Box as="section" paddingInlineStart={{ xs: "400", sm: "0" }} paddingInlineEnd={{ xs: "400", sm: "0" }}>
@@ -176,9 +137,9 @@ const Settings = () => {
                         </BlockStack>
                     </Card>
                 </InlineGrid>
-                <Divider borderWidth="050" borderColor="border-secondary" />
+                {/* <Divider borderWidth="050" borderColor="border-secondary" /> */}
                 {/* Button action */}
-                <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
+                {/* <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
                     <Box as="section" paddingInlineStart={{ xs: "400", sm: "0" }} paddingInlineEnd={{ xs: "400", sm: "0" }}>
                         <BlockStack gap="100">
                             <Text as="h3" variant="headingMd">
@@ -196,7 +157,7 @@ const Settings = () => {
                             <RadioButton label="Cart drawer (mini cart)" helpText="Please contact support in order to activate this option." checked={formState?.button_action === "cart_drawer"} onChange={() => handleChangeValue("button_action", "cart_drawer")} />
                         </div>
                     </Card>
-                </InlineGrid>
+                </InlineGrid> */}
                 {/* Variant selector type */}
                 <Divider borderWidth="050" borderColor="border-secondary" />
                 <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
@@ -312,7 +273,7 @@ const Settings = () => {
                         </div>
                     </Card>
                 </InlineGrid>
-                <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
+                {/* <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
                     <Box as="section" paddingInlineStart={{ xs: "400", sm: "0" }} paddingInlineEnd={{ xs: "400", sm: "0" }}>
                     </Box>
                     <Card roundedAbove="sm">
@@ -322,7 +283,7 @@ const Settings = () => {
                             <Button>Reset to default</Button>
                         </div>
                     </Card>
-                </InlineGrid>
+                </InlineGrid> */}
                 <div style={{ margin: "10px 0px" }}></div>
             </BlockStack>
         </Page>

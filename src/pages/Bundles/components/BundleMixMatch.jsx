@@ -109,7 +109,6 @@ function BundleMixMatch() {
           bundle_name: data.bundle_name,
           discount_label: data.discount_label,
           bundle_description: data.bundle_description || "",
-          showBundleWidget: data.show_bundle_widget,
           endTime_status: data.endTime_status,
           start_time: data.start_time,
           end_time: data?.end_time,
@@ -231,7 +230,6 @@ function BundleMixMatch() {
       formData.append("bundle_name", data.bundle_name);
       formData.append("discount_label", data.discount_label);
       formData.append("bundle_description", data.bundle_description || "");
-      formData.append("show_bundle_widget", data.show_bundle_widget || "0");
       const formatDate = (date) =>
         new Date(date.getTime() - date.getTimezoneOffset() * 60000)
           .toISOString()
@@ -647,48 +645,6 @@ function BundleMixMatch() {
                         </div>
                       </BlockStack>
                     </BlockStack>
-                  </Card>
-
-                  {/* Show on included products page */}
-                  <Card>
-                    <BlockStack gap={"300"}>
-                      <BlockStack>
-                        <Text as="span" variant="headingMd">Show on included products page</Text>
-                      </BlockStack>
-                    </BlockStack>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: 'center', marginTop: "10px" }}>
-                      <Checkbox
-                        label="Show the bundle widget on all included products pages"
-                        checked={data.show_bundle_widget}
-                        onChange={(value) => handleChangeValue("show_bundle_widget", value ? "1" : "0")}
-                      />
-                      <div style={{ cursor: "pointer" }} onClick={handleToggleProduct}>
-                        {openProduct === true ?
-                          <Icon
-                            source={ChevronUpIcon}
-                            tone="base"
-                          />
-                          :
-                          <Icon
-                            source={ChevronDownIcon}
-                            tone="base"
-                          />
-                        }
-                      </div>
-                    </div>
-
-                    <Collapsible
-                      open={openProduct}
-                      id="basic-collapsible"
-                      transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
-                      expandOnPrint
-                    >
-                      <div style={{ marginTop: "10px", marginLeft: "26px" }}>
-                        <span style={{ color: "gray" }}>
-                          Check the option to show the bundle widget
-                        </span>
-                      </div>
-                    </Collapsible>
                   </Card>
 
                   <div style={{ paddingBottom: "10px" }}>

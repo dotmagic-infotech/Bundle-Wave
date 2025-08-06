@@ -99,7 +99,6 @@ const BundleFixed = () => {
           bundle_name: data.bundle_name || "",
           discount_label: data.discount_label || "",
           bundle_description: data.bundle_description || "",
-          showBundleWidget: data.show_bundle_widget,
           endTime_status: data.endTime_status,
           startDate: data.start_date ? new Date(data.start_date) : null,
           start_time: data.start_time || "1:00 AM",
@@ -183,7 +182,6 @@ const BundleFixed = () => {
       formData.append("discount_label", data.discount_label);
       formData.append("bundle_description", data.bundle_description || "");
       formData.append("old_media", JSON.stringify(media));
-      formData.append("show_bundle_widget", data.showBundleWidget);
       formData.append("status", data.status || "Draft");
       formData.append("start_date", formatDate(selectedDates.start));
       formData.append("start_time", data.start_time);
@@ -365,47 +363,6 @@ const BundleFixed = () => {
                       <FileUploadDropZone media={media} setMedia={setMedia} files={files} setFiles={setFiles} />
                     </BlockStack>
                   </BlockStack>
-                </Card>
-
-                {/* Show on included products page */}
-                <Card>
-                  <BlockStack gap={"300"}>
-                    <BlockStack>
-                      <Text as="span" variant="headingMd">Show on included products page</Text>
-                    </BlockStack>
-                  </BlockStack>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: 'center', marginTop: "10px" }}>
-                    <Checkbox
-                      label="Show the bundle widget on all included products pages"
-                      checked={data.showBundleWidget === "1"}
-                      onChange={(value) => handleChangeValue("showBundleWidget", value ? "1" : "0")}
-                    />
-                    <div style={{ cursor: "pointer" }} onClick={handleToggleProduct}>
-                      {openProduct === true ?
-                        <Icon
-                          source={ChevronUpIcon}
-                          tone="base"
-                        />
-                        :
-                        <Icon
-                          source={ChevronDownIcon}
-                          tone="base"
-                        />
-                      }
-                    </div>
-                  </div>
-                  <Collapsible
-                    open={openProduct}
-                    id="basic-collapsible"
-                    transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
-                    expandOnPrint
-                  >
-                    <div style={{ marginTop: "10px", marginLeft: "26px" }}>
-                      <span>
-                        Check the option to show the bundle widget
-                      </span>
-                    </div>
-                  </Collapsible>
                 </Card>
 
                 <div style={{ paddingBottom: "10px" }}>
