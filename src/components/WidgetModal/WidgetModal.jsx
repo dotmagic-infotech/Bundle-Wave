@@ -49,14 +49,7 @@ const WidgetModal = (props) => {
                         <p>If you're using a page builder app, you can manually add this widget using the embed ID below.</p>
                         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
                             <Box width="100%">
-                                <TextField
-                                    value={copyId}
-                                    disabled
-                                    type="text"
-                                    label="Embed ID"
-                                    labelHidden
-                                    autoComplete="off"
-                                />
+                                <TextField value={copyId} disabled type="text" label="Embed ID" labelHidden autoComplete="off" />
                             </Box>
                             <Button icon={ClipboardIcon} accessibilityLabel="Copy to clipboard" onClick={() => handleCopy(copyId)} />
                         </div>

@@ -1,5 +1,5 @@
 // React Imports
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 // Shopify Polaris
 import { BlockStack, Box, Button, Card, InlineStack, Layout, LegacyCard, Modal, Page, RadioButton, Select, SkeletonBodyText, SkeletonDisplayText, Text, TextContainer, TextField } from '@shopify/polaris'

@@ -1,3 +1,4 @@
+// Shopify Polaris
 import { Banner, List } from "@shopify/polaris";
 
 const ValidationErrors = ({ errors }) => {
@@ -5,10 +6,7 @@ const ValidationErrors = ({ errors }) => {
 
     return (
         <div style={{ marginBottom: "10px" }}>
-            <Banner
-                title={`There are ${Object.keys(errors).length} errors with this bundle creation:`}
-                tone="critical"
-            >
+            <Banner title={`There are ${Object.keys(errors).length} errors with this bundle creation:`} tone="critical">
                 <List>
                     {Object.entries(errors).map(([key, message]) => (
                         <List.Item key={key}>{message}</List.Item>

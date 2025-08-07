@@ -29,18 +29,6 @@ function ProductWithCollections({ sections, setSections }) {
     const togglePopoverActive = (() => setPopoverButton((popoverButton) => !popoverButton));
     const handleChangeModalSection = (() => setActiveModal(!activeModal));
 
-    // useEffect(() => {
-    //     if (mediaModal && editingSectionId) {
-    //         setSections(prev =>
-    //             prev.map(section =>
-    //                 section.id === editingSectionId
-    //                     ? { ...section, media: "" }
-    //                     : section
-    //             )
-    //         );
-    //     }
-    // }, [mediaModal]);
-
     const handleToggle = (index) => {
         setOpen(prev => (prev === index ? null : index));
     };

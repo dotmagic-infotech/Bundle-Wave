@@ -2,11 +2,11 @@
 import { useContext, useEffect, useState } from 'react';
 
 // Shopify Polaris
-import { BlockStack, Box, Button, ButtonGroup, Card, Checkbox, Collapsible, Divider, Icon, InlineStack, Layout, LegacyStack, Modal, Page, RadioButton, Select, Text, TextField } from '@shopify/polaris';
+import { BlockStack, Box, Button, ButtonGroup, Card, Checkbox, Divider, InlineStack, Layout, LegacyStack, Modal, Page, RadioButton, Select, Text, TextField } from '@shopify/polaris';
 import { SaveBar } from '@shopify/app-bridge-react';
 
 // Shopify Icons
-import { ChevronDownIcon, ChevronRightIcon, ChevronUpIcon, ViewIcon } from '@shopify/polaris-icons';
+import { ChevronDownIcon, ChevronRightIcon, ViewIcon } from '@shopify/polaris-icons';
 
 // Third Party Imports
 import ReactQuill from 'react-quill';
@@ -53,7 +53,6 @@ const BundleXY = () => {
   const [media, setMedia] = useState([]);
   const [productsbuys, setProductsbuys] = useState([]);
   const [productsgets, setProductsgets] = useState([]);
-  const [openProduct, setOpenProduct] = useState(false);
   const [sectionsBuys, setSectionsBuys] = useState([]);
   const [selectedFirst, setSelectedFirst] = useState(null);
   const [selectedSecond, setSelectedSecond] = useState(null);
@@ -141,7 +140,6 @@ const BundleXY = () => {
     shopify.saveBar.show('save');
   };
 
-  const handleToggleProduct = (() => setOpenProduct((open) => !open));
   const toggleVideoModal = () => setVideoModalOpen(prev => !prev);
 
   const validateForm = () => {

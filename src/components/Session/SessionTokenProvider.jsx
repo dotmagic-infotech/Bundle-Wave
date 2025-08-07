@@ -1,5 +1,5 @@
 // React Imports
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 // Shopify Imports
 import createApp from '@shopify/app-bridge';

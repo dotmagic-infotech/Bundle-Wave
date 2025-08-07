@@ -2,11 +2,11 @@
 import { useContext, useEffect, useState } from 'react'
 
 // Shopify Polaris
-import { BlockStack, Box, Button, ButtonGroup, Card, Checkbox, Collapsible, Divider, Icon, InlineError, InlineStack, Layout, LegacyStack, Modal, Page, RadioButton, Select, Text, TextField } from '@shopify/polaris'
+import { BlockStack, Box, Button, ButtonGroup, Card, Checkbox, Divider, InlineError, InlineStack, Layout, LegacyStack, Modal, Page, RadioButton, Select, Text, TextField } from '@shopify/polaris'
 import { SaveBar } from '@shopify/app-bridge-react';
 
 // Shopify Icons
-import { ChevronDownIcon, ChevronRightIcon, ChevronUpIcon, DeleteIcon, PlusIcon, ViewIcon } from '@shopify/polaris-icons'
+import { ChevronDownIcon, ChevronRightIcon, DeleteIcon, PlusIcon, ViewIcon } from '@shopify/polaris-icons'
 
 // Third Party Imports
 import { useNavigate, useParams } from 'react-router-dom'
@@ -53,7 +53,6 @@ function BundleMixMatch() {
     discount_option_id: "1",
     discount_label: "Mix and Match Discount"
   });
-  const [openProduct, setOpenProduct] = useState(false);
   const [files, setFiles] = useState([]);
   const [media, setMedia] = useState([]);
   const [selProductsTired, setSelProductsTired] = useState([]);
@@ -70,7 +69,6 @@ function BundleMixMatch() {
     { id: 1, discountValue: "10", buy_start: "1", buy_end: "", type: "1", range: "", allow_users: "" }
   ]);
 
-  const handleToggleProduct = (() => setOpenProduct((open) => !open));
   const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
 
   useEffect(() => {
@@ -379,11 +377,7 @@ function BundleMixMatch() {
                         <label htmlFor="Tiered" style={{ display: "block", cursor: "pointer" }}>
                           <img src={twoimage} />
                           <div style={{ padding: "7px 10px 10px 15px" }}>
-                            <RadioButton
-                              label="Tiered Discount"
-                              id="Tiered"
-                              name="accounts"
-                              checked={data.bundle_subtype === 'Tiered'}
+                            <RadioButton label="Tiered Discount" id="Tiered" name="accounts" checked={data.bundle_subtype === 'Tiered'}
                               onChange={() => {
                                 handleChangeValue("bundle_subtype", "Tiered")
                                 setSections([]);
@@ -441,7 +435,6 @@ function BundleMixMatch() {
                               value={data.discount_option_id}
                             />
                           </Box>
-
 
                           {data?.discount_option_id &&
                             <>
@@ -818,9 +811,7 @@ function BundleMixMatch() {
                                           {value.collection?.length > 0 && value.collection.map((product, index) => (
                                             <div key={index}>
                                               <div style={{ display: "flex", padding: "15px 10px" }}>
-                                                <img
-                                                  src={product?.image}
-                                                  alt={product?.title}
+                                                <img src={product?.image} alt={product?.title}
                                                   style={{ width: "60px", height: "60px", borderRadius: "10px", marginLeft: "10px", objectFit: "fill" }}
                                                 />
                                                 <div style={{ marginLeft: "10px" }}>
@@ -970,9 +961,8 @@ function BundleMixMatch() {
               <WidgetModal copyId={id} />
             </Modal.Section>
           </Modal>
-        </Page >
-      )
-      }
+        </Page>
+      )}
     </>
   )
 }

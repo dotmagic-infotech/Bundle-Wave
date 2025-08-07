@@ -1,16 +1,9 @@
-// React Imports
-import { useState } from "react";
-
 // Shopify Imports
-import { DropZone, Thumbnail, Icon } from "@shopify/polaris";
+import { DropZone, Thumbnail } from "@shopify/polaris";
 
 const validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/svg+xml", "image/webp"];
 
-const SingleFileUploadDropZone = ({
-    media,
-    file,
-    setFile,
-}) => {
+const SingleFileUploadDropZone = ({ media, file, setFile }) => {
 
     const handleDropZoneDrop = (_dropFiles, acceptedFiles, _rejectedFiles) => {
         const singleFile = acceptedFiles[0];
@@ -21,21 +14,9 @@ const SingleFileUploadDropZone = ({
     };
 
     const uploaded = (media || file) && (
-        <div
-            style={{
-                padding: "1rem",
-                display: "flex",
-                justifyContent: "center",
-            }}
-        >
+        <div style={{ padding: "1rem", display: "flex", justifyContent: "center" }}>
             {file ? (
-                <div
-                    style={{
-                        position: "relative",
-                        width: "80px",
-                        height: "80px",
-                    }}
-                >
+                <div style={{ position: "relative", width: "80px", height: "80px" }}>
                     <Thumbnail
                         size="large"
                         alt={file.name || "Uploaded file"}
@@ -47,13 +28,7 @@ const SingleFileUploadDropZone = ({
                     />
                 </div>
             ) : media ? (
-                <div
-                    style={{
-                        position: "relative",
-                        width: "80px",
-                        height: "80px",
-                    }}
-                >
+                <div style={{ position: "relative", width: "80px", height: "80px" }}>
                     <Thumbnail size="large" alt="Media" source={media} />
                 </div>
             ) : null}
@@ -61,14 +36,7 @@ const SingleFileUploadDropZone = ({
     );
 
     return (
-        <DropZone
-            onDrop={handleDropZoneDrop}
-            label="Upload File"
-            accept="image/*"
-            type="image"
-            allowMultiple={false}
-        >
-
+        <DropZone onDrop={handleDropZoneDrop} label="Upload File" accept="image/*" type="image" allowMultiple={false}>
             {(file || media) ? (
                 uploaded
             ) : (

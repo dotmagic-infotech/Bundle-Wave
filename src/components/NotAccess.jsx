@@ -24,9 +24,7 @@ const NotAccess = () => {
                                 onAction: () => navigate('/home'),
                             }}
                         >
-                            <p>
-                                Your current plan does not allow access to this page. Please update your plan to continue.
-                            </p>
+                            <p>Your current plan does not allow access to this page. Please update your plan to continue.</p>
                         </EmptyState>
                     </Card>
                 </Layout.Section>

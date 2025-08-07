@@ -7,11 +7,11 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 // Shopify Polaris Imports
-import { BlockStack, Box, Card, InlineStack, Layout, Page, Text, Checkbox, Icon, Button, Select, TextField, Collapsible, Modal, Divider, LegacyCard, ButtonGroup } from "@shopify/polaris";
+import { BlockStack, Box, Card, InlineStack, Layout, Page, Text, Checkbox, Button, Select, TextField, Modal, Divider, LegacyCard, ButtonGroup } from "@shopify/polaris";
 import { SaveBar, useAppBridge } from '@shopify/app-bridge-react';
 
 // Shopify Polaris Icons
-import { ChevronUpIcon, ChevronDownIcon, ViewIcon, } from '@shopify/polaris-icons';
+import { ViewIcon } from '@shopify/polaris-icons';
 
 // Custom Components
 import BundlesPreview from '../BundlesPreview';
@@ -49,7 +49,6 @@ const BundleFixed = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [files, setFiles] = useState([]);
   const [media, setMedia] = useState([]);
-  const [openProduct, setOpenProduct] = useState(false);
   const [errors, setErrors] = useState({});
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [widgetModalOpen, setWidgetModalOpen] = useState(false);
@@ -115,7 +114,6 @@ const BundleFixed = () => {
     }
   }, [id]);
 
-  const handleToggleProduct = (() => setOpenProduct((open) => !open));
   const toggleVideoModal = () => setVideoModalOpen(prev => !prev);
   const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
 

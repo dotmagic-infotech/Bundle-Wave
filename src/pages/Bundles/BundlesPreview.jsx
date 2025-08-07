@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button, Modal, Checkbox, RadioButton, Divider, Banner } from "@shopify/polaris";
 
 // Shopify Icons
-import { BlankIcon, CheckboxIcon, ChevronDownIcon, ChevronRightIcon } from "@shopify/polaris-icons";
+import { BlankIcon, ChevronDownIcon, ChevronRightIcon } from "@shopify/polaris-icons";
 
 const BundlesPreview = ({
     bundle_type_id,
