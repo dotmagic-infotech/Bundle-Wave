@@ -32,6 +32,9 @@ export default defineConfig(({ command }) => {
           '/api': 'http://test-app.dotmagicinfotech.in',
         },
         allowedHosts: true,
+        headers: {
+          'Content-Security-Policy': "frame-ancestors https://*.myshopify.com https://admin.shopify.com",
+        }
       }
       : undefined,
     build: {
