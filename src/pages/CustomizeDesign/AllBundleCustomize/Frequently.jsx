@@ -48,7 +48,7 @@ function Frequently() {
     const fetchCustomizeData = async () => {
         try {
             const data = await fetchWithToken({
-                url: `https://test-app.dotmagicinfotech.in/api/get_customize?shop=${shopName}&path=Frequently`,
+                url: `https://bundle-wave-backend.xavierapps.com/api/get_customize?shop=${shopName}&path=Frequently`,
                 method: 'GET',
             });
 
@@ -262,7 +262,7 @@ function Frequently() {
         }
 
         const result = await fetchWithToken({
-            url: `https://test-app.dotmagicinfotech.in/api/update_customize?path=Frequently&shop=${shopName}`,
+            url: `https://bundle-wave-backend.xavierapps.com/api/update_customize?path=Frequently&shop=${shopName}`,
             method: 'POST',
             body: passData,
             isFormData: false,

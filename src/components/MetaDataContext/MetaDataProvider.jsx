@@ -22,7 +22,7 @@ export const DiscountProvider = ({ children }) => {
             if (!token) return;
 
             try {
-                const res = await fetch("https://test-app.dotmagicinfotech.in/api/metadata", {
+                const res = await fetch("https://bundle-wave-backend.xavierapps.com/api/metadata", {
                     headers: { Authorization: `token ${token}` },
                 });
                 const data = await res.json();
@@ -42,7 +42,7 @@ export const DiscountProvider = ({ children }) => {
             if (!token || !isSubscriptionActive) return;
 
             try {
-                const res = await fetch("https://test-app.dotmagicinfotech.in/api/metadata", {
+                const res = await fetch("https://bundle-wave-backend.xavierapps.com/api/metadata", {
                     headers: { Authorization: `token ${token}` },
                 });
                 const data = await res.json();

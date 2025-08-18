@@ -40,7 +40,7 @@ function BuyXgetY() {
   const fetchCustomizeData = async () => {
     try {
       const data = await fetchWithToken({
-        url: `https://test-app.dotmagicinfotech.in/api/get_customize?shop=${shopName}&path=buyXgetY`,
+        url: `https://bundle-wave-backend.xavierapps.com/api/get_customize?shop=${shopName}&path=buyXgetY`,
         method: 'GET',
       });
 
@@ -193,7 +193,7 @@ function BuyXgetY() {
     }
 
     const result = await fetchWithToken({
-      url: `https://test-app.dotmagicinfotech.in/api/update_customize?path=buyXgetY&shop=${shopName}`,
+      url: `https://bundle-wave-backend.xavierapps.com/api/update_customize?path=buyXgetY&shop=${shopName}`,
       method: 'POST',
       body: passData,
       isFormData: false,

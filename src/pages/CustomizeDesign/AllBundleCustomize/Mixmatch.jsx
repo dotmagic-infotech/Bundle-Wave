@@ -60,7 +60,7 @@ function Mixmatch() {
   const fetchCustomizeData = async () => {
     try {
       const data = await fetchWithToken({
-        url: `https://test-app.dotmagicinfotech.in/api/get_customize?shop=${shopName}&path=mixAndMatch`,
+        url: `https://bundle-wave-backend.xavierapps.com/api/get_customize?shop=${shopName}&path=mixAndMatch`,
         method: 'GET',
       });
 
@@ -386,7 +386,7 @@ function Mixmatch() {
     }
 
     const result = await fetchWithToken({
-      url: `https://test-app.dotmagicinfotech.in/api/update_customize?path=mixAndMatch&shop=${shopName}`,
+      url: `https://bundle-wave-backend.xavierapps.com/api/update_customize?path=mixAndMatch&shop=${shopName}`,
       method: 'POST',
       body: passData,
       isFormData: false,

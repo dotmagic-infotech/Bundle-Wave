@@ -75,7 +75,7 @@ function ProductWithCollections({ sections, setSections }) {
                     if (collectionIds.length > 0) {
                         try {
                             const collectionVariants = await fetchWithToken({
-                                url: `https://test-app.dotmagicinfotech.in/api/collection_varients?shop=${shopName}`,
+                                url: `https://bundle-wave-backend.xavierapps.com/api/collection_varients?shop=${shopName}`,
                                 method: 'POST',
                                 body: collectionIds,
                                 isFormData: false,
@@ -157,7 +157,7 @@ function ProductWithCollections({ sections, setSections }) {
                     });
 
                     const collectionVariants = await fetchWithToken({
-                        url: `https://test-app.dotmagicinfotech.in/api/collection_varients?shop=${shopName}`,
+                        url: `https://bundle-wave-backend.xavierapps.com/api/collection_varients?shop=${shopName}`,
                         method: 'POST',
                         body: [selectedCollection.id.split('/').pop()],
                         isFormData: false,
@@ -219,7 +219,7 @@ function ProductWithCollections({ sections, setSections }) {
             if (collectionIds.length > 0) {
                 try {
                     const collectionVariants = await fetchWithToken({
-                        url: `https://test-app.dotmagicinfotech.in/api/collection_varients?shop=${shopName}`,
+                        url: `https://bundle-wave-backend.xavierapps.com/api/collection_varients?shop=${shopName}`,
                         method: 'POST',
                         body: collectionIds,
                         isFormData: false,
@@ -316,7 +316,7 @@ function ProductWithCollections({ sections, setSections }) {
             });
 
             const collectionVariants = await fetchWithToken({
-                url: `https://test-app.dotmagicinfotech.in/api/collection_varients?shop=${shopName}`,
+                url: `https://bundle-wave-backend.xavierapps.com/api/collection_varients?shop=${shopName}`,
                 method: 'POST',
                 body: [selectedCollection.id.split('/').pop()],
                 isFormData: false,
@@ -443,7 +443,7 @@ function ProductWithCollections({ sections, setSections }) {
             return section.products?.[0].image;
         }
 
-        return "https://test-app.dotmagicinfotech.in/assets/bundles/placeholderImage.jpeg";
+        return "https://bundle-wave-backend.xavierapps.com/assets/bundles/placeholderImage.jpeg";
     };
 
     return (

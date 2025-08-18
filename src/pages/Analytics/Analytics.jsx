@@ -50,7 +50,7 @@ const Analytics = () => {
 
     const fetchAnalyticsData = async (page) => {
         try {
-            const url = `https://test-app.dotmagicinfotech.in/api/bundles_analytics?shop=${shopName}&limit=10&pagenumber=${page}&startData=${startDate}&endDate=${endDate}`;
+            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles_analytics?shop=${shopName}&limit=10&pagenumber=${page}&startData=${startDate}&endDate=${endDate}`;
             const { status, data } = await apiRequest(url, 'GET');
 
             if (status) {
@@ -63,7 +63,7 @@ const Analytics = () => {
 
     const fetchOrderData = async () => {
         try {
-            const url = `https://test-app.dotmagicinfotech.in/api/orders_analytics?shop=${shopName}&limit=10&pagenumber=${currentPage}&startData=${startDate}&endDate=${endDate}`;
+            const url = `https://bundle-wave-backend.xavierapps.com/api/orders_analytics?shop=${shopName}&limit=10&pagenumber=${currentPage}&startData=${startDate}&endDate=${endDate}`;
             const { status, data } = await apiRequest(url, 'GET');
 
             if (status) {

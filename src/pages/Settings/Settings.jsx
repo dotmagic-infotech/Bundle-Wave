@@ -31,7 +31,7 @@ const Settings = () => {
     const fetchSettingsData = async () => {
         try {
             const data = await fetchWithToken({
-                url: `https://test-app.dotmagicinfotech.in/api/get_settings?shop=${shopName}`,
+                url: `https://bundle-wave-backend.xavierapps.com/api/get_settings?shop=${shopName}`,
                 method: 'GET',
             });
             setFormState({
@@ -76,7 +76,7 @@ const Settings = () => {
         }
 
         const result = await fetchWithToken({
-            url: `https://test-app.dotmagicinfotech.in/api/save_setting?shop=${shopName}`,
+            url: `https://bundle-wave-backend.xavierapps.com/api/save_setting?shop=${shopName}`,
             method: 'POST',
             body: passData,
             isFormData: false,

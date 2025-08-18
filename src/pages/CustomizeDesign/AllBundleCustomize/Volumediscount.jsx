@@ -48,7 +48,7 @@ function Volumediscount() {
     const fetchCustomizeData = async () => {
         try {
             const data = await fetchWithToken({
-                url: `https://test-app.dotmagicinfotech.in/api/get_customize?shop=${shopName}&path=VolumeDiscount`,
+                url: `https://bundle-wave-backend.xavierapps.com/api/get_customize?shop=${shopName}&path=VolumeDiscount`,
                 method: 'GET',
             });
 
@@ -263,7 +263,7 @@ function Volumediscount() {
         }
 
         const result = await fetchWithToken({
-            url: `https://test-app.dotmagicinfotech.in/api/update_customize?path=VolumeDiscount&shop=${shopName}`,
+            url: `https://bundle-wave-backend.xavierapps.com/api/update_customize?path=VolumeDiscount&shop=${shopName}`,
             method: 'POST',
             body: passData,
             isFormData: false,

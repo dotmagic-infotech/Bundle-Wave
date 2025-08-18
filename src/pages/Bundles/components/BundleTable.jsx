@@ -61,7 +61,7 @@ function BundleTable() {
     const fetchData = async (search = "") => {
         setLoading(true);
         try {
-            const url = `https://test-app.dotmagicinfotech.in/api/bundles?limit=10&pagenumber=${currentPage}&status=${selectedTabs}&search=${encodeURIComponent(search)}&shop=${shopName}`;
+            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles?limit=10&pagenumber=${currentPage}&status=${selectedTabs}&search=${encodeURIComponent(search)}&shop=${shopName}`;
             const { status, data } = await apiRequest(url, 'GET');
 
             if (status) {
@@ -98,7 +98,7 @@ function BundleTable() {
     const handleStatusChange = async (newStatus, bundle_id, bundle_table) => {
         setLoadingButton({ id: bundle_id, type: newStatus });
         try {
-            const url = `https://test-app.dotmagicinfotech.in/api/bundles/status?shop=${shopName}`;
+            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/status?shop=${shopName}`;
             const { data } = await apiRequest(url, 'POST', {
                 bundle_id: bundle_id,
                 status: newStatus,
@@ -333,7 +333,7 @@ function BundleTable() {
     const handleDelete = async () => {
         try {
             setLoadData(true);
-            const url = `https://test-app.dotmagicinfotech.in/api/bundles/delete-multiple?shop=${shopName}`;
+            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/delete-multiple?shop=${shopName}`;
 
             const { data } = await apiRequest(url, 'POST', {
                 bundle_data: bundleData
@@ -363,7 +363,7 @@ function BundleTable() {
     const handleDublicate = async () => {
         try {
             setLoadData(true);
-            const url = `https://test-app.dotmagicinfotech.in/api/bundles/duplicate-multiple?shop=${shopName}`;
+            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/duplicate-multiple?shop=${shopName}`;
             const { data } = await apiRequest(url, 'POST', {
                 bundle_data: bundleData
                     .filter(({ bundle_id }) => selectedResources.includes(bundle_id))
@@ -394,7 +394,7 @@ function BundleTable() {
         try {
             setLoadingBundleId(bundle_id);
 
-            const url = `https://test-app.dotmagicinfotech.in/api/bundles/duplicate-multiple?shop=${shopName}`;
+            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/duplicate-multiple?shop=${shopName}`;
             const payload = {
                 bundle_data: [{ bundle_id, bundle_table }]
             };

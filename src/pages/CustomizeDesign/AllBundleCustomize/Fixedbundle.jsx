@@ -52,7 +52,7 @@ function Fixedbundle() {
   const fetchCustomizeData = async () => {
     try {
       const data = await fetchWithToken({
-        url: `https://test-app.dotmagicinfotech.in/api/get_customize?shop=${shopName}&path=fixed`,
+        url: `https://bundle-wave-backend.xavierapps.com/api/get_customize?shop=${shopName}&path=fixed`,
         method: 'GET',
       });
 
@@ -304,7 +304,7 @@ function Fixedbundle() {
     }
 
     const result = await fetchWithToken({
-      url: `https://test-app.dotmagicinfotech.in/api/update_customize?path=fixed&shop=${shopName}`,
+      url: `https://bundle-wave-backend.xavierapps.com/api/update_customize?path=fixed&shop=${shopName}`,
       method: 'POST',
       body: passData,
       isFormData: false,

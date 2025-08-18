@@ -81,7 +81,7 @@ function BundleMixMatch() {
     const fetchBundleDetails = async () => {
       try {
         const data = await fetchWithToken({
-          url: `https://test-app.dotmagicinfotech.in/api/bundles/${id}?shop=${shopName}`,
+          url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}?shop=${shopName}`,
           method: 'GET',
         });
 
@@ -276,8 +276,8 @@ function BundleMixMatch() {
       }
 
       const url = id
-        ? `https://test-app.dotmagicinfotech.in/api/bundles/update/${id}?shop=${shopName}`
-        : `https://test-app.dotmagicinfotech.in/api/bundles/create?shop=${shopName}`;
+        ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}?shop=${shopName}`
+        : `https://bundle-wave-backend.xavierapps.com/api/bundles/create?shop=${shopName}`;
 
       const result = await fetchWithToken({
         url: url,

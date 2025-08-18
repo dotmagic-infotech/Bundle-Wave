@@ -29,7 +29,7 @@ const BundleList = () => {
     const fetchData = async () => {
       try {
         const data = await fetchWithToken({
-          url: `https://test-app.dotmagicinfotech.in/api/bundle-types?shop=${shopName}`,
+          url: `https://bundle-wave-backend.xavierapps.com/api/bundle-types?shop=${shopName}`,
           method: 'GET',
         });
         setBundleData(data);

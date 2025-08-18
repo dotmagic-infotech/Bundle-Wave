@@ -47,7 +47,7 @@ function Addons() {
     const fetchCustomizeData = async () => {
         try {
             const data = await fetchWithToken({
-                url: `https://test-app.dotmagicinfotech.in/api/get_customize?shop=${shopName}&path=addOns`,
+                url: `https://bundle-wave-backend.xavierapps.com/api/get_customize?shop=${shopName}&path=addOns`,
                 method: 'GET',
             });
 
@@ -262,7 +262,7 @@ function Addons() {
         }
 
         const result = await fetchWithToken({
-            url: `https://test-app.dotmagicinfotech.in/api/update_customize?path=addOns&shop=${shopName}`,
+            url: `https://bundle-wave-backend.xavierapps.com/api/update_customize?path=addOns&shop=${shopName}`,
             method: 'POST',
             body: passData,
             isFormData: false,

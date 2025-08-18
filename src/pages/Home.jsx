@@ -41,7 +41,7 @@ const Home = () => {
     const fetchUserDashBoard = async () => {
       try {
         const data = await fetchWithToken({
-          url: `https://test-app.dotmagicinfotech.in/api/user_dashboard?limit=5&shop=${shopName}`,
+          url: `https://bundle-wave-backend.xavierapps.com/api/user_dashboard?limit=5&shop=${shopName}`,
           method: 'GET',
         });
 

@@ -57,7 +57,7 @@ const Plans = () => {
 
   const fetchPlans = async () => {
     try {
-      const url = `https://test-app.dotmagicinfotech.in/api/plans?shop=${shopName}`;
+      const url = `https://bundle-wave-backend.xavierapps.com/api/plans?shop=${shopName}`;
       const { status, data } = await apiRequest(url, 'GET');
 
       if (status) {
@@ -71,7 +71,7 @@ const Plans = () => {
 
   const fetchSelectedPlans = async () => {
     try {
-      const url = `https://test-app.dotmagicinfotech.in/api/selected_plan?shop=${shopName}`;
+      const url = `https://bundle-wave-backend.xavierapps.com/api/selected_plan?shop=${shopName}`;
       const { status, data } = await apiRequest(url, 'GET');
 
       if (status) {
@@ -90,7 +90,7 @@ const Plans = () => {
 
   const fetchPlansFeatures = async () => {
     try {
-      const url = `https://test-app.dotmagicinfotech.in/api/plan_features?shop=${shopName}`;
+      const url = `https://bundle-wave-backend.xavierapps.com/api/plan_features?shop=${shopName}`;
       const { status, data } = await apiRequest(url, 'GET');
 
       if (status) {
@@ -103,7 +103,7 @@ const Plans = () => {
 
   const confirmSubscription = async () => {
     if (chargeId) {
-      const url = `https://test-app.dotmagicinfotech.in/api/confirm_subscription?charge_id=${chargeId}&shop=${shopName}`;
+      const url = `https://bundle-wave-backend.xavierapps.com/api/confirm_subscription?charge_id=${chargeId}&shop=${shopName}`;
       const result = await fetchWithToken({
         url: url,
         method: 'GET',
@@ -133,7 +133,7 @@ const Plans = () => {
   const handleSelectPlan = async (id) => {
     try {
       shopify.loading(true);
-      const url = `https://test-app.dotmagicinfotech.in/api/subscribe?plan_type=${selectedViewPlan}&plan_id=${id}&shop=${shopName}`;
+      const url = `https://bundle-wave-backend.xavierapps.com/api/subscribe?plan_type=${selectedViewPlan}&plan_id=${id}&shop=${shopName}`;
       const { status, data } = await apiRequest(url, 'GET');
 
       if (status) {
@@ -156,7 +156,7 @@ const Plans = () => {
   const handleCancelPlan = async (id) => {
     setLoading(true);
     try {
-      const url = `https://test-app.dotmagicinfotech.in/api/unsubscribe?id=${id}&shop=${shopName}`;
+      const url = `https://bundle-wave-backend.xavierapps.com/api/unsubscribe?id=${id}&shop=${shopName}`;
       const { status } = await apiRequest(url, 'GET');
 
       if (status) {
