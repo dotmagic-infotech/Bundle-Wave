@@ -53,7 +53,6 @@ function App() {
       </NavMenu>
 
       <Routes>
-
         <Route path="/" element={<Navigate to="/home" replace />} />
 
         {/* Home Page */}
