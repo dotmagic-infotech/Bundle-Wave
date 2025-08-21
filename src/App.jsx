@@ -44,7 +44,7 @@ function App() {
   return (
     <>
       <NavMenu>
-        <Link to="/home" rel="home">Home</Link>
+        <Link to="/" rel="home">Home</Link>
         <Link to="/bundles" rel='bundle'>Bundles</Link>
         <Link to="/customization" rel='Customization'>Customization</Link>
         <Link to="/analytics" rel='Analytics'>Analytics</Link>
