@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { NavMenu } from '@shopify/app-bridge-react';
 
 // Third Party Imports
-import { Link, Route, Routes } from 'react-router-dom'
+import { Link, Navigate, Route, Routes } from 'react-router-dom'
 
 // Css
 import './App.css'
@@ -53,6 +53,9 @@ function App() {
       </NavMenu>
 
       <Routes>
+
+        <Route path="/" element={<Navigate to="/home" replace />} />
+
         {/* Home Page */}
         <Route path="/home" element={<Home />} />
 
