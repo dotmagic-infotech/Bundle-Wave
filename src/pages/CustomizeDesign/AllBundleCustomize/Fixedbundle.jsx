@@ -432,13 +432,13 @@ function Fixedbundle() {
                     />
                     <div style={{ display: "flex", gap: "0.2rem" }}>
                       <img
-                        src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/71vRMHVXtiL._AC_SX679.jpg?v=1747905444"
+                        src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Watch-Strap1.webp?v=1756101849"
                         width="60px"
                         height="60px"
                         style={{ borderRadius: "10px" }}
                       />
                       <img
-                        src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/ZenithElPrimeroChronomaster.jpg?v=1750136339"
+                        src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Watch-Strap3.webp?v=1756101676"
                         width="60px"
                         height="60px"
                         style={{ borderRadius: "10px" }}
@@ -458,7 +458,7 @@ function Fixedbundle() {
                           <div key={index}>
                             <div style={{ display: "flex", gap: "10px" }}>
                               <img
-                                src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/ElegantKanjivaramSilkSaree.jpg?v=1747916819"
+                                src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/photo-1505740420928-5e560c06d30e.avif?v=1756200370"
                                 width="80px"
                                 height="80px"
                                 style={{ borderRadius: "10px" }}
@@ -518,7 +518,7 @@ function Fixedbundle() {
                       <div key={index}>
                         <div style={{ display: "flex", gap: "10px" }}>
                           <img
-                            src="https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ="
+                            src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546"
                             width="80px"
                             height="80px"
                             style={{ borderRadius: "10px" }}

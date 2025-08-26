@@ -533,7 +533,7 @@ function Mixmatch() {
                           <div key={index}>
                             <div style={{ borderRadius: `${data.border.borderRadius}px`, backgroundColor: data?.background?.background_type === "colored" ? BackGroundColor : "transparent" }}>
                               <div style={{ display: "flex", alignItems: "start", }}>
-                                <img src="https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ="
+                                <img src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546"
                                   style={{ width: "85px", height: "85px", objectFit: "fill", borderRadius: "8px" }}
                                 />
                                 <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "2.3rem", width: "100%" }}>
@@ -543,7 +543,7 @@ function Mixmatch() {
                                       <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ $20.00</p>
                                       <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$25.00</p>
                                     </div>
-                                    <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "15px", cursor: "pointer", borderRadius: "8px", padding: "2px 15px" }}>
+                                    <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "15px", cursor: "pointer", borderRadius: "8px", padding: "5px 15px" }}>
                                       Add
                                     </button>
                                   </div>
@@ -624,7 +624,7 @@ function Mixmatch() {
                               width: "40px", height: "40px", overflow: "hidden", left: index === 0 ? "0px" : "30px",
                               position: index === 0 ? "static" : "absolute"
                             }}>
-                              <img src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/ZenithElPrimeroChronomaster.jpg?v=1750136339" style={{ borderRadius: "50%", backgroundColor: "#f6f6f7", width: "100%", height: "100%", objectFit: "cover" }} />
+                              <img src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546" style={{ borderRadius: "50%", backgroundColor: "#f6f6f7", width: "100%", height: "100%", objectFit: "cover" }} />
                             </div>
                           ))}
                         </div>
@@ -644,7 +644,7 @@ function Mixmatch() {
                               width: "40px", height: "40px", overflow: "hidden", left: index === 0 ? "0px" : "30px",
                               position: index === 0 ? "static" : "absolute"
                             }}>
-                              <img src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/71vRMHVXtiL._AC_SX679.jpg?v=1747905444" style={{ borderRadius: "50%", backgroundColor: "#f6f6f7", width: "100%", height: "100%", objectFit: "cover" }} />
+                              <img src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546" style={{ borderRadius: "50%", backgroundColor: "#f6f6f7", width: "100%", height: "100%", objectFit: "cover" }} />
                             </div>
                           ))}
                         </div>
@@ -691,7 +691,7 @@ function Mixmatch() {
                               {Array.from({ length: 3 }).map((_, index) => (
                                 <div key={index}>
                                   <div style={{ display: "flex", alignItems: "center", }}>
-                                    <img src="https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ="
+                                    <img src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546"
                                       style={{ width: "65px", height: "65px", objectFit: "fill" }}
                                     />
                                     <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", width: "100%" }}>
@@ -705,7 +705,7 @@ function Mixmatch() {
                                           fontSize: "15px",
                                           cursor: "pointer",
                                           borderRadius: "8px",
-                                          padding: "2px 15px",
+                                          padding: "5px 15px",
                                         }}>
                                           Add
                                         </button>
@@ -742,8 +742,8 @@ function Mixmatch() {
                       <div style={{ width: "50%" }}>
                         <img src='https://cdn.shopify.com/s/files/1/0839/1399/8619/products/gift_card.png?v=1698129037' width="100%" height="350px" style={{ opacity: "0.5", borderRadius: "10px" }} />
                         <div style={{ display: "flex", gap: "0.2rem" }}>
-                          <img src='https://cdn.shopify.com/s/files/1/0839/1399/8619/files/71vRMHVXtiL._AC_SX679.jpg?v=1747905444' width="60px" height="60px" style={{ opacity: "0.5", borderRadius: "10px" }} />
-                          <img src='https://cdn.shopify.com/s/files/1/0839/1399/8619/files/ZenithElPrimeroChronomaster.jpg?v=1750136339' width="60px" height="60px" style={{ opacity: "0.5", borderRadius: "10px" }} />
+                          <img src='https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546' width="60px" height="60px" style={{ opacity: "0.5", borderRadius: "10px" }} />
+                          <img src='https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume.jpg?v=1756097546' width="60px" height="60px" style={{ opacity: "0.5", borderRadius: "10px" }} />
                         </div>
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem", width: "50%" }}>
@@ -762,7 +762,7 @@ function Mixmatch() {
                                     <div>
                                       <Icon source={ChevronRightIcon} />
                                     </div>
-                                    <img src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/ElegantKanjivaramSilkSaree.jpg?v=1747916819" width="60px" height="60px"
+                                    <img src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume.jpg?v=1756097546" width="60px" height="60px"
                                       style={{
                                         marginLeft: "10px", objectFit: "fill", borderRadius: "10px"
                                       }}

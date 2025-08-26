@@ -320,8 +320,8 @@ function BuyXgetY() {
                   }}>Product Add-ons</p>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     {[
-                      "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/71vRMHVXtiL._AC_SX679.jpg?v=1747905444",
-                      "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/ZenithElPrimeroChronomaster.jpg?v=1750136339"
+                      "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546",
+                      "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_2.jpg?v=1756097545"
                     ].map((imgSrc, index) => (
                       <div key={index}>
                         <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
@@ -378,8 +378,8 @@ function BuyXgetY() {
                   }}>Product add-on</p>
                   <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                     {[
-                      "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/71vRMHVXtiL._AC_SX679.jpg?v=1747905444",
-                      "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/ZenithElPrimeroChronomaster.jpg?v=1750136339"
+                      "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546",
+                      "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_2.jpg?v=1756097545",
                     ].map((imgSrc, index) => (
                       <div key={index}>
                         <div style={{ border: index === 1 ? `${data.border.borderWidth}px solid red` : `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>

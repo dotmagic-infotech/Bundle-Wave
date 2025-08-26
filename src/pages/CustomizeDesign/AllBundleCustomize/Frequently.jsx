@@ -399,8 +399,8 @@ function Frequently() {
                                     <div style={{ display: "flex", gap: "1.5rem" }}>
                                         <div style={{ display: "flex", gap: "30px" }}>
                                             {[
-                                                "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/71vRMHVXtiL._AC_SX679.jpg?v=1747905444",
-                                                "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/ZenithElPrimeroChronomaster.jpg?v=1750136339"
+                                                "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546",
+                                                "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_2.jpg?v=1756097545"
                                             ].map((imgSrc, index, arr) => (
                                                 <div key={index} style={{ width: "150px" }}>
                                                     <div style={{ flex: "0 0 auto" }}>
