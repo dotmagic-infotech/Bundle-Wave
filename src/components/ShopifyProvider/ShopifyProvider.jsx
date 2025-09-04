@@ -25,7 +25,7 @@ export const ShopifyProvider = ({ children }) => {
             setShopName(shop || shopify.config.shop);
         }
 
-        console.log("shop->", shop);
+        // console.log("shop->", shop);
 
         const currency = window.shopCurrency || "INR";
         setCurrencyCode(currency);

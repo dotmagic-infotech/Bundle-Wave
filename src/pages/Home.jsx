@@ -26,12 +26,16 @@ const Home = () => {
   const [welocomePopup, setWelocomePopup] = useState(true);
   const [showModal, setShowModal] = useState(true);
   const [homeData, setHomeData] = useState(true);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const { lgDown } = useBreakpoints();
   const fixedFirstColumns = lgDown ? 2 : 0;
 
+  const toggleDeleteModal = () => setDeleteModalOpen(prev => !prev);
+
   useEffect(() => {
     const hasSeen = localStorage.getItem("firstDownloadApp");
+
     if (hasSeen === "false") {
       setWelocomePopup(false);
       setShowModal(false);
@@ -54,6 +58,11 @@ const Home = () => {
     fetchUserDashBoard();
   }, []);
 
+  const redirectTheme = () => {
+    const url = `https://${shopName}/admin/themes/current/editor?context=apps&activateAppId=d0627ca0-a5b7-4ed2-89b1-91187e230657/app-embed`;
+    window.open(url, '_blank');
+  }
+
   const handleConfettiComplete = () => {
     setTimeout(() => {
       setShowModal(false)
@@ -64,6 +73,24 @@ const Home = () => {
     setWelocomePopup(false);
     localStorage.setItem("firstDownloadApp", "false");
   }
+
+  const handleClearMetaField = async () => {
+    try {
+      const data = await fetchWithToken({
+        url: `https://bundle-wave-backend.xavierapps.com/webhooks/remove_all_data?shop=${shopName}`,
+        method: 'GET',
+      });
+      if (data.status) {
+        shopify.toast.show(`Successfully Removed App Data`);
+        toggleDeleteModal();
+
+      } else {
+        shopify.toast.show(`Failed to Remove App Data`);
+      }
+    } catch (error) {
+      console.error("Failed to fetch bundle details:", error);
+    }
+  };
 
   return (
     <>
@@ -89,11 +116,28 @@ const Home = () => {
             <p>Bundle Wave theame extension needs to be activated in your theame to work properly. to activate the app, click the 'Activate' button below, and then click <strong>'Save'</strong> on the following page.</p>
             <div style={{ marginTop: "1rem" }}>
               <InlineStack gap={200}>
-                <Button variant='primary'>Activate</Button>
+                <Button variant='primary' onClick={redirectTheme}>Activate</Button>
                 <Button variant='secondary'>Learn more</Button>
               </InlineStack>
             </div>
           </Banner>
+
+          <div style={{ marginTop: "0px" }}>
+            <Banner
+              title="How the Button Should Work"
+              tone="info"
+            >
+              <p>
+                <strong>A clear warning so the merchant understands:</strong><br />
+                Clicking this button will permanently delete all bundles, discounts, settings, and shop data stored by this app. This action cannot be undone. After deleting, you may uninstall the app safely.
+              </p>
+              <div style={{ marginTop: "1rem" }}>
+                <InlineStack gap={200}>
+                  <Button variant='primary' onClick={toggleDeleteModal}>Delete app data</Button>
+                </InlineStack>
+              </div>
+            </Banner>
+          </div>
 
           <CalloutCard
             title="Need some ideas?"
@@ -159,75 +203,77 @@ const Home = () => {
       </Page>
 
       <Page title="Recent bundles">
-        <DataTable
-          columnContentTypes={[
-            'text',
-            'text',
-            'text',
-            'text',
-          ]}
-          headings={[
-            <div style={{ fontWeight: "500" }}>Bundled items</div>,
-            <div style={{ fontWeight: "500" }}>Name</div>,
-            <div style={{ fontWeight: "500" }}>Status</div>,
-            <div style={{ fontWeight: "500" }}>Discount</div>,
-          ]}
-          footerContent={`Showing ${homeData?.bundle_details?.length} of 5 results`}
-          defaultSortDirection="descending"
-          initialSortColumnIndex={4}
-          stickyHeader
-          fixedFirstColumns={fixedFirstColumns}
-          verticalAlign='middle'
-          rows={(homeData?.bundle_details || []).map(({ media, bundle_name, status, discount_option_id, discount_value, bundle_type_id, discount_options }) => [
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                flexWrap: "wrap",
-              }}
-            >
-              {Array.isArray(media) && media.slice(0, 2).map((imgSrc, index) => (
-                <img key={index} src={imgSrc?.url} width="40px" height="40px" alt="Bundle Item" style={{
-                  borderRadius: "50%", objectFit: "cover", marginRight: index < media.slice(0, 2).length - 1 ? "-25px" : "0",
-                }} />
-              ))}
+        <div style={{ marginBottom: "1rem" }}>
+          <DataTable
+            columnContentTypes={[
+              'text',
+              'text',
+              'text',
+              'text',
+            ]}
+            headings={[
+              <div style={{ fontWeight: "500" }}>Bundled items</div>,
+              <div style={{ fontWeight: "500" }}>Name</div>,
+              <div style={{ fontWeight: "500" }}>Status</div>,
+              <div style={{ fontWeight: "500" }}>Discount</div>,
+            ]}
+            footerContent={`Showing ${homeData?.bundle_details?.length} of 5 results`}
+            defaultSortDirection="descending"
+            initialSortColumnIndex={4}
+            stickyHeader
+            fixedFirstColumns={fixedFirstColumns}
+            verticalAlign='middle'
+            rows={(homeData?.bundle_details || []).map(({ media, bundle_name, status, discount_option_id, discount_value, bundle_type_id, discount_options }) => [
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  flexWrap: "wrap",
+                }}
+              >
+                {Array.isArray(media) && media.slice(0, 2).map((imgSrc, index) => (
+                  <img key={index} src={imgSrc?.url} width="40px" height="40px" alt="Bundle Item" style={{
+                    borderRadius: "50%", objectFit: "cover", marginRight: index < media.slice(0, 2).length - 1 ? "-25px" : "0",
+                  }} />
+                ))}
 
-              {Array.isArray(media) && media.length > 2 && (
-                <div style={{
-                  width: '40px', zIndex: 1, height: "40px", borderRadius: "50%", display: "flex", justifyContent: "center", alignItems: "center", border: "1px solid gray", fontWeight: "600", backgroundColor: "#f6f6f7", marginRight: "0", marginLeft: "-25px",
-                }}>
-                  +{media.length - 2}
-                </div>
-              )}
+                {Array.isArray(media) && media.length > 2 && (
+                  <div style={{
+                    width: '40px', zIndex: 1, height: "40px", borderRadius: "50%", display: "flex", justifyContent: "center", alignItems: "center", border: "1px solid gray", fontWeight: "600", backgroundColor: "#f6f6f7", marginRight: "0", marginLeft: "-25px",
+                  }}>
+                    +{media.length - 2}
+                  </div>
+                )}
 
-              {!Array.isArray(media) && (
-                <img src={bundleItem} width="40px" height="40px" alt="Bundle Item" style={{ borderRadius: "50%", objectFit: "cover" }} />
-              )}
-            </div>,
-            <div style={{ height: "100%", display: "flex", alignItems: "center" }}>{bundle_name}</div>,
-            <div style={{ height: "100%", display: "flex", alignItems: "center" }}>
-              {status === "Published" ? (
-                <Badge tone="success">{status}</Badge>
-              ) : status === "Draft" ? (
-                <Badge tone="info">{status}</Badge>
-              ) : (
-                <Badge tone="critical">{status}</Badge>
-              )}
-            </div>,
-            <div style={{ height: "100%", display: "flex", alignItems: "center" }}>
-              {discount_option_id === "1"
-                ? `${discount_value}% OFF`
-                : discount_option_id === "2"
-                  ? `$${discount_value} OFF`
-                  : discount_option_id === "3"
-                    ? `Set Price $${discount_value}`
-                    : bundle_type_id === "4"
-                      ? `${discount_options?.length} option`
-                      : "No Discounts"}
-            </div>,
-          ])}
-        />
+                {!Array.isArray(media) && (
+                  <img src={bundleItem} width="40px" height="40px" alt="Bundle Item" style={{ borderRadius: "50%", objectFit: "cover" }} />
+                )}
+              </div>,
+              <div style={{ height: "100%", display: "flex", alignItems: "center" }}>{bundle_name}</div>,
+              <div style={{ height: "100%", display: "flex", alignItems: "center" }}>
+                {status === "Published" ? (
+                  <Badge tone="success">{status}</Badge>
+                ) : status === "Draft" ? (
+                  <Badge tone="info">{status}</Badge>
+                ) : (
+                  <Badge tone="critical">{status}</Badge>
+                )}
+              </div>,
+              <div style={{ height: "100%", display: "flex", alignItems: "center" }}>
+                {discount_option_id === "1"
+                  ? `${discount_value}% OFF`
+                  : discount_option_id === "2"
+                    ? `$${discount_value} OFF`
+                    : discount_option_id === "3"
+                      ? `Set Price $${discount_value}`
+                      : bundle_type_id === "4"
+                        ? `${discount_options?.length} option`
+                        : "No Discounts"}
+              </div>,
+            ])}
+          />
+        </div>
       </Page>
 
       <Modal
@@ -289,6 +335,30 @@ const Home = () => {
               Thank you for trying our app ;). If you have any questions or need help you can{' '}
               <span style={{ color: "blue" }}>talk to us via Live Chat</span> or via the email support@react.bundle.</Text>
           </BlockStack>
+        </Modal.Section>
+      </Modal>
+
+      <Modal
+        open={deleteModalOpen}
+        onClose={toggleDeleteModal}
+        title="Are you sure you want to delete App data?"
+        // size='small'
+        primaryAction={{
+          content: "Delete",
+          destructive: true,
+          onAction: () => {
+            handleClearMetaField();
+          },
+        }}
+        secondaryActions={[
+          {
+            content: "Cancel",
+            onAction: toggleDeleteModal,
+          },
+        ]}
+      >
+        <Modal.Section>
+          This action cannot be undone. Deleting the App Data will remove it permanently from your store.
         </Modal.Section>
       </Modal>
     </>

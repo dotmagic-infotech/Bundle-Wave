@@ -565,7 +565,7 @@ const Analytics = () => {
                                             stickyHeader
                                             verticalAlign='middle'
                                             fixedFirstColumns={fixedFirstColumns}
-                                            rows={(tableData?.bundles || []).map(({ media, bundle_name, status, bundles_views }) => [
+                                            rows={(tableData?.bundles || []).map(({ media, bundle_name, status, bundles_clicks, bundles_views }) => [
                                                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
                                                     {Array.isArray(media)
                                                         ? media.slice(0, 6).map((imgSrc, index) => (
@@ -583,7 +583,7 @@ const Analytics = () => {
                                                         <Badge tone="critical">{status}</Badge>
                                                     )}
                                                 </div>,
-                                                <div style={{ height: "100%", display: "flex", alignItems: "center" }}>12</div>,
+                                                <div style={{ height: "100%", display: "flex", alignItems: "center" }}>{bundles_clicks}</div>,
                                                 <div style={{ height: "100%", display: "flex", alignItems: "center" }}>{bundles_views}</div>,
                                             ])}
                                         />
@@ -646,7 +646,7 @@ const Analytics = () => {
                     </BlockStack>
                 </Layout.Section>
             </Layout>
-        </Page >
+        </Page>
     )
 }
 
