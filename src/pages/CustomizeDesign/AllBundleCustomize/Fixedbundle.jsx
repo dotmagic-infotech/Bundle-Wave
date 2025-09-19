@@ -426,19 +426,19 @@ function Fixedbundle() {
                 <div style={{ display: "flex", gap: "10px" }}>
                   <div style={{ maxWidth: "400px" }}>
                     <img
-                      src="https://cdn.shopify.com/s/files/1/0839/1399/8619/products/gift_card.png?v=1698129037"
+                      src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758"
                       width="100%"
                       style={{ borderRadius: "10px", objectFit: "cover" }}
                     />
                     <div style={{ display: "flex", gap: "0.2rem" }}>
                       <img
-                        src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Watch-Strap1.webp?v=1756101849"
+                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766"
                         width="60px"
                         height="60px"
                         style={{ borderRadius: "10px" }}
                       />
                       <img
-                        src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Watch-Strap3.webp?v=1756101676"
+                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-diamond-earrings_5e7739a0-261d-4788-96c9-ef77214aa70e.jpg?v=1758263764"
                         width="60px"
                         height="60px"
                         style={{ borderRadius: "10px" }}
@@ -458,7 +458,7 @@ function Fixedbundle() {
                           <div key={index}>
                             <div style={{ display: "flex", gap: "10px" }}>
                               <img
-                                src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/photo-1505740420928-5e560c06d30e.avif?v=1756200370"
+                                src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---2_197e4e51-6b44-4e54-9244-d3666bc5b514.jpg?v=1758263763"
                                 width="80px"
                                 height="80px"
                                 style={{ borderRadius: "10px" }}
@@ -470,14 +470,7 @@ function Fixedbundle() {
                             </div>
                             <div
                               style={{
-                                backgroundColor: `${data?.variants.background_color}`,
-                                border: `1px solid ${data.variants.border_color}`,
-                                display: "flex",
-                                justifyContent: "space-between",
-                                padding: "5px",
-                                borderRadius: "5px",
-                                width: "100%",
-                                marginTop: "10px",
+                                backgroundColor: `${data?.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
                               }}
                             >
                               <p style={{ fontWeight: "500" }}>
@@ -488,9 +481,7 @@ function Fixedbundle() {
                               </div>
                             </div>
                             {index !== arr.length - 1 && (
-                              <div style={{ margin: "10px 0px" }}>
-                                <Divider />
-                              </div>
+                              <div style={{ margin: "10px 0px" }}><Divider /></div>
                             )}
                           </div>
                         ))}

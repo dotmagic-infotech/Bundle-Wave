@@ -83,7 +83,6 @@ const Home = () => {
       if (data.status) {
         shopify.toast.show(`Successfully Removed App Data`);
         toggleDeleteModal();
-
       } else {
         shopify.toast.show(`Failed to Remove App Data`);
       }
@@ -123,10 +122,7 @@ const Home = () => {
           </Banner>
 
           <div style={{ marginTop: "0px" }}>
-            <Banner
-              title="How the Button Should Work"
-              tone="info"
-            >
+            <Banner title="How the Button Should Work" tone="info">
               <p>
                 <strong>A clear warning so the merchant understands:</strong><br />
                 Clicking this button will permanently delete all bundles, discounts, settings, and shop data stored by this app. This action cannot be undone. After deleting, you may uninstall the app safely.

@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, ButtonGroup, Button, Select, Checkbox, Divider } from "@shopify/polaris";
-import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ChevronDownIcon, ResetIcon, TextGrammarIcon, TextUnderlineIcon, XIcon } from "@shopify/polaris-icons";
+import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ChevronDownIcon, ResetIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon, XIcon } from "@shopify/polaris-icons";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
@@ -30,6 +30,10 @@ function BuyXgetY() {
       color: "#000000",
       borderWidth: 2,
       borderRadius: 10,
+    },
+    variants: {
+      background_color: "#ffffff",
+      border_color: "#000000"
     },
     button: {
       buttonColor: "#000000",
@@ -143,6 +147,29 @@ function BuyXgetY() {
               handleChangeValue("border", "borderRadius", value)
             }
             output
+          />
+        </>
+      ),
+    },
+    {
+      label: "Variant and quantity selector",
+      icon: VariantIcon,
+      content: (
+        <>
+          <ColorPickerPopover
+            lable="Background Color"
+            color={data.variants?.background_color}
+            onChange={(color) =>
+              handleChangeValue("variants", "background_color", color)
+            }
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+          <ColorPickerPopover
+            lable="Border Color"
+            color={data.variants?.border_color}
+            onChange={(color) =>
+              handleChangeValue("variants", "border_color", color)
+            }
           />
         </>
       ),
@@ -314,44 +341,110 @@ function BuyXgetY() {
               }}
             >
               {data.selectDisplay.type === "main_product_page" ? (
-                <div style={{ width: "496px", paddingLeft: "20px" }}>
-                  <p style={{
-                    marginTop: '10px', fontSize: `${10 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", marginBottom: "10px", color: data.title.fontColor, textAlign: "start"
-                  }}>Product Add-ons</p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                    {[
-                      "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546",
-                      "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_2.jpg?v=1756097545"
-                    ].map((imgSrc, index) => (
-                      <div key={index}>
-                        <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
-                          <div style={{ display: "flex", alignItems: "center", }}>
-                            <Checkbox checked={index === 0} />
-                            <img src={imgSrc}
-                              style={{ width: "50px", height: "50px", marginLeft: "10px", objectFit: "fill", borderRadius: "10px" }}
-                            />
-                            <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                              <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>Product #{index + 1}</p>
-                              <div style={{ display: 'flex' }}>
-                                <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$20.00</p>
-                                <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$25.00</p>
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <div style={{ maxWidth: "400px" }}>
+                    <img
+                      src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771"
+                      width="100%"
+                      style={{ borderRadius: "10px", objectFit: "cover" }}
+                    />
+                    <div style={{ display: "flex", gap: "0.2rem" }}>
+                      <img
+                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---4.jpg?v=1758263774"
+                        width="60px"
+                        height="60px"
+                        style={{ borderRadius: "10px" }}
+                      />
+                      <img
+                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---3.jpg?v=1758263774"
+                        width="60px"
+                        height="60px"
+                        style={{ borderRadius: "10px" }}
+                      />
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
+                    <p style={{ fontSize: "25px", fontWeight: "700" }}>Bundle Title</p>
+                    <div style={{ display: "flex", justifyContent: "space-between", }}>
+                      <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
+                      <p style={{ fontSize: "20px", fontWeight: "600" }}>$156.00</p>
+                    </div>
+                    <Divider />
+                    <div style={{ backgroundColor: "white", width: "100%", height: "auto", display: "flex", flexDirection: "column", gap: "10px" }}>
+                      <div style={{ border: "1px solid black", padding: "10px", borderRadius: "10px" }}>
+                        {Array.from({ length: 2 }).map((_, index, arr) => (
+                          <div key={index}>
+                            <div style={{ display: "flex", gap: "10px" }}>
+                              <img
+                                src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings.jpg?v=1758263774"
+                                width="60px"
+                                height="60px"
+                                style={{ borderRadius: "10px" }}
+                              />
+                              <div>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>Product #{index + 1}</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>$10.00</p>
                               </div>
                             </div>
+                            <div style={{
+                              backgroundColor: `${data?.variants?.background_color}`,
+                              border: `1px solid ${data.variants?.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
+                            }}>
+                              <p style={{ fontWeight: "500" }}>Size / Color / Type</p>
+                              <div><Icon source={ChevronDownIcon} /></div>
+                            </div>
+                            {index !== arr.length - 1 && (
+                              <div style={{ margin: "10px 0px" }}>
+                                <Divider />
+                              </div>
+                            )}
                           </div>
+                        ))}
+                      </div>
 
-                          {index === 0 && (
-                            <div style={{ backgroundColor: "transparent", border: `1px solid ${data.border.color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "420px", margin: "10px 0px 0px 35px" }}>
-                              <p style={{ fontWeight: "500" }}>Select Variant</p>
+                      <div style={{ display: "flex", justifyContent: "center", margin: "-18px 0px" }}>
+                        <button disabled style={{ backgroundColor: "#262626", color: "white", cursor: "pointer", width: "40px", height: "40px", borderRadius: "50%", padding: "8px 8px 16px", fontWeight: 500, fontSize: "33px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1, }}>+</button>
+                      </div>
+
+                      <div style={{ border: "1px solid black", padding: "10px", borderRadius: "10px" }}>
+                        {Array.from({ length: 1 }).map((_, index, arr) => (
+                          <div key={index}>
+                            <div style={{ display: "flex", gap: "10px" }}>
+                              <img
+                                src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-diamond-earrings.jpg?v=1758263773"
+                                width="60px"
+                                height="60px"
+                                style={{ borderRadius: "10px" }}
+                              />
+                              <div>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>Product #1</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>$10.00</p>
+                              </div>
+                            </div>
+                            <div style={{
+                              backgroundColor: `${data?.variants?.background_color}`,
+                              border: `1px solid ${data.variants?.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
+                            }}>
+                              <p style={{ fontWeight: "500" }}>
+                                Size / Color / Type
+                              </p>
                               <div>
                                 <Icon source={ChevronDownIcon} />
                               </div>
                             </div>
-                          )}
-                        </div>
+                            {index !== arr.length - 1 && (
+                              <div style={{ margin: "10px 0px" }}>
+                                <Divider />
+                              </div>
+                            )}
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </div>
+                    <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
+                      Add to cart
+                    </button>
                   </div>
-                  <button style={{ marginTop: "20px", backgroundColor: "black", color: "white", cursor: "pointer", width: "100%", borderRadius: "10px", padding: "8px" }}>Add to cart</button>
                 </div>
               ) : data.selectDisplay.type === "pop_up" ? (
                 <div style={{ backgroundColor: "white", borderRadius: "10px", padding: "10px", position: "relative" }}>

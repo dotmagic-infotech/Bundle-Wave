@@ -279,14 +279,7 @@ function Addons() {
         <Grid gap={100}>
             <Grid.Cell columnSpan={{ xs: 6, md: 6, lg: 4, xl: 4 }}>
                 <Card padding={0}>
-                    <div
-                        style={{
-                            padding: "8px",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "5px",
-                        }}
-                    >
+                    <div style={{ padding: "8px", display: "flex", flexDirection: "column", gap: "5px" }}>
                         {sections.map(({ label, content, icon }, index) => (
                             <div key={index}>
                                 <div
@@ -383,48 +376,114 @@ function Addons() {
                             }}
                         >
                             {data.selectDisplay.type === "main_product_page" ? (
-                                <div style={{ width: "496px", paddingLeft: "20px" }}>
-                                    <p style={{
-                                        marginTop: '10px', fontSize: `${10 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", marginBottom: "10px", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
-                                            : data.tite_alignment.alignment === "center"
-                                                ? "center"
-                                                : "end"
-                                    }}>Product Add-ons</p>
-                                    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                                        {[
-                                           "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546",
-                                            "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_2.jpg?v=1756097545"
-                                        ].map((imgSrc, index) => (
-                                            <div key={index}>
-                                                <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
-                                                    <div style={{ display: "flex", alignItems: "center", }}>
-                                                        <Checkbox checked={index === 0} />
-                                                        <img src={imgSrc}
-                                                            style={{ width: "50px", height: "50px", marginLeft: "10px", objectFit: "fill", borderRadius: "10px" }}
-                                                        />
-                                                        <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                                                            <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>Product #{index + 1}</p>
-                                                            <div style={{ display: 'flex' }}>
-                                                                <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>$20.00</p>
-                                                                <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$25.00</p>
-                                                            </div>
-                                                        </div>
+                                <>
+                                    <div style={{ display: "flex", gap: "10px" }}>
+                                        <div style={{ maxWidth: "400px" }}>
+                                            <img
+                                                src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387"
+                                                width="100%"
+                                                style={{ borderRadius: "10px", objectFit: "cover" }}
+                                            />
+                                            <div style={{ display: "flex", gap: "0.2rem" }}>
+                                                <img
+                                                    src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch5.jpg?v=1758271387"
+                                                    width="60px"
+                                                    height="60px"
+                                                    style={{ borderRadius: "10px" }}
+                                                />
+                                                <img
+                                                    src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch.webp?v=1758271387"
+                                                    width="60px"
+                                                    height="60px"
+                                                    style={{ borderRadius: "10px" }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div style={{ width: "400px" }}>
+                                            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                                                <p style={{ fontSize: "25px", fontWeight: "700" }}>Bundle Title</p>
+                                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                                    <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
+                                                    <p style={{ fontSize: "20px", fontWeight: "600" }}>$156.00</p>
+                                                </div>
+                                                <Divider />
+                                                <div>
+                                                    <p>Quantity</p>
+                                                    <div style={{ display: "flex", gap: "1.5rem", border: "1px solid black", borderRadius: "10px", padding: "10px", width: "fit-content", cursor: "pointer" }}>
+                                                        <span style={{ fontSize: "25px", lineHeight: "15px" }}>−</span>
+                                                        <p style={{ fontSize: "20px" }}>1</p>
+                                                        <span style={{ fontSize: "25px", lineHeight: "15px" }}>+</span>
                                                     </div>
-
-                                                    {index === 0 && (
-                                                        <div style={{ backgroundColor: data.variants.background_color, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "420px", margin: "10px 0px 0px 35px" }}>
-                                                            <p style={{ fontWeight: "500" }}>Select Variant</p>
-                                                            <div>
-                                                                <Icon source={ChevronDownIcon} />
-                                                            </div>
-                                                        </div>
-                                                    )}
                                                 </div>
                                             </div>
-                                        ))}
+                                            <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "10px 0px" }}>
+                                                <p style={{
+                                                    fontSize: `${8 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
+                                                        : data.tite_alignment.alignment === "center"
+                                                            ? "center"
+                                                            : "end"
+                                                }}>Product Add-ons</p>
+                                                <div style={{ backgroundColor: "red", color: "white", borderRadius: "10px", padding: "2px 7px" }}>20% OFF</div>
+                                            </div>
+                                            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                                                {[
+                                                    "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546",
+                                                    "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_2.jpg?v=1756097545"
+                                                ].map((imgSrc, index) => (
+                                                    <div key={index}>
+                                                        <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
+                                                            <div style={{ display: "flex", alignItems: "center", }}>
+                                                                <Checkbox checked={index === 0} />
+                                                                <img src={imgSrc}
+                                                                    style={{ width: "50px", height: "50px", marginLeft: "10px", objectFit: "fill", borderRadius: "10px" }}
+                                                                />
+                                                                <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                                                                    <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>Product #{index + 1}</p>
+                                                                    <div style={{ display: 'flex' }}>
+                                                                        <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>$20.00</p>
+                                                                        <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$25.00</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            {index === 0 && (
+                                                                <div style={{ backgroundColor: data.variants.background_color, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", margin: "10px 0px 0px 35px" }}>
+                                                                    <p style={{ fontWeight: "500" }}>Select Variant</p>
+                                                                    <div>
+                                                                        <Icon source={ChevronDownIcon} />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <button style={{ marginTop: "20px", backgroundColor: data.button.buttonColor, color: data.button.textColor, cursor: "pointer", width: "100%", borderRadius: "10px", padding: "8px", border: "none" }}>Add to cart</button>
+                                        </div>
+                                        {/* <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
+                                            <p style={{ fontSize: "25px", fontWeight: "700" }}>Bundle Title</p>
+                                            <div style={{ display: "flex", justifyContent: "space-between", }}>
+                                                <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
+                                                <p style={{ fontSize: "20px", fontWeight: "600" }}>$156.00</p>
+                                            </div>
+                                            <div style={{ display: "flex", gap: "10px" }}>
+                                                {["Small", "Medium", "Large"].map((_, index, arr) => (
+                                                    <div key={index} style={{ border: "2px solid black", padding: "5px 10px", borderRadius: "10px", cursor: "pointer" }}>
+                                                        {_}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div style={{ display: "flex", gap: "1.5rem", border: "1px solid black", borderRadius: "10px", padding: "10px", width: "fit-content", cursor: "pointer" }}>
+                                                <span style={{ fontSize: "25px", lineHeight: "15px" }}>−</span>
+                                                <p style={{ fontSize: "20px" }}>1</p>
+                                                <span style={{ fontSize: "25px", lineHeight: "15px" }}>+</span>
+                                            </div>
+                                            <button style={{ backgroundColor: "black", border: "none", color: "white", fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%" }}>
+                                                Add to cart
+                                            </button>
+                                        </div> */}
                                     </div>
-                                    <button style={{ marginTop: "20px", backgroundColor: data.button.buttonColor, color: data.button.textColor, cursor: "pointer", width: "100%", borderRadius: "10px", padding: "8px", border: "none" }}>Add to cart</button>
-                                </div>
+                                </>
                             ) : data.selectDisplay.type === "pop_up" ? (
                                 <div style={{ backgroundColor: "white", borderRadius: "10px", padding: "10px", position: "relative" }}>
                                     <div style={{ display: "flex", alignItems: "center" }}>
