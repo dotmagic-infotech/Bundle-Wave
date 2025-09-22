@@ -39,8 +39,8 @@ function Addons() {
             border_color: "#000000"
         },
         button: {
-            buttonColor: "#000000",
-            textColor: "#ffffff",
+            buttonColor: "#7a26bf",
+            textColor: "#FFFFFF",
         },
     });
 
@@ -273,7 +273,7 @@ function Addons() {
         } else {
             shopify.toast.show(`Failed to Update Customization Products Add-Ons`);
         }
-    }
+    };
 
     return (
         <Grid gap={100}>
@@ -427,8 +427,8 @@ function Addons() {
                                             </div>
                                             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                                                 {[
-                                                    "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546",
-                                                    "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_2.jpg?v=1756097545"
+                                                    "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-diamond-earrings_5e7739a0-261d-4788-96c9-ef77214aa70e.jpg?v=1758263764",
+                                                    "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758"
                                                 ].map((imgSrc, index) => (
                                                     <div key={index}>
                                                         <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
@@ -458,7 +458,7 @@ function Addons() {
                                                     </div>
                                                 ))}
                                             </div>
-                                            <button style={{ marginTop: "20px", backgroundColor: data.button.buttonColor, color: data.button.textColor, cursor: "pointer", width: "100%", borderRadius: "10px", padding: "8px", border: "none" }}>Add to cart</button>
+                                            <button style={{ marginTop: "20px", backgroundColor: data?.button?.buttonColor, color: data.button.textColor, cursor: "pointer", width: "100%", borderRadius: "10px", padding: "8px", border: "none" }}>Add to cart</button>
                                         </div>
                                         {/* <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
                                             <p style={{ fontSize: "25px", fontWeight: "700" }}>Bundle Title</p>

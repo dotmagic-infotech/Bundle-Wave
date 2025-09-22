@@ -44,7 +44,7 @@ function Fixedbundle() {
       border_color: "#000000"
     },
     button: {
-      buttonColor: "#000000",
+      buttonColor: "#7a26bf",
       textColor: "#ffffff",
     },
   });
@@ -90,7 +90,6 @@ function Fixedbundle() {
                 label: "Included Product Page",
                 value: "included_product_page",
               },
-              { label: "Bundles Page", value: "bundles_page" },
             ]}
             value={data.selectDisplay.type}
             onChange={(value) =>
@@ -452,19 +451,19 @@ function Fixedbundle() {
                       <p style={{ fontSize: "20px", fontWeight: "600" }}>$156.00</p>
                     </div>
                     <Divider />
-                    <div style={{ backgroundColor: "white", width: "100%", height: "auto", padding: "10px", }}>
+                    <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
                       <div>
                         {Array.from({ length: 2 }).map((_, index, arr) => (
                           <div key={index}>
                             <div style={{ display: "flex", gap: "10px" }}>
                               <img
                                 src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---2_197e4e51-6b44-4e54-9244-d3666bc5b514.jpg?v=1758263763"
-                                width="80px"
-                                height="80px"
+                                width="70px"
+                                height="70px"
                                 style={{ borderRadius: "10px" }}
                               />
                               <div>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>Product #1</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>Product #{index + 1}</p>
                                 <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>$10.00</p>
                               </div>
                             </div>
@@ -541,192 +540,6 @@ function Fixedbundle() {
                     <div>
                       <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize}px`, cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
                         Add to cart
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ) : data.selectDisplay.type === "bundles_page" ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-                  <div>
-                    <p style={{ fontSize: "20px", fontWeight: "600", color: data.title.fontColor, marginBottom: "15px", }}>
-                      Fixed bundle
-                    </p>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      {Array.from({ length: 2 }).map((_, index, arr) => (
-                        <div key={index} style={{ display: "flex" }}>
-                          <div
-                            style={{ display: "flex", flexDirection: "column", gap: "10px", border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "10px", borderRadius: `${data.border.borderRadius}px` }}
-                          >
-                            <img
-                              src="https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ="
-                              width="100%"
-                              height="140px"
-                              style={{ borderRadius: "10px" }}
-                            />
-                            <div>
-                              <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}> Product #1</p>
-                              <p style={{ fontSize: `${data.title.fontSize}px`, marginTop: "10px", fontWeight: data.title.fontWeight }}> $10.00</p>
-                            </div>
-                            <div
-                              style={{ backgroundColor: `${data.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px" }}>
-                              <p style={{ fontWeight: "500" }}>Size / Color / Type </p>
-                              <div>
-                                <Icon source={ChevronDownIcon} />
-                              </div>
-                            </div>
-                          </div>
-                          {index !== arr.length - 1 && (
-                            <div style={{ margin: "0px 10px", display: "flex" }}>
-                              <Icon source={PlusIcon} />
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", width: "260px", marginLeft: "1rem", }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", backgroundColor: `${data.button.buttonColor}80`, opacity: "0.6", padding: "10px", borderRadius: "10px" }}>
-                          <p style={{ fontSize: "15px", fontWeight: "600", color: data.title.fontColor, }}>Total</p>
-                          <p style={{ fontSize: "15px", fontWeight: "600", color: data.title.fontColor, }}>$5.89</p>
-                        </div>
-                        <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
-                          Add to cart
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <Divider />
-                  <div>
-                    <div style={{ padding: "10px", backgroundColor: "black", width: "100px", borderRadius: "10px", color: "white", marginBottom: "15px", fontSize: "18px", }}>
-                      Save 10%
-                    </div>
-                    <p style={{ fontSize: "20px", fontWeight: "600", color: data.title.fontColor, marginBottom: "5px", }}>
-                      Mix and Match - Sectioned List
-                    </p>
-                    <p style={{ fontSize: "16px", fontWeight: "500", color: data.title.fontColor, marginBottom: "15px", }}>
-                      A bundle with collection items
-                    </p>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      {Array.from({ length: 2 }).map((_, index, arr) => (
-                        <div key={index} style={{ display: "flex" }}>
-                          <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", gap: "10px", border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "10px 50px 20px 50px", borderRadius: `${data.border.borderRadius}px`, }}>
-                            <div style={{ display: "flex", alignItems: "center", position: "relative", }}>
-                              {Array.from({ length: 3 }).map((_, index) => (
-                                <div
-                                  key={index}
-                                  style={{
-                                    width: "30px", height: "30px", overflow: "hidden", left: index === 0 ? "0px" : "20px", position: index === 0 ? "static" : "absolute",
-                                  }}>
-                                  <img
-                                    src="https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ="
-                                    style={{ borderRadius: "50%", backgroundColor: "#f6f6f7", width: "100%", height: "100%", objectFit: "cover" }}
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                            <div>
-                              <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>Collection #{index + 1}</p>
-                            </div>
-                          </div>
-                          {index !== arr.length - 1 && (
-                            <div style={{ margin: "0px 10px", display: "flex" }}>
-                              <Icon source={PlusIcon} />
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                      <div style={{ marginLeft: "1rem", width: "260px" }}>
-                        <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${`${data.button.textColor}`}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
-                          Go To Bundle Builder
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <Divider />
-                  <div>
-                    <p style={{ fontSize: "20px", fontWeight: "600", color: data.title.fontColor, marginBottom: "20px", }}>
-                      Mix and match - Buy X Get Y
-                    </p>
-                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", }}>
-                      <div style={{ display: "flex", position: "relative", flexDirection: "column", gap: "10px", border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "15px", borderRadius: `${data.border.borderRadius}px`, width: "250px", }}>
-                        <div style={{ position: "absolute", top: "-11px", left: "11px", backgroundColor: "#b9b9ff", borderRadius: "20px", padding: "0px 5px", fontSize: "12px", }}>
-                          Buy from these lists
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center", position: "relative", }}>
-                          {Array.from({ length: 3 }).map((_, index) => (
-                            <div
-                              key={index}
-                              style={{
-                                width: "60px", height: "60px", overflow: "hidden", left: index === 0 ? "0px" : "30px", position: index === 0 ? "static" : "absolute",
-                              }}
-                            >
-                              <img
-                                src="https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ="
-                                style={{ borderRadius: "50%", backgroundColor: "#f6f6f7", width: "100%", height: "100%", objectFit: "cover" }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                        <div>
-                          <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>
-                            Collection #1
-                          </p>
-                        </div>
-                        <Divider />
-                        <div style={{ position: "absolute", top: "-11px", left: "11px", backgroundColor: "#b9b9ff", borderRadius: "20px", padding: "0px 5px", fontSize: "12px", }}
-                        >
-                          Buy from these lists
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center", position: "relative", }}>
-                          {Array.from({ length: 3 }).map((_, index) => (
-                            <div
-                              key={index}
-                              style={{ width: "60px", height: "60px", overflow: "hidden", left: index === 0 ? "0px" : "30px", position: index === 0 ? "static" : "absolute" }}
-                            >
-                              <img
-                                src="https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ="
-                                style={{ borderRadius: "50%", backgroundColor: "#f6f6f7", width: "100%", height: "100%", objectFit: "cover", }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                        <div>
-                          <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>
-                            Collection #1
-                          </p>
-                        </div>
-                      </div>
-                      <div style={{ display: "flex" }}>
-                        <Icon source={PlusIcon} />
-                      </div>
-                      <div style={{ position: "relative" }}>
-                        <div style={{ position: "absolute", top: "-11px", left: "11px", backgroundColor: "#b2efb2", borderRadius: "20px", padding: "0px 5px", fontSize: "12px", }}>
-                          Get 10% on these lists
-                        </div>
-                        <div style={{ display: "flex", overflow: "hidden", flexDirection: "column", gap: "10px", border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "15px", borderRadius: `${data.border.borderRadius}px`, width: "250px", height: "auto", }}>
-                          <div style={{ display: "flex", alignItems: "center", position: "relative" }}>
-                            {Array.from({ length: 3 }).map((_, index) => (
-                              <div
-                                key={index}
-                                style={{
-                                  width: "60px", height: "60px", overflow: "hidden", left: index === 0 ? "0px" : "30px", position: index === 0 ? "static" : "absolute",
-                                }}
-                              >
-                                <img
-                                  src="https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ="
-                                  style={{ borderRadius: "50%", backgroundColor: "#f6f6f7", width: "100%", height: "100%", objectFit: "cover" }}
-                                />
-                              </div>
-                            ))}
-                            <div style={{ position: "absolute", top: "-9px", right: "-33px", width: "95px", height: "23px", transform: "rotate(36deg)", backgroundColor: "red", color: "white", padding: "10px", fontWeight: "500", display: "flex", justifyContent: "center", alignItems: "center", }}>
-                              10% OFF
-                            </div>
-                          </div>
-                          <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>
-                            Collection #1
-                          </p>
-                        </div>
-                      </div>
-                      <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", }}>
-                        View Offer Details
                       </button>
                     </div>
                   </div>

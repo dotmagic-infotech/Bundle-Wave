@@ -32,12 +32,12 @@ function BuyXgetY() {
       borderRadius: 10,
     },
     variants: {
-      background_color: "#ffffff",
+      background_color: "#dbdbdd",
       border_color: "#000000"
     },
     button: {
-      buttonColor: "#000000",
-      textColor: "#ffffff",
+      buttonColor: "#7a26bf",
+      textColor: "#FFFFFF",
     },
   });
 
@@ -214,8 +214,8 @@ function BuyXgetY() {
         borderRadius: 10,
       },
       button: {
-        buttonColor: "#000000",
-        textColor: "#ffffff",
+        buttonColor: data?.button?.buttonColor,
+        textColor: data?.button?.textColor,
       },
     }
 
@@ -340,7 +340,7 @@ function BuyXgetY() {
                 padding: data.selectDisplay.type === "pop_up" ? "55px" : ""
               }}
             >
-              {data.selectDisplay.type === "main_product_page" ? (
+              {data?.selectDisplay?.type === "main_product_page" ? (
                 <div style={{ display: "flex", gap: "10px" }}>
                   <div style={{ maxWidth: "400px" }}>
                     <img
@@ -403,7 +403,7 @@ function BuyXgetY() {
                       </div>
 
                       <div style={{ display: "flex", justifyContent: "center", margin: "-18px 0px" }}>
-                        <button disabled style={{ backgroundColor: "#262626", color: "white", cursor: "pointer", width: "40px", height: "40px", borderRadius: "50%", padding: "8px 8px 16px", fontWeight: 500, fontSize: "33px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1, }}>+</button>
+                        <button disabled style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, cursor: "pointer", width: "40px", height: "40px", borderRadius: "50%", padding: "8px 8px 16px", fontWeight: 500, fontSize: "33px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1, }}>+</button>
                       </div>
 
                       <div style={{ border: "1px solid black", padding: "10px", borderRadius: "10px" }}>
@@ -449,7 +449,7 @@ function BuyXgetY() {
               ) : data.selectDisplay.type === "pop_up" ? (
                 <div style={{ backgroundColor: "white", borderRadius: "10px", padding: "10px", position: "relative" }}>
                   <div style={{ display: "flex", alignItems: "center" }}>
-                    <img src="https://cdn.shopify.com/s/files/1/0839/1399/8619/products/gift_card.png?v=1698129037"
+                    <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771"
                       style={{ width: "80px", height: "80px", objectFit: "fill", borderColor: `2px solid ${data.border.color}`, borderRadius: "10px" }}
                     />
                     <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", height: '65px', justifyContent: "space-around", width: "90%" }}>
@@ -505,7 +505,7 @@ function BuyXgetY() {
                   <div style={{ margin: "10px -10px" }}>
                     <Divider />
                   </div>
-                  <button style={{ backgroundColor: "black", border: "none", color: `white`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", marginTop: "20px" }}>
+                  <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", marginTop: "20px" }}>
                     Add to cart
                   </button>
 

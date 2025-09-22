@@ -40,7 +40,7 @@ function Frequently() {
             border_color: "#000000"
         },
         button: {
-            buttonColor: "#000000",
+            buttonColor: "#7a26bf",
             textColor: "#ffffff",
         },
     });
@@ -236,28 +236,28 @@ function Frequently() {
     const handleSubmit = async () => {
         const passData = {
             selectDisplay: {
-                type: data.selectDisplay.type,
+                type: data.selectDisplay?.type,
             },
             tite_alignment: {
-                alignment: data.tite_alignment.alignment
+                alignment: data.tite_alignment?.alignment
             },
             title: {
-                fontColor: data.title.fontColor,
-                fontSize: data.title.fontSize,
-                fontWeight: data.title.fontWeight,
+                fontColor: data.title?.fontColor,
+                fontSize: data.title?.fontSize,
+                fontWeight: data.title?.fontWeight,
             },
             border: {
-                color: data.border.color,
-                borderWidth: data.border.borderWidth,
-                borderRadius: data.border.borderRadius,
+                color: data.border?.color,
+                borderWidth: data.border?.borderWidth,
+                borderRadius: data.border?.borderRadius,
             },
             variants: {
-                background_color: data.variants.background_color,
-                border_color: data.variants.border_color
+                background_color: data.variants?.background_color,
+                border_color: data.variants?.border_color
             },
             button: {
-                buttonColor: data.button.buttonColor,
-                textColor: data.button.textColor,
+                buttonColor: data.button?.buttonColor,
+                textColor: data.button?.textColor,
             },
         }
 
@@ -303,13 +303,7 @@ function Frequently() {
                                         borderRadius: "10px 10px 0px 0px",
                                     }}
                                 >
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            gap: "5px",
-                                        }}
-                                    >
+                                    <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                                         <Icon source={icon} />
                                         <Text as="h6" fontWeight="medium">
                                             {label}
@@ -424,7 +418,7 @@ function Frequently() {
                                                 <p style={{ fontSize: "20px" }}>1</p>
                                                 <span style={{ fontSize: "25px", lineHeight: "15px" }}>+</span>
                                             </div>
-                                            <button style={{ backgroundColor: "black", border: "none", color: "white", fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%" }}>
+                                            <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%" }}>
                                                 Add to cart
                                             </button>
                                         </div>
