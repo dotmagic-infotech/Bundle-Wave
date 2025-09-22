@@ -24,9 +24,9 @@ function Mixmatch() {
       type: "product_page",
     },
     discount_options: {
-      applied_background_color: "#459e7a",
-      applied_fontColor: "#000000",
-      unapplied_background_color: "#a44b4b",
+      applied_background_color: "#7a26bf",
+      applied_fontColor: "#FFFFFF",
+      unapplied_background_color: "#efefef",
       unapplied_fontColor: "#000000",
     },
     title_alignment: {
@@ -500,7 +500,7 @@ function Mixmatch() {
                       backgroundColor: data?.background?.background_type === "colored" ? BackGroundColor : "transparent", display: "flex", flexDirection: "column", gap: '0.5rem'
                     }}>
                       <p style={{
-                        marginTop: '10px', fontSize: `${10 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign:
+                        fontSize: `${10 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign:
                           data.title_alignment.alignment === "left"
                             ? "start"
                             : data.title_alignment.alignment === "center"
@@ -514,35 +514,37 @@ function Mixmatch() {
                             : data.title_alignment.alignment === "center"
                               ? "center"
                               : "end"
-                      }}>A bundle with selectable products and discounts</p>
+                      }}>✨ Buy more, save more! Pick your favorite earrings and create a custom set while enjoying bigger discounts for multiple pairs.</p>
                       <div style={{ display: "flex", gap: "0.5rem", marginTop: "10px" }}>
-                        <div style={{ backgroundColor: data.discount_options.applied_background_color, color: data.discount_options.applied_fontColor, borderRadius: "10px", opacity: "0.8", display: "flex", flexDirection: "column", gap: "0.5rem", padding: "15px", width: "50%" }}>
+                        <div style={{ backgroundColor: data.discount_options.applied_background_color, color: data.discount_options.applied_fontColor, borderRadius: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", padding: "15px", width: "50%" }}>
                           <p style={{ fontWeight: "500", fontSize: '1.2rem', textAlign: "center" }}>2</p>
                           <p style={{ fontWeight: "500", fontSize: '1.2rem', textAlign: "center" }}>10% OFF</p>
                         </div>
-                        <div style={{ backgroundColor: data.discount_options.unapplied_background_color, color: data.discount_options.unapplied_fontColor, borderRadius: "10px", opacity: "0.8", display: "flex", flexDirection: "column", gap: "0.5rem", padding: "15px", width: "50%" }}>
+                        <div style={{ backgroundColor: data.discount_options.unapplied_background_color, color: data.discount_options.unapplied_fontColor, borderRadius: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", padding: "15px", width: "50%" }}>
                           <p style={{ fontWeight: "500", fontSize: '1.2rem', textAlign: "center" }}>3+</p>
                           <p style={{ fontWeight: "500", fontSize: '1.2rem', textAlign: "center" }}>10% OFF</p>
                         </div>
                       </div>
                       <div style={{ margin: "10px -20px" }}>
-                        <Divider />
+                        <Divider borderColor="border-hover" />
                       </div>
                       <div style={{ display: "flex", flexDirection: 'column', maxHeight: '400px', overflowY: "auto" }}>
-                        {["https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-diamond-earrings_5e7739a0-261d-4788-96c9-ef77214aa70e.jpg?v=1758263764", "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766", "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758"].map((_, index) => (
+                        {[{ name: "18k Fluid Lines Necklace", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-fluid-lines-necklace.jpg?v=1758263767", price: "$45.00", oPrice: "$47.00" }, {
+                          name: "18k Dangling Pendant Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---2_197e4e51-6b44-4e54-9244-d3666bc5b514.jpg?v=1758263763", price: "$22.00", oPrice: "25.00"
+                        }, { name: "18k Dangling Obsidian Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-limelight-sequin-motif-earrings.jpg?v=1758263767", price: "$25.00", oPrice: "$27.00" }].map((_, index) => (
                           <div key={index}>
                             <div style={{ borderRadius: `${data.border.borderRadius}px`, backgroundColor: data?.background?.background_type === "colored" ? BackGroundColor : "transparent" }}>
                               <div style={{ display: "flex", alignItems: "start", }}>
-                                <img src={_} style={{ width: "85px", height: "85px", objectFit: "fill", borderRadius: "8px" }} />
-                                <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "2.3rem", width: "100%" }}>
-                                  <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: 600 }}>Product #{index + 2}</p>
-                                  <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                                <img src={_?.image} style={{ width: "70px", height: "70px", objectFit: "fill", borderRadius: "8px" }} />
+                                <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "1rem", width: "100%" }}>
+                                  <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: 600 }}>{_?.name}</p>
+                                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                                     <div style={{ display: 'flex' }}>
-                                      <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ $20.00</p>
-                                      <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$25.00</p>
+                                      <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ {_?.price}</p>
+                                      <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>{_?.oPrice}</p>
                                     </div>
                                     <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "15px", cursor: "pointer", borderRadius: "8px", padding: "5px 15px" }}>
-                                      Add
+                                      {index === 0 ? "Added" : "Add"}
                                     </button>
                                   </div>
                                 </div>
@@ -555,19 +557,19 @@ function Mixmatch() {
                         ))}
                       </div>
                       <div style={{ margin: "10px -20px" }}>
-                        <Divider />
+                        <Divider borderColor="border-hover" />
                       </div>
-                      <div style={{ backgroundColor: `${data?.button?.buttonColor}50`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%" }}>
+                      <div style={{ backgroundColor: `#efefef`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%" }}>
                         <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>Total</p>
-                        <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$0.00</p>
+                        <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$45.00</p>
                       </div>
                       <button style={{
-                        backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "12px", width: "100%", marginTop: "10px"
+                        backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "12px", width: "100%"
                       }}>Add to cart</button>
                     </div>
                     :
                     <div style={{
-                      width: "430px", padding: "20px", border: `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`,
+                      width: "500px", padding: "20px", border: `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`,
                       backgroundColor: data.background.background_type === "colored" ? data.background.background_color : "transparent", display: "flex", flexDirection: "column", gap: '0.2rem', position: "relative"
                     }}>
                       <div
@@ -596,53 +598,55 @@ function Mixmatch() {
                         Save 10%
                       </div>
                       <p style={{
-                        marginTop: '20px', fontSize: `${10 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", marginBottom: "10px", color: data.title.fontColor, textAlign:
+                        fontSize: '25px', fontWeight: "700", marginTop: '20px', marginBottom: "10px", color: data.title.fontColor, textAlign:
                           data.title_alignment.alignment === "left"
                             ? "start"
                             : data.title_alignment.alignment === "center"
                               ? "center"
                               : "end"
-                      }}>Mix and match - Product List</p>
+                      }}>Mix & Match - Earrings Collection</p>
                       <p style={{
+                        fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight,
                         color: data.title.fontColor, textAlign:
                           data.title_alignment.alignment === "left"
                             ? "start"
                             : data.title_alignment.alignment === "center"
                               ? "center"
                               : "end"
-                      }}>A bundle with collection items</p>
+                      }}>✨ Pick any 2 earrings from our curated collection and create your perfect mix & match set.<br />
+                        If you want, I can also insert this directly into your React bundle component so it shows under the main title. Do you want me to do that?</p>
                       <div style={{ margin: "10px 0px" }}>
-                        <Divider />
+                        <Divider borderColor="border-hover" />
                       </div>
                       <InlineStack align='space-between' blockAlign='start'>
-                        <p style={{ color: data.title.fontColor, fontSize: data.title.fontSize, fontWeight: "500" }}>Collection #1</p>
+                        <p style={{ color: data.title.fontColor, fontSize: data.title.fontSize, fontWeight: "500" }}>Diamond Stud Earrings</p>
                         <div style={{ display: "flex", alignItems: "center", position: "relative", marginRight: "27px" }}>
-                          {Array.from({ length: 3 }).map((_, index) => (
+                          {[{ image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766" }, { image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758" }].map((_, index) => (
                             <div key={index} style={{
                               width: "40px", height: "40px", overflow: "hidden", left: index === 0 ? "0px" : "30px",
                               position: index === 0 ? "static" : "absolute"
                             }}>
-                              <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758" style={{ borderRadius: "50%", backgroundColor: "#f6f6f7", width: "100%", height: "100%", objectFit: "cover" }} />
+                              <img src={_?.image} style={{ borderRadius: "50%", backgroundColor: "#f6f6f7", width: "100%", height: "100%", objectFit: "cover" }} />
                             </div>
                           ))}
                         </div>
                       </InlineStack>
                       <div style={{ margin: "10px 0px", position: "relative" }}>
-                        <Divider />
+                        <Divider borderColor="border-hover" />
                         <div style={{
                           backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, borderRadius: "50%", padding: "10px", width: "40px", height: "40px", display: 'flex', justifyContent: "center", alignItems: "center", left: "50%",
                           position: "absolute", transform: "translateX(-50%)", top: "-22px"
                         }}><p style={{ fontSize: "2rem", fontWeight: "600", marginBottom: "5px" }}>+</p></div>
                       </div>
                       <InlineStack align='space-between' blockAlign='start'>
-                        <p style={{ color: data.title.fontColor, fontSize: data.title.fontSize, fontWeight: "500" }}>Collection #2</p>
+                        <p style={{ color: data.title.fontColor, fontSize: data.title.fontSize, fontWeight: "500" }}>Pearl Dangle Earrings</p>
                         <div style={{ display: "flex", alignItems: "center", position: "relative", marginRight: "27px" }}>
-                          {Array.from({ length: 3 }).map((_, index) => (
+                          {[{ image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-solid-bloom-earrings.jpg?v=1758263770" }, { image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-diamond-earrings_5e7739a0-261d-4788-96c9-ef77214aa70e.jpg?v=1758263764" }].map((_, index) => (
                             <div key={index} style={{
                               width: "40px", height: "40px", overflow: "hidden", left: index === 0 ? "0px" : "30px",
                               position: index === 0 ? "static" : "absolute"
                             }}>
-                              <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-diamond-earrings_5e7739a0-261d-4788-96c9-ef77214aa70e.jpg?v=1758263764" style={{ borderRadius: "50%", backgroundColor: "#f6f6f7", width: "100%", height: "100%", objectFit: "cover" }} />
+                              <img src={_?.image} style={{ borderRadius: "50%", backgroundColor: "#f6f6f7", width: "100%", height: "100%", objectFit: "cover" }} />
                             </div>
                           ))}
                         </div>
@@ -658,44 +662,46 @@ function Mixmatch() {
                   {data.selectDisplay.structure === "tiered_discount" ?
                     <div style={{ display: "flex", gap: "1rem", padding: "40px", width: "100%" }}>
                       <div style={{ maxWidth: "400px" }}>
-                        <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-diamond-earrings_5e7739a0-261d-4788-96c9-ef77214aa70e.jpg?v=1758263764' width="100%" style={{ borderRadius: "10px" }} />
+                        <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-fluid-lines-necklace.jpg?v=1758263767' width="100%" style={{ borderRadius: "10px", objectFit: "cover" }} />
                         <div style={{ display: "flex", gap: "0.2rem" }}>
-                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766' width="60px" height="60px" style={{ borderRadius: "10px" }} />
-                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758' width="60px" height="60px" style={{ borderRadius: "10px" }} />
+                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---2_197e4e51-6b44-4e54-9244-d3666bc5b514.jpg?v=1758263763' width="60px" height="60px" style={{ borderRadius: "10px" }} />
+                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-limelight-sequin-motif-earrings.jpg?v=1758263767' width="60px" height="60px" style={{ borderRadius: "10px" }} />
                         </div>
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem", width: "50%" }}>
-                        <p style={{ fontSize: '25px', fontWeight: "700" }}>Bundle Title</p>
+                        <p style={{ fontSize: '25px', fontWeight: "700" }}>Mix & Match Tiered Discount</p>
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                           <p style={{ fontSize: '20px', fontWeight: "600" }}>Total Price</p>
-                          <p style={{ fontSize: '20px', fontWeight: "600" }}>$60.00</p>
+                          <p style={{ fontSize: '20px', fontWeight: "600" }}>$92.00</p>
                         </div>
-                        <Divider />
+                        <Divider borderColor="border-hover" />
                         <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
                           <div style={{
                             borderRadius: `${data.border.borderRadius}px`, display: "flex", flexDirection: "column", gap: '0.5rem'
                           }}>
                             <div style={{ display: "flex", gap: "0.5rem" }}>
-                              <div style={{ backgroundColor: data.discount_options.applied_background_color, color: data.discount_options.applied_fontColor, borderRadius: "10px", opacity: "0.8", display: "flex", flexDirection: "column", gap: "0.5rem", padding: "15px", width: "50%" }}>
+                              <div style={{ backgroundColor: data.discount_options.applied_background_color, color: data.discount_options.applied_fontColor, borderRadius: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", padding: "15px", width: "50%" }}>
                                 <p style={{ fontWeight: "500", fontSize: '1.2rem', textAlign: "center" }}>2</p>
                                 <p style={{ fontWeight: "500", fontSize: '1.2rem', textAlign: "center" }}>10% OFF</p>
                               </div>
-                              <div style={{ backgroundColor: data.discount_options.unapplied_background_color, color: data.discount_options.unapplied_fontColor, borderRadius: "10px", opacity: "0.8", display: "flex", flexDirection: "column", gap: "0.5rem", padding: "15px", width: "50%" }}>
+                              <div style={{ backgroundColor: data.discount_options.unapplied_background_color, color: data.discount_options.unapplied_fontColor, borderRadius: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", padding: "15px", width: "50%" }}>
                                 <p style={{ fontWeight: "500", fontSize: '1.2rem', textAlign: "center" }}>3+</p>
-                                <p style={{ fontWeight: "500", fontSize: '1.2rem', textAlign: "center" }}>10% OFF</p>
+                                <p style={{ fontWeight: "500", fontSize: '1.2rem', textAlign: "center" }}>30% OFF</p>
                               </div>
                             </div>
                             <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "10px", borderRadius: `${data.border.borderRadius}px` }}>
-                              {["https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-fluid-lines-necklace.jpg?v=1758263767", "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---2_197e4e51-6b44-4e54-9244-d3666bc5b514.jpg?v=1758263763", "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-limelight-sequin-motif-earrings.jpg?v=1758263767"].map((_, index) => (
+                              {[{ name: "18k Fluid Lines Necklace", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-fluid-lines-necklace.jpg?v=1758263767", price: "$45.00" }, {
+                                name: "18k Dangling Pendant Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---2_197e4e51-6b44-4e54-9244-d3666bc5b514.jpg?v=1758263763", price: "$22.00"
+                              }, { name: "18k Dangling Obsidian Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-limelight-sequin-motif-earrings.jpg?v=1758263767", price: "$25.00" }].map((_, index) => (
                                 <div key={index}>
                                   <div style={{ display: "flex", alignItems: "center", }}>
-                                    <img src={_}
+                                    <img src={_?.image}
                                       style={{ width: "65px", height: "65px", objectFit: "fill", borderRadius: "10px" }}
                                     />
                                     <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", width: "100%" }}>
-                                      <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>Product #{index + 1}</p>
+                                      <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{_?.name}</p>
                                       <div style={{ display: 'flex', justifyContent: "space-between" }}>
-                                        <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ $20.00</p>
+                                        <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ {_?.price}</p>
                                         <button style={{
                                           backgroundColor: data.button.buttonColor,
                                           border: "none",
@@ -716,11 +722,12 @@ function Mixmatch() {
                                 </div>
                               ))}
                             </div>
-                            <div style={{ backgroundColor: `${data.button.buttonColor}50`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%" }}>
+                            <div style={{ backgroundColor: `#efefef`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%" }}>
                               <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$0.00</p>
                               <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>No items added</p>
                             </div>
                           </div>
+                          <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px" }}>✨ Buy more, save more! Pick your favorite earrings and create a custom set while enjoying bigger discounts for multiple pairs.</p>
                           <button style={{
                             marginTop: "10px", backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%"
                           }}>Add to cart</button>
@@ -730,52 +737,54 @@ function Mixmatch() {
                     :
                     <div style={{ display: "flex", justifyContent: "center", gap: "1rem", width: "100%" }}>
                       <div style={{ maxWidth: "400px" }}>
-                        <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758' width="100%" style={{ borderRadius: "10px", objectFit: "cover" }} />
+                        <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766' width="100%" style={{ borderRadius: "10px", objectFit: "cover" }} />
                         <div style={{ display: "flex", gap: "0.2rem" }}>
                           <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766' width="60px" height="60px" style={{ borderRadius: "10px" }} />
-                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-diamond-earrings_5e7739a0-261d-4788-96c9-ef77214aa70e.jpg?v=1758263764' width="60px" height="60px" style={{ borderRadius: "10px" }} />
+                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758' width="60px" height="60px" style={{ borderRadius: "10px" }} />
                         </div>
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem", width: "400px" }}>
-                        <p style={{ fontSize: '25px', fontWeight: "700" }}>Bundle Title</p>
+                        <p style={{ fontSize: '25px', fontWeight: "700" }}>Mix & Match - Earrings Collection</p>
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                           <p style={{ fontSize: '20px', fontWeight: "600" }}>Total Price</p>
-                          <p style={{ fontSize: '20px', fontWeight: "600" }}>$156.00</p>
+                          <p style={{ fontSize: '20px', fontWeight: "600" }}>$72.00</p>
                         </div>
-                        <Divider />
+                        <Divider borderColor="border-hover" />
                         <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
                           <div style={{ display: "flex", flexDirection: "column", gap: '0.5rem' }}>
                             <div style={{ border: "1px solid black", padding: "10px", borderRadius: "10px" }}>
-                              {Array.from({ length: 3 }).map((_, index, arr) => (
+                              {[{ name: "Sterling Silver Stud Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766", price: "$30.00" }, { name: "Rose Gold Drop Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758", price: "$42.00" }].map((_, index, arr) => (
                                 <div key={index}>
                                   <div style={{ display: "flex", alignItems: "center", }}>
                                     <div>
                                       <Icon source={ChevronRightIcon} />
                                     </div>
-                                    <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-diamond-earrings_5e7739a0-261d-4788-96c9-ef77214aa70e.jpg?v=1758263764" width="60px" height="60px"
+                                    <img src={_?.image} width="60px" height="60px"
                                       style={{
                                         marginLeft: "10px", objectFit: "fill", borderRadius: "10px"
                                       }}
                                     />
                                     <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", width: "100%" }}>
-                                      <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>Collection #{index + 2}</p>
-                                      <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ $20.00</p>
+                                      <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data?.title?.fontWeight, color: data.title.fontColor }}>{_?.name}</p>
+                                      <p style={{ fontWeight: data?.title?.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ {_?.price}</p>
                                     </div>
                                   </div>
                                   {index !== arr.length - 1 && (
                                     <div style={{ margin: "10px -10px" }}>
-                                      <Divider />
+                                      <Divider borderColor="border-hover" />
                                     </div>
                                   )}
                                 </div>
                               ))}
                             </div>
                             <div style={{ backgroundColor: `#efefef`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%" }}>
-                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$10.20</p>
-                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>No items added</p>
+                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$30.00</p>
+                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>1 items added</p>
                             </div>
                           </div>
                         </div>
+                        <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Pick any 2 earrings from our curated collection and create your perfect mix & match set.<br />
+                          If you want, I can also insert this directly into your React bundle component so it shows under the main title. Do you want me to do that?</p>
                         <button style={{
                           backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%"
                         }}>Add to cart</button>

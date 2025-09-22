@@ -30,13 +30,13 @@ function Addons() {
             fontWeight: 400,
         },
         border: {
-            color: "#000000",
+            color: "#7a26bf",
             borderWidth: 2,
             borderRadius: 10,
         },
         variants: {
             background_color: "#ffffff",
-            border_color: "#000000"
+            border_color: "#7a26bf"
         },
         button: {
             buttonColor: "#7a26bf",
@@ -377,7 +377,7 @@ function Addons() {
                         >
                             {data.selectDisplay.type === "main_product_page" ? (
                                 <>
-                                    <div style={{ display: "flex", gap: "10px" }}>
+                                    <div style={{ display: "flex", gap: "10px", margin: "12px 0px" }}>
                                         <div style={{ maxWidth: "400px" }}>
                                             <img
                                                 src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387"
@@ -401,20 +401,12 @@ function Addons() {
                                         </div>
                                         <div style={{ width: "400px" }}>
                                             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                                                <p style={{ fontSize: "25px", fontWeight: "700" }}>Bundle Title</p>
+                                                <p style={{ fontSize: "25px", fontWeight: "700" }}>✨ Add-Ons Bundle</p>
                                                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                                                     <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
-                                                    <p style={{ fontSize: "20px", fontWeight: "600" }}>$156.00</p>
+                                                    <p style={{ fontSize: "20px", fontWeight: "600" }}>$330.00</p>
                                                 </div>
-                                                <Divider />
-                                                <div>
-                                                    <p>Quantity</p>
-                                                    <div style={{ display: "flex", gap: "1.5rem", border: "1px solid black", borderRadius: "10px", padding: "10px", width: "fit-content", cursor: "pointer" }}>
-                                                        <span style={{ fontSize: "25px", lineHeight: "15px" }}>−</span>
-                                                        <p style={{ fontSize: "20px" }}>1</p>
-                                                        <span style={{ fontSize: "25px", lineHeight: "15px" }}>+</span>
-                                                    </div>
-                                                </div>
+                                                <Divider borderColor="border-hover" />
                                             </div>
                                             <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "10px 0px" }}>
                                                 <p style={{
@@ -423,25 +415,23 @@ function Addons() {
                                                             ? "center"
                                                             : "end"
                                                 }}>Product Add-ons</p>
-                                                <div style={{ backgroundColor: "red", color: "white", borderRadius: "10px", padding: "2px 7px" }}>20% OFF</div>
+                                                <div style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, borderRadius: "10px", padding: "2px 7px" }}>20% OFF</div>
                                             </div>
+                                            <p style={{ fontSize: `${data?.title?.fontSize}`, fontWeight: `${data?.title?.fontWeight}`, margin: '10px 0px' }}>Complete your look with our exclusive add-ons! Pair your favorite earrings with matching styles for extra sparkle and savings.</p>
                                             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                                                {[
-                                                    "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-diamond-earrings_5e7739a0-261d-4788-96c9-ef77214aa70e.jpg?v=1758263764",
-                                                    "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758"
-                                                ].map((imgSrc, index) => (
+                                                {[{ name: "Classic Leather Strap Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387", price: "$85.00", oprice: "$90.00" }, { name: "Stainless Steel Chronograph Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch5.jpg?v=1758271387", price: "$150.00", oprice: "$155.00" }, { name: "Minimalist Silver Mesh Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch.webp?v=1758271387", price: "$95.00", oprice: "$100.00" }].map((imgSrc, index) => (
                                                     <div key={index}>
-                                                        <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
+                                                        <div style={{ border: index === 0 ? `${data.border.borderWidth}px solid red` : `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
                                                             <div style={{ display: "flex", alignItems: "center", }}>
                                                                 <Checkbox checked={index === 0} />
-                                                                <img src={imgSrc}
+                                                                <img src={imgSrc?.image}
                                                                     style={{ width: "50px", height: "50px", marginLeft: "10px", objectFit: "fill", borderRadius: "10px" }}
                                                                 />
                                                                 <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                                                                    <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>Product #{index + 1}</p>
+                                                                    <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.name}</p>
                                                                     <div style={{ display: 'flex' }}>
-                                                                        <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>$20.00</p>
-                                                                        <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$25.00</p>
+                                                                        <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.price}</p>
+                                                                        <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>{imgSrc?.oprice}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -460,68 +450,52 @@ function Addons() {
                                             </div>
                                             <button style={{ marginTop: "20px", backgroundColor: data?.button?.buttonColor, color: data.button.textColor, cursor: "pointer", width: "100%", borderRadius: "10px", padding: "8px", border: "none" }}>Add to cart</button>
                                         </div>
-                                        {/* <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
-                                            <p style={{ fontSize: "25px", fontWeight: "700" }}>Bundle Title</p>
-                                            <div style={{ display: "flex", justifyContent: "space-between", }}>
-                                                <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
-                                                <p style={{ fontSize: "20px", fontWeight: "600" }}>$156.00</p>
-                                            </div>
-                                            <div style={{ display: "flex", gap: "10px" }}>
-                                                {["Small", "Medium", "Large"].map((_, index, arr) => (
-                                                    <div key={index} style={{ border: "2px solid black", padding: "5px 10px", borderRadius: "10px", cursor: "pointer" }}>
-                                                        {_}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div style={{ display: "flex", gap: "1.5rem", border: "1px solid black", borderRadius: "10px", padding: "10px", width: "fit-content", cursor: "pointer" }}>
-                                                <span style={{ fontSize: "25px", lineHeight: "15px" }}>−</span>
-                                                <p style={{ fontSize: "20px" }}>1</p>
-                                                <span style={{ fontSize: "25px", lineHeight: "15px" }}>+</span>
-                                            </div>
-                                            <button style={{ backgroundColor: "black", border: "none", color: "white", fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%" }}>
-                                                Add to cart
-                                            </button>
-                                        </div> */}
                                     </div>
                                 </>
                             ) : data.selectDisplay.type === "pop_up" ? (
                                 <div style={{ backgroundColor: "white", borderRadius: "10px", padding: "10px", position: "relative" }}>
                                     <div style={{ display: "flex", alignItems: "center" }}>
-                                        <img src="https://cdn.shopify.com/s/files/1/0839/1399/8619/products/gift_card.png?v=1698129037"
+                                        <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771"
                                             style={{ width: "80px", height: "80px", objectFit: "fill", borderColor: `2px solid ${data.border.color}`, borderRadius: "10px" }}
                                         />
                                         <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", height: '65px', justifyContent: "space-around", width: "90%" }}>
-                                            <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>Product #1</p>
+                                            <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>18k Pedal Ring</p>
                                             <div style={{ display: 'flex', justifyContent: "space-between", width: "100%" }}>
                                                 <div style={{ display: "flex" }}>
-                                                    <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ $20.00</p>
-                                                    <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$25.00</p>
+                                                    <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$45.00</p>
+                                                    <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$47.00</p>
                                                 </div>
                                                 <p style={{ padding: "1px 16px", backgroundColor: `${data?.background?.button_color}`, color: "white", borderRadius: "10px" }}>Added</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div style={{ margin: "10px -10px" }}>
-                                        <Divider />
+                                        <Divider borderColor="border-hover" />
                                     </div>
-                                    <p style={{ fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: data.title.fontWeight, margin: "15px 0px", textAlign: "start" }}>Product add-on</p>
+                                    <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "10px 0px" }}>
+                                        <p style={{
+                                            fontSize: `${8 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
+                                                : data.tite_alignment.alignment === "center"
+                                                    ? "center"
+                                                    : "end"
+                                        }}>Product Add-ons</p>
+                                        <div style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, borderRadius: "10px", padding: "2px 7px" }}>20% OFF</div>
+                                    </div>
+                                    <p style={{ fontSize: `${data?.title?.fontSize}`, fontWeight: `${data?.title?.fontWeight}`, margin: '10px 0px' }}>Complete your look with our exclusive add-ons! Pair your favorite earrings<br /> with matching styles for extra sparkle and savings.</p>
                                     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                                        {[
-                                            "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546",
-                                            "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_2.jpg?v=1756097545"
-                                        ].map((imgSrc, index) => (
+                                        {[{ name: "Classic Leather Strap Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387", price: "$85.00", oprice: "$90.00" }, { name: "Stainless Steel Chronograph Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch5.jpg?v=1758271387", price: "$150.00", oprice: "$155.00" }, { name: "Minimalist Silver Mesh Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch.webp?v=1758271387", price: "$95.00", oprice: "$100.00" }].map((imgSrc, index) => (
                                             <div key={index}>
                                                 <div style={{ border: index === 1 ? `${data.border.borderWidth}px solid red` : `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
                                                     <div style={{ display: "flex", alignItems: "center", }}>
                                                         <Checkbox checked={index === 1} />
-                                                        <img src={imgSrc}
+                                                        <img src={imgSrc?.image}
                                                             style={{ width: "65px", height: "65px", objectFit: "fill", borderRadius: "10px" }}
                                                         />
                                                         <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                                                            <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>Product #{index + 2}</p>
+                                                            <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.name}</p>
                                                             <div style={{ display: 'flex' }}>
-                                                                <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ $20.00</p>
-                                                                <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$25.00</p>
+                                                                <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>{imgSrc?.price}</p>
+                                                                <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>{imgSrc?.oprice}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -539,9 +513,9 @@ function Addons() {
                                         ))}
                                     </div>
                                     <div style={{ margin: "10px -10px" }}>
-                                        <Divider />
+                                        <Divider borderColor="border-hover" />
                                     </div>
-                                    <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", marginTop: "20px" }}>
+                                    <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", marginTop: "2px" }}>
                                         Add to cart
                                     </button>
 

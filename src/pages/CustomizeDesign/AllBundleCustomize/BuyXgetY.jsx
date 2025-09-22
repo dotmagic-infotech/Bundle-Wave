@@ -28,12 +28,12 @@ function BuyXgetY() {
     },
     border: {
       color: "#000000",
-      borderWidth: 2,
+      borderWidth: 1,
       borderRadius: 10,
     },
     variants: {
-      background_color: "#dbdbdd",
-      border_color: "#000000"
+      background_color: "#FFFFFF",
+      border_color: "#7a26bf"
     },
     button: {
       buttonColor: "#7a26bf",
@@ -130,7 +130,7 @@ function BuyXgetY() {
           <RangeSlider
             label="Border Width"
             min={1}
-            max={10}
+            max={5}
             value={data.border.borderWidth}
             onChange={(value) =>
               handleChangeValue("border", "borderWidth", value)
@@ -141,7 +141,7 @@ function BuyXgetY() {
           <RangeSlider
             label="Border Radius"
             min={1}
-            max={50}
+            max={30}
             value={data.border.borderRadius}
             onChange={(value) =>
               handleChangeValue("border", "borderRadius", value)
@@ -350,13 +350,19 @@ function BuyXgetY() {
                     />
                     <div style={{ display: "flex", gap: "0.2rem" }}>
                       <img
-                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---4.jpg?v=1758263774"
+                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771"
                         width="60px"
                         height="60px"
                         style={{ borderRadius: "10px" }}
                       />
                       <img
-                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---3.jpg?v=1758263774"
+                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-dangling-pendant-earrings_17e71027-81d8-4a49-a455-2e5c205963ee.jpg?v=1758263763"
+                        width="60px"
+                        height="60px"
+                        style={{ borderRadius: "10px" }}
+                      />
+                      <img
+                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-bloom-pendant.jpg?v=1758263772"
                         width="60px"
                         height="60px"
                         style={{ borderRadius: "10px" }}
@@ -364,38 +370,40 @@ function BuyXgetY() {
                     </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
-                    <p style={{ fontSize: "25px", fontWeight: "700" }}>Bundle Title</p>
+                    <p style={{ fontSize: "25px", fontWeight: "700" }}>🎁 Buy 2 Earrings Bundle</p>
                     <div style={{ display: "flex", justifyContent: "space-between", }}>
                       <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
-                      <p style={{ fontSize: "20px", fontWeight: "600" }}>$156.00</p>
+                      <p style={{ fontSize: "20px", fontWeight: "600" }}>$92.00</p>
                     </div>
-                    <Divider />
+                    <Divider borderColor="border-hover" />
                     <div style={{ backgroundColor: "white", width: "100%", height: "auto", display: "flex", flexDirection: "column", gap: "10px" }}>
-                      <div style={{ border: "1px solid black", padding: "10px", borderRadius: "10px" }}>
-                        {Array.from({ length: 2 }).map((_, index, arr) => (
+                      <div style={{ border: `${data?.border?.borderWidth}px solid ${data?.border?.color}`, padding: "10px", borderRadius: `${data?.border?.borderRadius}px` }}>
+                        {[{ name: "18k Pedal Ring", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771", price: "$45.00" }, {
+                          name: "18k Dangling Pendant Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-dangling-pendant-earrings_17e71027-81d8-4a49-a455-2e5c205963ee.jpg?v=1758263763", price: "$22.00"
+                        }, { name: "18k Bloom Pendant", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-bloom-pendant.jpg?v=1758263772", price: "$25.00" }].map((_, index, arr) => (
                           <div key={index}>
                             <div style={{ display: "flex", gap: "10px" }}>
                               <img
-                                src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings.jpg?v=1758263774"
+                                src={_?.image}
                                 width="60px"
                                 height="60px"
                                 style={{ borderRadius: "10px" }}
                               />
                               <div>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>Product #{index + 1}</p>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>$10.00</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
                               </div>
                             </div>
                             <div style={{
                               backgroundColor: `${data?.variants?.background_color}`,
-                              border: `1px solid ${data.variants?.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
+                              border: `1px solid ${data?.variants?.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
                             }}>
                               <p style={{ fontWeight: "500" }}>Size / Color / Type</p>
                               <div><Icon source={ChevronDownIcon} /></div>
                             </div>
                             {index !== arr.length - 1 && (
                               <div style={{ margin: "10px 0px" }}>
-                                <Divider />
+                                <Divider borderColor="border-hover" />
                               </div>
                             )}
                           </div>
@@ -406,19 +414,19 @@ function BuyXgetY() {
                         <button disabled style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, cursor: "pointer", width: "40px", height: "40px", borderRadius: "50%", padding: "8px 8px 16px", fontWeight: 500, fontSize: "33px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1, }}>+</button>
                       </div>
 
-                      <div style={{ border: "1px solid black", padding: "10px", borderRadius: "10px" }}>
-                        {Array.from({ length: 1 }).map((_, index, arr) => (
+                      <div style={{ border: `${data?.border?.borderWidth}px solid ${data?.border?.color}`, padding: "10px", borderRadius: `${data?.border?.borderRadius}px` }}>
+                        {[{ name: "18k Solid Bloom Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758", price: "$20.00" }].map((_, index, arr) => (
                           <div key={index}>
                             <div style={{ display: "flex", gap: "10px" }}>
                               <img
-                                src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-diamond-earrings.jpg?v=1758263773"
+                                src={_?.image}
                                 width="60px"
                                 height="60px"
                                 style={{ borderRadius: "10px" }}
                               />
                               <div>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>Product #1</p>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>$10.00</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
                               </div>
                             </div>
                             <div style={{
@@ -434,13 +442,14 @@ function BuyXgetY() {
                             </div>
                             {index !== arr.length - 1 && (
                               <div style={{ margin: "10px 0px" }}>
-                                <Divider />
+                                <Divider borderColor="border-hover" />
                               </div>
                             )}
                           </div>
                         ))}
                       </div>
                     </div>
+                    <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Choose any 2 earrings from our collection and get a special bundle deal! Buy X Get Y your favorites to create the perfect set.</p>
                     <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
                       Add to cart
                     </button>
@@ -453,18 +462,18 @@ function BuyXgetY() {
                       style={{ width: "80px", height: "80px", objectFit: "fill", borderColor: `2px solid ${data.border.color}`, borderRadius: "10px" }}
                     />
                     <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", height: '65px', justifyContent: "space-around", width: "90%" }}>
-                      <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: "600" }}>Product #1</p>
+                      <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: "600" }}>18k Pedal Ring</p>
                       <div style={{ display: 'flex', justifyContent: "space-between", width: "100%" }}>
                         <div style={{ display: "flex" }}>
-                          <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ $20.00</p>
-                          <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$25.00</p>
+                          <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ $45.00</p>
+                          <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$47.00</p>
                         </div>
                         <p style={{ padding: "1px 16px", backgroundColor: `${data?.background?.button_color}`, color: "white", borderRadius: "10px" }}>Added</p>
                       </div>
                     </div>
                   </div>
                   <div style={{ margin: "10px -10px" }}>
-                    <Divider />
+                    <Divider borderColor="border-hover" />
                   </div>
                   <p style={{
                     fontSize: "1rem", fontWeight: "500", margin: "15px 0px", textAlign: "start"
@@ -503,7 +512,7 @@ function BuyXgetY() {
                     ))}
                   </div>
                   <div style={{ margin: "10px -10px" }}>
-                    <Divider />
+                    <Divider borderColor="border-hover" />
                   </div>
                   <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", marginTop: "20px" }}>
                     Add to cart

@@ -27,7 +27,7 @@ function Fixedbundle() {
     },
     background: {
       background_type: "transparent",
-      background_color: "#ffffff",
+      background_color: "#FFFFFF",
     },
     title: {
       fontColor: "#000000",
@@ -40,8 +40,8 @@ function Fixedbundle() {
       borderRadius: 10,
     },
     variants: {
-      background_color: "#ffffff",
-      border_color: "#000000"
+      background_color: "#FFFFFF",
+      border_color: "#7a26bf"
     },
     button: {
       buttonColor: "#7a26bf",
@@ -408,7 +408,7 @@ function Fixedbundle() {
       <Grid.Cell columnSpan={{ xs: 6, md: 6, lg: 8, xl: 8 }}>
         <div style={{ marginBottom: "1rem" }}>
           <Card>
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: "25px" }}>
               <Banner
                 title="Preview uses sample content for layout demonstration. Your store's real data will appear after publishing."
                 tone="warning"
@@ -422,10 +422,10 @@ function Fixedbundle() {
               }}
             >
               {data.selectDisplay.type === "product_page" ? (
-                <div style={{ display: "flex", gap: "10px" }}>
+                <div style={{ display: "flex", gap: "15px" }}>
                   <div style={{ maxWidth: "400px" }}>
                     <img
-                      src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758"
+                      src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766"
                       width="100%"
                       style={{ borderRadius: "10px", objectFit: "cover" }}
                     />
@@ -437,7 +437,7 @@ function Fixedbundle() {
                         style={{ borderRadius: "10px" }}
                       />
                       <img
-                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-diamond-earrings_5e7739a0-261d-4788-96c9-ef77214aa70e.jpg?v=1758263764"
+                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758"
                         width="60px"
                         height="60px"
                         style={{ borderRadius: "10px" }}
@@ -445,26 +445,26 @@ function Fixedbundle() {
                     </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
-                    <p style={{ fontSize: "25px", fontWeight: "700" }}>Bundle Title</p>
+                    <p style={{ fontSize: "25px", fontWeight: "700" }}>Elegant Earrings Bundle</p>
                     <div style={{ display: "flex", justifyContent: "space-between", }}>
-                      <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
-                      <p style={{ fontSize: "20px", fontWeight: "600" }}>$156.00</p>
+                      <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>
+                      <p style={{ fontSize: "20px", fontWeight: "600" }}>$72.00</p>
                     </div>
-                    <Divider />
+                    <Divider borderColor="border-hover" />
                     <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
                       <div>
-                        {Array.from({ length: 2 }).map((_, index, arr) => (
+                        {[{ name: "Sterling Silver Stud Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766", price: "$30.00" }, { name: "Rose Gold Drop Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758", price: "$42.00" }].map((_, index, arr) => (
                           <div key={index}>
                             <div style={{ display: "flex", gap: "10px" }}>
                               <img
-                                src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---2_197e4e51-6b44-4e54-9244-d3666bc5b514.jpg?v=1758263763"
+                                src={_?.image}
                                 width="70px"
                                 height="70px"
                                 style={{ borderRadius: "10px" }}
                               />
                               <div>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>Product #{index + 1}</p>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>$10.00</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
                               </div>
                             </div>
                             <div
@@ -480,73 +480,75 @@ function Fixedbundle() {
                               </div>
                             </div>
                             {index !== arr.length - 1 && (
-                              <div style={{ margin: "10px 0px" }}><Divider /></div>
+                              <div style={{ margin: "10px 0px" }}> <Divider borderColor="border-hover" /></div>
                             )}
                           </div>
                         ))}
                       </div>
                     </div>
+                    <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Elevate your style with our elegant earring collection – from timeless gold hoops for everyday wear, to minimalist sterling silver studs for a classic touch, and sparkling rose gold drop earrings perfect for special occasions. Designed for comfort, crafted with quality materials, and made to suit every outfit.</p>
                     <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
-                      Add to cart
+                      Add bundle to cart | Save 20%
                     </button>
                   </div>
                 </div>
               ) : data.selectDisplay.type === "included_product_page" ? (
-                <div style={{ display: "flex", flexDirection: "column", width: "50%", }}>
-                  <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "10px", borderRadius: `${data.border.borderRadius}px`, display: "flex", flexDirection: "column", gap: "1.5rem", backgroundColor: data?.background?.background_type === "colored" ? data.background.background_color : "transparent", color: data.title.fontColor, }}>
+                <div style={{ display: "flex", flexDirection: "column", width: "50%" }}>
+                  <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "12px", borderRadius: `${data.border.borderRadius}px`, display: "flex", flexDirection: "column", gap: "1rem", backgroundColor: data?.background?.background_type === "colored" ? data.background.background_color : "transparent", color: data.title.fontColor, }}>
                     <p style={{
-                      fontSize: `${16 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", textAlign:
+                      fontSize: "25px", fontWeight: "700", textAlign:
                         data.tite_alignment.alignment === "left"
                           ? "start"
                           : data.tite_alignment.alignment === "center"
                             ? "center"
                             : "end"
                     }}>
-                      Fixed bundle
+                      Elegant Earrings Bundle
                     </p>
-                    {Array.from({ length: 2 }).map((_, index, arr) => (
-                      <div key={index}>
-                        <div style={{ display: "flex", gap: "10px" }}>
-                          <img
-                            src="https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546"
-                            width="80px"
-                            height="80px"
-                            style={{ borderRadius: "10px" }}
-                          />
-                          <div>
-                            <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>Product #1</p>
-                            <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>$10.00</p>
+
+                    <div style={{ marginTop: "10px" }}>
+                      {[{ name: "Sterling Silver Stud Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766", price: "$30.00" }, { name: "Rose Gold Drop Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758", price: "$42.00" }].map((_, index, arr) => (
+                        <div key={index}>
+                          <div style={{ display: "flex", gap: "10px" }}>
+                            <img
+                              src={_?.image}
+                              width="70px"
+                              height="70px"
+                              style={{ borderRadius: "10px" }}
+                            />
+                            <div>
+                              <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
+                              <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
+                            </div>
                           </div>
+                          <div style={{ backgroundColor: `${data.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px", }}>
+                            <p style={{ fontWeight: "500" }}>Size / Color / Type</p>
+                            <div>
+                              <Icon source={ChevronDownIcon} />
+                            </div>
+                          </div>
+                          {index !== arr.length - 1 && (
+                            <div style={{ marginTop: "15px" }}>
+                              <Divider />
+                            </div>
+                          )}
                         </div>
-                        <div style={{ backgroundColor: `${data.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px", }}>
-                          <p style={{ fontWeight: "500" }}>Size / Color / Type</p>
-                          <div>
-                            <Icon source={ChevronDownIcon} />
-                          </div>
-                        </div>
-                        {index !== arr.length - 1 && (
-                          <div style={{ marginTop: "25px" }}>
-                            <Divider />
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                      ))}
+                    </div>
 
                     <div style={{ backgroundColor: `#efefef`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%", }}>
                       <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, }}
                       >Total</p>
-                      <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, }}>$0.00</p>
+                      <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, }}>$72.00</p>
                     </div>
-                    <div>
-                      <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize}px`, cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
-                        Add to cart
-                      </button>
-                    </div>
+                    <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize}px`, cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
+                      Add bundle to cart | Save 20%
+                    </button>
                   </div>
                 </div>
               ) : null}
             </div>
-            <div style={{ display: "flex", justifyContent: "end", padding: "10px 10px 0px", borderTop: "1px solid black", margin: "10px -16px 0px -16px" }}>
+            <div style={{ display: "flex", justifyContent: "end", padding: "10px 10px 0px", borderTop: "1px solid black", margin: "25px -16px 0px -16px" }}>
               <ButtonGroup>
                 <Button>Cancel</Button>
                 <Button variant="primary" onClick={handleSubmit}>Save</Button>
@@ -554,7 +556,7 @@ function Fixedbundle() {
             </div>
           </Card>
         </div>
-      </Grid.Cell>
+      </Grid.Cell >
     </Grid >
   );
 }

@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
-import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, Button, ButtonGroup, Divider } from "@shopify/polaris";
+import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, Button, ButtonGroup, Divider, Checkbox } from "@shopify/polaris";
 import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ChevronDownIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon, } from "@shopify/polaris-icons";
 
 // Custom Component
@@ -31,7 +31,7 @@ function Frequently() {
             fontWeight: 400,
         },
         border: {
-            color: "#000000",
+            color: "#7a26bf",
             borderWidth: 2,
             borderRadius: 10,
         },
@@ -401,22 +401,17 @@ function Frequently() {
                                             </div>
                                         </div>
                                         <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
-                                            <p style={{ fontSize: "25px", fontWeight: "700" }}>Bundle Title</p>
+                                            <p style={{ fontSize: "25px", fontWeight: "700" }}>Classic Leather Strap Watch</p>
                                             <div style={{ display: "flex", justifyContent: "space-between", }}>
                                                 <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
-                                                <p style={{ fontSize: "20px", fontWeight: "600" }}>$156.00</p>
+                                                <p style={{ fontSize: "20px", fontWeight: "600" }}>$85.00</p>
                                             </div>
                                             <div style={{ display: "flex", gap: "10px" }}>
-                                                {["Small", "Medium", "Large"].map((_, index, arr) => (
-                                                    <div key={index} style={{ border: "2px solid black", padding: "5px 10px", borderRadius: "10px", cursor: "pointer" }}>
+                                                {["Black", "Golden", "Red"].map((_, index, arr) => (
+                                                    <div key={index} style={{ border: `2px solid ${data?.border?.color}`, backgroundColor: index === 0 ? `${data?.button?.buttonColor}` : "transparent", color: index === 0 ? `${data?.button?.textColor}` : "black", padding: "5px 10px", borderRadius: "10px", cursor: "pointer" }}>
                                                         {_}
                                                     </div>
                                                 ))}
-                                            </div>
-                                            <div style={{ display: "flex", gap: "1.5rem", border: "1px solid black", borderRadius: "10px", padding: "10px", width: "fit-content", cursor: "pointer" }}>
-                                                <span style={{ fontSize: "25px", lineHeight: "15px" }}>−</span>
-                                                <p style={{ fontSize: "20px" }}>1</p>
-                                                <span style={{ fontSize: "25px", lineHeight: "15px" }}>+</span>
                                             </div>
                                             <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%" }}>
                                                 Add to cart
@@ -435,26 +430,26 @@ function Frequently() {
                                         }}>Frequently bought together</p>
                                         <div style={{ display: "flex", gap: "1.5rem" }}>
                                             <div style={{ display: "flex", gap: "30px" }}>
-                                                {[
-                                                    "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch10.jpg?v=1758272181",
-                                                    "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch9.webp?v=1758272181",
-                                                    "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch2.webp?v=1758271387",
+                                                {[{ name: "Minimalist Silver Mesh Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch10.jpg?v=1758272181', price: "$84.00" }, { name: "Gold-Tone Dress Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch9.webp?v=1758272181', price: "$112.00" }, { name: "Automatic Skeleton Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch2.webp?v=1758271387', price: "$156.00" }
                                                 ].map((imgSrc, index, arr) => (
                                                     <div key={index} style={{ width: "150px" }}>
                                                         <div style={{ flex: "0 0 auto" }}>
                                                             <div style={{ display: "flex", alignItems: "center", position: "relative" }}>
                                                                 <img
-                                                                    src={imgSrc}
+                                                                    src={imgSrc?.image}
                                                                     width="150px"
                                                                     height="150px"
                                                                     style={{ borderRadius: data.border.borderRadius, border: `${data.border.borderWidth}px solid ${data.border.color}` }}
                                                                 />
+                                                                <div style={{ position: "absolute", top: "6px", right: "0px" }}>
+                                                                    <Checkbox checked={index === 0} />
+                                                                </div>
                                                                 {index !== arr.length - 1 && (
                                                                     <p style={{ fontSize: "1.5rem", fontWeight: "bold", margin: "0px -10px", position: "absolute", right: "-13px", color: data.title.fontColor }}>+</p>
                                                                 )}
                                                             </div>
-                                                            <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", color: data.title.fontColor }}>Product #{index + 1}</p>
-                                                            <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "5px", color: data.title.fontColor }}>$10.00</p>
+                                                            <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", color: data.title.fontColor }}>{imgSrc?.name}</p>
+                                                            <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "5px", color: data.title.fontColor }}>{imgSrc?.price}</p>
                                                         </div>
                                                         <div style={{ backgroundColor: data.variants.background_color, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px" }}>
                                                             <p style={{ fontWeight: "500" }}>Select Variant</p>
@@ -468,7 +463,7 @@ function Frequently() {
                                             <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "150px" }}>
                                                 <div style={{ display: "flex", gap: '7px' }}>
                                                     <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: "500" }}>Total: </p>
-                                                    <div style={{ display: 'flex' }}>
+                                                    <div style={{ display: 'flex' }}>   
                                                         <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$30.00</p>
                                                         <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$35.00</p>
                                                     </div>
