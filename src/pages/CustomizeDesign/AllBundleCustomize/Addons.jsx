@@ -39,6 +39,8 @@ function Addons() {
             border_color: "#7a26bf"
         },
         button: {
+            width: 100,
+            height: 45,
             buttonColor: "#7a26bf",
             textColor: "#FFFFFF",
         },
@@ -213,6 +215,28 @@ function Addons() {
             icon: ButtonIcon,
             content: (
                 <>
+                    <RangeSlider
+                        label="Button Width"
+                        min={10}
+                        max={100}
+                        value={data?.button?.width}
+                        onChange={(value) =>
+                            handleChangeValue("button", "width", value)
+                        }
+                        output
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    <RangeSlider
+                        label="Button Height"
+                        min={10}
+                        max={100}
+                        value={data?.button?.height}
+                        onChange={(value) =>
+                            handleChangeValue("button", "height", value)
+                        }
+                        output
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
                     <ColorPickerPopover
                         lable="Button color"
                         color={data.button.buttonColor}
@@ -256,6 +280,8 @@ function Addons() {
                 border_color: data.variants.border_color
             },
             button: {
+                width: data.button.width,
+                height: data.button.height,
                 buttonColor: data.button.buttonColor,
                 textColor: data.button.textColor,
             },
@@ -448,7 +474,9 @@ function Addons() {
                                                     </div>
                                                 ))}
                                             </div>
-                                            <button style={{ marginTop: "20px", backgroundColor: data?.button?.buttonColor, color: data.button.textColor, cursor: "pointer", width: "100%", borderRadius: "10px", padding: "8px", border: "none" }}>Add to cart</button>
+                                            <div style={{ display: "flex", justifyContent: "center" }}>
+                                                <button style={{ marginTop: "20px", backgroundColor: data?.button?.buttonColor, color: data.button.textColor, cursor: "pointer", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, borderRadius: "10px", padding: "8px", border: "none", fontWeight: "500", fontSize: `${data.title.fontSize + 3}px` }}>Add to cart</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </>
@@ -515,9 +543,11 @@ function Addons() {
                                     <div style={{ margin: "10px -10px" }}>
                                         <Divider borderColor="border-hover" />
                                     </div>
-                                    <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", marginTop: "2px" }}>
-                                        Add to cart
-                                    </button>
+                                    <div style={{ display: "flex", justifyContent: "center" }}>
+                                        <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize + 3}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, marginTop: "2px" }}>
+                                            Add to cart
+                                        </button>
+                                    </div>
 
                                     <div style={{ display: "flex", justifyContent: "end", margin: "10px 0px", position: "absolute", top: "-45px", right: "0px" }}>
                                         <Button icon={XIcon} variant='secondary'></Button>

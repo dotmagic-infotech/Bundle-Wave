@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Divider, Select, ButtonGroup, Button } from "@shopify/polaris";
-import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ChevronDownIcon, ColorIcon, PlusIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
+import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ChevronDownIcon, ColorIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
@@ -46,6 +46,8 @@ function Fixedbundle() {
     button: {
       buttonColor: "#7a26bf",
       textColor: "#ffffff",
+      height: 45,
+      width: 100,
     },
   });
 
@@ -250,6 +252,28 @@ function Fixedbundle() {
       icon: ButtonIcon,
       content: (
         <>
+          <RangeSlider
+            label="Button Width"
+            min={10}
+            max={100}
+            value={data?.button?.width}
+            onChange={(value) =>
+              handleChangeValue("button", "width", value)
+            }
+            output
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+          <RangeSlider
+            label="Button Height"
+            min={10}
+            max={100}
+            value={data?.button?.height}
+            onChange={(value) =>
+              handleChangeValue("button", "height", value)
+            }
+            output
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
           <ColorPickerPopover
             lable="Button color"
             color={data.button.buttonColor}
@@ -297,6 +321,8 @@ function Fixedbundle() {
         border_color: data.variants.border_color
       },
       button: {
+        width: data.button.width,
+        height: data.button.height,
         buttonColor: data.button.buttonColor,
         textColor: data.button.textColor
       }
@@ -445,7 +471,7 @@ function Fixedbundle() {
                     </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
-                    <p style={{ fontSize: "25px", fontWeight: "700" }}>Elegant Earrings Bundle</p>
+                    <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal" }}>Elegant Earrings Bundle</p>
                     <div style={{ display: "flex", justifyContent: "space-between", }}>
                       <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>
                       <p style={{ fontSize: "20px", fontWeight: "600" }}>$72.00</p>
@@ -487,16 +513,18 @@ function Fixedbundle() {
                       </div>
                     </div>
                     <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Elevate your style with our elegant earring collection – from timeless gold hoops for everyday wear, to minimalist sterling silver studs for a classic touch, and sparkling rose gold drop earrings perfect for special occasions. Designed for comfort, crafted with quality materials, and made to suit every outfit.</p>
-                    <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
-                      Add bundle to cart | Save 20%
-                    </button>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, }}>
+                        Add bundle to cart | Save 20%
+                      </button>
+                    </div>
                   </div>
                 </div>
               ) : data.selectDisplay.type === "included_product_page" ? (
                 <div style={{ display: "flex", flexDirection: "column", width: "50%" }}>
                   <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "12px", borderRadius: `${data.border.borderRadius}px`, display: "flex", flexDirection: "column", gap: "1rem", backgroundColor: data?.background?.background_type === "colored" ? data.background.background_color : "transparent", color: data.title.fontColor, }}>
                     <p style={{
-                      fontSize: "25px", fontWeight: "700", textAlign:
+                      fontSize: "25px", fontWeight: "700", lineHeight: "normal", textAlign:
                         data.tite_alignment.alignment === "left"
                           ? "start"
                           : data.tite_alignment.alignment === "center"
@@ -556,7 +584,7 @@ function Fixedbundle() {
             </div>
           </Card>
         </div>
-      </Grid.Cell >
+      </Grid.Cell>
     </Grid >
   );
 }

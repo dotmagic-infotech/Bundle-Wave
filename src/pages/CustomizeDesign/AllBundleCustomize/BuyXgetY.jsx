@@ -36,6 +36,8 @@ function BuyXgetY() {
       border_color: "#7a26bf"
     },
     button: {
+      width: 100,
+      height: 45,
       buttonColor: "#7a26bf",
       textColor: "#FFFFFF",
     },
@@ -179,6 +181,28 @@ function BuyXgetY() {
       icon: ButtonIcon,
       content: (
         <>
+          <RangeSlider
+            label="Button Width"
+            min={10}
+            max={100}
+            value={data?.button?.width}
+            onChange={(value) =>
+              handleChangeValue("button", "width", value)
+            }
+            output
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+          <RangeSlider
+            label="Button Height"
+            min={10}
+            max={100}
+            value={data?.button?.height}
+            onChange={(value) =>
+              handleChangeValue("button", "height", value)
+            }
+            output
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
           <ColorPickerPopover
             lable="Button color"
             color={data.button.buttonColor}
@@ -214,6 +238,8 @@ function BuyXgetY() {
         borderRadius: 10,
       },
       button: {
+        width: data.button.width,
+        height: data.button.height,
         buttonColor: data?.button?.buttonColor,
         textColor: data?.button?.textColor,
       },
@@ -450,9 +476,11 @@ function BuyXgetY() {
                       </div>
                     </div>
                     <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Choose any 2 earrings from our collection and get a special bundle deal! Buy X Get Y your favorites to create the perfect set.</p>
-                    <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
-                      Add to cart
-                    </button>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, }}>
+                        Add to cart
+                      </button>
+                    </div>
                   </div>
                 </div>
               ) : data.selectDisplay.type === "pop_up" ? (
@@ -514,9 +542,11 @@ function BuyXgetY() {
                   <div style={{ margin: "10px -10px" }}>
                     <Divider borderColor="border-hover" />
                   </div>
-                  <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", marginTop: "20px" }}>
-                    Add to cart
-                  </button>
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, marginTop: "20px" }}>
+                      Add to cart
+                    </button>
+                  </div>
 
                   <div style={{ display: "flex", justifyContent: "end", margin: "10px 0px", position: "absolute", top: "-45px", right: "0px" }}>
                     <Button icon={XIcon} variant='secondary'></Button>

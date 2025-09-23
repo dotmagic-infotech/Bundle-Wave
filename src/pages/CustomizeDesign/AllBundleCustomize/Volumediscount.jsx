@@ -40,6 +40,8 @@ function Volumediscount() {
             border_color: "#000000"
         },
         button: {
+            width: 100,
+            height: 45,
             buttonColor: "#7a26bf",
             textColor: "#ffffff",
         },
@@ -213,6 +215,28 @@ function Volumediscount() {
             icon: ButtonIcon,
             content: (
                 <>
+                    <RangeSlider
+                        label="Button Width"
+                        min={10}
+                        max={100}
+                        value={data?.button?.width}
+                        onChange={(value) =>
+                            handleChangeValue("button", "width", value)
+                        }
+                        output
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    <RangeSlider
+                        label="Button Height"
+                        min={10}
+                        max={100}
+                        value={data?.button?.height}
+                        onChange={(value) =>
+                            handleChangeValue("button", "height", value)
+                        }
+                        output
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
                     <ColorPickerPopover
                         lable="Button color"
                         color={data.button.buttonColor}
@@ -256,6 +280,8 @@ function Volumediscount() {
                 border_color: data.variants.border_color
             },
             button: {
+                width: data.button.width,
+                height: data.button.height,
                 buttonColor: data.button.buttonColor,
                 textColor: data.button.textColor
             }
@@ -408,9 +434,13 @@ function Volumediscount() {
                                                 </div>
                                             ))}
                                         </div>
-                                        <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", marginTop: "10px" }}>
-                                            Add to cart
-                                        </button>
+                                        <div style={{ display: "flex", justifyContent: "center" }}>
+                                            <button style={{
+                                                backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, marginTop: "10px"
+                                            }}>
+                                                Add to cart
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             ) : null

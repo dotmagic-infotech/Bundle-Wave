@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
-import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, Button, ButtonGroup, Divider, Checkbox } from "@shopify/polaris";
+import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, Button, ButtonGroup, Checkbox } from "@shopify/polaris";
 import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ChevronDownIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon, } from "@shopify/polaris-icons";
 
 // Custom Component
@@ -40,6 +40,8 @@ function Frequently() {
             border_color: "#000000"
         },
         button: {
+            width: 100,
+            height: 45,
             buttonColor: "#7a26bf",
             textColor: "#ffffff",
         },
@@ -213,6 +215,28 @@ function Frequently() {
             icon: ButtonIcon,
             content: (
                 <>
+                    <RangeSlider
+                        label="Button Width"
+                        min={10}
+                        max={100}
+                        value={data?.button?.width}
+                        onChange={(value) =>
+                            handleChangeValue("button", "width", value)
+                        }
+                        output
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    <RangeSlider
+                        label="Button Height"
+                        min={10}
+                        max={100}
+                        value={data?.button?.height}
+                        onChange={(value) =>
+                            handleChangeValue("button", "height", value)
+                        }
+                        output
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
                     <ColorPickerPopover
                         lable="Button color"
                         color={data.button.buttonColor}
@@ -256,6 +280,8 @@ function Frequently() {
                 border_color: data.variants?.border_color
             },
             button: {
+                width: data.button.width,
+                height: data.button.height,
                 buttonColor: data.button?.buttonColor,
                 textColor: data.button?.textColor,
             },
@@ -368,10 +394,7 @@ function Frequently() {
                             ></Banner>
                         </div>
                         <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                marginTop: "1rem",
+                            style={{ display: "flex", justifyContent: "center", marginTop: "1rem",
                                 backgroundColor: data.selectDisplay.type === "pop_up" ? "rgba(117, 115, 115, 0.6)" : "transparent",
                                 padding: data.selectDisplay.type === "pop_up" ? "55px" : ""
                             }}
@@ -401,7 +424,7 @@ function Frequently() {
                                             </div>
                                         </div>
                                         <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
-                                            <p style={{ fontSize: "25px", fontWeight: "700" }}>Classic Leather Strap Watch</p>
+                                            <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal" }}>Classic Leather Strap Watch</p>
                                             <div style={{ display: "flex", justifyContent: "space-between", }}>
                                                 <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
                                                 <p style={{ fontSize: "20px", fontWeight: "600" }}>$85.00</p>
@@ -413,9 +436,11 @@ function Frequently() {
                                                     </div>
                                                 ))}
                                             </div>
-                                            <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%" }}>
-                                                Add to cart
-                                            </button>
+                                            <div style={{ display: "flex", justifyContent: "center" }}>
+                                                <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize + 3}`, cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, }}>
+                                                    Add to cart
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -463,7 +488,7 @@ function Frequently() {
                                             <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "150px" }}>
                                                 <div style={{ display: "flex", gap: '7px' }}>
                                                     <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: "500" }}>Total: </p>
-                                                    <div style={{ display: 'flex' }}>   
+                                                    <div style={{ display: 'flex' }}>
                                                         <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$30.00</p>
                                                         <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$35.00</p>
                                                     </div>
@@ -478,7 +503,7 @@ function Frequently() {
                                                         cursor: "pointer",
                                                         borderRadius: "10px",
                                                         padding: "8px",
-                                                        width: "100%"
+                                                        width: `${data?.button?.width}%`, height: `${data?.button?.height}px`,
                                                     }}>Add selected to cart</button>
                                                 </div>
                                             </div>

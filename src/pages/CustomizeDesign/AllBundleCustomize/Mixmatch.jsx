@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, Divider, InlineStack, Button, ButtonGroup, Badge } from "@shopify/polaris";
-import { AdjustIcon, AppsFilledIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ChevronRightIcon, ColorIcon, DiscountIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
+import { AdjustIcon, AppsFilledIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ChevronRightIcon, ColorIcon, DiscountIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon } from "@shopify/polaris-icons";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
@@ -52,6 +52,8 @@ function Mixmatch() {
       fontColor: "#ffffff"
     },
     button: {
+      width: 100,
+      height: 45,
       buttonColor: "#000000",
       textColor: "#ffffff",
     },
@@ -325,6 +327,28 @@ function Mixmatch() {
       icon: ButtonIcon,
       content: (
         <>
+          <RangeSlider
+            label="Button Width"
+            min={10}
+            max={100}
+            value={data?.button?.width}
+            onChange={(value) =>
+              handleChangeValue("button", "width", value)
+            }
+            output
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+          <RangeSlider
+            label="Button Height"
+            min={10}
+            max={100}
+            value={data?.button?.height}
+            onChange={(value) =>
+              handleChangeValue("button", "height", value)
+            }
+            output
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
           <ColorPickerPopover
             lable="Button color"
             color={data.button.buttonColor}
@@ -380,6 +404,8 @@ function Mixmatch() {
         fontColor: data.badge_selectore.fontColor
       },
       button: {
+        width: data.button.width,
+        height: data.button.height,
         buttonColor: data.button.buttonColor,
         textColor: data.button.textColor,
       },
@@ -563,9 +589,11 @@ function Mixmatch() {
                         <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>Total</p>
                         <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$45.00</p>
                       </div>
-                      <button style={{
-                        backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "12px", width: "100%"
-                      }}>Add to cart</button>
+                      <div style={{ display: "flex", justifyContent: "center" }}>
+                        <button style={{
+                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "12px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`,
+                        }}>Add to cart</button>
+                      </div>
                     </div>
                     :
                     <div style={{
@@ -651,9 +679,11 @@ function Mixmatch() {
                           ))}
                         </div>
                       </InlineStack>
-                      <button style={{
-                        backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "12px", width: "100%", marginTop: "20px"
-                      }}>Go to Bundle Builder</button>
+                      <div style={{ display: "flex", justifyContent: "center" }}>
+                        <button style={{
+                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "12px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, marginTop: "20px"
+                        }}>Go to Bundle Builder</button>
+                      </div>
                     </div>
                   }
                 </>
@@ -728,9 +758,11 @@ function Mixmatch() {
                             </div>
                           </div>
                           <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px" }}>✨ Buy more, save more! Pick your favorite earrings and create a custom set while enjoying bigger discounts for multiple pairs.</p>
-                          <button style={{
-                            marginTop: "10px", backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%"
-                          }}>Add to cart</button>
+                          <div style={{ display: "flex", justifyContent: "center" }}>
+                            <button style={{
+                              marginTop: "10px", backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`,
+                            }}>Add to cart</button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -785,9 +817,11 @@ function Mixmatch() {
                         </div>
                         <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Pick any 2 earrings from our curated collection and create your perfect mix & match set.<br />
                           If you want, I can also insert this directly into your React bundle component so it shows under the main title. Do you want me to do that?</p>
-                        <button style={{
-                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%"
-                        }}>Add to cart</button>
+                        <div style={{ display: "flex", justifyContent: "center" }}>
+                          <button style={{
+                            backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`,
+                          }}>Add to cart</button>
+                        </div>
                       </div>
                     </div>
                   }
