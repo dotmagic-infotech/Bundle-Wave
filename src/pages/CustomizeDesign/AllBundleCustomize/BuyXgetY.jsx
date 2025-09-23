@@ -32,6 +32,7 @@ function BuyXgetY() {
       borderRadius: 10,
     },
     variants: {
+      type: "color_swatch",
       background_color: "#FFFFFF",
       border_color: "#7a26bf"
     },
@@ -82,7 +83,7 @@ function BuyXgetY() {
               { label: "Main product page", value: "main_product_page" },
               { label: "Pop-up", value: "pop_up", },
             ]}
-            value={data.selectDisplay.type}
+            value={data?.selectDisplay?.type}
             onChange={(value) =>
               handleChangeValue("selectDisplay", "type", value)
             }
@@ -158,14 +159,30 @@ function BuyXgetY() {
       icon: VariantIcon,
       content: (
         <>
-          <ColorPickerPopover
-            lable="Background Color"
-            color={data.variants?.background_color}
-            onChange={(color) =>
-              handleChangeValue("variants", "background_color", color)
+          <Select
+            label="Select Variant Type"
+            options={[
+              { label: "Color Swatch", value: "color_swatch" },
+              { label: "Dropdown", value: "dropdown" },
+            ]}
+            value={data?.variants?.type}
+            onChange={(value) =>
+              handleChangeValue("variants", "type", value)
             }
           />
           <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+          {data?.variants?.type === "dropdown" &&
+            <>
+              <ColorPickerPopover
+                lable="Background Color"
+                color={data?.variants?.background_color}
+                onChange={(color) =>
+                  handleChangeValue("variants", "background_color", color)
+                }
+              />
+              <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+            </>
+          }
           <ColorPickerPopover
             lable="Border Color"
             color={data.variants?.border_color}
@@ -226,7 +243,7 @@ function BuyXgetY() {
   const handleSubmit = async () => {
     const passData = {
       selectDisplay: {
-        type: data.selectDisplay.type,
+        type: data?.selectDisplay.type,
       },
       title: {
         fontSize: data.title.fontSize,
@@ -236,6 +253,11 @@ function BuyXgetY() {
         color: data.border.color,
         borderWidth: data.border.borderWidth,
         borderRadius: 10,
+      },
+      variants: {
+        type: data.variants.type,
+        background_color: data.variants?.background_color,
+        border_color: data.variants?.border_color
       },
       button: {
         width: data.button.width,
@@ -258,6 +280,12 @@ function BuyXgetY() {
       shopify.toast.show(`Failed to Update Customization Buy X Get Y`);
     }
   }
+
+  const products = [
+    { name: "18k Pedal Ring", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771", price: "$45.00", color: ["#b76e79", "#c0c0c0", "#ffd700"], },
+    { name: "18k Dangling Pendant Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-dangling-pendant-earrings_17e71027-81d8-4a49-a455-2e5c205963ee.jpg?v=1758263763", price: "$22.00", color: ["#c0c0c0", "#ffd700"] },
+    { name: "18k Bloom Pendant", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-bloom-pendant.jpg?v=1758263772", price: "$25.00", color: ["#b76e79", "#c0c0c0", "#ffd700"] }
+  ];
 
   return (
     <Grid gap={100}>
@@ -362,8 +390,8 @@ function BuyXgetY() {
                 display: "flex",
                 justifyContent: "center",
                 marginTop: "1rem",
-                backgroundColor: data.selectDisplay.type === "pop_up" ? "rgba(117, 115, 115, 0.6)" : "transparent",
-                padding: data.selectDisplay.type === "pop_up" ? "55px" : ""
+                backgroundColor: data?.selectDisplay.type === "pop_up" ? "rgba(117, 115, 115, 0.6)" : "transparent",
+                padding: data?.selectDisplay.type === "pop_up" ? "55px" : ""
               }}
             >
               {data?.selectDisplay?.type === "main_product_page" ? (
@@ -396,7 +424,7 @@ function BuyXgetY() {
                     </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
-                    <p style={{ fontSize: "25px", fontWeight: "700" }}>🎁 Buy 2 Earrings Bundle</p>
+                    <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal", }}>🎁 Buy 2 Earrings Bundle</p>
                     <div style={{ display: "flex", justifyContent: "space-between", }}>
                       <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
                       <p style={{ fontSize: "20px", fontWeight: "600" }}>$92.00</p>
@@ -404,9 +432,7 @@ function BuyXgetY() {
                     <Divider borderColor="border-hover" />
                     <div style={{ backgroundColor: "white", width: "100%", height: "auto", display: "flex", flexDirection: "column", gap: "10px" }}>
                       <div style={{ border: `${data?.border?.borderWidth}px solid ${data?.border?.color}`, padding: "10px", borderRadius: `${data?.border?.borderRadius}px` }}>
-                        {[{ name: "18k Pedal Ring", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771", price: "$45.00" }, {
-                          name: "18k Dangling Pendant Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-dangling-pendant-earrings_17e71027-81d8-4a49-a455-2e5c205963ee.jpg?v=1758263763", price: "$22.00"
-                        }, { name: "18k Bloom Pendant", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-bloom-pendant.jpg?v=1758263772", price: "$25.00" }].map((_, index, arr) => (
+                        {products.map((_, index, arr) => (
                           <div key={index}>
                             <div style={{ display: "flex", gap: "10px" }}>
                               <img
@@ -420,13 +446,33 @@ function BuyXgetY() {
                                 <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
                               </div>
                             </div>
-                            <div style={{
-                              backgroundColor: `${data?.variants?.background_color}`,
-                              border: `1px solid ${data?.variants?.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
-                            }}>
-                              <p style={{ fontWeight: "500" }}>Size / Color / Type</p>
-                              <div><Icon source={ChevronDownIcon} /></div>
-                            </div>
+                            {data?.variants?.type === "dropdown" ? (
+                              <div
+                                style={{
+                                  backgroundColor: `${data?.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
+                                }}
+                              >
+                                <p style={{ fontWeight: "500" }}>Select Variant</p>
+                                <div><Icon source={ChevronDownIcon} /></div>
+                              </div>
+                            ) : (
+                              <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
+                                {_?.color.map((v, i) => (
+                                  <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
+                                    <div
+                                      style={{
+                                        width: "20px",
+                                        height: "20px",
+                                        borderRadius: "50%",
+                                        backgroundColor: v,
+                                        cursor: "pointer",
+                                      }}
+                                      title={v}
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                             {index !== arr.length - 1 && (
                               <div style={{ margin: "10px 0px" }}>
                                 <Divider borderColor="border-hover" />
@@ -440,9 +486,26 @@ function BuyXgetY() {
                         <button disabled style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, cursor: "pointer", width: "40px", height: "40px", borderRadius: "50%", padding: "8px 8px 16px", fontWeight: 500, fontSize: "33px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1, }}>+</button>
                       </div>
 
-                      <div style={{ border: `${data?.border?.borderWidth}px solid ${data?.border?.color}`, padding: "10px", borderRadius: `${data?.border?.borderRadius}px` }}>
-                        {[{ name: "18k Solid Bloom Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758", price: "$20.00" }].map((_, index, arr) => (
-                          <div key={index}>
+                      <div style={{ border: `${data?.border?.borderWidth}px solid ${data?.border?.color}`, padding: "10px", borderRadius: `${data?.border?.borderRadius}px`, overflow: "hidden" }}>
+                        {[{ name: "18k Solid Bloom Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758", price: "$20.00", color: ["#c0c0c0"] }].map((_, index, arr) => (
+                          <div key={index} style={{ position: "relative" }}>
+                            <div style={{
+                              position: "absolute",
+                              top: "-3px",
+                              right: "-32px",
+                              width: "90px",
+                              height: "23px",
+                              transform: "rotate(38deg)",
+                              backgroundColor: `${data?.button?.buttonColor}`,
+                              color: `${data?.button?.textColor}`,
+                              padding: "10px",
+                              fontWeight: 600,
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}>
+                              Free
+                            </div>
                             <div style={{ display: "flex", gap: "10px" }}>
                               <img
                                 src={_?.image}
@@ -455,17 +518,33 @@ function BuyXgetY() {
                                 <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
                               </div>
                             </div>
-                            <div style={{
-                              backgroundColor: `${data?.variants?.background_color}`,
-                              border: `1px solid ${data.variants?.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
-                            }}>
-                              <p style={{ fontWeight: "500" }}>
-                                Size / Color / Type
-                              </p>
-                              <div>
-                                <Icon source={ChevronDownIcon} />
+                            {data?.variants?.type === "dropdown" ? (
+                              <div
+                                style={{
+                                  backgroundColor: `${data?.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
+                                }}
+                              >
+                                <p style={{ fontWeight: "500" }}>Select Variant</p>
+                                <div><Icon source={ChevronDownIcon} /></div>
                               </div>
-                            </div>
+                            ) : (
+                              <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
+                                {_?.color.map((v, i) => (
+                                  <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
+                                    <div
+                                      style={{
+                                        width: "20px",
+                                        height: "20px",
+                                        borderRadius: "50%",
+                                        backgroundColor: v,
+                                        cursor: "pointer",
+                                      }}
+                                      title={v}
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                             {index !== arr.length - 1 && (
                               <div style={{ margin: "10px 0px" }}>
                                 <Divider borderColor="border-hover" />
@@ -483,8 +562,8 @@ function BuyXgetY() {
                     </div>
                   </div>
                 </div>
-              ) : data.selectDisplay.type === "pop_up" ? (
-                <div style={{ backgroundColor: "white", borderRadius: "10px", padding: "10px", position: "relative" }}>
+              ) : data?.selectDisplay.type === "pop_up" ? (
+                <div style={{ backgroundColor: "white", width: "400px", borderRadius: "10px", padding: "10px", position: "relative" }}>
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771"
                       style={{ width: "80px", height: "80px", objectFit: "fill", borderColor: `2px solid ${data.border.color}`, borderRadius: "10px" }}
@@ -528,12 +607,26 @@ function BuyXgetY() {
                           </div>
 
                           {index === 1 && (
-                            <div style={{ backgroundColor: `${data?.additional?.variant_backcolor}`, border: `1px solid ${data.border.color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "396px", margin: "10px 0px 0px 35px" }}>
-                              <p style={{ fontWeight: "500" }}>Select Variant</p>
-                              <div>
-                                <Icon source={ChevronDownIcon} />
-                              </div>
-                            </div>
+                            <>
+                              {data?.variants?.type === "dropdown" ? (
+                                <div
+                                  style={{
+                                    backgroundColor: `${data?.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
+                                  }}
+                                >
+                                  <p style={{ fontWeight: "500" }}>Select Variant</p>
+                                  <div><Icon source={ChevronDownIcon} /></div>
+                                </div>
+                              ) : (
+                                <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
+                                  {["#c0c0c0", "#ffd700"].map((v, i) => (
+                                    <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
+                                      <div style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: v, cursor: "pointer" }} />
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </>
                           )}
                         </div>
                       </div>
@@ -543,7 +636,7 @@ function BuyXgetY() {
                     <Divider borderColor="border-hover" />
                   </div>
                   <div style={{ display: "flex", justifyContent: "center" }}>
-                    <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, marginTop: "20px" }}>
+                    <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px` }}>
                       Add to cart
                     </button>
                   </div>

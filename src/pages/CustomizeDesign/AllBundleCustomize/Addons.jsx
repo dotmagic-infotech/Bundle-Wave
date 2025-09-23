@@ -35,6 +35,7 @@ function Addons() {
             borderRadius: 10,
         },
         variants: {
+            type: "color_swatch",
             background_color: "#ffffff",
             border_color: "#7a26bf"
         },
@@ -192,14 +193,30 @@ function Addons() {
             icon: VariantIcon,
             content: (
                 <>
-                    <ColorPickerPopover
-                        lable="Background Color"
-                        color={data.variants.background_color}
-                        onChange={(color) =>
-                            handleChangeValue("variants", "background_color", color)
+                    <Select
+                        label="Select Variant Type"
+                        options={[
+                            { label: "Color Swatch", value: "color_swatch" },
+                            { label: "Dropdown", value: "dropdown" },
+                        ]}
+                        value={data?.variants?.type}
+                        onChange={(value) =>
+                            handleChangeValue("variants", "type", value)
                         }
                     />
                     <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    {data?.variants?.type === "dropdown" &&
+                        <>
+                            <ColorPickerPopover
+                                lable="Background Color"
+                                color={data.variants.background_color}
+                                onChange={(color) =>
+                                    handleChangeValue("variants", "background_color", color)
+                                }
+                            />
+                            <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                        </>
+                    }
                     <ColorPickerPopover
                         lable="Border Color"
                         color={data.variants.border_color}
@@ -276,6 +293,7 @@ function Addons() {
                 borderRadius: data.border.borderRadius,
             },
             variants: {
+                type: data?.variants?.type,
                 background_color: data.variants.background_color,
                 border_color: data.variants.border_color
             },
@@ -300,6 +318,12 @@ function Addons() {
             shopify.toast.show(`Failed to Update Customization Products Add-Ons`);
         }
     };
+
+    const product = [
+        { name: "Classic Leather Strap Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387", price: "$85.00", oprice: "$90.00" },
+        { name: "Stainless Steel Chronograph Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch5.jpg?v=1758271387", price: "$150.00", oprice: "$155.00" },
+        { name: "Minimalist Silver Mesh Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch.webp?v=1758271387", price: "$95.00", oprice: "$100.00" }
+    ];
 
     return (
         <Grid gap={100}>
@@ -445,7 +469,7 @@ function Addons() {
                                             </div>
                                             <p style={{ fontSize: `${data?.title?.fontSize}`, fontWeight: `${data?.title?.fontWeight}`, margin: '10px 0px' }}>Complete your look with our exclusive add-ons! Pair your favorite earrings with matching styles for extra sparkle and savings.</p>
                                             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                                                {[{ name: "Classic Leather Strap Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387", price: "$85.00", oprice: "$90.00" }, { name: "Stainless Steel Chronograph Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch5.jpg?v=1758271387", price: "$150.00", oprice: "$155.00" }, { name: "Minimalist Silver Mesh Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch.webp?v=1758271387", price: "$95.00", oprice: "$100.00" }].map((imgSrc, index) => (
+                                                {product.map((imgSrc, index) => (
                                                     <div key={index}>
                                                         <div style={{ border: index === 0 ? `${data.border.borderWidth}px solid red` : `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
                                                             <div style={{ display: "flex", alignItems: "center", }}>
@@ -463,12 +487,26 @@ function Addons() {
                                                             </div>
 
                                                             {index === 0 && (
-                                                                <div style={{ backgroundColor: data.variants.background_color, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", margin: "10px 0px 0px 35px" }}>
-                                                                    <p style={{ fontWeight: "500" }}>Select Variant</p>
-                                                                    <div>
-                                                                        <Icon source={ChevronDownIcon} />
-                                                                    </div>
-                                                                </div>
+                                                                <>
+                                                                    {data?.variants?.type === "dropdown" ? (
+                                                                        <div
+                                                                            style={{
+                                                                                backgroundColor: `${data?.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
+                                                                            }}
+                                                                        >
+                                                                            <p style={{ fontWeight: "500" }}>Select Variant</p>
+                                                                            <div><Icon source={ChevronDownIcon} /></div>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
+                                                                            {["#c0c0c0", "#ffd700"].map((v, i) => (
+                                                                                <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
+                                                                                    <div style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: v, cursor: "pointer" }} />
+                                                                                </div>
+                                                                            ))}
+                                                                        </div>
+                                                                    )}
+                                                                </>
                                                             )}
                                                         </div>
                                                     </div>
@@ -511,7 +549,7 @@ function Addons() {
                                     </div>
                                     <p style={{ fontSize: `${data?.title?.fontSize}`, fontWeight: `${data?.title?.fontWeight}`, margin: '10px 0px' }}>Complete your look with our exclusive add-ons! Pair your favorite earrings<br /> with matching styles for extra sparkle and savings.</p>
                                     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                                        {[{ name: "Classic Leather Strap Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387", price: "$85.00", oprice: "$90.00" }, { name: "Stainless Steel Chronograph Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch5.jpg?v=1758271387", price: "$150.00", oprice: "$155.00" }, { name: "Minimalist Silver Mesh Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch.webp?v=1758271387", price: "$95.00", oprice: "$100.00" }].map((imgSrc, index) => (
+                                        {product.map((imgSrc, index) => (
                                             <div key={index}>
                                                 <div style={{ border: index === 1 ? `${data.border.borderWidth}px solid red` : `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
                                                     <div style={{ display: "flex", alignItems: "center", }}>
@@ -529,12 +567,26 @@ function Addons() {
                                                     </div>
 
                                                     {index === 1 && (
-                                                        <div style={{ backgroundColor: `${data?.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "396px", margin: "10px 0px 0px 35px" }}>
-                                                            <p style={{ fontWeight: "500" }}>Select Variant</p>
-                                                            <div>
-                                                                <Icon source={ChevronDownIcon} />
-                                                            </div>
-                                                        </div>
+                                                        <>
+                                                            {data?.variants?.type === "dropdown" ? (
+                                                                <div
+                                                                    style={{
+                                                                        backgroundColor: `${data?.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
+                                                                    }}
+                                                                >
+                                                                    <p style={{ fontWeight: "500" }}>Select Variant</p>
+                                                                    <div><Icon source={ChevronDownIcon} /></div>
+                                                                </div>
+                                                            ) : (
+                                                                <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
+                                                                    {["#c0c0c0", "#ffd700"].map((v, i) => (
+                                                                        <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
+                                                                            <div style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: v, cursor: "pointer" }} />
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </>
                                                     )}
                                                 </div>
                                             </div>

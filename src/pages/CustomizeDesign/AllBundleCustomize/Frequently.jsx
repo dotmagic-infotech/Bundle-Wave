@@ -36,6 +36,7 @@ function Frequently() {
             borderRadius: 10,
         },
         variants: {
+            type: "color_swatch",
             background_color: "#ffffff",
             border_color: "#000000"
         },
@@ -192,14 +193,30 @@ function Frequently() {
             icon: VariantIcon,
             content: (
                 <>
-                    <ColorPickerPopover
-                        lable="Background Color"
-                        color={data.variants.background_color}
-                        onChange={(color) =>
-                            handleChangeValue("variants", "background_color", color)
+                    <Select
+                        label="Select Variant Type"
+                        options={[
+                            { label: "Color Swatch", value: "color_swatch" },
+                            { label: "Dropdown", value: "dropdown" },
+                        ]}
+                        value={data?.variants?.type}
+                        onChange={(value) =>
+                            handleChangeValue("variants", "type", value)
                         }
                     />
                     <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    {data?.variants?.type === "dropdown" &&
+                        <>
+                            <ColorPickerPopover
+                                lable="Background Color"
+                                color={data.variants.background_color}
+                                onChange={(color) =>
+                                    handleChangeValue("variants", "background_color", color)
+                                }
+                            />
+                            <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                        </>
+                    }
                     <ColorPickerPopover
                         lable="Border Color"
                         color={data.variants.border_color}
@@ -276,6 +293,7 @@ function Frequently() {
                 borderRadius: data.border?.borderRadius,
             },
             variants: {
+                type: data?.variants?.type,
                 background_color: data.variants?.background_color,
                 border_color: data.variants?.border_color
             },
@@ -300,6 +318,12 @@ function Frequently() {
             shopify.toast.show(`Failed to Update Customization Frequently Bought Together`);
         }
     }
+
+    const product = [
+        { name: "Minimalist Silver Mesh Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch10.jpg?v=1758272181', price: "$84.00", color: ["#1C1C1C", "#E0115F", "#ffd700"] },
+        { name: "Gold-Tone Dress Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch9.webp?v=1758272181', price: "$112.00", color: ["#E5E4E2", "#1C1C1C", "#ffd700"] },
+        { name: "Automatic Skeleton Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch2.webp?v=1758271387', price: "$156.00", color: ["#c0c0c0", "#9966CC"] }
+    ];
 
     return (
         <Grid gap={100}>
@@ -388,14 +412,11 @@ function Frequently() {
                 <div style={{ marginBottom: "1rem" }}>
                     <Card>
                         <div style={{ display: "flex", justifyContent: "center" }}>
-                            <Banner
-                                title="Preview uses sample content for layout demonstration. Your store's real data will appear after publishing."
-                                tone="warning"
-                            ></Banner>
+                            <Banner title="Preview uses sample content for layout demonstration. Your store's real data will appear after publishing." tone="warning"></Banner>
                         </div>
                         <div
-                            style={{ display: "flex", justifyContent: "center", marginTop: "1rem",
-                                backgroundColor: data.selectDisplay.type === "pop_up" ? "rgba(117, 115, 115, 0.6)" : "transparent",
+                            style={{
+                                display: "flex", justifyContent: "center", marginTop: "1rem", backgroundColor: data.selectDisplay.type === "pop_up" ? "rgba(117, 115, 115, 0.6)" : "transparent",
                                 padding: data.selectDisplay.type === "pop_up" ? "55px" : ""
                             }}
                         >
@@ -430,14 +451,16 @@ function Frequently() {
                                                 <p style={{ fontSize: "20px", fontWeight: "600" }}>$85.00</p>
                                             </div>
                                             <div style={{ display: "flex", gap: "10px" }}>
-                                                {["Black", "Golden", "Red"].map((_, index, arr) => (
+                                                {["Case Material", "Strap", "Dial Color", "Size"].map((_, index, arr) => (
                                                     <div key={index} style={{ border: `2px solid ${data?.border?.color}`, backgroundColor: index === 0 ? `${data?.button?.buttonColor}` : "transparent", color: index === 0 ? `${data?.button?.textColor}` : "black", padding: "5px 10px", borderRadius: "10px", cursor: "pointer" }}>
                                                         {_}
                                                     </div>
                                                 ))}
                                             </div>
                                             <div style={{ display: "flex", justifyContent: "center" }}>
-                                                <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize + 3}`, cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, }}>
+                                                <button style={{
+                                                    backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize + 3}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`,
+                                                }}>
                                                     Add to cart
                                                 </button>
                                             </div>
@@ -455,16 +478,11 @@ function Frequently() {
                                         }}>Frequently bought together</p>
                                         <div style={{ display: "flex", gap: "1.5rem" }}>
                                             <div style={{ display: "flex", gap: "30px" }}>
-                                                {[{ name: "Minimalist Silver Mesh Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch10.jpg?v=1758272181', price: "$84.00" }, { name: "Gold-Tone Dress Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch9.webp?v=1758272181', price: "$112.00" }, { name: "Automatic Skeleton Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch2.webp?v=1758271387', price: "$156.00" }
-                                                ].map((imgSrc, index, arr) => (
+                                                {product.map((imgSrc, index, arr) => (
                                                     <div key={index} style={{ width: "150px" }}>
                                                         <div style={{ flex: "0 0 auto" }}>
                                                             <div style={{ display: "flex", alignItems: "center", position: "relative" }}>
-                                                                <img
-                                                                    src={imgSrc?.image}
-                                                                    width="150px"
-                                                                    height="150px"
-                                                                    style={{ borderRadius: data.border.borderRadius, border: `${data.border.borderWidth}px solid ${data.border.color}` }}
+                                                                <img src={imgSrc?.image} width="150px" height="150px" style={{ borderRadius: data.border.borderRadius, border: `${data.border.borderWidth}px solid ${data.border.color}` }}
                                                                 />
                                                                 <div style={{ position: "absolute", top: "6px", right: "0px" }}>
                                                                     <Checkbox checked={index === 0} />
@@ -476,21 +494,33 @@ function Frequently() {
                                                             <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", color: data.title.fontColor }}>{imgSrc?.name}</p>
                                                             <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "5px", color: data.title.fontColor }}>{imgSrc?.price}</p>
                                                         </div>
-                                                        <div style={{ backgroundColor: data.variants.background_color, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px" }}>
-                                                            <p style={{ fontWeight: "500" }}>Select Variant</p>
-                                                            <div>
-                                                                <Icon source={ChevronDownIcon} />
+                                                        {data?.variants?.type === "dropdown" ? (
+                                                            <div
+                                                                style={{
+                                                                    backgroundColor: `${data.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
+                                                                }}
+                                                            >
+                                                                <p style={{ fontWeight: "500" }}>Select Variant</p>
+                                                                <div><Icon source={ChevronDownIcon} /></div>
                                                             </div>
-                                                        </div>
+                                                        ) : (
+                                                            <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
+                                                                {imgSrc?.color.map((v, i) => (
+                                                                    <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
+                                                                        <div style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: v, cursor: "pointer" }} />
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 ))}
                                             </div>
-                                            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "150px" }}>
+                                            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", minWidth: "150px" }}>
                                                 <div style={{ display: "flex", gap: '7px' }}>
-                                                    <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: "500" }}>Total: </p>
+                                                    <p style={{ fontSize: `${data?.title?.fontSize + 3}px`, fontWeight: "500" }}>Total: </p>
                                                     <div style={{ display: 'flex' }}>
-                                                        <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$30.00</p>
-                                                        <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$35.00</p>
+                                                        <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize + 3}px`, color: data.title.fontColor }}>$30.00</p>
+                                                        <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize + 3}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$35.00</p>
                                                     </div>
                                                 </div>
                                                 <div>
@@ -498,7 +528,7 @@ function Frequently() {
                                                         backgroundColor: data.button.buttonColor,
                                                         border: "none",
                                                         color: data.button.textColor,
-                                                        fontSize: `${data.title.fontSize}px`,
+                                                        fontSize: `${data.title.fontSize + 3}px`,
                                                         fontWeight: "500",
                                                         cursor: "pointer",
                                                         borderRadius: "10px",

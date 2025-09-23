@@ -187,29 +187,29 @@ function Volumediscount() {
                 </>
             ),
         },
-        {
-            label: "Variant and quantity selector",
-            icon: VariantIcon,
-            content: (
-                <>
-                    <ColorPickerPopover
-                        lable="Background Color"
-                        color={data.variants.background_color}
-                        onChange={(color) =>
-                            handleChangeValue("variants", "background_color", color)
-                        }
-                    />
-                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
-                    <ColorPickerPopover
-                        lable="Border Color"
-                        color={data.variants.border_color}
-                        onChange={(color) =>
-                            handleChangeValue("variants", "border_color", color)
-                        }
-                    />
-                </>
-            ),
-        },
+        // {
+        //     label: "Variant and quantity selector",
+        //     icon: VariantIcon,
+        //     content: (
+        //         <>
+        //             <ColorPickerPopover
+        //                 lable="Background Color"
+        //                 color={data.variants.background_color}
+        //                 onChange={(color) =>
+        //                     handleChangeValue("variants", "background_color", color)
+        //                 }
+        //             />
+        //             <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+        //             <ColorPickerPopover
+        //                 lable="Border Color"
+        //                 color={data.variants.border_color}
+        //                 onChange={(color) =>
+        //                     handleChangeValue("variants", "border_color", color)
+        //                 }
+        //             />
+        //         </>
+        //     ),
+        // },
         {
             label: "Button",
             icon: ButtonIcon,
@@ -394,13 +394,13 @@ function Volumediscount() {
                                     </div>
                                     <div style={{ width: "400px" }}>
                                         <p style={{
-                                            fontSize: "25px", fontWeight: "600", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
+                                            fontSize: "25px", fontWeight: "600", color: data.title.fontColor, lineHeight: "normal", textAlign: data.tite_alignment.alignment === "left" ? "start"
                                                 : data.tite_alignment.alignment === "center"
                                                     ? "center"
                                                     : "end"
                                         }}>Rose Gold Drop Earrings</p>
                                         <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
-                                            {["Small", "Medium", "Large"].map((_, index, arr) => (
+                                            {["Gold", "Rose Gold", "White Gold", "Silver"].map((_, index, arr) => (
                                                 <div key={index} style={{ border: `1px solid ${data?.button?.buttonColor}`, padding: "5px 10px", borderRadius: "10px", cursor: "pointer", backgroundColor: index === 0 ? data?.button?.buttonColor : "", color: index === 0 ? data?.button?.textColor : "black" }}>
                                                     {_}
                                                 </div>

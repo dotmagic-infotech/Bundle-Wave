@@ -534,6 +534,7 @@ function Mixmatch() {
                               : "end"
                       }}>Mix and match - Product List</p>
                       <p style={{
+                        fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight,
                         color: data.title.fontColor, textAlign:
                           data.title_alignment.alignment === "left"
                             ? "start"
@@ -626,7 +627,7 @@ function Mixmatch() {
                         Save 10%
                       </div>
                       <p style={{
-                        fontSize: '25px', fontWeight: "700", marginTop: '20px', marginBottom: "10px", color: data.title.fontColor, textAlign:
+                        fontSize: '25px', fontWeight: "700", marginTop: '20px', marginBottom: "10px", color: data.title.fontColor, lineHeight: "normal", textAlign:
                           data.title_alignment.alignment === "left"
                             ? "start"
                             : data.title_alignment.alignment === "center"
@@ -776,7 +777,7 @@ function Mixmatch() {
                         </div>
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem", width: "400px" }}>
-                        <p style={{ fontSize: '25px', fontWeight: "700" }}>Mix & Match - Earrings Collection</p>
+                        <p style={{ fontSize: '25px', fontWeight: "700", lineHeight: "normal", }}>Mix & Match - Earrings Collection</p>
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                           <p style={{ fontSize: '20px', fontWeight: "600" }}>Total Price</p>
                           <p style={{ fontSize: '20px', fontWeight: "600" }}>$72.00</p>

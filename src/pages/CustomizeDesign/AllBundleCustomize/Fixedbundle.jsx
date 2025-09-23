@@ -40,6 +40,7 @@ function Fixedbundle() {
       borderRadius: 10,
     },
     variants: {
+      type: "color_swatch",
       background_color: "#FFFFFF",
       border_color: "#7a26bf"
     },
@@ -229,14 +230,30 @@ function Fixedbundle() {
       icon: VariantIcon,
       content: (
         <>
-          <ColorPickerPopover
-            lable="Background Color"
-            color={data.variants.background_color}
-            onChange={(color) =>
-              handleChangeValue("variants", "background_color", color)
+          <Select
+            label="Select Variant Type"
+            options={[
+              { label: "Color Swatch", value: "color_swatch" },
+              { label: "Dropdown", value: "dropdown" },
+            ]}
+            value={data.variants.type}
+            onChange={(value) =>
+              handleChangeValue("variants", "type", value)
             }
           />
           <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+          {data?.variants?.type === "dropdown" &&
+            <>
+              <ColorPickerPopover
+                lable="Background Color"
+                color={data.variants.background_color}
+                onChange={(color) =>
+                  handleChangeValue("variants", "background_color", color)
+                }
+              />
+              <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+            </>
+          }
           <ColorPickerPopover
             lable="Border Color"
             color={data.variants.border_color}
@@ -317,6 +334,7 @@ function Fixedbundle() {
         borderRadius: data.border.borderRadius
       },
       variants: {
+        type: data.variants.type,
         background_color: data.variants.background_color,
         border_color: data.variants.border_color
       },
@@ -341,6 +359,23 @@ function Fixedbundle() {
       shopify.toast.show(`Failed to Update Customization Fixed Bundle`);
     }
   }
+
+  const products = [
+    {
+      name: "Sterling Silver Stud Earrings",
+      image:
+        "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766",
+      price: "$30.00",
+      color: ["#b76e79", "#c0c0c0", "#ffd700"],
+    },
+    {
+      name: "Rose Gold Drop Earrings",
+      image:
+        "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758",
+      price: "$42.00",
+      color: ["#c0c0c0", "#ffd700"],
+    },
+  ];
 
   return (
     <Grid gap={100}>
@@ -447,7 +482,7 @@ function Fixedbundle() {
                 marginTop: "1rem",
               }}
             >
-              {data.selectDisplay.type === "product_page" ? (
+              {data?.selectDisplay?.type === "product_page" ? (
                 <div style={{ display: "flex", gap: "15px" }}>
                   <div style={{ maxWidth: "400px" }}>
                     <img
@@ -479,7 +514,7 @@ function Fixedbundle() {
                     <Divider borderColor="border-hover" />
                     <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
                       <div>
-                        {[{ name: "Sterling Silver Stud Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766", price: "$30.00" }, { name: "Rose Gold Drop Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758", price: "$42.00" }].map((_, index, arr) => (
+                        {products.map((_, index, arr) => (
                           <div key={index}>
                             <div style={{ display: "flex", gap: "10px" }}>
                               <img
@@ -493,18 +528,33 @@ function Fixedbundle() {
                                 <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
                               </div>
                             </div>
-                            <div
-                              style={{
-                                backgroundColor: `${data?.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
-                              }}
-                            >
-                              <p style={{ fontWeight: "500" }}>
-                                Size / Color / Type
-                              </p>
-                              <div>
-                                <Icon source={ChevronDownIcon} />
+                            {data?.variants?.type === "dropdown" ? (
+                              <div
+                                style={{
+                                  backgroundColor: `${data?.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
+                                }}
+                              >
+                                <p style={{ fontWeight: "500" }}>Select Variant</p>
+                                <div><Icon source={ChevronDownIcon} /></div>
                               </div>
-                            </div>
+                            ) : (
+                              <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
+                                {_?.color.map((v, i) => (
+                                  <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
+                                    <div
+                                      style={{
+                                        width: "20px",
+                                        height: "20px",
+                                        borderRadius: "50%",
+                                        backgroundColor: v,
+                                        cursor: "pointer",
+                                      }}
+                                      title={v}
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                             {index !== arr.length - 1 && (
                               <div style={{ margin: "10px 0px" }}> <Divider borderColor="border-hover" /></div>
                             )}
@@ -514,13 +564,13 @@ function Fixedbundle() {
                     </div>
                     <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Elevate your style with our elegant earring collection – from timeless gold hoops for everyday wear, to minimalist sterling silver studs for a classic touch, and sparkling rose gold drop earrings perfect for special occasions. Designed for comfort, crafted with quality materials, and made to suit every outfit.</p>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                      <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, }}>
+                      <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: `${data.title.fontSize + 2}px`, cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, }}>
                         Add bundle to cart | Save 20%
                       </button>
                     </div>
                   </div>
                 </div>
-              ) : data.selectDisplay.type === "included_product_page" ? (
+              ) : data?.selectDisplay?.type === "included_product_page" ? (
                 <div style={{ display: "flex", flexDirection: "column", width: "50%" }}>
                   <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "12px", borderRadius: `${data.border.borderRadius}px`, display: "flex", flexDirection: "column", gap: "1rem", backgroundColor: data?.background?.background_type === "colored" ? data.background.background_color : "transparent", color: data.title.fontColor, }}>
                     <p style={{
@@ -535,7 +585,7 @@ function Fixedbundle() {
                     </p>
 
                     <div style={{ marginTop: "10px" }}>
-                      {[{ name: "Sterling Silver Stud Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766", price: "$30.00" }, { name: "Rose Gold Drop Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758", price: "$42.00" }].map((_, index, arr) => (
+                      {products.map((_, index, arr) => (
                         <div key={index}>
                           <div style={{ display: "flex", gap: "10px" }}>
                             <img
@@ -549,12 +599,33 @@ function Fixedbundle() {
                               <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
                             </div>
                           </div>
-                          <div style={{ backgroundColor: `${data.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px", }}>
-                            <p style={{ fontWeight: "500" }}>Size / Color / Type</p>
-                            <div>
-                              <Icon source={ChevronDownIcon} />
+                          {data?.variants?.type === "dropdown" ? (
+                            <div
+                              style={{
+                                backgroundColor: `${data?.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
+                              }}
+                            >
+                              <p style={{ fontWeight: "500" }}>Select Variant</p>
+                              <div><Icon source={ChevronDownIcon} /></div>
                             </div>
-                          </div>
+                          ) : (
+                            <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
+                              {_?.color.map((v, i) => (
+                                <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
+                                  <div
+                                    style={{
+                                      width: "20px",
+                                      height: "20px",
+                                      borderRadius: "50%",
+                                      backgroundColor: v,
+                                      cursor: "pointer",
+                                    }}
+                                    title={v}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
                           {index !== arr.length - 1 && (
                             <div style={{ marginTop: "15px" }}>
                               <Divider />
@@ -569,7 +640,7 @@ function Fixedbundle() {
                       >Total</p>
                       <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, }}>$72.00</p>
                     </div>
-                    <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize}px`, cursor: "pointer", borderRadius: "10px", padding: "8px", width: "100%", }}>
+                    <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize + 2}px`, cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, }}>
                       Add bundle to cart | Save 20%
                     </button>
                   </div>
