@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
-import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, ButtonGroup, Button, Select, Checkbox, Divider } from "@shopify/polaris";
+import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, ButtonGroup, Button, Select, Divider } from "@shopify/polaris";
 import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ChevronDownIcon, ResetIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon, XIcon } from "@shopify/polaris-icons";
 
 // Custom Component
@@ -23,6 +23,7 @@ function BuyXgetY() {
       type: "main_product_page",
     },
     title: {
+      fontColor: "#000000",
       fontSize: 14,
       fontWeight: 400,
     },
@@ -96,6 +97,12 @@ function BuyXgetY() {
       icon: TextGrammarIcon,
       content: (
         <>
+          <ColorPickerPopover
+            lable="Font color"
+            color={data.title.fontColor}
+            onChange={(color) => handleChangeValue("title", "fontColor", color)}
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
           <RangeSlider
             label="Font Size"
             min={10}
@@ -246,6 +253,7 @@ function BuyXgetY() {
         type: data?.selectDisplay.type,
       },
       title: {
+        fontColor: data.title.fontColor,
         fontSize: data.title.fontSize,
         fontWeight: data.title.fontWeight,
       },
@@ -442,8 +450,8 @@ function BuyXgetY() {
                                 style={{ borderRadius: "10px" }}
                               />
                               <div>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor }}>{_?.name}</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginTop: "10px", }}>{_?.price}</p>
                               </div>
                             </div>
                             {data?.variants?.type === "dropdown" ? (
@@ -514,8 +522,8 @@ function BuyXgetY() {
                                 style={{ borderRadius: "10px" }}
                               />
                               <div>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor }}>{_?.name}</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginTop: "10px", }}>{_?.price}</p>
                               </div>
                             </div>
                             {data?.variants?.type === "dropdown" ? (
@@ -554,7 +562,7 @@ function BuyXgetY() {
                         ))}
                       </div>
                     </div>
-                    <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Choose any 2 earrings from our collection and get a special bundle deal! Buy X Get Y your favorites to create the perfect set.</p>
+                    <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor }}>✨ Choose any 2 earrings from our collection and get a special bundle deal! Buy X Get Y your favorites to create the perfect set.</p>
                     <div style={{ display: "flex", justifyContent: "center" }}>
                       <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, }}>
                         Add to cart
@@ -563,86 +571,72 @@ function BuyXgetY() {
                   </div>
                 </div>
               ) : data?.selectDisplay.type === "pop_up" ? (
-                <div style={{ backgroundColor: "white", width: "400px", borderRadius: "10px", padding: "10px", position: "relative" }}>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771"
-                      style={{ width: "80px", height: "80px", objectFit: "fill", borderColor: `2px solid ${data.border.color}`, borderRadius: "10px" }}
-                    />
-                    <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", height: '65px', justifyContent: "space-around", width: "90%" }}>
-                      <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: "600" }}>18k Pedal Ring</p>
-                      <div style={{ display: 'flex', justifyContent: "space-between", width: "100%" }}>
-                        <div style={{ display: "flex" }}>
-                          <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ $45.00</p>
-                          <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$47.00</p>
-                        </div>
-                        <p style={{ padding: "1px 16px", backgroundColor: `${data?.background?.button_color}`, color: "white", borderRadius: "10px" }}>Added</p>
-                      </div>
-                    </div>
+                <div style={{ backgroundColor: "white", width: "500px", borderRadius: "10px", padding: "10px", position: "relative" }}>
+                  <div style={{ display: "flex", justifyContent: "end", margin: "10px 0px", position: "absolute", top: "-45px", right: "0px" }}>
+                    <Button icon={XIcon} variant='secondary'></Button>
                   </div>
-                  <div style={{ margin: "10px -10px" }}>
-                    <Divider borderColor="border-hover" />
-                  </div>
-                  <p style={{
-                    fontSize: "1rem", fontWeight: "500", margin: "15px 0px", textAlign: "start"
-                  }}>Product add-on</p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                    {[
-                      "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_3.jpg?v=1756097546",
-                      "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Perfume_-_2.jpg?v=1756097545",
-                    ].map((imgSrc, index) => (
-                      <div key={index}>
-                        <div style={{ border: index === 1 ? `${data.border.borderWidth}px solid red` : `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
-                          <div style={{ display: "flex", alignItems: "center", }}>
-                            <Checkbox checked={index === 1} />
-                            <img src={imgSrc}
-                              style={{ width: "65px", height: "65px", marginLeft: "10px", objectFit: "fill", borderRadius: "10px" }}
-                            />
-                            <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                              <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>Product #{index + 2}</p>
-                              <div style={{ display: 'flex' }}>
-                                <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ $20.00</p>
-                                <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$25.00</p>
-                              </div>
+
+                  <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal", marginBottom: "20px" }}>🎁 Buy 2 Earrings Bundle</p>
+
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px", border: "1px solid black", borderRadius: "10px", padding: "18px 10px", position: "relative", marginTop: "10px" }}>
+                    <div style={{ position: "absolute", top: "-10px", left: "16px", borderRadius: "20px", backgroundColor: "#d9e9ff", fontSize: "11px", fontWeight: 600, padding: "0px 10px", }}>Buy from these lists</div>
+                    {[{ name: "18k Pedal Ring", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771", description: "Collections Description" },
+                    { name: "18k Dangling Pendant Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-dangling-pendant-earrings_17e71027-81d8-4a49-a455-2e5c205963ee.jpg?v=1758263763", description: "Product Description" }].map((v, i) => (
+                      <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", padding: "6px", cursor: "pointer" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                          <div style={{ display: "flex" }}>
+                            <img src={v.image} width="60px" height="60px" style={{ objectFit: "fill", borderRadius: "10px" }} />
+                            <div style={{ marginLeft: "10px" }}>
+                              <p style={{ fontSize: `${data?.title?.fontSize + 3}px`, fontWeight: data?.title?.fontWeight, color: data?.title?.fontColor }}>{v.name}</p>
+                              <p style={{ fontSize: `${data?.title?.fontSize}px`, fontWeight: data?.title?.fontWeight, color: data?.title?.fontColor, marginTop: "5px" }}>{v.description}</p>
                             </div>
                           </div>
-
-                          {index === 1 && (
-                            <>
-                              {data?.variants?.type === "dropdown" ? (
-                                <div
-                                  style={{
-                                    backgroundColor: `${data?.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
-                                  }}
-                                >
-                                  <p style={{ fontWeight: "500" }}>Select Variant</p>
-                                  <div><Icon source={ChevronDownIcon} /></div>
-                                </div>
-                              ) : (
-                                <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
-                                  {["#c0c0c0", "#ffd700"].map((v, i) => (
-                                    <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
-                                      <div style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: v, cursor: "pointer" }} />
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            </>
-                          )}
+                          <div>
+                            <span>Selected: 0</span>
+                            <button type="button" style={{ background: "none", border: "none", cursor: "pointer" }}>▼</button>
+                          </div>
                         </div>
                       </div>
                     ))}
                   </div>
+                  <div style={{ display: "flex", justifyContent: "center", margin: "6px 0px" }}>
+                    <button disabled style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, cursor: "pointer", width: "40px", height: "40px", borderRadius: "50%", padding: "8px 8px 16px", fontWeight: 500, fontSize: "33px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1, }}>+</button>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px", border: "1px solid black", borderRadius: "10px", padding: "18px 10px", position: "relative", marginTop: "10px" }}>
+                    <div style={{ position: "absolute", top: "-10px", left: "16px", borderRadius: "20px", backgroundColor: "#c2e7dd", fontSize: "11px", fontWeight: 600, padding: "0px 10px" }}>
+                      Get Free on these lists
+                    </div>
+                    {[{ name: "18k Solid Bloom Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-bloom-pendant.jpg?v=1758263772", description: "Collections Description" },
+                    { name: "18k Bloom Pendant", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758", description: "Product Description" }].map((v, i) => (
+                      <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", padding: "6px", cursor: "pointer", position: "relative" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                          <div style={{ display: "flex" }}>
+                            <img src={v.image} width="60px" height="60px" style={{ objectFit: "fill", borderRadius: "10px" }} />
+                            <div style={{ marginLeft: "10px" }}>
+                              <p style={{ fontSize: `${data?.title?.fontSize + 3}px`, fontWeight: data?.title?.fontWeight, color: data?.title?.fontColor }}>{v.name}</p>
+                              <p style={{ fontSize: `${data?.title?.fontSize}px`, fontWeight: data?.title?.fontWeight, color: data?.title?.fontColor, marginTop: "5px" }}>{v.description}</p>
+                            </div>
+                          </div>
+                          <div>
+                            <span>Selected: 0</span>
+                            <button type="button" style={{ background: "none", border: "none", cursor: "pointer" }}>▼</button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
                   <div style={{ margin: "10px -10px" }}>
                     <Divider borderColor="border-hover" />
+                  </div>
+                  <div style={{ backgroundColor: `#efefef`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%", marginBottom: '10px' }}>
+                    <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>Total</p>
+                    <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$0.00</p>
                   </div>
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px` }}>
                       Add to cart
                     </button>
-                  </div>
-
-                  <div style={{ display: "flex", justifyContent: "end", margin: "10px 0px", position: "absolute", top: "-45px", right: "0px" }}>
-                    <Button icon={XIcon} variant='secondary'></Button>
                   </div>
                 </div>
               ) : null}
@@ -655,8 +649,8 @@ function BuyXgetY() {
             </div>
           </Card>
         </div>
-      </Grid.Cell>
-    </Grid>
+      </Grid.Cell >
+    </Grid >
   );
 }
 

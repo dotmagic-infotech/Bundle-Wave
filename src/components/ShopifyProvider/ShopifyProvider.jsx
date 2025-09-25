@@ -13,7 +13,7 @@ export const ShopifyProvider = ({ children }) => {
     const shopify = useAppBridge();
 
     // State
-    const [shopName, setShopName] = useState("anuj-vadi01.myshopify.com");
+    const [shopName, setShopName] = useState("");
     const [currencyCode, setCurrencyCode] = useState("USD");
     const [currencySymbol, setCurrencySymbol] = useState("$");
 
