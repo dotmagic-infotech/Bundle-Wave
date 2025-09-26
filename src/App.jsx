@@ -14,6 +14,7 @@ import './App.css'
 import Home from './pages/Home'
 import BundleTable from './pages/Bundles/components/BundleTable';
 import BundleList from './pages/Bundles/BundleList';
+// import BundleListCopy from './pages/Bundles/BundleListCopyy';
 import Analytics from './pages/Analytics/Analytics';
 import BundleFixed from './pages/Bundles/components/BundleFixed';
 import BundleMixMatch from './pages/Bundles/components/BundleMixMatch';
@@ -46,7 +47,7 @@ function App() {
       <NavMenu>
         <Link to="/" rel="home">Home</Link>
         <Link to="/bundles" rel='bundle'>Bundles</Link>
-        <Link to="/customization" rel='Customization'>Customization</Link>
+        <Link to="/customization/fixedbundle" rel='Customization'>Customization</Link>
         <Link to="/analytics" rel='Analytics'>Analytics</Link>
         <Link to="/settings" rel='settings'>Settings</Link>
         <Link to="/plans" rel='plans'>Subscription</Link>
@@ -60,9 +61,11 @@ function App() {
 
         {/* Bundle  */}
         <Route path="/bundles" element={<BundleTable />} />
+        {/* <Route path="/bundlesList" element={<BundleListCopyy />} /> */}
         <Route path="/bundlesList" element={<BundleList />} />
+
         <Route path="/analytics" element={metaData?.analytics === "1" ? <Analytics /> : <NotAccess />} />
-        <Route path="/customization" element={metaData?.customization === "1" ? <CustomizeDesign /> : <NotAccess />} />
+        <Route path="/customization/:name" element={metaData?.customization === "1" ? <CustomizeDesign /> : <NotAccess />} />
 
         <Route path="/bundlesList/fixed_bundle" element={<BundleFixed />} />
         <Route path="/bundlesList/fixed_bundle/edit/:id" element={<BundleFixed />} />

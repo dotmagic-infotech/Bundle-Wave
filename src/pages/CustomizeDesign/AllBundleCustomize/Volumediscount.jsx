@@ -413,7 +413,7 @@ function Volumediscount() {
                                         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                                             {[{ oPrice: "$22.00", price: "$20.00", discount: "20" }, { oPrice: "$32.00", price: "$30.00", discount: "30" }, { oPrice: "$55.00", price: "$50.00", discount: "50" }].map((_, index) => (
                                                 <div key={index}>
-                                                    <div style={{ border: `${data.border.borderWidth}px solid ${index === 0 ? "red" : data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "16px 12px", backgroundColor: "transparent", position: "relative" }}>
+                                                    <div style={{ border: `${data.border.borderWidth}px solid ${index === 0 ? data.border.color : "black"}`, borderRadius: `${data.border.borderRadius}px`, padding: "16px 12px", backgroundColor: "transparent", position: "relative" }}>
                                                         {index === 2 &&
                                                             <div style={{
                                                                 width: "fit-content", backgroundColor: data?.button?.buttonColor, color: "white", padding: "1px 6px", borderRadius: "5px", position: "absolute", top: "-10px", right: "20px", fontWeight: 600, fontSize: "11px",

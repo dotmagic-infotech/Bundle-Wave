@@ -471,7 +471,7 @@ function Addons() {
                                             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                                                 {product.map((imgSrc, index) => (
                                                     <div key={index}>
-                                                        <div style={{ border: index === 0 ? `${data.border.borderWidth}px solid red` : `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
+                                                        <div style={{ border: index === 0 ? `${data.border.borderWidth}px solid ${data.border.color}` : `${data.border.borderWidth}px solid black`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
                                                             <div style={{ display: "flex", alignItems: "center", }}>
                                                                 <Checkbox checked={index === 0} />
                                                                 <img src={imgSrc?.image}
@@ -551,7 +551,7 @@ function Addons() {
                                     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                                         {product.map((imgSrc, index) => (
                                             <div key={index}>
-                                                <div style={{ border: index === 1 ? `${data.border.borderWidth}px solid red` : `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
+                                                <div style={{ border: index === 1 ? `${data.border.borderWidth}px solid ${data.border.color}` : `${data.border.borderWidth}px solid black`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
                                                     <div style={{ display: "flex", alignItems: "center", }}>
                                                         <Checkbox checked={index === 1} />
                                                         <img src={imgSrc?.image}

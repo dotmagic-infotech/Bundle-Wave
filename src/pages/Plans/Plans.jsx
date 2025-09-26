@@ -176,24 +176,22 @@ const Plans = () => {
 
   const testimonials = [
     {
-      name: "Virat Kohli",
+      name: "John Doe",
       rating: 5,
-      review:
-        "Very impressed with the bundle wave app. We had been looking for a long time for an app that allowed the individual SKUs to pull into our inventory management system.",
+      review: "This app makes managing bundles incredibly simple and efficient. I can track everything easily without any hassle.",
     },
     {
-      name: "Narendra Modi",
+      name: "Jane Smith",
       rating: 4,
-      review:
-        "This app is a game-changer! It has helped streamline our processes and improve efficiency in a way we never imagined. Very impressed with the bundle wave app.",
+      review: "A very well-designed app that helps me organize my products and bundles. It has improved my workflow significantly.",
     },
     {
-      name: "Elon Musk",
-      rating: 2,
-      review:
-        "Amazing experience using this app! The ease of customization and efficiency in tracking inventory is fantastic.",
+      name: "Alex Johnson",
+      rating: 3,
+      review: "The app works well for managing inventory and customizing bundles. It’s easy to use and saves a lot of time daily.",
     },
   ];
+
 
   const onPlanButtonClick = (planId) => {
     if (selectedPlan?.id && selectedPlan.id !== planId) {
@@ -598,16 +596,7 @@ const Plans = () => {
                               </div>
                             ))}
                           </div>
-                          <p style={{
-                            lineHeight: "1.4",
-                            color: "gray",
-                            marginTop: "10px",
-                            display: "-webkit-box",
-                            WebkitLineClamp: 5,
-                            WebkitBoxOrient: "vertical",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}>
+                          <p style={{ lineHeight: "1.4", color: "gray", marginTop: "10px", display: "-webkit-box", WebkitLineClamp: 5, WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
                             {testimonial.review}
                           </p>
                           <p style={{ fontWeight: "600", marginTop: "10px", color: "#333" }}>

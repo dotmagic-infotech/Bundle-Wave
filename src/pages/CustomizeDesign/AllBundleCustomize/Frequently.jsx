@@ -494,24 +494,28 @@ function Frequently() {
                                                             <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", color: data.title.fontColor }}>{imgSrc?.name}</p>
                                                             <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "5px", color: data.title.fontColor }}>{imgSrc?.price}</p>
                                                         </div>
-                                                        {data?.variants?.type === "dropdown" ? (
-                                                            <div
-                                                                style={{
-                                                                    backgroundColor: `${data.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
-                                                                }}
-                                                            >
-                                                                <p style={{ fontWeight: "500" }}>Select Variant</p>
-                                                                <div><Icon source={ChevronDownIcon} /></div>
-                                                            </div>
-                                                        ) : (
-                                                            <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
-                                                                {imgSrc?.color.map((v, i) => (
-                                                                    <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
-                                                                        <div style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: v, cursor: "pointer" }} />
+                                                        {index !== 1 &&
+                                                            <>
+                                                                {data?.variants?.type === "dropdown" ? (
+                                                                    <div
+                                                                        style={{
+                                                                            backgroundColor: `${data.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
+                                                                        }}
+                                                                    >
+                                                                        <p style={{ fontWeight: "500" }}>Select Variant</p>
+                                                                        <div><Icon source={ChevronDownIcon} /></div>
                                                                     </div>
-                                                                ))}
-                                                            </div>
-                                                        )}
+                                                                ) : (
+                                                                    <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
+                                                                        {imgSrc?.color.map((v, i) => (
+                                                                            <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
+                                                                                <div style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: v, cursor: "pointer" }} />
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                )}
+                                                            </>
+                                                        }
                                                     </div>
                                                 ))}
                                             </div>

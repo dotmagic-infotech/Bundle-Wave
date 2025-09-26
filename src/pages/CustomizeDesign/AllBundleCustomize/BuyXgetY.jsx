@@ -292,7 +292,6 @@ function BuyXgetY() {
   const products = [
     { name: "18k Pedal Ring", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771", price: "$45.00", color: ["#b76e79", "#c0c0c0", "#ffd700"], },
     { name: "18k Dangling Pendant Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-dangling-pendant-earrings_17e71027-81d8-4a49-a455-2e5c205963ee.jpg?v=1758263763", price: "$22.00", color: ["#c0c0c0", "#ffd700"] },
-    { name: "18k Bloom Pendant", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-bloom-pendant.jpg?v=1758263772", price: "$25.00", color: ["#b76e79", "#c0c0c0", "#ffd700"] }
   ];
 
   return (
@@ -435,7 +434,7 @@ function BuyXgetY() {
                     <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal", }}>🎁 Buy 2 Earrings Bundle</p>
                     <div style={{ display: "flex", justifyContent: "space-between", }}>
                       <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
-                      <p style={{ fontSize: "20px", fontWeight: "600" }}>$92.00</p>
+                      <p style={{ fontSize: "20px", fontWeight: "600" }}>$87.00</p>
                     </div>
                     <Divider borderColor="border-hover" />
                     <div style={{ backgroundColor: "white", width: "100%", height: "auto", display: "flex", flexDirection: "column", gap: "10px" }}>

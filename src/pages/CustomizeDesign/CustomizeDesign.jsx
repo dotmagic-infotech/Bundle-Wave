@@ -1,6 +1,6 @@
 // React Imports
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 // Shopify Imports
 import { Box, Button, ButtonGroup, Page } from "@shopify/polaris";
@@ -16,18 +16,7 @@ import Frequently from "./AllBundleCustomize/Frequently";
 function CustomizeDesign() {
   // Hooks
   const navigate = useNavigate();
-
-  // State
-  const [data, setData] = useState({
-    bundle_select: "fixedbundle",
-  });
-
-  const handleChangeValue = (key, value) => {
-    setData((prevData) => ({
-      ...prevData,
-      [key]: value,
-    }));
-  };
+  const { name } = useParams();
 
   const bundleOptions = [
     { label: "Fixed Bundle", value: "fixedbundle" },
@@ -52,21 +41,21 @@ function CustomizeDesign() {
         {bundleOptions.map(({ label, value }) => (
           <Button
             key={value}
-            variant={data.bundle_select === value ? "primary" : "secondary"}
-            pressed={data.bundle_select === value}
-            onClick={() => handleChangeValue("bundle_select", value)}
+            variant={name === value ? "primary" : "secondary"}
+            pressed={name === value}
+            onClick={() => navigate(`/customization/${value}`)}
           >
             {label}
           </Button>
         ))}
       </ButtonGroup>
       <Box paddingBlockStart={200}>
-        {data.bundle_select === "fixedbundle" && <Fixedbundle />}
-        {data.bundle_select === "mixmatch" && <Mixmatch />}
-        {data.bundle_select === "buyxgety" && <BuyXgetY />}
-        {data.bundle_select === "volumediscount" && <Volumediscount />}
-        {data.bundle_select === "addons" && <Addons />}
-        {data.bundle_select === "frequently" && <Frequently />}
+        {name === "fixedbundle" && <Fixedbundle />}
+        {name === "mixmatch" && <Mixmatch />}
+        {name === "buyxgety" && <BuyXgetY />}
+        {name === "volumediscount" && <Volumediscount />}
+        {name === "addons" && <Addons />}
+        {name === "frequently" && <Frequently />}
       </Box>
     </Page>
   );
