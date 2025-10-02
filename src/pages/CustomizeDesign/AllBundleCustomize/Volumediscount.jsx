@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, RadioButton, ButtonGroup, Button, Badge } from "@shopify/polaris";
-import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon, } from "@shopify/polaris-icons";
+import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon } from "@shopify/polaris-icons";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
@@ -187,29 +187,6 @@ function Volumediscount() {
                 </>
             ),
         },
-        // {
-        //     label: "Variant and quantity selector",
-        //     icon: VariantIcon,
-        //     content: (
-        //         <>
-        //             <ColorPickerPopover
-        //                 lable="Background Color"
-        //                 color={data.variants.background_color}
-        //                 onChange={(color) =>
-        //                     handleChangeValue("variants", "background_color", color)
-        //                 }
-        //             />
-        //             <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
-        //             <ColorPickerPopover
-        //                 lable="Border Color"
-        //                 color={data.variants.border_color}
-        //                 onChange={(color) =>
-        //                     handleChangeValue("variants", "border_color", color)
-        //                 }
-        //             />
-        //         </>
-        //     ),
-        // },
         {
             label: "Button",
             icon: ButtonIcon,
@@ -436,7 +413,7 @@ function Volumediscount() {
                                         </div>
                                         <div style={{ display: "flex", justifyContent: "center" }}>
                                             <button style={{
-                                                backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, marginTop: "10px"
+                                                backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, marginTop: "10px"
                                             }}>
                                                 Add to cart
                                             </button>

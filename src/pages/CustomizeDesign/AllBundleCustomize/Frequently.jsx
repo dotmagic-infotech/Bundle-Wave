@@ -3,12 +3,13 @@ import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, Button, ButtonGroup, Checkbox } from "@shopify/polaris";
-import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ChevronDownIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
+import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
 import { useFetchWithToken } from "../../../components/FetchDataAPIs/FetchWithToken";
 import { ShopifyContext } from "../../../components/ShopifyProvider/ShopifyProvider";
+import VariantItems from "../../../components/VariantItems/VariantItems";
 
 function Frequently() {
 
@@ -38,6 +39,7 @@ function Frequently() {
         variants: {
             type: "color_swatch",
             background_color: "#ffffff",
+            text_color: "#000000",
             border_color: "#000000"
         },
         button: {
@@ -189,7 +191,7 @@ function Frequently() {
             ),
         },
         {
-            label: "Variant and quantity selector",
+            label: "Variant selector",
             icon: VariantIcon,
             content: (
                 <>
@@ -205,18 +207,22 @@ function Frequently() {
                         }
                     />
                     <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
-                    {data?.variants?.type === "dropdown" &&
-                        <>
-                            <ColorPickerPopover
-                                lable="Background Color"
-                                color={data.variants.background_color}
-                                onChange={(color) =>
-                                    handleChangeValue("variants", "background_color", color)
-                                }
-                            />
-                            <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
-                        </>
-                    }
+                    <ColorPickerPopover
+                        lable="Text Color"
+                        color={data.variants.text_color}
+                        onChange={(color) =>
+                            handleChangeValue("variants", "text_color", color)
+                        }
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    <ColorPickerPopover
+                        lable="Background Color"
+                        color={data.variants.background_color}
+                        onChange={(color) =>
+                            handleChangeValue("variants", "background_color", color)
+                        }
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
                     <ColorPickerPopover
                         lable="Border Color"
                         color={data.variants.border_color}
@@ -295,6 +301,7 @@ function Frequently() {
             variants: {
                 type: data?.variants?.type,
                 background_color: data.variants?.background_color,
+                text_color: data.variants?.text_color,
                 border_color: data.variants?.border_color
             },
             button: {
@@ -320,9 +327,14 @@ function Frequently() {
     }
 
     const product = [
-        { name: "Minimalist Silver Mesh Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch10.jpg?v=1758272181', price: "$84.00", color: ["#1C1C1C", "#E0115F", "#ffd700"] },
-        { name: "Gold-Tone Dress Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch9.webp?v=1758272181', price: "$112.00", color: ["#E5E4E2", "#1C1C1C", "#ffd700"] },
-        { name: "Automatic Skeleton Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch2.webp?v=1758271387', price: "$156.00", color: ["#c0c0c0", "#9966CC"] }
+        {
+            name: "Minimalist Silver Mesh Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch10.jpg?v=1758272181', price: "$84.00",
+            variant: [
+                { color: ["#000000", "#8B4513", "#D2B48C"] }
+            ],
+        },
+        { name: "Gold-Tone Dress Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch9.webp?v=1758272181', price: "$112.00"  },
+        { name: "Automatic Skeleton Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch2.webp?v=1758271387', price: "$156.00" }
     ];
 
     return (
@@ -459,7 +471,7 @@ function Frequently() {
                                             </div>
                                             <div style={{ display: "flex", justifyContent: "center" }}>
                                                 <button style={{
-                                                    backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize + 3}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`,
+                                                    backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize + 3}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
                                                 }}>
                                                     Add to cart
                                                 </button>
@@ -494,28 +506,7 @@ function Frequently() {
                                                             <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", color: data.title.fontColor }}>{imgSrc?.name}</p>
                                                             <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "5px", color: data.title.fontColor }}>{imgSrc?.price}</p>
                                                         </div>
-                                                        {index !== 1 &&
-                                                            <>
-                                                                {data?.variants?.type === "dropdown" ? (
-                                                                    <div
-                                                                        style={{
-                                                                            backgroundColor: `${data.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
-                                                                        }}
-                                                                    >
-                                                                        <p style={{ fontWeight: "500" }}>Select Variant</p>
-                                                                        <div><Icon source={ChevronDownIcon} /></div>
-                                                                    </div>
-                                                                ) : (
-                                                                    <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
-                                                                        {imgSrc?.color.map((v, i) => (
-                                                                            <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
-                                                                                <div style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: v, cursor: "pointer" }} />
-                                                                            </div>
-                                                                        ))}
-                                                                    </div>
-                                                                )}
-                                                            </>
-                                                        }
+                                                        <VariantItems variantType={data?.variants?.type} variant={imgSrc?.variant} data={data} />
                                                     </div>
                                                 ))}
                                             </div>
@@ -536,8 +527,8 @@ function Frequently() {
                                                         fontWeight: "500",
                                                         cursor: "pointer",
                                                         borderRadius: "10px",
-                                                        padding: "8px",
-                                                        width: `${data?.button?.width}%`, height: `${data?.button?.height}px`,
+                                                        padding: `${data?.button?.height}px 5px`,
+                                                        width: `${data?.button?.width}%`
                                                     }}>Add selected to cart</button>
                                                 </div>
                                             </div>

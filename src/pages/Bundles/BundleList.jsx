@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 // Shopify Imports
 import { SaveBar, useAppBridge } from '@shopify/app-bridge-react';
 import { LockIcon, PlusIcon, ViewIcon } from '@shopify/polaris-icons';
-import { Card, Page, Grid, Button, Text, Box, BlockStack, SkeletonBodyText, InlineStack, SkeletonDisplayText, Modal } from "@shopify/polaris";
+import { Card, Page, Grid, Button, Text, Box, SkeletonBodyText, InlineStack, SkeletonDisplayText, Modal } from "@shopify/polaris";
 
 // Custom Component
 import { useFetchWithToken } from '../../components/FetchDataAPIs/FetchWithToken';

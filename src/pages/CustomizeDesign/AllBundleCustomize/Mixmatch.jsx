@@ -592,7 +592,7 @@ function Mixmatch() {
                       </div>
                       <div style={{ display: "flex", justifyContent: "center" }}>
                         <button style={{
-                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "12px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`,
+                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
                         }}>Add to cart</button>
                       </div>
                     </div>
@@ -682,7 +682,7 @@ function Mixmatch() {
                       </InlineStack>
                       <div style={{ display: "flex", justifyContent: "center" }}>
                         <button style={{
-                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "12px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, marginTop: "20px"
+                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, marginTop: "20px"
                         }}>Go to Bundle Builder</button>
                       </div>
                     </div>
@@ -700,7 +700,7 @@ function Mixmatch() {
                         </div>
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem", width: "50%" }}>
-                        <p style={{ fontSize: '25px', fontWeight: "700" }}>Mix & Match Tiered Discount</p>
+                        <p style={{ fontSize: '25px', fontWeight: "700", lineHeight: "normal" }}>Mix & Match Tiered Discount</p>
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                           <p style={{ fontSize: '20px', fontWeight: "600" }}>Total Price</p>
                           <p style={{ fontSize: '20px', fontWeight: "600" }}>$92.00</p>
@@ -761,7 +761,7 @@ function Mixmatch() {
                           <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px" }}>✨ Buy more, save more! Pick your favorite earrings and create a custom set while enjoying bigger discounts for multiple pairs.</p>
                           <div style={{ display: "flex", justifyContent: "center" }}>
                             <button style={{
-                              marginTop: "10px", backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`,
+                              marginTop: "10px", backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
                             }}>Add to cart</button>
                           </div>
                         </div>
@@ -820,7 +820,7 @@ function Mixmatch() {
                           If you want, I can also insert this directly into your React bundle component so it shows under the main title. Do you want me to do that?</p>
                         <div style={{ display: "flex", justifyContent: "center" }}>
                           <button style={{
-                            backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`,
+                            backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
                           }}>Add to cart</button>
                         </div>
                       </div>

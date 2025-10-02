@@ -3,12 +3,13 @@ import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Divider, Select, Checkbox, Button, ButtonGroup } from "@shopify/polaris";
-import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ChevronDownIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon, XIcon, } from "@shopify/polaris-icons";
+import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon, XIcon, } from "@shopify/polaris-icons";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
 import { useFetchWithToken } from "../../../components/FetchDataAPIs/FetchWithToken";
 import { ShopifyContext } from "../../../components/ShopifyProvider/ShopifyProvider";
+import VariantItems from "../../../components/VariantItems/VariantItems";
 
 function Addons() {
     // Hooks
@@ -37,6 +38,7 @@ function Addons() {
         variants: {
             type: "color_swatch",
             background_color: "#ffffff",
+            text_color: "#000000",
             border_color: "#7a26bf"
         },
         button: {
@@ -189,7 +191,7 @@ function Addons() {
             ),
         },
         {
-            label: "Variant and quantity selector",
+            label: "Variant selector",
             icon: VariantIcon,
             content: (
                 <>
@@ -205,18 +207,22 @@ function Addons() {
                         }
                     />
                     <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
-                    {data?.variants?.type === "dropdown" &&
-                        <>
-                            <ColorPickerPopover
-                                lable="Background Color"
-                                color={data.variants.background_color}
-                                onChange={(color) =>
-                                    handleChangeValue("variants", "background_color", color)
-                                }
-                            />
-                            <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
-                        </>
-                    }
+                    <ColorPickerPopover
+                        lable="Text Color"
+                        color={data.variants.text_color}
+                        onChange={(color) =>
+                            handleChangeValue("variants", "text_color", color)
+                        }
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    <ColorPickerPopover
+                        lable="Background Color"
+                        color={data.variants.background_color}
+                        onChange={(color) =>
+                            handleChangeValue("variants", "background_color", color)
+                        }
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
                     <ColorPickerPopover
                         lable="Border Color"
                         color={data.variants.border_color}
@@ -295,6 +301,7 @@ function Addons() {
             variants: {
                 type: data?.variants?.type,
                 background_color: data.variants.background_color,
+                text_color: data.variants.text_color,
                 border_color: data.variants.border_color
             },
             button: {
@@ -320,7 +327,13 @@ function Addons() {
     };
 
     const product = [
-        { name: "Classic Leather Strap Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387", price: "$85.00", oprice: "$90.00" },
+        {
+            name: "Classic Leather Strap Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387", price: "$85.00", oprice: "$90.00", variant: [
+                {
+                    color: ["#000000", "#8B4513", "#D2B48C", "#1E3A8A"]
+                }
+            ],
+        },
         { name: "Stainless Steel Chronograph Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch5.jpg?v=1758271387", price: "$150.00", oprice: "$155.00" },
         { name: "Minimalist Silver Mesh Watch", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch.webp?v=1758271387", price: "$95.00", oprice: "$100.00" }
     ];
@@ -475,7 +488,7 @@ function Addons() {
                                                             <div style={{ display: "flex", alignItems: "center", }}>
                                                                 <Checkbox checked={index === 0} />
                                                                 <img src={imgSrc?.image}
-                                                                    style={{ width: "50px", height: "50px", marginLeft: "10px", objectFit: "fill", borderRadius: "10px" }}
+                                                                    style={{ width: "50px", height: "50px", objectFit: "fill", borderRadius: "10px" }}
                                                                 />
                                                                 <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                                                                     <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.name}</p>
@@ -486,34 +499,13 @@ function Addons() {
                                                                 </div>
                                                             </div>
 
-                                                            {index === 0 && (
-                                                                <>
-                                                                    {data?.variants?.type === "dropdown" ? (
-                                                                        <div
-                                                                            style={{
-                                                                                backgroundColor: `${data?.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
-                                                                            }}
-                                                                        >
-                                                                            <p style={{ fontWeight: "500" }}>Select Variant</p>
-                                                                            <div><Icon source={ChevronDownIcon} /></div>
-                                                                        </div>
-                                                                    ) : (
-                                                                        <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
-                                                                            {["#c0c0c0", "#ffd700"].map((v, i) => (
-                                                                                <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
-                                                                                    <div style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: v, cursor: "pointer" }} />
-                                                                                </div>
-                                                                            ))}
-                                                                        </div>
-                                                                    )}
-                                                                </>
-                                                            )}
+                                                            <VariantItems variantType={data?.variants?.type} variant={imgSrc?.variant} data={data} />
                                                         </div>
                                                     </div>
                                                 ))}
                                             </div>
                                             <div style={{ display: "flex", justifyContent: "center" }}>
-                                                <button style={{ marginTop: "20px", backgroundColor: data?.button?.buttonColor, color: data.button.textColor, cursor: "pointer", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, borderRadius: "10px", padding: "8px", border: "none", fontWeight: "500", fontSize: `${data.title.fontSize + 3}px` }}>Add to cart</button>
+                                                <button style={{ marginTop: "20px", backgroundColor: data?.button?.buttonColor, color: data.button.textColor, cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, borderRadius: "10px", border: "none", fontWeight: "500", fontSize: `${data.title.fontSize + 3}px` }}>Add to cart</button>
                                             </div>
                                         </div>
                                     </div>
@@ -553,7 +545,7 @@ function Addons() {
                                             <div key={index}>
                                                 <div style={{ border: index === 1 ? `${data.border.borderWidth}px solid ${data.border.color}` : `${data.border.borderWidth}px solid black`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
                                                     <div style={{ display: "flex", alignItems: "center", }}>
-                                                        <Checkbox checked={index === 1} />
+                                                        <Checkbox checked={index === 0} />
                                                         <img src={imgSrc?.image}
                                                             style={{ width: "65px", height: "65px", objectFit: "fill", borderRadius: "10px" }}
                                                         />
@@ -566,28 +558,7 @@ function Addons() {
                                                         </div>
                                                     </div>
 
-                                                    {index === 1 && (
-                                                        <>
-                                                            {data?.variants?.type === "dropdown" ? (
-                                                                <div
-                                                                    style={{
-                                                                        backgroundColor: `${data?.variants.background_color}`, border: `1px solid ${data.variants.border_color}`, display: "flex", justifyContent: "space-between", padding: "5px", borderRadius: "5px", width: "100%", marginTop: "10px",
-                                                                    }}
-                                                                >
-                                                                    <p style={{ fontWeight: "500" }}>Select Variant</p>
-                                                                    <div><Icon source={ChevronDownIcon} /></div>
-                                                                </div>
-                                                            ) : (
-                                                                <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
-                                                                    {["#c0c0c0", "#ffd700"].map((v, i) => (
-                                                                        <div key={i} style={{ border: i === 0 ? `2px solid ${data?.variants?.border_color}` : `2px solid ${v}`, padding: "2px", borderRadius: "50%", }}>
-                                                                            <div style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: v, cursor: "pointer" }} />
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            )}
-                                                        </>
-                                                    )}
+                                                    <VariantItems variantType={data?.variants?.type} variant={imgSrc?.variant} data={data} />
                                                 </div>
                                             </div>
                                         ))}
@@ -596,7 +567,7 @@ function Addons() {
                                         <Divider borderColor="border-hover" />
                                     </div>
                                     <div style={{ display: "flex", justifyContent: "center" }}>
-                                        <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize + 3}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, height: `${data?.button?.height}px`, marginTop: "2px" }}>
+                                        <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize + 3}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, marginTop: "2px" }}>
                                             Add to cart
                                         </button>
                                     </div>
