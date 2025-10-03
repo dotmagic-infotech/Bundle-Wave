@@ -272,8 +272,10 @@ const BundleAddons = () => {
 
       if (data?.bundle_subtype === "specific_collection") {
         passData.collections = selectedCollections;
+        passData.products = [];
       } else if (data?.bundle_subtype === "specific_product") {
-        passData.products = selectedProducts
+        passData.products = selectedProducts;
+        passData.collections = [];
       }
 
       if (data.endTime_status === "1") {

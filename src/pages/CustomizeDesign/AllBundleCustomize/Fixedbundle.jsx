@@ -598,7 +598,7 @@ function Fixedbundle() {
                       <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>Total</p>
                       <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>$72.00</p>
                     </div>
-                    <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize + 2}px`, cursor: "pointer", borderRadius: "10px", padding: "8px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
+                    <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize + 2}px`, cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
                       Add bundle to cart | Save 20%
                     </button>
                   </div>
