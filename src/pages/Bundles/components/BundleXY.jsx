@@ -2,11 +2,11 @@
 import { useContext, useEffect, useState } from 'react';
 
 // Shopify Polaris
-import { BlockStack, Box, Button, ButtonGroup, Card, Checkbox, Divider, InlineStack, Layout, LegacyStack, Modal, Page, RadioButton, Select, Text, TextField } from '@shopify/polaris';
+import { BlockStack, Box, Button, ButtonGroup, Card, Checkbox, Divider, Icon, InlineStack, Layout, Modal, Page, RadioButton, Select, Text, TextField } from '@shopify/polaris';
 import { SaveBar } from '@shopify/app-bridge-react';
 
 // Shopify Icons
-import { ChevronDownIcon, ChevronRightIcon, ViewIcon } from '@shopify/polaris-icons';
+import { SearchIcon, ViewIcon, XIcon } from '@shopify/polaris-icons';
 
 // Third Party Imports
 import ReactQuill from 'react-quill';
@@ -16,7 +16,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { MetaContext } from '../../../components/MetaDataContext/MetaDataProvider';
 import FileUploadDropZone from '../../../components/FileUploadDropZone/FileUploadDropZone';
 import ProductSelection from '../../../components/ProductSelection/index';
-import ProductWithCollections from '../../../components/ProductWithCollections/ProductWithCollections';
 import ValidationErrors from '../../../components/ValidationErrors';
 import BundlesPreview from '../BundlesPreview';
 import DateTimePicker from '../../../components/DateRangePicker/DateTimePicker';
@@ -38,7 +37,7 @@ const BundleXY = () => {
   // State
   const [data, setData] = useState({
     bundle_description: "",
-    bundle_subtype: "fixedDeal",
+    bundle_subtype: "specific_product",
     page_type: "new_page",
     discount_value: 10,
     start_time: "12:00 AM",
@@ -47,16 +46,13 @@ const BundleXY = () => {
     status: "Published",
     discount_label: "Buy X & Get Y Discount",
     discount_option_id: "1"
-  })
+  });
   const [errors, setErrors] = useState({});
   const [files, setFiles] = useState([]);
   const [media, setMedia] = useState([]);
+  const [collectionbuys, setCollectionbuys] = useState([]);
   const [productsbuys, setProductsbuys] = useState([]);
   const [productsgets, setProductsgets] = useState([]);
-  const [sectionsBuys, setSectionsBuys] = useState([]);
-  const [selectedFirst, setSelectedFirst] = useState(null);
-  const [selectedSecond, setSelectedSecond] = useState(null);
-  const [sections, setSections] = useState([]);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [widgetModalOpen, setWidgetModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -86,10 +82,12 @@ const BundleXY = () => {
           end: data.end_date ? new Date(data.end_date) : new Date(),
         });
 
-        setProductsbuys(data?.fixedDeal?.buys)
+        if (data?.bundle_subtype === "specific_product") {
+          setProductsbuys(data?.fixedDeal?.buys)
+        } else {
+          setCollectionbuys(data?.fixedDeal?.buys)
+        }
         setProductsgets(data?.fixedDeal?.gets)
-        setSectionsBuys(data?.mixmatchDeal?.buys)
-        setSections(data?.mixmatchDeal?.gets)
 
         setData({
           bundle_subtype: data.bundle_subtype,
@@ -142,20 +140,46 @@ const BundleXY = () => {
 
   const toggleVideoModal = () => setVideoModalOpen(prev => !prev);
 
+  const handleRemoveCollection = (id) => {
+    shopify.saveBar.show('save');
+    setCollectionbuys(collectionbuys.filter((item) => item.id !== id));
+  };
+
+  const handleBrowseCollections = async () => {
+    try {
+      const collection = await shopify.resourcePicker({
+        type: "collection",
+        multiple: false,
+        selectionIds: collectionbuys,
+      });
+
+      const collectionData = collection.selection.map((item) => ({
+        id: item.id,
+        title: item.title,
+        image: item.image?.originalSrc || "",
+      }));
+
+      setCollectionbuys(collectionData);
+      shopify.saveBar.show("save");
+    } catch (error) {
+      console.error("Error selecting collection:", error);
+    }
+  };
+
   const validateForm = () => {
     let errors = {};
 
     if (!data.bundle_name) errors.bundle_name = "Bundle name is required.";
-    if (data.bundle_subtype === "fixedDeal") {
-      if (!["4", "5"].includes(data?.discount_option_id) && (!data.discount_value || isNaN(data.discount_value) || data.discount_value <= 0)) {
-        errors.discount_option_id = "Please enter a valid discount amount.";
-      }
-      if (productsbuys.length === 0) errors.productsbuys = "Select at least one item in X products.";
-      if (productsgets.length === 0) errors.productsgets = "Select at least one item in Y products.";
-    } else if (data.bundle_subtype === "mixmatchDeal") {
-      if (sectionsBuys.length === 0) errors.sectionsBuys = "Select at least one item in X products.";
-      if (sections.length === 0) errors.sections = "Select at least one item in Y products.";
+    if (!["4", "5"].includes(data?.discount_option_id) && (!data.discount_value || isNaN(data.discount_value) || data.discount_value <= 0)) {
+      errors.discount_option_id = "Please enter a valid discount amount.";
     }
+    if (data?.bundle_subtype === "specific_product") {
+      if (productsbuys.length === 0) errors.productsbuys = "Select at least one item in X products.";
+    } else {
+      if (collectionbuys.length === 0) errors.collectionbuys = "Select at least one item in Y products.";
+    }
+
+    if (productsgets.length === 0) errors.productsgets = "Select at least one item in Y products.";
 
     return errors;
   };
@@ -177,7 +201,7 @@ const BundleXY = () => {
           .toISOString()
           .split("T")[0];
 
-      formData.append("bundle_subtype", data.bundle_subtype);
+      formData.append("bundle_subtype", data?.bundle_subtype);
       formData.append("page_type", data.page_type);
       formData.append("discount_option_id", data.discount_option_id);
       formData.append("discount_value", data.discount_value);
@@ -190,48 +214,11 @@ const BundleXY = () => {
       formData.append("bundle_type_id", 3);
       formData.append("endTime_status", data.endTime_status || "0");
       formData.append("old_media", JSON.stringify(media || []));
+
       formData.append("fixedDeal", JSON.stringify({
-        buys: productsbuys || [],
+        buys: data?.bundle_subtype === "specific_product" ? productsbuys : collectionbuys || [],
         gets: productsgets || []
       }));
-
-      const sectionsToSend = sectionsBuys.map((section, index) => {
-        const { sectionImage, ...rest } = section;
-        return rest;
-      });
-      const sectionsToSendGets = sections.map((section, index) => {
-        const { sectionImage, ...rest } = section;
-        return rest;
-      });
-
-      formData.append("mixmatchDeal", JSON.stringify({
-        buys: sectionsToSend || [],
-        gets: sectionsToSendGets || []
-      }));
-
-      sectionsBuys.forEach((section, index) => {
-        const images = Array.isArray(section.sectionImage)
-          ? section.sectionImage
-          : section.sectionImage
-            ? [section.sectionImage]
-            : [];
-
-        images.forEach((file) => {
-          formData.append(`section_images_buys[${index}]`, file);
-        });
-      });
-
-      sections.forEach((section, index) => {
-        const images = Array.isArray(section.sectionImage)
-          ? section.sectionImage
-          : section.sectionImage
-            ? [section.sectionImage]
-            : [];
-
-        images.forEach((file) => {
-          formData.append(`section_images_gets[${index}]`, file);
-        });
-      });
 
       if (files?.length > 0) {
         files.forEach((file) => formData.append("media[]", file));
@@ -309,7 +296,6 @@ const BundleXY = () => {
 
           {errors && <ValidationErrors errors={errors} />}
 
-
           <div style={{ marginBottom: "10px" }}>
             <ButtonGroup variant='segmented'>
               <Button variant={data?.page_type === "new_page" ? "primary" : "secondary"} onClick={() => handleChangeValue("page_type", "new_page")}>Create New Page</Button>
@@ -321,88 +307,86 @@ const BundleXY = () => {
             <Layout.Section>
               <BlockStack gap={"300"}>
                 <Card>
-                  <LegacyStack vertical>
-                    <RadioButton
-                      label="Fixed deal"
-                      helpText="Buy Product(s) X to get Product(s) Y for free or at a discount"
-                      checked={data.bundle_subtype === 'fixedDeal'}
-                      id="disabled"
-                      name="fixedDeal"
-                      onChange={() => {
-                        handleChangeValue("bundle_subtype", "fixedDeal");
-                        setSectionsBuys([]);
-                        setSections([]);
-                      }}
-                    />
-                    <RadioButton
-                      label="Mix and match deal"
-                      helpText="Buy from Section(s) X to get free or discounted item(s) from Section(s) Y"
-                      id="optional"
-                      name="mixmatchDeal"
-                      checked={data.bundle_subtype === 'mixmatchDeal'}
-                      onChange={() => {
-                        handleChangeValue("bundle_subtype", "mixmatchDeal");
-                        setProductsbuys([]);
-                        setProductsgets([]);
-                      }}
-                    />
-                  </LegacyStack>
+                  <BlockStack gap="300">
+                    <BlockStack>
+                      <Text as="span" variant="headingMd">Customer buys (X)</Text>
+                      <Text as="span" variant="bodyMd" tone="subdued">The offer is triggered for...</Text>
+                    </BlockStack>
+                    <InlineStack gap="200">
+                      <div style={{ display: "flex", flexDirection: "column", width: '100%' }}>
+                        {/* <RadioButton
+                          label="All products"
+                          checked={data.bundle_subtype === 'all_product'}
+                          id="all_product"
+                          onChange={() => {
+                            handleChangeValue("bundle_subtype", "all_product");
+                            setProductsbuys([]);
+                            setCollectionbuys([]);
+                          }}
+                        /> */}
+                        <RadioButton
+                          label="Products in a specific collection"
+                          id="specific_collection"
+                          checked={data.bundle_subtype === 'specific_collection'}
+                          onChange={() => {
+                            handleChangeValue("bundle_subtype", "specific_collection");
+                            setProductsbuys([]);
+                          }}
+                        />
+                        <RadioButton
+                          label="A specific product"
+                          id="specific_product"
+                          checked={data.bundle_subtype === 'specific_product'}
+                          onChange={() => {
+                            handleChangeValue("bundle_subtype", "specific_product");
+                            setCollectionbuys([]);
+                          }}
+                        />
+                        {data?.bundle_subtype === 'specific_collection' &&
+                          <>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: "5px" }}>
+                              <div style={{ width: '100%' }}>
+                                <TextField prefix={<Icon source={SearchIcon} />} label="Search" labelHidden placeholder="Search" autoComplete="off" />
+                              </div>
+                              <Button onClick={handleBrowseCollections}>Browse</Button>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
+                              {collectionbuys?.map((v, i) =>
+                                <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                  <div style={{ display: "flex", alignItems: "center", gap: '10px' }}>
+                                    <div style={{ width: "40px", height: "40px" }}>
+                                      <img src={v?.image} width="40px" height="40px" style={{ borderRadius: "10px", objectFit: "contain" }} />
+                                    </div>
+                                    <Text as="p">{v.title}</Text>
+                                  </div>
+                                  <div style={{ cursor: "pointer" }} onClick={() => handleRemoveCollection(v.id)}>
+                                    <Icon source={XIcon}></Icon>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </>
+                        }
+                        {data?.bundle_subtype === 'specific_product' &&
+                          <ProductSelection
+                            selectedProducts={productsbuys}
+                            setSelectedProducts={setProductsbuys}
+                          />
+                        }
+                      </div>
+                    </InlineStack>
+                  </BlockStack>
                 </Card>
 
                 <BlockStack gap={"300"}>
-                  {/* Customer buys (Buy X) and Customer gets (Get Y) Fixed deal*/}
-                  {data?.bundle_subtype === "fixedDeal" &&
-                    <div>
-                      <Card>
-                        <ProductSelection
-                          title="Customer buys (Buy X)"
-                          subtitle="Choose products that the customer buys."
-                          selectedProducts={productsbuys}
-                          setSelectedProducts={setProductsbuys}
-                        />
-
-                        <div style={{ margin: "10px 0px" }}>
-                          <Divider borderWidth='025' borderColor='input-border' />
-                        </div>
-
-                        <ProductSelection
-                          title="Customer gets (Get Y)"
-                          subtitle="Choose products that the customer gets with a discount or for free."
-                          selectedProducts={productsgets}
-                          setSelectedProducts={setProductsgets}
-                        />
-                      </Card>
-                    </div>
-                  }
-
-                  {/* Customer buys (Buy X) and Customer gets (Get Y) Mix and match deal */}
-                  {data?.bundle_subtype === "mixmatchDeal" &&
-                    <div>
-                      <Card>
-                        <BlockStack align="space-between" gap={"200"}>
-                          <Text as={"span"} variant="headingMd">Customer buys (Buy X)</Text>
-                          <Text as={"span"} variant="bodyMd" tone="subdued">Add sections that the customer buys from.</Text>
-                          <ProductWithCollections
-                            sections={sectionsBuys}
-                            setSections={setSectionsBuys}
-                          />
-                        </BlockStack>
-
-                        <div style={{ margin: "10px 0px" }}>
-                          <Divider borderWidth='025' borderColor='input-border' />
-                        </div>
-
-                        <BlockStack align="space-between" gap={"200"}>
-                          <Text as={"span"} variant="headingMd">Customer gets (Get Y)</Text>
-                          <Text as={"span"} variant="bodyMd" tone="subdued">Add sections that the customer gets from with a discount or for free.</Text>
-                          <ProductWithCollections
-                            sections={sections}
-                            setSections={setSections}
-                          />
-                        </BlockStack>
-                      </Card>
-                    </div>
-                  }
+                  <Card>
+                    <ProductSelection
+                      title="Customer gets (Y)"
+                      subtitle="Choose products that the customer gets with a discount or for free."
+                      selectedProducts={productsgets}
+                      setSelectedProducts={setProductsgets}
+                    />
+                  </Card>
                 </BlockStack>
 
                 {/* Discount */}
@@ -596,279 +580,114 @@ const BundleXY = () => {
                 <Card>
                   <BlockStack gap="300">
                     <Text as="span" variant="headingMd">Bundle preview</Text>
-                    {(
-                      (productsbuys?.length > 0 && productsgets?.length > 0) ||
-                      (sectionsBuys?.length > 0 && sections?.length > 0)
-                    ) && (
-                        <div style={{ maxHeight: '500px', overflowX: "auto", display: "flex", flexDirection: "column", scrollbarWidth: "none" }}>
-                          {files.length > 0 &&
-                            <div style={{ width: "100%" }}>
-                              <img
-                                src={files[0] instanceof File ? URL.createObjectURL(files[0]) : files[0]}
-                                style={{ width: "100%", height: "247px", objectFit: "cover" }}
-                              />
-                            </div>
-                          }
+                    {(productsbuys?.length > 0 && productsgets?.length > 0) && (
+                      <div style={{ maxHeight: '500px', overflowX: "auto", display: "flex", flexDirection: "column", scrollbarWidth: "none" }}>
+                        {files.length > 0 &&
                           <div style={{ width: "100%" }}>
-                            {data?.bundle_name &&
-                              <p style={{ fontSize: "1rem", fontWeight: "500", marginBottom: "10px", lineHeight: "2rem" }}>{data?.bundle_name}</p>
-                            }
-                            <div
-                              style={{ fontSize: "15px", fontWeight: "500" }}
-                              dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }}
+                            <img
+                              src={files[0] instanceof File ? URL.createObjectURL(files[0]) : files[0]}
+                              style={{ width: "100%", height: "247px", objectFit: "cover" }}
                             />
-                            <p style={{ marginTop: '10px', fontSize: "1rem", fontWeight: "400", marginBottom: "15px" }}>$559.00 <span style={{ textDecoration: "line-through", marginLeft: "5px" }}>$1199.11</span></p>
+                          </div>
+                        }
+                        <div style={{ width: "100%" }}>
+                          {data?.bundle_name &&
+                            <p style={{ fontSize: "1rem", fontWeight: "500", marginBottom: "10px", lineHeight: "2rem" }}>{data?.bundle_name}</p>
+                          }
+                          <div
+                            style={{ fontSize: "15px", fontWeight: "500" }}
+                            dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }}
+                          />
+                          <p style={{ marginTop: '10px', fontSize: "1rem", fontWeight: "400", marginBottom: "15px" }}>$559.00 <span style={{ textDecoration: "line-through", marginLeft: "5px" }}>$1199.11</span></p>
 
-                            {data?.bundle_subtype === "fixedDeal" && (
-                              <>
-                                <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
-                                  {productsbuys.map((value, index) => (
-                                    <div key={index}>
-                                      <div style={{ padding: "15px 10px" }}>
-                                        <div style={{ display: "flex" }}>
-                                          <img src={value?.image} style={{ width: "60px", height: "60px", objectFit: "fill", borderRadius: "10px" }} />
-                                          <div style={{ marginLeft: "10px" }}>
-                                            <p>{value?.title}</p>
-                                            <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
-                                          </div>
-                                        </div>
-                                        {value?.variants?.length > 1 &&
-                                          <select disabled style={{ width: "100%", height: "36px", backgroundColor: "#fafafa", borderRadius: "8px", marginTop: "10px" }}>
-                                            <option selected>
-                                              Variants
-                                            </option>
-                                          </select>
-                                        }
-                                      </div>
-                                      <div style={{ margin: "0px 10px" }}>
-                                        <Divider />
-                                      </div>
+
+                          <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
+                            {productsbuys.map((value, index) => (
+                              <div key={index}>
+                                <div style={{ padding: "15px 10px" }}>
+                                  <div style={{ display: "flex" }}>
+                                    <img src={value?.image} style={{ width: "60px", height: "60px", objectFit: "fill", borderRadius: "10px" }} />
+                                    <div style={{ marginLeft: "10px" }}>
+                                      <p>{value?.title}</p>
+                                      <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
                                     </div>
-                                  ))}
+                                  </div>
+                                  {value?.variants?.length > 1 &&
+                                    <select disabled style={{ width: "100%", height: "36px", backgroundColor: "#fafafa", borderRadius: "8px", marginTop: "10px" }}>
+                                      <option selected>
+                                        Variants
+                                      </option>
+                                    </select>
+                                  }
                                 </div>
-                                <div style={{ display: "flex", justifyContent: "center" }}>
-                                  <button style={{
-                                    backgroundColor: "#262626", color: "white", cursor: "pointer", width: "45px", height: "45px", borderRadius: "50%", padding: "8px 8px 13px",
-                                    fontWeight: "500", fontSize: "30px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1
-                                  }}>+</button>
+                                <div style={{ margin: "0px 10px" }}>
+                                  <Divider />
                                 </div>
-                                <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginTop: "-6px", position: "relative", overflow: "hidden" }}>
-                                  {productsgets.map((value, index) => (
-                                    <div key={index} style={{ position: "relative" }}>
-                                      <div style={{ padding: "15px 10px" }}>
-                                        <div style={{ display: "flex" }}>
-                                          <img src={value?.image} style={{ width: "60px", height: "60px", objectFit: "fill", borderRadius: "10px" }} />
-                                          <div style={{ marginLeft: "10px" }}>
-                                            <p>{value?.title}</p>
-                                            <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
-                                          </div>
-                                        </div>
-                                        {value?.variants?.length > 1 &&
-                                          <select disabled style={{ width: "100%", height: "36px", backgroundColor: "#fafafa", borderRadius: "8px", marginTop: "10px" }}>
-                                            <option selected>
-                                              Variants
-                                            </option>
-                                          </select>
-                                        }
-                                      </div>
-
-                                      {index === 0 && (
-                                        <div style={{
-                                          position: 'absolute',
-                                          top: "6px",
-                                          right: "-16px",
-                                          width: "95px",
-                                          height: "23px",
-                                          transform: "rotate(36deg)",
-                                          backgroundColor: "red",
-                                          color: "white",
-                                          padding: "10px",
-                                          fontWeight: "500",
-                                          display: "flex",
-                                          justifyContent: "center",
-                                          alignItems: "center"
-                                        }}>
-                                          {data?.discount_value === "100" ? "FREE" : `${data?.discount_value}% OFF`}
-                                        </div>
-                                      )}
-
-                                      <div style={{ margin: "0px 10px" }}>
-                                        <Divider />
-                                      </div>
+                              </div>
+                            ))}
+                          </div>
+                          <div style={{ display: "flex", justifyContent: "center" }}>
+                            <button style={{
+                              backgroundColor: "#262626", color: "white", cursor: "pointer", width: "45px", height: "45px", borderRadius: "50%", padding: "8px 8px 13px",
+                              fontWeight: "500", fontSize: "30px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1
+                            }}>+</button>
+                          </div>
+                          <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginTop: "-6px", position: "relative", overflow: "hidden" }}>
+                            {productsgets.map((value, index) => (
+                              <div key={index} style={{ position: "relative" }}>
+                                <div style={{ padding: "15px 10px" }}>
+                                  <div style={{ display: "flex" }}>
+                                    <img src={value?.image} style={{ width: "60px", height: "60px", objectFit: "fill", borderRadius: "10px" }} />
+                                    <div style={{ marginLeft: "10px" }}>
+                                      <p>{value?.title}</p>
+                                      <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
                                     </div>
-                                  ))}
+                                  </div>
+                                  {value?.variants?.length > 1 &&
+                                    <select disabled style={{ width: "100%", height: "36px", backgroundColor: "#fafafa", borderRadius: "8px", marginTop: "10px" }}>
+                                      <option selected>
+                                        Variants
+                                      </option>
+                                    </select>
+                                  }
                                 </div>
-                              </>
-                            )}
-                            {data?.bundle_subtype === "mixmatchDeal" && (
-                              <>
-                                <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "-6px" }}>
-                                  {sectionsBuys.map((value, index) => (
-                                    <div key={index}>
-                                      <div style={{ display: "flex", padding: "8px 6px" }}>
-                                        <div style={{ cursor: "pointer", display: 'flex' }}>
-                                          {selectedFirst === null ?
-                                            <Button icon={ChevronRightIcon} variant="plain" onClick={() => setSelectedFirst(index)}></Button>
-                                            :
-                                            <Button icon={ChevronDownIcon} variant="plain" onClick={() => setSelectedFirst(null)}></Button>
-                                          }
-                                        </div>
-                                        {value?.collection?.length > 0 &&
-                                          <img src={value?.collection?.length > 0 ? value?.collection[0]?.image : value?.products[0]?.image ? value?.media?.[0] : value?.media?.[0]} style={{ width: "60px", height: "60px", marginLeft: "10px", objectFit: "fill", borderRadius: "10px" }} />
-                                        }
-                                        {value?.products?.length > 0 &&
-                                          <img src={value?.products[0]?.image || value?.media[0]} style={{ width: "60px", height: "60px", marginLeft: "10px", objectFit: "fill", borderRadius: "10px" }} />
-                                        }
-                                        <div style={{ marginLeft: "10px" }}>
-                                          <p>{value?.sectionTitle || value?.collection[0]?.title}</p>
-                                          <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
-                                        </div>
-                                      </div>
-                                      <div style={{ margin: "0px 10px" }}>
-                                        <Divider />
-                                      </div>
-                                      {selectedFirst === index &&
-                                        <div style={{ padding: "15px 10px" }}>
-                                          {value?.products?.length > 0 ? (
-                                            value.products.map((product, index) => (
-                                              <div key={index}>
-                                                <div style={{ display: "flex", padding: "15px 10px" }}>
-                                                  <img
-                                                    src={product?.image}
-                                                    alt={product?.title}
-                                                    style={{ width: "60px", height: "60px", borderRadius: "10px", marginLeft: "10px", objectFit: "fill" }}
-                                                  />
-                                                  <div style={{ marginLeft: "10px" }}>
-                                                    <p>{product?.title}</p>
-                                                    <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            ))
-                                          ) : value.collection.map((collection, index) => (
-                                            <div key={index}>
-                                              <div style={{ display: "flex", padding: "15px 10px" }}>
-                                                <img
-                                                  src={collection?.image}
-                                                  alt={collection?.title}
-                                                  style={{ width: "60px", height: "60px", borderRadius: "10px", marginLeft: "10px", objectFit: "fill" }}
-                                                />
-                                                <div style={{ marginLeft: "10px" }}>
-                                                  <p>{collection?.title}</p>
-                                                  <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          ))}
-                                        </div>
-                                      }
-                                      {index !== sectionsBuys.length - 1 && (
-                                        <div style={{ margin: "0px -10px" }}>
-                                          <Divider />
-                                        </div>
-                                      )}
-                                    </div>
-                                  ))}
-                                </div>
-                                <div style={{ display: "flex", justifyContent: "center" }}>
-                                  <button disabled style={{
-                                    backgroundColor: "#262626", color: "white", cursor: "pointer", width: "45px", height: "45px", borderRadius: "50%", padding: "8px",
-                                    fontWeight: "500", fontSize: "30px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1, paddingBottom: "12px"
-                                  }}>+</button>
-                                </div>
-                                <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "-6px" }}>
-                                  {sections.map((value, index) => (
-                                    <div key={index}>
-                                      <div style={{ display: "flex", padding: "8px 6px", position: "relative", overflow: "hidden" }}>
-                                        <div style={{ cursor: "pointer", display: 'flex' }}>
-                                          {selectedSecond === null ?
-                                            <Button icon={ChevronRightIcon} variant="plain" onClick={() => setSelectedSecond(index)}></Button>
-                                            :
-                                            <Button icon={ChevronDownIcon} variant="plain" onClick={() => setSelectedSecond(null)}></Button>
-                                          }
-                                        </div>
-                                        {value?.collection?.length > 0 &&
-                                          <img src={value?.collection?.length > 0 ? value?.collection[0]?.image : value?.products[0]?.image ? value?.media?.[0] : value?.media?.[0]} style={{ width: "60px", height: "60px", marginLeft: "10px", objectFit: "fill", borderRadius: "10px" }} />
-                                        }
-                                        {value?.products?.length > 0 &&
-                                          <img src={value?.products[0]?.image || value?.media[0]} style={{ width: "60px", height: "60px", marginLeft: "10px", objectFit: "fill", borderRadius: "10px" }} />
-                                        }
-                                        <div style={{ marginLeft: "10px" }}>
-                                          <p>{value?.sectionTitle || value?.collection[0]?.title}</p>
-                                          <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
-                                        </div>
 
-                                        {index === 0 && (
-                                          <div style={{
-                                            position: 'absolute', top: "6px", right: "-16px", width: "95px", height: "23px", transform: "rotate(36deg)", backgroundColor: "red", color: "white", padding: "10px", fontWeight: "500", display: "flex", justifyContent: "center", alignItems: "center"
-                                          }}>
-                                            10% Off
-                                          </div>
-                                        )}
-                                      </div>
-                                      <div style={{ margin: "0px 10px" }}>
-                                        <Divider />
-                                      </div>
-                                      {selectedSecond === index &&
-                                        <div style={{ padding: "15px 10px" }}>
-                                          {value?.products?.length > 0 ? (
-                                            value.products.map((product, index) => (
-                                              <div key={index}>
-                                                <div style={{ display: "flex", padding: "15px 10px" }}>
-                                                  <img
-                                                    src={product?.image}
-                                                    alt={product?.title}
-                                                    style={{ width: "60px", height: "60px", borderRadius: "10px", marginLeft: "10px", objectFit: "fill" }}
-                                                  />
-                                                  <div style={{ marginLeft: "10px" }}>
-                                                    <p>{product?.title}</p>
-                                                    <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            ))
-                                          ) : value.collection.map((collection, index) => (
-                                            <div key={index}>
-                                              <div style={{ display: "flex", padding: "15px 10px" }}>
-                                                <img
-                                                  src={collection?.image}
-                                                  alt={collection?.title}
-                                                  style={{ width: "60px", height: "60px", borderRadius: "10px", marginLeft: "10px", objectFit: "fill" }}
-                                                />
-                                                <div style={{ marginLeft: "10px" }}>
-                                                  <p>{collection?.title}</p>
-                                                  <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          ))}
-                                        </div>
-                                      }
+                                {index === 0 && (
+                                  <div style={{
+                                    position: 'absolute',
+                                    top: "6px",
+                                    right: "-16px",
+                                    width: "95px",
+                                    height: "23px",
+                                    transform: "rotate(36deg)",
+                                    backgroundColor: "red",
+                                    color: "white",
+                                    padding: "10px",
+                                    fontWeight: "500",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                  }}>
+                                    {data?.discount_value === "100" ? "FREE" : `${data?.discount_value}% OFF`}
+                                  </div>
+                                )}
 
-                                      {index !== sections.length - 1 && (
-                                        <div style={{ margin: "0px -10px" }}>
-                                          <Divider />
-                                        </div>
-                                      )}
-                                    </div>
-                                  ))}
+                                <div style={{ margin: "0px 10px" }}>
+                                  <Divider />
                                 </div>
-                                <div style={{ backgroundColor: "#e9e9e9", borderRadius: "10px", display: "flex", justifyContent: "space-between", marginTop: "10px", alignItems: "center", padding: "10px" }}>
-                                  <p style={{ fontSize: '1rem', fontWeight: "500" }}>$0.00</p>
-                                  <p style={{ fontSize: '1rem', color: "gray" }}>No items added</p>
-                                </div>
-                              </>
-                            )}
+                              </div>
+                            ))}
                           </div>
                         </div>
-                      )}
+                      </div>
+                    )}
 
                     <BundlesPreview
                       bundle_type_id="3"
                       type={data?.bundle_subtype}
                       modalSize="large"
-                      buysX={data?.bundle_subtype === "fixedDeal" ? productsbuys : sectionsBuys}
-                      getY={data?.bundle_subtype === "fixedDeal" ? productsgets : sections}
+                      buysX={data?.bundle_subtype === "specific_product" && productsbuys}
+                      getY={data?.bundle_subtype === "specific_product" && productsgets}
                       title={data?.bundle_name}
                       data={data}
                       media={media}
