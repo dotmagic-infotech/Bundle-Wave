@@ -1,5 +1,5 @@
 // React Imports
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 // Shopify Imports
 import { NavMenu } from '@shopify/app-bridge-react';
@@ -26,6 +26,7 @@ import Error404 from './components/Error404';
 import Settings from './pages/Settings/Settings';
 import Plans from './pages/Plans/Plans';
 import CustomizeDesign from './pages/CustomizeDesign/CustomizeDesign';
+import ContactPopup from "./components/ContactPopup/ContactPopup";
 
 // Custom Component
 import { useSessionToken } from './components/Session/SessionTokenProvider';
@@ -38,12 +39,25 @@ function App() {
   const token = useSessionToken();
   const { metaData } = useContext(MetaContext);
 
+  // State
+  const [showPopup, setShowPopup] = useState(false);
+
+  const togglePopup = () => setShowPopup((prev) => !prev);
+
   if (!token) {
     return <div>Authentication failed or token not available.</div>;
   }
 
   return (
     <>
+      <button className="contact-button" onClick={togglePopup}>
+        Contact Us
+      </button>
+
+      <div className={`contact-popup-container ${showPopup ? "open" : ""}`}>
+        {showPopup && <ContactPopup showPopup={showPopup}  onClose={() => setShowPopup(false)} />}
+      </div>
+
       <NavMenu>
         <Link to="/" rel="home">Home</Link>
         <Link to="/bundles" rel='bundle'>Bundles</Link>
@@ -54,7 +68,7 @@ function App() {
       </NavMenu>
 
       <Routes>
-        <Route path="/" element={<Navigate to="/home" replace />} /> 
+        <Route path="/" element={<Navigate to="/home" replace />} />
 
         {/* Home Page */}
         <Route path="/home" element={<Home />} />

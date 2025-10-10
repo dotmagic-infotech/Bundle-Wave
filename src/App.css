@@ -49,3 +49,132 @@
 .hover-wrapper:hover .hover-overlay {
     opacity: 1;
 }
+
+/* Contact Popup Styles */
+.contact-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #7a26bf;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 9999px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    z-index: 999999;
+    transition: background-color 0.2s ease;
+    transition: all 0.3s ease;
+}
+
+.contact-button:hover {
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+}
+
+/* Hide on mobile screens */
+@media screen and (max-width: 768px) {
+    .contact-button {
+        display: none;
+    }
+}
+
+.contact-popup-container {
+    position: fixed;
+    width: 0;
+    height: 0;
+    top: auto;
+    left: auto;
+    bottom: 70px;
+    right: 20px;
+    z-index: 999;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 16px;
+}
+
+.contact-popup-container.open {
+    opacity: 1;
+    visibility: visible;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+    width: 400px;
+    height: 615px;
+}
+
+.contact-popup-container.close {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+}
+
+.contact-popup {
+    z-index: 2147483000;
+    padding: 20px;
+    transform-origin: right bottom;
+    height: 100%; 
+    width: 100%; 
+    border-radius: 16px;
+    overflow: auto;
+    scrollbar-width: thin;
+    background-image: linear-gradient(70deg, rgb(255, 255, 255), rgb(255, 255, 255), rgb(255, 230, 255));
+    opacity: 0;
+    transform: scale(0);
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.contact-popup.open {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: all;
+}
+
+.contact-popup.close {
+    transform: translate(100%, 100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.contact-popup__close-btn {
+    position: absolute;
+    top: 5px;
+    right: 12px;
+    border: none;
+    background: none;
+    font-size: 30px;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.contact-popup__close-btn:hover {
+    color: #000;
+}
+
+.contact-popup__header {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.contact-popup__text {
+    color: #555;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.contact-popup__button {
+    background-color: #7a26bf;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%; 
+    transition: background-color 0.2s ease;
+}

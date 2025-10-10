@@ -325,11 +325,11 @@ const Home = () => {
                 <Icon source={ClipboardChecklistIcon} />
               </div>
               <Text as='p' variant='headingMd' fontWeight='regular'>Customize the look of your bundles accordingly to your store's theme</Text>
-              <Button variant='secondary' onClick={() => navigate("/customization")}>Customize</Button >
+              <Button variant='secondary' onClick={() => navigate("/customization")}>Customize</Button>
             </div>
             <Text as='p' variant='headingMd' fontWeight='regular'>
               Thank you for trying our app ;). If you have any questions or need help you can{' '}
-              <span style={{ color: "blue" }}>talk to us via Live Chat</span> or via the email support@react.bundle.</Text>
+              <span style={{ color: "blue" }}>talk to us via Live Chat</span> or via the email info@xavierapps.com.</Text>
           </BlockStack>
         </Modal.Section>
       </Modal>
