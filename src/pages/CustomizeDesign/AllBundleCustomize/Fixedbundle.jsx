@@ -49,7 +49,7 @@ function Fixedbundle() {
     button: {
       buttonColor: "#7a26bf",
       textColor: "#ffffff",
-      height: 45,
+      height: 10,
       width: 100,
     },
   });
@@ -494,21 +494,18 @@ function Fixedbundle() {
                   <div style={{ maxWidth: "400px" }}>
                     <img
                       src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766"
-                      width="100%"
-                      style={{ borderRadius: "10px", objectFit: "cover" }}
+                      width="100%" 
                     />
                     <div style={{ display: "flex", gap: "0.2rem" }}>
                       <img
                         src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766"
-                        width="60px"
-                        height="60px"
-                        style={{ borderRadius: "10px" }}
+                        width="80px"
+                        height="80px"
                       />
                       <img
                         src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758"
-                        width="60px"
-                        height="60px"
-                        style={{ borderRadius: "10px" }}
+                        width="80px"
+                        height="80px"
                       />
                     </div>
                   </div>
@@ -516,7 +513,10 @@ function Fixedbundle() {
                     <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal" }}>Elegant Earrings Bundle</p>
                     <div style={{ display: "flex", justifyContent: "space-between", }}>
                       <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>
-                      <p style={{ fontSize: "20px", fontWeight: "600" }}>$72.00</p>
+                      <div style={{ display: "flex", alignItems: 'center', gap: "10px" }}>
+                        <p style={{ fontSize: "20px", fontWeight: "600" }}>$57.50</p>
+                        <p style={{ fontSize: "20px", fontWeight: "600", textDecoration: "line-through" }}>$72.00</p>
+                      </div>
                     </div>
                     <Divider borderColor="border-hover" />
                     <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
@@ -524,12 +524,7 @@ function Fixedbundle() {
                         {products.map((_, index, arr) => (
                           <div key={index}>
                             <div style={{ display: "flex", gap: "10px" }}>
-                              <img
-                                src={_?.image}
-                                width="70px"
-                                height="70px"
-                                style={{ borderRadius: "10px" }}
-                              />
+                              <img src={_?.image} width="70px" height="70px" />
                               <div>
                                 <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
                                 <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
@@ -545,12 +540,12 @@ function Fixedbundle() {
                         ))}
                       </div>
                     </div>
-                    <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Elevate your style with our elegant earring collection – from timeless gold hoops for everyday wear, to minimalist sterling silver studs for a classic touch, and sparkling rose gold drop earrings perfect for special occasions. Designed for comfort, crafted with quality materials, and made to suit every outfit.</p>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                      <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: `${data.title.fontSize + 2}px`, cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
+                      <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "18px", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
                         Add bundle to cart | Save 20%
                       </button>
                     </div>
+                    <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Elevate your style with our elegant earring collection – from timeless gold hoops for everyday wear, to minimalist sterling silver studs for a classic touch, and sparkling rose gold drop earrings perfect for special occasions. Designed for comfort, crafted with quality materials, and made to suit every outfit.</p>
                   </div>
                 </div>
               ) : data?.selectDisplay?.type === "included_product_page" ? (

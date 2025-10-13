@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
-import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, Button, ButtonGroup, Checkbox } from "@shopify/polaris";
+import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, Button, ButtonGroup, Checkbox, Divider } from "@shopify/polaris";
 import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
 
 // Custom Component
@@ -44,7 +44,7 @@ function Frequently() {
         },
         button: {
             width: 100,
-            height: 45,
+            height: 10,
             buttonColor: "#7a26bf",
             textColor: "#ffffff",
         },
@@ -333,7 +333,7 @@ function Frequently() {
                 { color: ["#000000", "#8B4513", "#D2B48C"] }
             ],
         },
-        { name: "Gold-Tone Dress Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch9.webp?v=1758272181', price: "$112.00"  },
+        { name: "Gold-Tone Dress Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch9.webp?v=1758272181', price: "$112.00" },
         { name: "Automatic Skeleton Watch", image: 'https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch2.webp?v=1758271387', price: "$156.00" }
     ];
 
@@ -439,20 +439,17 @@ function Frequently() {
                                             <img
                                                 src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387"
                                                 width="100%"
-                                                style={{ borderRadius: "10px", objectFit: "cover" }}
                                             />
                                             <div style={{ display: "flex", gap: "0.2rem" }}>
                                                 <img
                                                     src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch5.jpg?v=1758271387"
                                                     width="60px"
                                                     height="60px"
-                                                    style={{ borderRadius: "10px" }}
                                                 />
                                                 <img
                                                     src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch.webp?v=1758271387"
                                                     width="60px"
                                                     height="60px"
-                                                    style={{ borderRadius: "10px" }}
                                                 />
                                             </div>
                                         </div>
@@ -462,6 +459,7 @@ function Frequently() {
                                                 <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
                                                 <p style={{ fontSize: "20px", fontWeight: "600" }}>$85.00</p>
                                             </div>
+                                            <Divider borderColor="border-hover" />
                                             <div style={{ display: "flex", gap: "10px" }}>
                                                 {["Case Material", "Strap", "Dial Color", "Size"].map((_, index, arr) => (
                                                     <div key={index} style={{ border: `2px solid ${data?.border?.color}`, backgroundColor: index === 0 ? `${data?.button?.buttonColor}` : "transparent", color: index === 0 ? `${data?.button?.textColor}` : "black", padding: "5px 10px", borderRadius: "10px", cursor: "pointer" }}>
@@ -471,7 +469,7 @@ function Frequently() {
                                             </div>
                                             <div style={{ display: "flex", justifyContent: "center" }}>
                                                 <button style={{
-                                                    backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize + 3}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
+                                                    backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", fontWeight: "400", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
                                                 }}>
                                                     Add to cart
                                                 </button>
@@ -514,8 +512,8 @@ function Frequently() {
                                                 <div style={{ display: "flex", gap: '7px' }}>
                                                     <p style={{ fontSize: `${data?.title?.fontSize + 3}px`, fontWeight: "500" }}>Total: </p>
                                                     <div style={{ display: 'flex' }}>
-                                                        <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize + 3}px`, color: data.title.fontColor }}>$30.00</p>
-                                                        <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize + 3}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$35.00</p>
+                                                        <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize + 3}px`, color: data.title.fontColor }}>$42.00</p>
+                                                        <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize + 3}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$84.00</p>
                                                     </div>
                                                 </div>
                                                 <div>
@@ -523,13 +521,12 @@ function Frequently() {
                                                         backgroundColor: data.button.buttonColor,
                                                         border: "none",
                                                         color: data.button.textColor,
-                                                        fontSize: `${data.title.fontSize + 3}px`,
-                                                        fontWeight: "500",
+                                                        fontSize: "18px",
                                                         cursor: "pointer",
                                                         borderRadius: "10px",
-                                                        padding: `${data?.button?.height}px 5px`,
+                                                        padding: `${data?.button?.height}px 12px`,
                                                         width: `${data?.button?.width}%`
-                                                    }}>Add selected to cart</button>
+                                                    }}>Add selected to cart | Save 50%</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -537,7 +534,7 @@ function Frequently() {
                                 </div>
                             ) : null}
                         </div>
-                        <div style={{ display: "flex", justifyContent: "end", padding: "10px 10px 0px", borderTop: "1px solid black", margin: "10px -16px 0px -16px" }}>
+                        <div style={{ display: "flex", justifyContent: "end", padding: "10px 10px 0px", borderTop: "1px solid black", margin: "15px -16px 0px -16px" }}>
                             <ButtonGroup>
                                 <Button>Cancel</Button>
                                 <Button variant="primary" onClick={handleSubmit}>Save</Button>

@@ -41,7 +41,7 @@ function BuyXgetY() {
     },
     button: {
       width: 100,
-      height: 45,
+      height: 10,
       buttonColor: "#7a26bf",
       textColor: "#FFFFFF",
     },
@@ -419,37 +419,18 @@ function BuyXgetY() {
               {data?.selectDisplay?.type === "main_product_page" ? (
                 <div style={{ display: "flex", gap: "10px" }}>
                   <div style={{ maxWidth: "400px" }}>
-                    <img
-                      src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771"
-                      width="100%"
-                      style={{ borderRadius: "10px", objectFit: "cover" }}
-                    />
+                    <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771" width="100%" />
                     <div style={{ display: "flex", gap: "0.2rem" }}>
-                      <img
-                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771"
-                        width="60px"
-                        height="60px"
-                        style={{ borderRadius: "10px" }}
-                      />
-                      <img
-                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-dangling-pendant-earrings_17e71027-81d8-4a49-a455-2e5c205963ee.jpg?v=1758263763"
-                        width="60px"
-                        height="60px"
-                        style={{ borderRadius: "10px" }}
-                      />
-                      <img
-                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-bloom-pendant.jpg?v=1758263772"
-                        width="60px"
-                        height="60px"
-                        style={{ borderRadius: "10px" }}
-                      />
+                      <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771" width="80px" height="80px" />
+                      <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-dangling-pendant-earrings_17e71027-81d8-4a49-a455-2e5c205963ee.jpg?v=1758263763" width="80px" height="80px" />
+                      <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-bloom-pendant.jpg?v=1758263772" width="80px" height="80px" />
                     </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
-                    <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal", }}>🎁 Buy 2 Earrings Bundle</p>
-                    <div style={{ display: "flex", justifyContent: "space-between", }}>
+                    <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal" }}>🎁 Buy 2 Earrings Bundle</p>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
                       <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
-                      <p style={{ fontSize: "20px", fontWeight: "600" }}>$87.00</p>
+                      <p style={{ fontSize: "20px", fontWeight: "600" }}>$67.00</p>
                     </div>
                     <Divider borderColor="border-hover" />
                     <div style={{ backgroundColor: "white", width: "100%", height: "auto", display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -457,7 +438,7 @@ function BuyXgetY() {
                         {products.map((_, index, arr) => (
                           <div key={index}>
                             <div style={{ display: "flex", gap: "10px" }}>
-                              <img src={_?.image} width="60px" height="60px" style={{ borderRadius: "10px" }} />
+                              <img src={_?.image} width="60px" height="60px" />
                               <div>
                                 <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor }}>{_?.name}</p>
                                 <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginTop: "10px", }}>{_?.price}</p>
@@ -485,32 +466,18 @@ function BuyXgetY() {
                         }].map((_, index, arr) => (
                           <div key={index} style={{ position: "relative" }}>
                             <div style={{
-                              position: "absolute",
-                              top: "-3px",
-                              right: "-32px",
-                              width: "90px",
-                              height: "23px",
-                              transform: "rotate(38deg)",
-                              backgroundColor: `${data?.button?.buttonColor}`,
-                              color: `${data?.button?.textColor}`,
-                              padding: "10px",
-                              fontWeight: 600,
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
+                              position: "absolute", top: "-3px", right: "-32px", width: "90px", height: "23px", transform: "rotate(38deg)", backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, padding: "10px", fontWeight: 600, display: "flex", justifyContent: "center", alignItems: "center"
                             }}>
                               Free
                             </div>
                             <div style={{ display: "flex", gap: "10px" }}>
-                              <img
-                                src={_?.image}
-                                width="60px"
-                                height="60px"
-                                style={{ borderRadius: "10px" }}
-                              />
+                              <img src={_?.image} width="60px" height="60px" />
                               <div>
                                 <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor }}>{_?.name}</p>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginTop: "10px", }}>{_?.price}</p>
+                                <div style={{ display: "flex", gap: "5px" }}>
+                                  <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight + 100, color: data.title.fontColor, marginTop: "10px", }}>Free</p>
+                                  <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginTop: "10px", textDecoration: "line-through" }}>{_?.price}</p>
+                                </div>
                               </div>
                             </div>
 
@@ -525,12 +492,12 @@ function BuyXgetY() {
                         ))}
                       </div>
                     </div>
-                    <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor }}>✨ Choose any 2 earrings from our collection and get a special bundle deal! Buy X Get Y your favorites to create the perfect set.</p>
                     <div style={{ display: "flex", justifyContent: "center" }}>
                       <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
                         Add to cart
                       </button>
                     </div>
+                    <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor }}>✨ Choose any 2 earrings from our collection and get a special bundle deal! Buy X Get Y your favorites to create the perfect set.</p>
                   </div>
                 </div>
               ) : data?.selectDisplay.type === "pop_up" ? (
@@ -548,7 +515,7 @@ function BuyXgetY() {
                       <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", padding: "6px", cursor: "pointer" }}>
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                           <div style={{ display: "flex" }}>
-                            <img src={v.image} width="60px" height="60px" style={{ objectFit: "fill", borderRadius: "10px" }} />
+                            <img src={v.image} width="60px" height="60px" />
                             <div style={{ marginLeft: "10px" }}>
                               <p style={{ fontSize: `${data?.title?.fontSize + 3}px`, fontWeight: data?.title?.fontWeight, color: data?.title?.fontColor }}>{v.name}</p>
                               <p style={{ fontSize: `${data?.title?.fontSize}px`, fontWeight: data?.title?.fontWeight, color: data?.title?.fontColor, marginTop: "5px" }}>{v.description}</p>
@@ -574,7 +541,7 @@ function BuyXgetY() {
                       <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", padding: "6px", cursor: "pointer", position: "relative" }}>
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                           <div style={{ display: "flex" }}>
-                            <img src={v.image} width="60px" height="60px" style={{ objectFit: "fill", borderRadius: "10px" }} />
+                            <img src={v.image} width="60px" height="60px" />
                             <div style={{ marginLeft: "10px" }}>
                               <p style={{ fontSize: `${data?.title?.fontSize + 3}px`, fontWeight: data?.title?.fontWeight, color: data?.title?.fontColor }}>{v.name}</p>
                               <p style={{ fontSize: `${data?.title?.fontSize}px`, fontWeight: data?.title?.fontWeight, color: data?.title?.fontColor, marginTop: "5px" }}>{v.description}</p>
@@ -594,7 +561,7 @@ function BuyXgetY() {
                   </div>
                   <div style={{ backgroundColor: `#efefef`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%", marginBottom: '10px' }}>
                     <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>Total</p>
-                    <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$0.00</p>
+                    <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>0 Items Add</p>
                   </div>
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>

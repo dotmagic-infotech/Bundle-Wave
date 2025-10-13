@@ -101,13 +101,13 @@ const BundleList = () => {
     }
 
     const bundleGallary = [
-        { id: 1, buttonName: "Fixed set", img: "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Fixed_Bundle.png?v=1758868876", redirect: "fixed_bundle" },
-        { id: 2, buttonName: "Tiered bundle", img: "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Mix_and_Match_Tierd.png?v=1758871536", redirect: "mix-match" },
-        { id: 3, buttonName: "Product addons", img: "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Add_Ons_Bundle.png?v=1758871485", redirect: "addons_bundle" },
-        { id: 4, buttonName: "Buy X Get Y", img: "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/buy_X_get_Y.png?v=1758870755", redirect: "buy_xy" },
-        { id: 5, buttonName: "Volume Bundle", img: "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/volume_bundle_5560b427-115c-4b76-b258-41ba9eeec5df.png?v=1758874756", redirect: "volume_bundle" },
-        { id: 6, buttonName: "Multi-step mix and match", img: "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Mix_and_Match_Single.png?v=1758871536", redirect: "mix-match" },
-        { id: 7, buttonName: "Frequently Bought Together", img: "https://cdn.shopify.com/s/files/1/0839/1399/8619/files/Frequently_bundle_3237bca8-ac17-475a-a792-3d6173691df6.png?v=1758875333", redirect: "frequently_bundle" },
+        { id: 1, buttonName: "Fixed set", img: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/fixed.jpg?v=1760353772", redirect: "fixed_bundle" },
+        { id: 2, buttonName: "Tiered bundle", img: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/Mix_Match_Tiered.jpg?v=1760353772", redirect: "mix-match" },
+        { id: 3, buttonName: "Product addons", img: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/Add_Ons.jpg?v=1760353772", redirect: "addons_bundle" },
+        { id: 4, buttonName: "Buy X Get Y", img: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/Buy_X_Get_Y.jpg?v=1760353772", redirect: "buy_xy" },
+        { id: 5, buttonName: "Volume Bundle", img: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/Volume_Discounts.jpg?v=1760353772", redirect: "volume_bundle" },
+        { id: 6, buttonName: "Multi-step mix and match", img: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/Mix_Match_Single.jpg?v=1760353773", redirect: "mix-match" },
+        { id: 7, buttonName: "Frequently Bought Together", img: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/frequently_bought_together.jpg?v=1760353772", redirect: "frequently_bundle" },
     ];
 
     const modalViews = {

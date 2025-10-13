@@ -53,7 +53,7 @@ function Mixmatch() {
     },
     button: {
       width: 100,
-      height: 45,
+      height: 10,
       buttonColor: "#000000",
       textColor: "#ffffff",
     },
@@ -562,17 +562,38 @@ function Mixmatch() {
                           <div key={index}>
                             <div style={{ borderRadius: `${data.border.borderRadius}px`, backgroundColor: data?.background?.background_type === "colored" ? BackGroundColor : "transparent" }}>
                               <div style={{ display: "flex", alignItems: "start", }}>
-                                <img src={_?.image} style={{ width: "70px", height: "70px", objectFit: "fill", borderRadius: "8px" }} />
+                                <img src={_?.image} style={{ width: "70px", height: "70px", objectFit: "fill" }} />
                                 <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "1rem", width: "100%" }}>
                                   <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: 600 }}>{_?.name}</p>
                                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                                     <div style={{ display: 'flex' }}>
-                                      <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ {_?.price}</p>
-                                      <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>{_?.oPrice}</p>
+                                      <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>{_?.price}</p>
                                     </div>
-                                    <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "15px", cursor: "pointer", borderRadius: "8px", padding: "5px 15px" }}>
-                                      {index === 0 ? "Added" : "Add"}
-                                    </button>
+                                    {index === 2 ? (
+                                      <button style={{
+                                        backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "15px", cursor: "pointer", borderRadius: "8px", padding: "5px 15px",
+                                      }}>
+                                        Add
+                                      </button>
+                                    ) : (
+                                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                                        <button
+                                          style={{
+                                            backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", fontWeight: "500", cursor: "pointer", borderRadius: "8px", width: "26px", height: "26px", paddingBottom: "4px", display: "flex", alignItems: "center", justifyContent: "center",
+                                          }}
+                                        >
+                                          -
+                                        </button>
+                                        <p style={{ fontWeight: "500", fontSize: "15px", margin: 0, lineHeight: "1" }}>1</p>
+                                        <button
+                                          style={{
+                                            backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", fontWeight: "500", cursor: "pointer", borderRadius: "8px", width: "26px", height: "26px", paddingBottom: "4px", display: "flex", alignItems: "center", justifyContent: "center"
+                                          }}
+                                        >
+                                          +
+                                        </button>
+                                      </div>
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -587,13 +608,12 @@ function Mixmatch() {
                         <Divider borderColor="border-hover" />
                       </div>
                       <div style={{ backgroundColor: `#efefef`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%" }}>
-                        <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>Total</p>
-                        <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$45.00</p>
+                        <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$67.00 - 20% OFF</p>
+                        <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>2 items added</p>
                       </div>
                       <div style={{ display: "flex", justifyContent: "center" }}>
                         <button style={{
-                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
-                        }}>Add to cart</button>
+                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "18px", fontWeight: "400", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px` }}>Add to cart</button>
                       </div>
                     </div>
                     :
@@ -693,19 +713,14 @@ function Mixmatch() {
                   {data.selectDisplay.structure === "tiered_discount" ?
                     <div style={{ display: "flex", gap: "1rem", padding: "40px", width: "100%" }}>
                       <div style={{ maxWidth: "400px" }}>
-                        <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-fluid-lines-necklace.jpg?v=1758263767' width="100%" style={{ borderRadius: "10px", objectFit: "cover" }} />
+                        <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-fluid-lines-necklace.jpg?v=1758263767' width="100%" />
                         <div style={{ display: "flex", gap: "0.2rem" }}>
-                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---2_197e4e51-6b44-4e54-9244-d3666bc5b514.jpg?v=1758263763' width="60px" height="60px" style={{ borderRadius: "10px" }} />
-                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-limelight-sequin-motif-earrings.jpg?v=1758263767' width="60px" height="60px" style={{ borderRadius: "10px" }} />
+                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---2_197e4e51-6b44-4e54-9244-d3666bc5b514.jpg?v=1758263763' width="80px" height="80px" />
+                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-limelight-sequin-motif-earrings.jpg?v=1758263767' width="80px" height="80px" />
                         </div>
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem", width: "50%" }}>
                         <p style={{ fontSize: '25px', fontWeight: "700", lineHeight: "normal" }}>Mix & Match Tiered Discount</p>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <p style={{ fontSize: '20px', fontWeight: "600" }}>Total Price</p>
-                          <p style={{ fontSize: '20px', fontWeight: "600" }}>$92.00</p>
-                        </div>
-                        <Divider borderColor="border-hover" />
                         <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
                           <div style={{
                             borderRadius: `${data.border.borderRadius}px`, display: "flex", flexDirection: "column", gap: '0.5rem'
@@ -726,24 +741,36 @@ function Mixmatch() {
                               }, { name: "18k Dangling Obsidian Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-limelight-sequin-motif-earrings.jpg?v=1758263767", price: "$25.00" }].map((_, index) => (
                                 <div key={index}>
                                   <div style={{ display: "flex", alignItems: "center", }}>
-                                    <img src={_?.image}
-                                      style={{ width: "65px", height: "65px", objectFit: "fill", borderRadius: "10px" }}
-                                    />
+                                    <img src={_?.image} style={{ width: "65px", height: "65px", objectFit: "fill" }} />
                                     <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", width: "100%" }}>
                                       <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{_?.name}</p>
                                       <div style={{ display: 'flex', justifyContent: "space-between" }}>
-                                        <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ {_?.price}</p>
-                                        <button style={{
-                                          backgroundColor: data.button.buttonColor,
-                                          border: "none",
-                                          color: data.button.textColor,
-                                          fontSize: "15px",
-                                          cursor: "pointer",
-                                          borderRadius: "8px",
-                                          padding: "5px 15px",
-                                        }}>
-                                          Add
-                                        </button>
+                                        <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>{_?.price}</p>
+                                        {index === 2 ? (
+                                          <button style={{
+                                            backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "15px", cursor: "pointer", borderRadius: "8px", padding: "5px 15px",
+                                          }}>
+                                            Add
+                                          </button>
+                                        ) : (
+                                          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                                            <button
+                                              style={{
+                                                backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", fontWeight: "500", cursor: "pointer", borderRadius: "8px", width: "26px", height: "26px", paddingBottom: "4px", display: "flex", alignItems: "center", justifyContent: "center",
+                                              }}
+                                            >
+                                              -
+                                            </button>
+                                            <p style={{ fontWeight: "500", fontSize: "15px", margin: 0, lineHeight: "1" }}>1</p>
+                                            <button
+                                              style={{
+                                                backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", fontWeight: "500", cursor: "pointer", borderRadius: "8px", width: "26px", height: "26px", paddingBottom: "4px", display: "flex", alignItems: "center", justifyContent: "center"
+                                              }}
+                                            >
+                                              +
+                                            </button>
+                                          </div>
+                                        )}
                                       </div>
                                     </div>
                                   </div>
@@ -754,35 +781,30 @@ function Mixmatch() {
                               ))}
                             </div>
                             <div style={{ backgroundColor: `#efefef`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%" }}>
-                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$0.00</p>
-                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>No items added</p>
+                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$67.00 - 20% OFF</p>
+                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>2 items added</p>
                             </div>
                           </div>
-                          <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px" }}>✨ Buy more, save more! Pick your favorite earrings and create a custom set while enjoying bigger discounts for multiple pairs.</p>
                           <div style={{ display: "flex", justifyContent: "center" }}>
                             <button style={{
-                              marginTop: "10px", backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
+                              marginTop: "10px", backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "18px", fontWeight: "400", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
                             }}>Add to cart</button>
                           </div>
+                          <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px" }}>✨ Buy more, save more! Pick your favorite earrings and create a custom set while enjoying bigger discounts for multiple pairs.</p>
                         </div>
                       </div>
                     </div>
                     :
                     <div style={{ display: "flex", justifyContent: "center", gap: "1rem", width: "100%" }}>
                       <div style={{ maxWidth: "400px" }}>
-                        <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766' width="100%" style={{ borderRadius: "10px", objectFit: "cover" }} />
+                        <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766' width="100%" />
                         <div style={{ display: "flex", gap: "0.2rem" }}>
-                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766' width="60px" height="60px" style={{ borderRadius: "10px" }} />
-                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758' width="60px" height="60px" style={{ borderRadius: "10px" }} />
+                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766' width="80px" height="80px" />
+                          <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758' width="80px" height="80px" />
                         </div>
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem", width: "400px" }}>
-                        <p style={{ fontSize: '25px', fontWeight: "700", lineHeight: "normal", }}>Mix & Match - Earrings Collection</p>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <p style={{ fontSize: '20px', fontWeight: "600" }}>Total Price</p>
-                          <p style={{ fontSize: '20px', fontWeight: "600" }}>$72.00</p>
-                        </div>
-                        <Divider borderColor="border-hover" />
+                        <p style={{ fontSize: '25px', fontWeight: "700", lineHeight: "normal", }}>Mix & Match - Earrings Collection</p> 
                         <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
                           <div style={{ display: "flex", flexDirection: "column", gap: '0.5rem' }}>
                             <div style={{ border: "1px solid black", padding: "10px", borderRadius: "10px" }}>
@@ -792,14 +814,10 @@ function Mixmatch() {
                                     <div>
                                       <Icon source={ChevronRightIcon} />
                                     </div>
-                                    <img src={_?.image} width="60px" height="60px"
-                                      style={{
-                                        marginLeft: "10px", objectFit: "fill", borderRadius: "10px"
-                                      }}
-                                    />
+                                    <img src={_?.image} width="60px" height="60px" style={{ marginLeft: "10px", objectFit: "fill" }} />
                                     <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", width: "100%" }}>
                                       <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data?.title?.fontWeight, color: data.title.fontColor }}>{_?.name}</p>
-                                      <p style={{ fontWeight: data?.title?.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>+ {_?.price}</p>
+                                      <p style={{ fontWeight: data?.title?.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>{_?.price}</p>
                                     </div>
                                   </div>
                                   {index !== arr.length - 1 && (
@@ -816,13 +834,13 @@ function Mixmatch() {
                             </div>
                           </div>
                         </div>
-                        <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Pick any 2 earrings from our curated collection and create your perfect mix & match set.<br />
-                          If you want, I can also insert this directly into your React bundle component so it shows under the main title. Do you want me to do that?</p>
                         <div style={{ display: "flex", justifyContent: "center" }}>
                           <button style={{
-                            backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
-                          }}>Add to cart</button>
+                            backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "18px", fontWeight: "400", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
+                          }}>Add to cart | Save 20%</button>
                         </div>
+                        <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Pick any 2 earrings from our curated collection and create your perfect mix & match set.<br />
+                          If you want, I can also insert this directly into your Bundle Wave component so it shows under the main title. Do you want me to do that?</p>
                       </div>
                     </div>
                   }

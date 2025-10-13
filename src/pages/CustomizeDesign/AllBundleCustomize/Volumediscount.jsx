@@ -41,7 +41,7 @@ function Volumediscount() {
         },
         button: {
             width: 100,
-            height: 45,
+            height: 10,
             buttonColor: "#7a26bf",
             textColor: "#ffffff",
         },
@@ -363,11 +363,7 @@ function Volumediscount() {
                             {data.selectDisplay.type === "included_product_page" ? (
                                 <div style={{ display: "flex", gap: "15px", margin: "12px 0px" }}>
                                     <div style={{ maxWidth: "400px" }}>
-                                        <img
-                                            src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758"
-                                            width="100%"
-                                            style={{ borderRadius: "10px", objectFit: "cover" }}
-                                        />
+                                        <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758" width="100%" />
                                     </div>
                                     <div style={{ width: "400px" }}>
                                         <p style={{
@@ -388,7 +384,7 @@ function Volumediscount() {
                                         }}>Buy more, Save more</p>
 
                                         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                                            {[{ oPrice: "$22.00", price: "$20.00", discount: "20" }, { oPrice: "$32.00", price: "$30.00", discount: "30" }, { oPrice: "$55.00", price: "$50.00", discount: "50" }].map((_, index) => (
+                                            {[{ oPrice: "$42.00", price: "$38.00", discount: "20" }, { oPrice: "$59.00", price: "$84.00", discount: "30" }, { oPrice: "$126.00", price: "$63.00", discount: "50" }].map((_, index) => (
                                                 <div key={index}>
                                                     <div style={{ border: `${data.border.borderWidth}px solid ${index === 0 ? data.border.color : "black"}`, borderRadius: `${data.border.borderRadius}px`, padding: "16px 12px", backgroundColor: "transparent", position: "relative" }}>
                                                         {index === 2 &&

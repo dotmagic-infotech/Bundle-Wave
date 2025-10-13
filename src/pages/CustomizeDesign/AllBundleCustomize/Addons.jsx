@@ -43,7 +43,7 @@ function Addons() {
         },
         button: {
             width: 100,
-            height: 45,
+            height: 10,
             buttonColor: "#7a26bf",
             textColor: "#FFFFFF",
         },
@@ -445,32 +445,26 @@ function Addons() {
                                             <img
                                                 src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387"
                                                 width="100%"
-                                                style={{ borderRadius: "10px", objectFit: "cover" }}
                                             />
                                             <div style={{ display: "flex", gap: "0.2rem" }}>
                                                 <img
                                                     src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch5.jpg?v=1758271387"
-                                                    width="60px"
-                                                    height="60px"
-                                                    style={{ borderRadius: "10px" }}
+                                                    width="80px"
+                                                    height="80px"
                                                 />
                                                 <img
                                                     src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch.webp?v=1758271387"
-                                                    width="60px"
-                                                    height="60px"
-                                                    style={{ borderRadius: "10px" }}
+                                                    width="80px"
+                                                    height="80px"
                                                 />
                                             </div>
                                         </div>
                                         <div style={{ width: "400px" }}>
                                             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                                                 <p style={{ fontSize: "25px", fontWeight: "700" }}>✨ Add-Ons Bundle</p>
-                                                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                                    <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
-                                                    <p style={{ fontSize: "20px", fontWeight: "600" }}>$330.00</p>
-                                                </div>
-                                                <Divider borderColor="border-hover" />
+
                                             </div>
+                                            <p style={{ fontSize: `${data?.title?.fontSize}`, fontWeight: `${data?.title?.fontWeight}`, margin: '10px 0px' }}>Complete your look with our exclusive add-ons! Pair your favorite earrings with matching styles for extra sparkle and savings.</p>
                                             <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "10px 0px" }}>
                                                 <p style={{
                                                     fontSize: `${8 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
@@ -480,16 +474,13 @@ function Addons() {
                                                 }}>Product Add-ons</p>
                                                 <div style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, borderRadius: "10px", padding: "2px 7px" }}>20% OFF</div>
                                             </div>
-                                            <p style={{ fontSize: `${data?.title?.fontSize}`, fontWeight: `${data?.title?.fontWeight}`, margin: '10px 0px' }}>Complete your look with our exclusive add-ons! Pair your favorite earrings with matching styles for extra sparkle and savings.</p>
                                             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                                                 {product.map((imgSrc, index) => (
                                                     <div key={index}>
                                                         <div style={{ border: index === 0 ? `${data.border.borderWidth}px solid ${data.border.color}` : `${data.border.borderWidth}px solid black`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
                                                             <div style={{ display: "flex", alignItems: "center", }}>
                                                                 <Checkbox checked={index === 0} />
-                                                                <img src={imgSrc?.image}
-                                                                    style={{ width: "50px", height: "50px", objectFit: "fill", borderRadius: "10px" }}
-                                                                />
+                                                                <img src={imgSrc?.image} style={{ width: "60px", height: "60px" }} />
                                                                 <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                                                                     <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.name}</p>
                                                                     <div style={{ display: 'flex' }}>
@@ -505,7 +496,7 @@ function Addons() {
                                                 ))}
                                             </div>
                                             <div style={{ display: "flex", justifyContent: "center" }}>
-                                                <button style={{ marginTop: "20px", backgroundColor: data?.button?.buttonColor, color: data.button.textColor, cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, borderRadius: "10px", border: "none", fontWeight: "500", fontSize: `${data.title.fontSize + 3}px` }}>Add to cart</button>
+                                                <button style={{ marginTop: "20px", backgroundColor: data?.button?.buttonColor, color: data.button.textColor, cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, borderRadius: "10px", border: "none", fontSize: "18px" }}>Add to cart</button>
                                             </div>
                                         </div>
                                     </div>
@@ -514,7 +505,7 @@ function Addons() {
                                 <div style={{ backgroundColor: "white", borderRadius: "10px", padding: "10px", position: "relative" }}>
                                     <div style={{ display: "flex", alignItems: "center" }}>
                                         <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771"
-                                            style={{ width: "80px", height: "80px", objectFit: "fill", borderColor: `2px solid ${data.border.color}`, borderRadius: "10px" }}
+                                            style={{ width: "80px", height: "80px", objectFit: "fill" }}
                                         />
                                         <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", height: '65px', justifyContent: "space-around", width: "90%" }}>
                                             <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>18k Pedal Ring</p>
@@ -547,7 +538,7 @@ function Addons() {
                                                     <div style={{ display: "flex", alignItems: "center", }}>
                                                         <Checkbox checked={index === 0} />
                                                         <img src={imgSrc?.image}
-                                                            style={{ width: "65px", height: "65px", objectFit: "fill", borderRadius: "10px" }}
+                                                            style={{ width: "60px", height: "60px", objectFit: "fill" }}
                                                         />
                                                         <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                                                             <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.name}</p>
@@ -567,7 +558,7 @@ function Addons() {
                                         <Divider borderColor="border-hover" />
                                     </div>
                                     <div style={{ display: "flex", justifyContent: "center" }}>
-                                        <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize + 3}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, marginTop: "2px" }}>
+                                        <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, marginTop: "2px" }}>
                                             Add to cart
                                         </button>
                                     </div>
