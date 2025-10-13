@@ -12,6 +12,8 @@ const BundlesPreview = ({
     modalSize = "fullScreen",
     type = "",
     title,
+    description,
+    discount_value = "",
     media = [],
     data = [],
     products = [],
@@ -30,7 +32,6 @@ const BundlesPreview = ({
     const [checkedItems, setCheckedItems] = useState({});
     const [selectedOption, setSelectedOption] = useState(0);
     const [selectedFirst, setSelectedFirst] = useState(0);
-    const [selectedSecond, setSelectedSecond] = useState(0);
 
     const toggleModal = (() => setActive((active) => !active));
 
@@ -79,12 +80,7 @@ const BundlesPreview = ({
                 return (
                     <>
                         <div style={{ maxHeight: '1000px', padding: "20px" }}>
-                            <Banner>
-                                <p>
-                                    This is a dummy Total of the bundle.
-                                </p>
-                            </Banner>
-                            <div style={{ display: "flex", gap: "15px", marginTop: "20px" }}>
+                            <div style={{ display: "flex", gap: "15px" }}>
                                 <div style={{ width: "50%" }}>
                                     <img
                                         id="main-image"
@@ -93,16 +89,15 @@ const BundlesPreview = ({
                                         alt="Main"
                                     />
 
-                                    <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
-                                        {media?.slice(0, 4).map((img, index) => (
+                                    <div style={{ display: "flex", gap: "10px" }}>
+                                        {products?.slice(0, 4).map((img, index) => (
                                             <img
                                                 key={index}
-                                                src={img}
+                                                src={img?.image}
                                                 width="100"
                                                 height="100"
                                                 style={{
                                                     cursor: "pointer",
-                                                    borderRadius: "4px",
                                                     border: "1px solid #ccc",
                                                 }}
                                                 onClick={() => {
@@ -115,48 +110,50 @@ const BundlesPreview = ({
                                     </div>
                                 </div>
                                 <div style={{ width: "50%" }}>
-                                    <div style={{ display: "flex", flexDirection: "column", border: "1px solid #000000", padding: "10px", borderRadius: "10px", backgroundColor: "transparent" }}>
-                                        <p style={{ marginTop: '10px', fontSize: "2rem", fontWeight: "500", marginBottom: "25px" }}>{title}</p>
-
-                                        {products?.length > 0 && products.map((product, index) => (
-                                            <div key={index}>
-                                                <div style={{ display: "flex", padding: "15px 10px" }}>
-                                                    <img
-                                                        src={product?.image}
-                                                        alt={product?.title}
-                                                        style={{ width: "60px", height: "60px", marginLeft: "10px", objectFit: "fill" }}
-                                                    />
-                                                    <div style={{ marginLeft: "10px" }}>
-                                                        <p>{product?.title}</p>
-                                                        <p style={{ marginTop: '5px', fontWeight: "500" }}>$ {product?.variants[0]?.price}</p>
-                                                    </div>
-                                                </div>
-                                                {index !== products.length - 1 && (
-                                                    <div>
-                                                        <Divider />
-                                                    </div>
-                                                )}
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "1rem", borderRadius: "10px", backgroundColor: "transparent" }}>
+                                        <p style={{ marginTop: '10px', fontSize: "2rem", fontWeight: "500", marginBottom: "10px" }}>{title}</p>
+                                        <div style={{ display: "flex", justifyContent: "space-between", }}>
+                                            <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>
+                                            <div style={{ display: "flex", alignItems: 'center', gap: "10px" }}>
+                                                <p style={{ fontSize: "20px", fontWeight: "600" }}>$57.50</p>
+                                                <p style={{ fontSize: "20px", fontWeight: "600", textDecoration: "line-through" }}>$72.00</p>
                                             </div>
-                                        ))}
-                                        <div style={{ background: "#d7d7d7", display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", marginTop: "10px" }}>
-                                            <p style={{ margin: 0, fontWeight: 400, fontSize: "14px" }}>Total</p>
-                                            <p style={{ margin: 0, fontWeight: 400, fontSize: "14px" }}>
-                                                $ 150.00
-                                                <span style={{ fontWeight: 400, textDecoration: "line-through", marginLeft: "12px" }}>
-                                                    $ 170.00
-                                                </span>
-                                            </p>
+                                        </div>
+                                        <Divider borderColor="border-hover" />
+                                        <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
+                                            {products?.length > 0 && products.map((product, index) => (
+                                                <div key={index}>
+                                                    <div style={{ display: "flex" }}>
+                                                        <img src={product?.image} alt={product?.title} style={{ width: "72px", height: "72px", objectFit: "fill" }} />
+                                                        <div style={{ marginLeft: "10px" }}>
+                                                            <p style={{ fontSize: "15px", fontWeight: "500" }}>{product?.title}</p>
+                                                            <p style={{ fontSize: "15px", marginTop: '10px', fontWeight: "500" }}>${product?.variants[0]?.price}</p>
+                                                        </div>
+                                                    </div>
+                                                    {index !== products.length - 1 && (
+                                                        <div style={{ margin: "10px 0px" }}>
+                                                            <Divider />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
                                     <button disabled style={{
-                                        marginTop: "10px",
-                                        backgroundColor: "#262626",
-                                        color: "white",
+                                        backgroundColor: "rgb(122, 38, 191)",
+                                        border: "none",
+                                        color: "rgb(255, 255, 255)",
+                                        fontSize: "18px",
                                         cursor: "pointer",
-                                        width: "100%",
                                         borderRadius: "10px",
-                                        padding: "8px"
-                                    }}>Add to cart</button>
+                                        width: "100%",
+                                        padding: "10px 5px",
+                                        marginTop: "10px"
+                                    }}>Add bundle to cart | Save {discount_value}%</button>
+                                    <div
+                                        style={{ marginTop: "10px" }}
+                                        dangerouslySetInnerHTML={{ __html: description }}
+                                    />
                                 </div>
                             </div>
                         </div>

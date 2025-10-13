@@ -467,47 +467,46 @@ const BundleFixed = () => {
                     {selectedProducts.length > 0 &&
                       <LegacyCard sectioned>
                         <div style={{ maxHeight: '500px', overflowX: "auto", display: "flex", flexDirection: "column", scrollbarWidth: "none" }}>
-                          {files.length > 0 ?
-                            <div style={{ width: "100%" }}>
-                              <img
-                                // src={id ? media[0] : files[0] instanceof File ? URL.createObjectURL(files[0]) : files[0]}
-                                src={files[0] instanceof File ? URL.createObjectURL(files[0]) : files[0]}
-                                style={{ width: "100%", height: "247px", objectFit: "cover" }}
-                              />
-                            </div>
-                            : <div style={{ width: "100%" }}>
-                              <img
-                                src={media[0]}
-                                style={{ width: "100%", height: "247px", objectFit: "cover" }}
-                              />
-                            </div>
-                          }
                           <div style={{ width: "100%" }}>
-                            {data?.bundle_name &&
-                              <p style={{ marginTop: '10px', fontSize: "2rem", fontWeight: "500", marginBottom: "25px", lineHeight: "2rem" }}>{data?.bundle_name}</p>
-                            }
-                            <p style={{ marginTop: '10px', fontSize: "1rem", fontWeight: "400", marginBottom: "25px" }}>$559.00 <span style={{ textDecoration: "line-through", marginLeft: "5px" }}>$1199.11</span></p>
+                            <img src={media?.[0] || selectedProducts?.[0]?.image} style={{ width: "100%", height: "247px", objectFit: "cover" }} />
+                          </div>
 
-                            {selectedProducts?.length > 0 && selectedProducts.map((product, index) => (
-                              <div key={index}>
-                                <div style={{ display: "flex" }}>
-                                  <img
-                                    src={product?.image}
-                                    alt={product?.title}
-                                    style={{ width: "60px", height: "60px", borderRadius: "10px", objectFit: "fill" }}
-                                  />
-                                  <div style={{ marginLeft: "10px" }}>
-                                    <p>{product?.title}</p>
-                                    <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
-                                  </div>
-                                </div>
-                                {index !== selectedProducts.length - 1 && (
-                                  <div style={{ margin: "10px 0px" }}>
-                                    <Divider />
-                                  </div>
-                                )}
+                          <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "10px" }}>
+                            {data?.bundle_name &&
+                              <p style={{ margin: '10px 0px', fontSize: "22px", fontWeight: "500", lineHeight: "1" }}>{data?.bundle_name}</p>
+                            }
+                            
+                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                              <p style={{ fontSize: "18px", fontWeight: "500" }}>Total Price</p>
+                              <div style={{ display: "flex", alignItems: 'center', gap: "10px" }}>
+                                <p style={{ fontSize: "18px", fontWeight: "600" }}>$57.50</p>
+                                <p style={{ fontSize: "18px", fontWeight: "600", textDecoration: "line-through" }}>$72.00</p>
                               </div>
-                            ))}
+                            </div>
+                            <Divider borderColor="border-hover" />
+
+                            <div>
+                              {selectedProducts?.length > 0 && selectedProducts.map((product, index) => (
+                                <div key={index}>
+                                  <div style={{ display: "flex" }}>
+                                    <img
+                                      src={product?.image}
+                                      alt={product?.title}
+                                      style={{ width: "60px", height: "60px" }}
+                                    />
+                                    <div style={{ marginLeft: "10px" }}>
+                                      <p style={{ fontSize: "13px", fontWeight: "500" }}>{product?.title}</p>
+                                      <p style={{ marginTop: '5px', fontWeight: "500" }}>${product?.variants[0]?.price}</p>
+                                    </div>
+                                  </div>
+                                  {index !== selectedProducts.length - 1 && (
+                                    <div style={{ margin: "10px 0px" }}>
+                                      <Divider />
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </LegacyCard>
@@ -516,9 +515,11 @@ const BundleFixed = () => {
                     <BundlesPreview
                       bundle_type_id="1"
                       title={data?.bundle_name}
+                      description={data?.bundle_description}
                       media={media}
                       modalSize="large"
                       products={selectedProducts}
+                      discount_value={data?.discount_value}
                     />
                   </BlockStack>
                 </Card>
