@@ -18,6 +18,7 @@ import PageSkeleton from '../../../components/PageSkeleton'
 import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider'
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken'
 import WidgetModal from '../../../components/WidgetModal/WidgetModal'
+import { getTotalPrice } from '../../../assets/helpers'
 
 const Frequently = () => {
 
@@ -81,6 +82,7 @@ const Frequently = () => {
   }, [id]);
 
   const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
+  const total = getTotalPrice(selectedProductsOffers).toFixed(2);
 
   useEffect(() => {
     if (selectedProducts?.length === 0) {
@@ -211,7 +213,6 @@ const Frequently = () => {
             },
           ] : []}
         >
-
           <SaveBar id="save">
             <button variant="primary" onClick={handleSubmit}>Save</button>
             <button variant="breadcrumb" onClick={() => {
@@ -419,17 +420,18 @@ const Frequently = () => {
                 <Card>
                   <BlockStack gap="300">
                     <Text as="span" variant="headingMd">Bundle preview</Text>
-                    <LegacyCard sectioned>
+                    {/* <LegacyCard sectioned>
                       <TextContainer>
                         <SkeletonDisplayText size="small" />
                         <SkeletonBodyText />
                       </TextContainer>
-                    </LegacyCard>
+                    </LegacyCard> */}
 
                     <BundlesPreview
                       bundle_type_id="6"
                       modalSize="large"
                       data={data}
+                      total={total}
                       products={selectedProducts}
                       offerProducts={selectedProductsOffers}
                     />

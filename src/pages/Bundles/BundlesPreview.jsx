@@ -2,30 +2,12 @@
 import { useState } from "react";
 
 // Shopify Imports
-import { Button, Modal, Checkbox, RadioButton, Divider, Banner } from "@shopify/polaris";
+import { Button, Modal, Checkbox, RadioButton, Divider } from "@shopify/polaris";
 
 // Shopify Icons
 import { BlankIcon, ChevronDownIcon, ChevronRightIcon } from "@shopify/polaris-icons";
 
-const BundlesPreview = ({
-    bundle_type_id,
-    modalSize = "fullScreen",
-    type = "",
-    title,
-    description,
-    discount_value = "",
-    media = [],
-    data = [],
-    products = [],
-    offerProducts = [],
-    collections = [],
-    secondCollection = [],
-    discountOptions = [],
-    sections = [],
-    discountOption = [],
-    buysX = [],
-    getY = [],
-}) => {
+const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", title, description, discount_value = "", media = [], data = [], products = [], offerProducts = [], collections = [], secondCollection = [], discountOptions = [], sections = [], discountOption = [], buysX = [], getY = [], total = "" }) => {
 
     // State
     const [active, setActive] = useState(false);
@@ -69,6 +51,7 @@ const BundlesPreview = ({
 
     const getSectionImage = (section) => {
         if (section?.collection?.length > 0) return section.collection[0]?.image;
+        if (section?.products?.length > 0) return section.products[0]?.image;
         if (section?.media) return section.media;
         if (section?.sectionImage?.length > 0) return section.sectionImage[0];
         return "";
@@ -83,10 +66,8 @@ const BundlesPreview = ({
                             <div style={{ display: "flex", gap: "15px" }}>
                                 <div style={{ width: "50%" }}>
                                     <img
-                                        id="main-image"
                                         src={media?.[0] || products?.[0]?.image}
                                         style={{ width: "100%", height: "465px", }}
-                                        alt="Main"
                                     />
 
                                     <div style={{ display: "flex", gap: "10px" }}>
@@ -100,11 +81,6 @@ const BundlesPreview = ({
                                                     cursor: "pointer",
                                                     border: "1px solid #ccc",
                                                 }}
-                                                onClick={() => {
-                                                    const mainImage = document.getElementById("main-image");
-                                                    if (mainImage) mainImage.src = img;
-                                                }}
-                                                alt={`Thumbnail ${index + 1}`}
                                             />
                                         ))}
                                     </div>
@@ -163,16 +139,34 @@ const BundlesPreview = ({
                 return (
                     <div style={{ maxHeight: '1000px', display: "flex", padding: "20px" }}>
                         <div style={{ width: "50%" }}>
-                            <img
-                                src={"https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM="}
-                                style={{ width: "100%", height: "465px", objectFit: "cover" }}
-                            />
+                            {data?.bundle_subtype === "Single" ? (
+                                <img src={sections?.[0]?.products?.[0]?.image || sections?.[0]?.collection?.[0]?.image} style={{ width: "100%", height: "465px", objectFit: "cover" }} />
+                            ) : (
+                                <img src={products?.[0]?.image} style={{ width: "100%", height: "465px", objectFit: "cover" }} />
+                            )}
+                            <div style={{ display: "flex", gap: "10px" }}>
+                                {sections?.[0]?.products?.slice(0, 4).map((img, index) => (
+                                    <img key={index} src={img?.image} width="100" height="100"
+                                        style={{
+                                            cursor: "pointer",
+                                            border: "1px solid #ccc",
+                                        }}
+                                    />
+                                ))}
+                                {products?.slice(0, 4).map((img, index) => (
+                                    <img key={index} src={img?.image} width="100" height="100"
+                                        style={{
+                                            cursor: "pointer",
+                                            border: "1px solid #ccc",
+                                        }}
+                                    />
+                                ))}
+                            </div>
                         </div>
                         <div style={{ width: "50%", paddingLeft: "20px" }}>
                             {type === "Single" && (
                                 <>
-                                    <p style={{ marginTop: '10px', fontSize: "2rem", fontWeight: "500", marginBottom: "25px" }}>{title}</p>
-                                    <p style={{ marginTop: '10px', fontSize: "1rem", fontWeight: "400", marginBottom: "25px" }}>$559.00 <span style={{ textDecoration: "line-through", marginLeft: "5px" }}>$1199.11</span></p>
+                                    <p style={{ marginTop: '10px', lineHeight: 1, fontSize: "2rem", fontWeight: "500", marginBottom: "25px" }}>{title}</p>
                                     <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
                                         {sections.map((value, index) => {
                                             const sectionImg = getSectionImage(value);
@@ -189,11 +183,11 @@ const BundlesPreview = ({
                                                                 )}
                                                             </div>
 
-                                                            <img src={sectionImg} style={{ width: "60px", height: "60px", borderRadius: "10px", marginLeft: "10px", objectFit: "fill" }} />
+                                                            <img src={sectionImg} width="72" height="72" style={{ marginLeft: "10px" }} />
 
                                                             <div style={{ marginLeft: "10px" }}>
                                                                 <p style={{ fontSize: "16px", fontWeight: 500 }}>{value?.sectionTitle || value?.collection?.[0]?.title}</p>
-                                                                <p style={{ marginTop: '10px' }}>{value?.discription}</p>
+                                                                <p style={{ marginTop: '10px', fontSize: "15px" }}>{value?.discription}</p>
                                                             </div>
                                                         </div>
                                                         <div>
@@ -213,51 +207,31 @@ const BundlesPreview = ({
 
                                                     {selectedFirst === index && (
                                                         <div>
-                                                            {value.products?.map((product, index) => (
+                                                            {value?.products?.map((product, index) => (
                                                                 <div key={index}>
                                                                     <div style={{ display: "flex", justifyContent: "space-between", padding: "15px 10px" }}>
                                                                         <div style={{ display: 'flex' }}>
-                                                                            <img
-                                                                                src={product?.image}
-                                                                                alt={product?.title}
-                                                                                style={{
-                                                                                    width: "60px",
-                                                                                    height: "60px",
-                                                                                    marginLeft: "10px",
-                                                                                    objectFit: "fill",
-                                                                                    borderRadius: "10px"
-                                                                                }}
-                                                                            />
+                                                                            <img src={product?.image} width="72" height="72" style={{ marginLeft: "10px" }} />
                                                                             <div style={{ marginLeft: "10px" }}>
-                                                                                <p>{product?.title}</p>
-                                                                                <p style={{ marginTop: '5px', fontWeight: "500" }}>${product?.variants[0]?.price}</p>
+                                                                                <p style={{ fontSize: "16px", fontWeight: 500 }}>{product?.title}</p>
+                                                                                <p style={{ fontSize: "16px", marginTop: '10px', fontWeight: 500 }}>${product?.variants[0]?.price}</p>
                                                                             </div>
                                                                         </div>
                                                                         <select disabled class="addon-variant-select" style={{ width: "67px", height: "31px", borderRadius: "8px", padding: "0px 8px", backgroundColor: "black", color: "white" }}>
-                                                                            <option value="" selected="">Add</option>
+                                                                            <option value="" selected>Add</option>
                                                                         </select>
                                                                     </div>
                                                                     {index !== value.products.length - 1 && <Divider />}
                                                                 </div>
                                                             ))}
 
-                                                            {value.collection?.map((product, index) => (
+                                                            {value?.collection?.map((product, index) => (
                                                                 <div key={index}>
                                                                     <div style={{ display: "flex", padding: "15px 10px" }}>
-                                                                        <img
-                                                                            src={product?.image}
-                                                                            alt={product?.title}
-                                                                            style={{
-                                                                                width: "60px",
-                                                                                height: "60px",
-                                                                                borderRadius: "10px",
-                                                                                marginLeft: "10px",
-                                                                                objectFit: "fill"
-                                                                            }}
-                                                                        />
+                                                                        <img src={product?.image} width="72" height="72" style={{ marginLeft: "10px" }} />
                                                                         <div style={{ marginLeft: "10px" }}>
-                                                                            <p>{product?.title}</p>
-                                                                            <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
+                                                                            <p style={{ fontSize: "16px", fontWeight: 500 }}>{product?.title}</p>
+                                                                            <p style={{ fontSize: "16px", marginTop: '10px', fontWeight: 500 }}>$50.00</p>
                                                                         </div>
                                                                     </div>
                                                                     {index !== value.collection.length - 1 && <Divider />}
@@ -271,35 +245,26 @@ const BundlesPreview = ({
                                             );
                                         })}
                                     </div>
-                                    <div style={{ backgroundColor: "#e9e9e9", borderRadius: "10px", display: "flex", justifyContent: "space-between", marginTop: "20px", alignItems: "center", padding: "10px" }}>
-                                        <p style={{ fontSize: '1rem', fontWeight: "500" }}>$0.00</p>
-                                        <p style={{ fontSize: '1rem', color: "gray" }}>No items added</p>
+                                    <div style={{ backgroundColor: `#efefef`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%", marginTop: "18px" }}>
+                                        <p style={{ fontWeight: "500", fontSize: "1rem" }}>Total Price</p>
+                                        <p style={{ fontWeight: "500", fontSize: "1rem" }}>0 items added</p>
                                     </div>
-                                    <button disabled style={{
-                                        marginTop: "10px",
-                                        backgroundColor: "#262626",
-                                        color: "white",
-                                        cursor: "pointer",
-                                        width: "100%",
-                                        borderRadius: "10px",
-                                        padding: "8px"
-                                    }}>Add to cart</button>
+                                    <button style={{
+                                        backgroundColor: "#7a26bf", marginTop: "10px", border: "none", color: "white", fontSize: "18px", fontWeight: "400", cursor: "pointer", width: "100%", borderRadius: "10px", padding: `10px`,
+                                    }}>Add to cart | Save {data?.discount_value}%</button>
+                                    <div style={{ fontSize: "15px", fontWeight: "500", marginTop: "10px" }} dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }} />
                                 </>
                             )}
 
                             {type === "Tiered" && (
                                 <>
-                                    <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", overflowY: "auto", padding: "20px", scrollbarWidth: "thin" }}>
-                                        <p style={{ fontSize: "15px", fontWeight: "500", marginBottom: "10px" }}>{title}</p>
-                                        <div
-                                            style={{ fontSize: "15px", fontWeight: "500" }}
-                                            dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }}
-                                        />
-                                        <div style={{ display: "flex", gap: "0.5rem", margin: "10px 0px 0px 0px" }}>
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+                                        <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>{title}</p>
+                                        <div style={{ display: "flex", gap: "0.5rem" }}>
                                             {discountOption?.map((option, index) => (
                                                 <div key={index} style={{
-                                                    backgroundColor: index === 0 ? "#459E7A" : "#c0c0c0",
-                                                    color: "#000000",
+                                                    backgroundColor: index === 0 ? "#7a26bf" : "#dddddd",
+                                                    color: index === 0 ? "#FFFFFF" : "#000000",
                                                     borderRadius: "10px",
                                                     opacity: 0.9,
                                                     display: "flex",
@@ -319,36 +284,33 @@ const BundlesPreview = ({
                                                 </div>
                                             ))}
                                         </div>
-
-                                        <div style={{ margin: "10px -20px" }}>
-                                            <Divider />
-                                        </div>
-
                                         <div style={{ display: "flex", flexDirection: "column" }}>
                                             {products?.length > 0 && products.map((value, index) => (
                                                 <div key={index}>
                                                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                                                         <div style={{ display: "flex" }}>
-                                                            <img src={value?.image} style={{ width: "60px", height: "60px", objectFit: "fill", borderRadius: "10px" }} />
+                                                            <img src={value?.image} width="72" height="72" />
                                                             <div style={{ marginLeft: "10px" }}>
-                                                                <p style={{ fontWeight: 500 }}>{value?.title}</p>
-                                                                <p style={{ marginTop: '5px', fontWeight: "500" }}>${value?.variants[0]?.price}</p>
+                                                                <p style={{ fontSize: "16px", fontWeight: 500 }}>{value?.title}</p>
+                                                                <p style={{ fontSize: "16px", marginTop: '10px', fontWeight: 500 }}>${value?.variants[0]?.price}</p>
                                                             </div>
                                                         </div>
                                                         <div>
                                                             {value?.variants?.length > 1 ?
-                                                                <select disabled class="addon-variant-select" style={{ width: "67px", height: "31px", borderRadius: "8px", padding: "0px 8px", backgroundColor: "black", color: "white" }}>
+                                                                <select disabled style={{
+                                                                    width: "67px", height: "31px", borderRadius: "8px", padding: "0px 8px", backgroundColor: "#7a26bf", color: "white", border: "none"
+                                                                }}>
                                                                     <option value="" selected="">Add</option>
                                                                 </select>
                                                                 :
-                                                                <button disabled class="addon-variant-select" style={{ width: "67px", height: "31px", borderRadius: "8px", padding: "0px 8px", backgroundColor: "black", color: "white" }}>Add</button>
+                                                                <button disabled style={{
+                                                                    width: "67px", height: "31px", borderRadius: "8px", padding: "0px 8px", backgroundColor: "#7a26bf", color: "white", border: "none"
+                                                                }}>Add</button>
                                                             }
                                                         </div>
                                                     </div>
                                                     {index !== products.length - 1 && (
-                                                        <div style={{ margin: "15px 0px" }}>
-                                                            <Divider />
-                                                        </div>
+                                                        <hr style={{ margin: "10px 0px" }} />
                                                     )}
                                                 </div>
                                             ))}
@@ -371,22 +333,17 @@ const BundlesPreview = ({
                                                 </div>
                                             ))}
                                         </div>
-                                        <div style={{ margin: "10px -20px" }}>
-                                            <Divider />
-                                        </div>
-                                        <div style={{ backgroundColor: "#e9e9e9", borderRadius: "10px", display: "flex", justifyContent: "space-between", marginTop: "10px", alignItems: "center", padding: "12px 10px", }}>
-                                            <p style={{ fontSize: "1rem", fontWeight: "600" }}>Total</p>
-                                            <p style={{ fontSize: "1rem", fontWeight: "500" }}>$559.00 <span style={{ textDecoration: "line-through", marginLeft: "5px" }}>$1199.11</span></p>
-                                        </div>
-                                        <button style={{
-                                            marginTop: "10px",
-                                            backgroundColor: "#262626",
-                                            color: "white",
+                                        <button disabled style={{
+                                            backgroundColor: "rgb(122, 38, 191)",
+                                            border: "none",
+                                            color: "rgb(255, 255, 255)",
+                                            fontSize: "18px",
                                             cursor: "pointer",
-                                            width: "100%",
                                             borderRadius: "10px",
-                                            padding: "8px"
+                                            width: "100%",
+                                            padding: "10px 5px",
                                         }}>Add to cart</button>
+                                        <div style={{ fontSize: "15px", fontWeight: "500" }} dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }} />
                                     </div>
                                 </>
                             )}
@@ -397,96 +354,92 @@ const BundlesPreview = ({
                 return (
                     <div style={{ maxHeight: '1000px', display: "flex", padding: "20px" }}>
                         <div style={{ width: "50%" }}>
-                            <img
-                                src={media[0] || buysX[0]?.image || collections[0]?.image}
-                                style={{ width: "100%", height: "465px", borderRadius: "10px" }}
-                            />
+                            <img src={media[0] || buysX[0]?.image || collections[0]?.image} style={{ width: "100%", height: "465px" }} />
+                            <div style={{ display: "flex", gap: "10px" }}>
+                                {buysX?.slice(0, 4).map((img, index) => (
+                                    <img key={index} src={img?.image} width="100" height="100" style={{ cursor: "pointer" }} />
+                                ))}
+                            </div>
                         </div>
-                        <div style={{ width: "50%", paddingLeft: "20px" }}>
-                            <p style={{ marginTop: '10px', fontSize: "1rem", fontWeight: "500", marginBottom: "11px" }}>{title}</p>
-                            <div
-                                style={{ fontSize: "15px", fontWeight: "500" }}
-                                dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }}
-                            />
-                            <p style={{ marginTop: '10px', fontSize: "1rem", fontWeight: "400", marginBottom: "14px" }}>$559.00 <span style={{ textDecoration: "line-through", marginLeft: "5px" }}>$1199.11</span></p>
 
-                            {type === "specific_product" && (
-                                <>
-                                    <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
-                                        {buysX.map((value, index) => (
-                                            <div key={index}>
-                                                <div style={{ padding: "15px 10px" }}>
-                                                    <div style={{ display: "flex" }}>
-                                                        <img src={value?.image} style={{ width: "60px", height: "60px", objectFit: "fill", borderRadius: "10px" }} />
-                                                        <div style={{ marginLeft: "10px" }}>
-                                                            <p>{value?.title}</p>
-                                                            <p style={{ marginTop: '5px', fontWeight: "500" }}>${value?.variants[0]?.price}</p>
-                                                        </div>
-                                                    </div>
-                                                    {value?.variants?.length > 1 &&
-                                                        <select disabled style={{ width: "100%", height: "36px", backgroundColor: "#fafafa", borderRadius: "8px", marginTop: "10px" }}>
-                                                            <option selected>
-                                                                Variants
-                                                            </option>
-                                                        </select>
-                                                    }
-                                                </div>
-                                                <div style={{ margin: "0px 20px" }}>
-                                                    <Divider />
+                        <div style={{ width: "50%", paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "15px" }}>
+                            <p style={{ fontSize: "1.5rem", fontWeight: "500", marginBottom: "10px" }}>{title}</p>
+
+                            <div style={{ display: "flex", justifyContent: "space-between", }}>
+                                <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>
+                                <div style={{ display: "flex", alignItems: 'center', gap: "10px" }}>
+                                    <p style={{ fontSize: "20px", fontWeight: "600" }}>${total}</p>
+                                </div>
+                            </div>
+
+                            <Divider borderColor="border-hover" />
+
+                            <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
+                                {buysX.map((value, index) => (
+                                    <div key={index}>
+                                        <div style={{ padding: "15px 10px" }}>
+                                            <div style={{ display: "flex" }}>
+                                                <img src={value?.image} width="72" height="72" />
+                                                <div style={{ marginLeft: "10px" }}>
+                                                    <p style={{ fontSize: "15px", fontWeight: "500" }}>{value?.title}</p>
+                                                    <p style={{ fontSize: "15px", marginTop: '10px', fontWeight: "500" }}>{value?.variants?.[0]?.price ? `$${value?.variants?.[0]?.price}` : ""}</p>
                                                 </div>
                                             </div>
-                                        ))}
+                                            {value?.variants?.length > 1 &&
+                                                <select disabled style={{ width: "100%", height: "36px", backgroundColor: "#fafafa", borderRadius: "8px", marginTop: "10px" }}>
+                                                    <option selected>
+                                                        Variants
+                                                    </option>
+                                                </select>
+                                            }
+                                        </div>
+                                        {index !== buysX.length - 1 && (
+                                            <hr style={{ margin: "0px 10px" }} />
+                                        )}
                                     </div>
-                                    <div style={{ display: "flex", justifyContent: "center" }}>
-                                        <button disabled style={{
-                                            backgroundColor: "#262626", color: "white", cursor: "pointer", width: "45px", height: "45px", borderRadius: "50%", padding: "8px",
-                                            fontWeight: "500", paddingBottom: "14px", fontSize: "30px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1
-                                        }}>+</button>
-                                    </div>
-                                    <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginTop: "-6px", position: "relative", overflow: "hidden" }}>
-                                        {getY.map((value, index) => (
-                                            <div key={index} style={{ position: "relative" }}>
-                                                <div style={{ padding: "15px 10px" }}>
-                                                    <div style={{ display: "flex" }}>
-                                                        <img src={value?.image} style={{ width: "60px", height: "60px", objectFit: "fill", borderRadius: "10px" }} />
-                                                        <div style={{ marginLeft: "10px" }}>
-                                                            <p>{value?.title}</p>
-                                                            <p style={{ marginTop: '5px', fontWeight: "500" }}>${value?.variants[0]?.price}</p>
-                                                        </div>
-                                                    </div>
-                                                    {value?.variants?.length > 1 &&
-                                                        <select disabled style={{ width: "100%", height: "36px", backgroundColor: "#fafafa", borderRadius: "8px", marginTop: "10px" }}>
-                                                            <option selected>
-                                                                Variants
-                                                            </option>
-                                                        </select>
-                                                    }
-                                                </div>
-
-                                                {index === 0 && (
-                                                    <div style={{ position: 'absolute', top: "6px", right: "-16px", width: "95px", height: "23px", transform: "rotate(36deg)", backgroundColor: "red", color: "white", padding: "10px", fontWeight: "500", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                                        {data?.discount_value === "100" ? "FREE" : `${data?.discount_value}% OFF`}
-                                                    </div>
-                                                )}
-
-                                                <div style={{ margin: "0px 20px" }}>
-                                                    <Divider />
+                                ))}
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "center", margin: "-15px 0px" }}>
+                                <button disabled style={{ backgroundColor: "rgb(122, 38, 191)", border: "none", color: "rgb(255, 255, 255)", cursor: "pointer", width: "40px", height: "40px", borderRadius: "50%", padding: "8px 8px 16px", fontWeight: 500, fontSize: "33px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1 }}>+</button>
+                            </div>
+                            <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginTop: "-6px", position: "relative", overflow: "hidden" }}>
+                                {getY.map((value, index) => (
+                                    <div key={index} style={{ position: "relative" }}>
+                                        <div style={{ padding: "15px 10px" }}>
+                                            <div style={{ display: "flex" }}>
+                                                <img src={value?.image} width="72" height="72" />
+                                                <div style={{ marginLeft: "10px" }}>
+                                                    <p style={{ fontSize: "15px", fontWeight: "500" }}>{value?.title}</p>
+                                                    <p style={{ fontSize: "15px", marginTop: '10px', fontWeight: "500" }}>${value?.variants[0]?.price}</p>
                                                 </div>
                                             </div>
-                                        ))}
-                                    </div>
-                                </>
-                            )}
+                                            {value?.variants?.length > 1 &&
+                                                <select disabled style={{ width: "100%", height: "36px", backgroundColor: "#fafafa", borderRadius: "8px", marginTop: "10px" }}>
+                                                    <option selected>
+                                                        Variants
+                                                    </option>
+                                                </select>
+                                            }
+                                        </div>
 
-                            <button style={{
-                                marginTop: "20px",
-                                backgroundColor: "#262626",
-                                color: "white",
-                                cursor: "pointer",
-                                width: "100%",
-                                borderRadius: "10px",
-                                padding: "8px"
-                            }} disabled>Add to cart</button>
+                                        {index === 0 && (
+                                            <div style={{ position: 'absolute', top: "10px", right: "-19px", width: "95px", height: "23px", transform: "rotate(39deg)", backgroundColor: "rgb(122, 38, 191)", color: "white", padding: "10px", fontWeight: "500", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                                {data?.discount_value === "100" ? "FREE" : `${data?.discount_value}% OFF`}
+                                            </div>
+                                        )}
+
+                                        {index !== getY.length - 1 && (
+                                            <hr style={{ margin: "0px 10px" }} />
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+
+                            <button disabled style={{
+                                backgroundColor: "rgb(122, 38, 191)", border: "none", color: "white", fontSize: "18px", cursor: "pointer", borderRadius: "10px", width: "100%", padding: "10px 5px",
+                            }}>Add to cart</button>
+
+                            <div style={{ fontSize: "15px", fontWeight: "500" }} dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }} />
                         </div>
                     </div>
                 )
@@ -507,7 +460,7 @@ const BundlesPreview = ({
                                     <p style={{ fontSize: "14px", fontWeight: 400, color: "black", margin: "4px 0px", }}>Denominations</p>
                                     <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
                                         {products[0]?.variants.map((value, index) => (
-                                            <div key={index} style={{ lineHeight: "normal", cursor: "pointer", border: "1px solid black", padding: "8px 10px", borderRadius: "10px" }}>
+                                            <div key={index} style={{ lineHeight: "normal", cursor: "pointer", backgroundColor: index === 0 ? "#7a26bf" : "", color: index === 0 ? "white" : "", border: `1px solid #7a26bf`, padding: "8px 10px", borderRadius: "10px" }}>
                                                 {value?.title}
                                             </div>
                                         ))}
@@ -517,10 +470,10 @@ const BundlesPreview = ({
 
                             <p style={{ margin: '18px 0px 12px 0px', fontSize: "1rem", fontWeight: "600" }}>{title}</p>
 
-                            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
                                 {discountOptions.map((value, index) => (
                                     <div key={index}>
-                                        <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "black" : "#dbdbdb", borderRadius: "10px", padding: "22px", position: "relative" }}>
+                                        <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "#7a26bf" : "black", borderRadius: "10px", padding: "30px 15px", position: "relative" }}>
                                             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", }}>
                                                 <div style={{ display: "flex", alignItems: "center", }}>
                                                     <RadioButton
@@ -530,14 +483,14 @@ const BundlesPreview = ({
                                                     <div style={{ display: "flex", gap: "0.5rem" }}>
                                                         <p style={{ fontSize: "15px", fontWeight: "600" }}>{value?.description}</p>
                                                         {value?.Label &&
-                                                            <p style={{ backgroundColor: "black", padding: "0px 5px", color: 'white', borderRadius: "10px", fontSize: "10px" }}>{value?.Label}</p>
+                                                            <p style={{ backgroundColor: "black", padding: "0px 10px", color: 'white', borderRadius: "10px", fontSize: "10px" }}>{value?.Label}</p>
                                                         }
                                                     </div>
                                                 </div>
-                                                <p style={{ fontWeight: "500", fontSize: "1rem" }}>$77.00</p>
+                                                <p style={{ fontWeight: "500", fontSize: "1rem" }}>${total}</p>
                                             </div>
                                             {value?.Badge &&
-                                                <div style={{ backgroundColor: "red", display: "flex", justifyContent: 'center', alignItems: "center", position: "absolute", right: "85px", top: "-2px", padding: '4px 8px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
+                                                <div style={{ backgroundColor: "#7a26bf", display: "flex", justifyContent: 'center', alignItems: "center", position: "absolute", right: "20px", top: "-11px", padding: '2px 8px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
                                                     {value?.Badge}
                                                 </div>
                                             }
@@ -562,6 +515,9 @@ const BundlesPreview = ({
                                     </div>
                                 ))}
                             </div>
+                            <button disabled style={{
+                                backgroundColor: "rgb(122, 38, 191)", border: "none", color: "white", fontSize: "18px", cursor: "pointer", borderRadius: "10px", width: "100%", padding: "10px 5px", margin: "10px 0px"
+                            }}>Add to cart</button>
                         </div>
                     </div>
                 )
@@ -573,26 +529,40 @@ const BundlesPreview = ({
                                 src={products[0]?.image || collections[0]?.image}
                                 style={{ width: "100%", height: "465px", }}
                             />
-                        </div>
-                        <div style={{ width: "50%" }}>
-                            <p style={{ fontSize: "1.3rem", fontWeight: "500" }}>{products[0]?.title || collections[0]?.title}</p>
-                            <p style={{ fontSize: "20px", fontWeight: 400, margin: "12px 0px" }}>$ 1999.00</p>
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "14px 0px 5px 0px" }}>
-                                <p style={{ fontSize: "16px", fontWeight: 500, color: "black" }}>{data?.bundle_title}</p>
-                                <p style={{ backgroundColor: "red", color: "white", padding: "0px 6px", height: "fit-content", borderRadius: "5px", fontSize: "12px" }}>{data?.discount_value}% OFF</p>
+                            <div style={{ display: "flex", gap: "10px" }}>
+                                {secondCollection?.slice(0, 4).map((img, index) => (
+                                    <img
+                                        key={index}
+                                        src={img?.image}
+                                        width="100"
+                                        height="100"
+                                        style={{
+                                            cursor: "pointer",
+                                            border: "1px solid #ccc",
+                                        }}
+                                    />
+                                ))}
                             </div>
-                            <p style={{ marginBottom: "12px" }}>{data?.bundle_description}</p>
+                        </div>
+                        <div style={{ width: "50%", display: "flex", flexDirection: "column", gap: "10px" }}>
+                            <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>{products[0]?.title || collections[0]?.title}</p>
+                            <p>{data?.bundle_description}</p>
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <p style={{ fontSize: "18px", fontWeight: 500, color: "black" }}>{data?.bundle_title}</p>
+                                <p style={{ backgroundColor: "#7a26bf", color: "white", padding: "0px 6px", height: "fit-content", borderRadius: "5px", fontSize: "12px" }}>{data?.discount_value}% OFF</p>
+                            </div>
                             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                                 {secondCollection.map((value, index) => {
                                     const isChecked = data?.selectedAddonIds.includes(value?.id) ? true : false;
 
                                     return (
                                         <div key={index}>
-                                            <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", alignItems: "center", padding: "10px", cursor: "pointer" }}>
+                                            <div style={{ border: "2px solid black", borderRadius: "10px", display: "flex", alignItems: "center", padding: "10px", cursor: "pointer" }}>
                                                 <Checkbox checked={isChecked || !!checkedItems[index]} onChange={() => handleCheckboxChange(index)} />
-                                                <img src={value?.image} style={{ width: "50px", height: "50px", objectFit: "fill" }} />
+                                                <img src={value?.image} width="72" height="72" />
                                                 <div style={{ marginLeft: "10px" }}>
-                                                    <p>{value?.title}</p>
+                                                    <p style={{ fontSize: "15px", fontWeight: "500" }}>{value?.title}</p>
+                                                    <p style={{ fontSize: "15px", marginTop: "10px", fontWeight: "500" }}>${value?.variants[0]?.price}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -600,29 +570,85 @@ const BundlesPreview = ({
                                 })}
                             </div>
                             <button disabled style={{
-                                margin: "13px 0px",
-                                backgroundColor: "#262626",
-                                color: "white",
+                                backgroundColor: "rgb(122, 38, 191)",
+                                border: "none",
+                                color: "rgb(255, 255, 255)",
+                                fontSize: "18px",
                                 cursor: "pointer",
-                                width: "100%",
                                 borderRadius: "10px",
-                                padding: "8px"
+                                width: "100%",
+                                padding: "10px 5px",
+                                marginTop: "10px"
                             }}>Add to cart</button>
                         </div>
                     </div >
                 )
             case "6":
-                const allProducts = [...products.slice(0, 1), ...offerProducts];
-
                 return (
-                    <div style={{ height: '500px', display: "flex", flexDirection: "column", justifyContent: "center", padding: "20px" }}>
+                    <div style={{ padding: "20px" }}>
+                        <div style={{ maxHeight: '1000px', display: "flex", gap: "15px" }}>
+                            <div style={{ width: "50%" }}>
+                                <img
+                                    src={media?.[0] || products?.[0]?.image}
+                                    style={{ width: "100%", height: "465px", }}
+                                />
+
+                                <div style={{ display: "flex", gap: "10px" }}>
+                                    {products?.slice(0, 4).map((img, index) => (
+                                        <img
+                                            key={index}
+                                            src={img?.image}
+                                            width="100"
+                                            height="100"
+                                            style={{
+                                                cursor: "pointer",
+                                                border: "1px solid #ccc",
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                            <div style={{ width: "50%", display: "flex", flexDirection: "column", gap: "10px" }}>
+                                <p style={{ marginTop: '10px', fontSize: "2rem", fontWeight: "500", marginBottom: "10px" }}>{products?.[0]?.title}</p>
+                                <div style={{ display: "flex", justifyContent: "space-between", }}>
+                                    <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>
+                                    <div style={{ display: "flex", alignItems: 'center', gap: "10px" }}>
+                                        <p style={{ fontSize: "20px", fontWeight: "600" }}>${products?.[0]?.variants?.[0]?.price}</p>
+                                    </div>
+                                </div>
+                                <Divider borderColor="border-hover" />
+
+                                {products[0]?.variants?.length > 1 &&
+                                    <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                                        {products[0]?.variants.map((value, index) => (
+                                            <div key={index} style={{ lineHeight: "normal", cursor: "pointer", backgroundColor: index === 0 ? "#7a26bf" : "", color: index === 0 ? "white" : "", border: `2px solid #7a26bf`, padding: "8px 10px", borderRadius: "10px" }}>
+                                                {value?.title}
+                                            </div>
+                                        ))}
+                                    </div>
+                                }
+
+                                <button disabled style={{
+                                    backgroundColor: "rgb(122, 38, 191)",
+                                    border: "none",
+                                    color: "rgb(255, 255, 255)",
+                                    fontSize: "18px",
+                                    cursor: "pointer",
+                                    borderRadius: "10px",
+                                    width: "100%",
+                                    padding: "10px 5px",
+                                    marginTop: "10px"
+                                }}>Add to cart</button>
+                            </div>
+                        </div>
+                        <p style={{ margin: '25px 0px', fontSize: "2rem", fontWeight: "500", marginBottom: "10px" }}>{data?.bundle_title}</p>
                         <div style={{
                             display: "flex",
                             overflowX: "auto",
                             paddingBottom: "10px",
-
+                            marginTop: "10px"
                         }}>
-                            {allProducts.map((item, index, arr) => (
+                            {offerProducts.map((item, index, arr) => (
                                 <div key={index} style={{ flex: "0 0 auto" }}>
                                     <div style={{ display: "flex", alignItems: "center" }}>
                                         <div style={{ position: "relative", width: "150px", height: "150px" }}>
@@ -630,8 +656,7 @@ const BundlesPreview = ({
                                                 src={item?.image || "https://via.placeholder.com/150"}
                                                 width="150px"
                                                 height="150px"
-                                                style={{ borderRadius: "10px", border: "2px solid #000000", width: "100%", height: "100%" }}
-                                                alt={item?.title || "Recommended product"}
+                                                style={{ width: "100%", height: "100%", borderRadius: "10px" }}
                                             />
                                             <div style={{ position: "absolute", top: "8px", right: "8px" }}>
                                                 <Checkbox labelHidden />
@@ -643,7 +668,7 @@ const BundlesPreview = ({
                                         )}
                                     </div>
                                     <p style={{ fontSize: "0.8rem", marginTop: "3px", width: "150px" }}>{item.title}</p>
-                                    <p style={{ fontSize: "1rem", fontWeight: "600", marginTop: "3px" }}>$ {item.variants[0]?.price}</p>
+                                    <p style={{ fontSize: "1rem", fontWeight: "600", marginTop: "3px" }}>${item.variants[0]?.price}</p>
                                 </div>
                             ))}
                             <div style={{
@@ -651,20 +676,23 @@ const BundlesPreview = ({
                                 margin: "1rem",
                                 flexDirection: "column",
                                 gap: "0.5rem",
-                                padding: "10px"
+                                padding: "10px",
+                                width: "200px"
                             }}>
-                                <p style={{ fontSize: "1rem", fontWeight: "600" }}>Total: $29090.00</p>
-                                <button style={{
-                                    backgroundColor: "#262626",
-                                    color: "white",
+                                <p style={{ fontSize: "1rem", fontWeight: "600" }}>Total: ${total}</p>
+                                <button disabled style={{
+                                    backgroundColor: "rgb(122, 38, 191)",
+                                    border: "none",
+                                    color: "rgb(255, 255, 255)",
+                                    fontSize: "18px",
                                     cursor: "pointer",
-                                    width: "160px",
                                     borderRadius: "10px",
-                                    padding: "8px"
-                                }}>Add select to cart</button>
+                                    width: "100%",
+                                    padding: "10px 5px",
+                                    marginTop: "10px"
+                                }}>Add to cart</button>
                             </div>
                         </div>
-
                     </div>
                 )
             default:

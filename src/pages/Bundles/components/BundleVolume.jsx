@@ -22,6 +22,7 @@ import PageSkeleton from '../../../components/PageSkeleton';
 import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
 import WidgetModal from '../../../components/WidgetModal/WidgetModal';
+import { getTotalPrice } from '../../../assets/helpers';
 
 const BundleVolume = () => {
 
@@ -107,6 +108,7 @@ const BundleVolume = () => {
 
   const toggleVideoModal = () => setVideoModalOpen(prev => !prev);
   const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
+  const total = getTotalPrice(selectedProducts).toFixed(2);
 
   const handleCheckboxFour = (index) => {
     setSelectedOption(index);
@@ -149,7 +151,7 @@ const BundleVolume = () => {
         {
           id: discountOption.length + 1,
           required_items: (lastRequiredItems + 1).toString(),
-          Label: "", 
+          Label: "",
           Badge: "",
           allow_users: "0",
           type: "1",
@@ -716,31 +718,31 @@ const BundleVolume = () => {
                         <div style={{ maxHeight: '500px', overflowX: "auto", display: "flex", flexDirection: "column", scrollbarWidth: "none" }}>
                           <div style={{ width: "100%" }}>
                             {data?.bundle_info &&
-                              <p style={{ margin: '10px 0px 10px', fontSize: "0.8rem", fontWeight: "500", marginBottom: "10px" }}>{data?.bundle_info}</p>
+                              <p style={{ marginBottom: '10px', fontSize: "1rem", fontWeight: "500", marginBottom: "10px" }}>{data?.bundle_info}</p>
                             }
-                            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
                               {discountOption.map((value, index) => (
                                 <div key={index}>
-                                  <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "black" : "#dbdbdb", borderRadius: "10px", padding: "22px", position: "relative" }}>
+                                  <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "#7a26bf" : "black", borderRadius: "10px", padding: "20px 10px", position: "relative" }}>
                                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", }}>
                                       <div style={{ display: "flex", alignItems: "center", }}>
                                         <RadioButton
                                           checked={value?.selected_default === "1"}
                                           onChange={() => handleCheckboxFour(index)}
                                         />
-                                        <div style={{ marginLeft: "10px", display: "flex", gap: "0.5rem" }}>
+                                        <div style={{ display: "flex", gap: "0.5rem" }}>
                                           <p style={{ fontWeight: "400" }}>
                                             {value?.description}
                                           </p>
                                           {value?.Label &&
-                                            <p style={{ backgroundColor: "black", padding: "0px 5px", color: 'white', borderRadius: "10px", fontSize: "10px", maxWidth: "80px", height: "20px" }}>{value?.Label}</p>
+                                            <p style={{ backgroundColor: "black", padding: "0px 8px", color: 'white', borderRadius: "10px", fontSize: "10px", maxWidth: "80px", height: "20px" }}>{value?.Label}</p>
                                           }
                                         </div>
                                       </div>
-                                      <p style={{ fontWeight: "500", fontSize: "1rem" }}>$77.00</p>
+                                      <p style={{ fontWeight: "500", fontSize: "1rem" }}>${total}</p>
                                     </div>
                                     {value?.Badge &&
-                                      <div style={{ backgroundColor: "red", display: "flex", justifyContent: 'center', alignItems: "center", height: "20px", position: "absolute", right: "75px", top: "-2px", padding: '7px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
+                                      <div style={{ backgroundColor: "#7a26bf", display: "flex", justifyContent: 'center', alignItems: "center", height: "20px", position: "absolute", right: "10px", top: "-10px", padding: '7px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
                                         {value?.Badge}
                                       </div>
                                     }
@@ -774,6 +776,7 @@ const BundleVolume = () => {
                       modalSize="large"
                       type={data?.bundle_subtype}
                       title={data?.bundle_info}
+                      total={total}
                       products={selectedProducts}
                       collections={selectedCollections}
                       discountOptions={discountOption}

@@ -24,6 +24,7 @@ import WidgetModal from '../../../components/WidgetModal/WidgetModal';
 import PageSkeleton from '../../../components/PageSkeleton';
 import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
+import { getTotalPrice } from '../../../assets/helpers';
 
 const BundleXY = () => {
 
@@ -113,6 +114,7 @@ const BundleXY = () => {
   }, [id]);
 
   const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
+  const total = getTotalPrice(productsbuys).toFixed(2);
 
   const handleChangeValue = (key, value) => {
     setData((prevData) => ({
@@ -580,116 +582,114 @@ const BundleXY = () => {
                 <Card>
                   <BlockStack gap="300">
                     <Text as="span" variant="headingMd">Bundle preview</Text>
-                    {(productsbuys?.length > 0 && productsgets?.length > 0) && (
-                      <div style={{ maxHeight: '500px', overflowX: "auto", display: "flex", flexDirection: "column", scrollbarWidth: "none" }}>
-                        {files.length > 0 &&
+                    {(
+                      (data?.bundle_subtype === "specific_product" && productsbuys?.length > 0 && productsgets?.length > 0) ||
+                      (data?.bundle_subtype !== "specific_product" && collectionbuys?.length > 0 && productsgets?.length > 0)
+                    ) && (
+                        <div style={{ maxHeight: '500px', overflowX: "auto", display: "flex", flexDirection: "column", scrollbarWidth: "none" }}>
                           <div style={{ width: "100%" }}>
-                            <img
-                              src={files[0] instanceof File ? URL.createObjectURL(files[0]) : files[0]}
-                              style={{ width: "100%", height: "247px", objectFit: "cover" }}
-                            />
+                            {data?.bundle_subtype === "specific_product" ? (
+                              <img
+                                src={files[0] instanceof File ? URL.createObjectURL(files[0]) : files[0] || productsbuys?.[0]?.image}
+                                style={{ width: "100%", height: "247px", objectFit: "cover" }}
+                              />
+                            ) : (
+                              <img
+                                src={files[0] instanceof File ? URL.createObjectURL(files[0]) : files[0] || collectionbuys?.[0]?.image}
+                                style={{ width: "100%", height: "247px", objectFit: "cover" }}
+                              />
+                            )}
                           </div>
-                        }
-                        <div style={{ width: "100%" }}>
-                          {data?.bundle_name &&
-                            <p style={{ fontSize: "1rem", fontWeight: "500", marginBottom: "10px", lineHeight: "2rem" }}>{data?.bundle_name}</p>
-                          }
-                          <div
-                            style={{ fontSize: "15px", fontWeight: "500" }}
-                            dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }}
-                          />
-                          <p style={{ marginTop: '10px', fontSize: "1rem", fontWeight: "400", marginBottom: "15px" }}>$559.00 <span style={{ textDecoration: "line-through", marginLeft: "5px" }}>$1199.11</span></p>
-
-
-                          <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
-                            {productsbuys.map((value, index) => (
-                              <div key={index}>
-                                <div style={{ padding: "15px 10px" }}>
-                                  <div style={{ display: "flex" }}>
-                                    <img src={value?.image} style={{ width: "60px", height: "60px", objectFit: "fill", borderRadius: "10px" }} />
-                                    <div style={{ marginLeft: "10px" }}>
-                                      <p>{value?.title}</p>
-                                      <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
-                                    </div>
-                                  </div>
-                                  {value?.variants?.length > 1 &&
-                                    <select disabled style={{ width: "100%", height: "36px", backgroundColor: "#fafafa", borderRadius: "8px", marginTop: "10px" }}>
-                                      <option selected>
-                                        Variants
-                                      </option>
-                                    </select>
-                                  }
-                                </div>
-                                <div style={{ margin: "0px 10px" }}>
-                                  <Divider />
-                                </div>
+                          <div style={{ width: "100%", display: "flex", flexDirection: "column", marginTop: "10px", gap: "10px" }}>
+                            {data?.bundle_name &&
+                              <p style={{ fontSize: "1.5rem", fontWeight: "500", marginBottom: "10px", lineHeight: "1" }}>{data?.bundle_name}</p>
+                            }
+                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                              <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>
+                              <div style={{ display: "flex", alignItems: 'center', gap: "10px" }}>
+                                <p style={{ fontSize: "20px", fontWeight: "600" }}>${total}</p>
                               </div>
-                            ))}
-                          </div>
-                          <div style={{ display: "flex", justifyContent: "center" }}>
-                            <button style={{
-                              backgroundColor: "#262626", color: "white", cursor: "pointer", width: "45px", height: "45px", borderRadius: "50%", padding: "8px 8px 13px",
-                              fontWeight: "500", fontSize: "30px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1
-                            }}>+</button>
-                          </div>
-                          <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginTop: "-6px", position: "relative", overflow: "hidden" }}>
-                            {productsgets.map((value, index) => (
-                              <div key={index} style={{ position: "relative" }}>
-                                <div style={{ padding: "15px 10px" }}>
-                                  <div style={{ display: "flex" }}>
-                                    <img src={value?.image} style={{ width: "60px", height: "60px", objectFit: "fill", borderRadius: "10px" }} />
-                                    <div style={{ marginLeft: "10px" }}>
-                                      <p>{value?.title}</p>
-                                      <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
+                            </div>
+
+                            <Divider borderColor="border-hover" />
+
+                            <div style={{ border: "1px solid #7a26bf", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
+                              {(data?.bundle_subtype === "specific_product" ? productsbuys : collectionbuys)?.map((value, index) => (
+                                <div key={index}>
+                                  <div style={{ padding: "12px 10px" }}>
+                                    <div style={{ display: "flex" }}>
+                                      <img src={value?.image} width="60px" height="60px" />
+                                      <div style={{ marginLeft: "10px" }}>
+                                        <p style={{ fontSize: "15px", fontWeight: "500" }}>{value?.title}</p>
+                                        <p style={{ fontSize: "15px", marginTop: '10px', fontWeight: "500" }}>{value?.variants?.[0]?.price ? `$${value?.variants?.[0]?.price}` : ""}</p>
+                                      </div>
                                     </div>
+                                    {value?.variants?.length > 1 &&
+                                      <select disabled style={{ width: "100%", height: "36px", backgroundColor: "#fafafa", borderRadius: "8px", marginTop: "10px" }}>
+                                        <option selected>
+                                          Variants
+                                        </option>
+                                      </select>
+                                    }
                                   </div>
-                                  {value?.variants?.length > 1 &&
-                                    <select disabled style={{ width: "100%", height: "36px", backgroundColor: "#fafafa", borderRadius: "8px", marginTop: "10px" }}>
-                                      <option selected>
-                                        Variants
-                                      </option>
-                                    </select>
-                                  }
-                                </div>
 
-                                {index === 0 && (
-                                  <div style={{
-                                    position: 'absolute',
-                                    top: "6px",
-                                    right: "-16px",
-                                    width: "95px",
-                                    height: "23px",
-                                    transform: "rotate(36deg)",
-                                    backgroundColor: "red",
-                                    color: "white",
-                                    padding: "10px",
-                                    fontWeight: "500",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center"
-                                  }}>
-                                    {data?.discount_value === "100" ? "FREE" : `${data?.discount_value}% OFF`}
+                                  {index !== (data?.bundle_subtype === "specific_product" ? productsbuys : collectionbuys).length - 1 && (
+                                    <hr style={{ margin: "0px 10px" }} />
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "center", margin: "-15px 0px" }}>
+                              <button disabled style={{ backgroundColor: "rgb(122, 38, 191)", border: "none", color: "rgb(255, 255, 255)", cursor: "pointer", width: "40px", height: "40px", borderRadius: "50%", padding: "8px 8px 16px", fontWeight: 500, fontSize: "33px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1 }}>+</button>
+                            </div>
+                            <div style={{ border: "1px solid #7a26bf", borderRadius: "10px", display: "flex", flexDirection: "column", marginTop: "-6px", position: "relative", overflow: "hidden" }}>
+                              {productsgets.map((value, index) => (
+                                <div key={index} style={{ position: "relative" }}>
+                                  <div style={{ padding: "12px 10px" }}>
+                                    <div style={{ display: "flex" }}>
+                                      <img src={value?.image} width="60px" height="60px" />
+                                      <div style={{ marginLeft: "10px" }}>
+                                        <p style={{ fontSize: "15px", fontWeight: "500" }}>{value?.title}</p>
+                                        <p style={{ fontSize: "15px", marginTop: '5px', fontWeight: "500" }}>$50.00</p>
+                                      </div>
+                                    </div>
+                                    {value?.variants?.length > 1 &&
+                                      <select disabled style={{ width: "100%", height: "36px", backgroundColor: "#fafafa", borderRadius: "8px", marginTop: "10px" }}>
+                                        <option selected>
+                                          Variants
+                                        </option>
+                                      </select>
+                                    }
                                   </div>
-                                )}
 
-                                <div style={{ margin: "0px 10px" }}>
-                                  <Divider />
+                                  {index === 0 && (
+                                    <div style={{
+                                      position: 'absolute', top: "10px", right: "-19px", width: "95px", height: "23px", transform: "rotate(39deg)", backgroundColor: "rgb(122, 38, 191)", color: "white", padding: "10px", fontWeight: "500", display: "flex", justifyContent: "center", alignItems: "center"
+                                    }}>
+                                      {data?.discount_value === "100" ? "FREE" : `${data?.discount_value}% OFF`}
+                                    </div>
+                                  )}
+
+                                  {index !== productsgets.length - 1 && (
+                                    <hr style={{ margin: "0px 10px" }} />
+                                  )}
                                 </div>
-                              </div>
-                            ))}
+                              ))}
+                            </div>
+                            <div style={{ fontSize: "15px", fontWeight: "500" }} dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }} />
                           </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
                     <BundlesPreview
                       bundle_type_id="3"
                       type={data?.bundle_subtype}
                       modalSize="large"
-                      buysX={data?.bundle_subtype === "specific_product" && productsbuys}
-                      getY={data?.bundle_subtype === "specific_product" && productsgets}
+                      buysX={data?.bundle_subtype === "specific_product" ? productsbuys : collectionbuys}
+                      getY={productsgets}
                       title={data?.bundle_name}
                       data={data}
+                      total={total}
                       media={media}
                     />
                   </BlockStack>

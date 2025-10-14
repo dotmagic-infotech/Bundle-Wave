@@ -192,6 +192,7 @@ function BundleMixMatch() {
 
   const getSectionImage = (section) => {
     if (section?.collection?.length > 0) return section.collection[0]?.image;
+    if (section?.products?.length > 0) return section.products[0]?.image;
     if (section?.media) return section.media;
     if (section?.sectionImage?.length > 0) return section.sectionImage[0];
     return "";
@@ -748,21 +749,19 @@ function BundleMixMatch() {
                     <Text as="span" variant="headingMd">Bundle preview</Text>
                     {(sections?.length > 0 || selCollectionTired.length > 0 || selProductsTired.length > 0) &&
                       <div style={{ maxHeight: '500px', height: "500%", overflowX: "auto", scrollbarWidth: "none" }}>
-                        {files.length > 0 &&
-                          <div style={{ width: "100%" }}>
-                            <img
-                              src={files[0] instanceof File ? URL.createObjectURL(files[0]) : files[0]}
-                              style={{ width: "100%", height: "247px", objectFit: "cover" }}
-                            />
-                          </div>
-                        }
+                        <div style={{ width: "100%" }}>
+                          {data?.bundle_subtype === "Single" ? (
+                            <img src={files[0] instanceof File ? URL.createObjectURL(files[0]) : files[0] || sections?.[0]?.products?.[0]?.image || sections?.[0]?.collection?.[0]?.image} style={{ width: "100%", height: "247px", objectFit: "cover" }} />
+                          ) : (
+                            <img src={files[0] instanceof File ? URL.createObjectURL(files[0]) : files[0] || selProductsTired?.[0]?.image} style={{ width: "100%", height: "247px", objectFit: "cover" }} />
+                          )}
+                        </div>
                         <div style={{ width: "100%" }}>
                           {data?.bundle_subtype === "Single" && (
                             <>
                               {data?.bundle_name &&
-                                <p style={{ marginTop: '10px', fontSize: "15px", fontWeight: "500", lineHeight: "2rem" }}>{data?.bundle_name}</p>
+                                <p style={{ margin: '10px 0px', fontSize: "1.5rem", fontWeight: "500", lineHeight: "1" }}>{data?.bundle_name}</p>
                               }
-                              <div style={{ fontSize: "15px", fontWeight: "500", marginBottom: "10px" }} dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }} />
                               <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
                                 {sections.map((value, index) => {
                                   const sectionImg = getSectionImage(value);
@@ -777,7 +776,7 @@ function BundleMixMatch() {
                                             <Button icon={ChevronDownIcon} variant="plain" onClick={() => setSelectedFirst("")}></Button>
                                           }
                                         </div>
-                                        <img src={sectionImg} style={{ borderRadius: "10px", width: "60px", height: "60px", marginLeft: "10px", objectFit: "fill" }} />
+                                        <img src={sectionImg} width="60" height="60" style={{ marginLeft: "10px" }} />
                                         <div style={{ marginLeft: "10px" }}>
                                           <p>{value?.sectionTitle || value?.collection[0]?.title}</p>
                                           <p style={{ marginTop: '5px', fontWeight: "500" }}>{value?.discription}</p>
@@ -796,15 +795,13 @@ function BundleMixMatch() {
                                                   alt={product?.title}
                                                   style={{ width: "60px", height: "60px", borderRadius: "10px", marginLeft: "10px", objectFit: "fill" }}
                                                 />
-                                                <div style={{ marginLeft: "10px" }}>
+                                                <div style={{ marginLeft: "10px" }}>Sections
                                                   <p>{product?.title}</p>
                                                   <p style={{ marginTop: '5px', fontWeight: "500" }}>${product?.variants[0]?.price}</p>
                                                 </div>
                                               </div>
                                               {index !== value.products.length - 1 && (
-                                                <div>
-                                                  <Divider />
-                                                </div>
+                                                <div><Divider /></div>
                                               )}
                                             </div>
                                           ))}
@@ -829,38 +826,26 @@ function BundleMixMatch() {
                                         </div>
                                       }
                                       {index !== sections.length - 1 && (
-                                        <div>
-                                          <Divider />
-                                        </div>
+                                        <div><Divider /></div>
                                       )}
                                     </div>
                                   )
                                 })}
                               </div>
+                              <div style={{ fontSize: "15px", fontWeight: "500", marginTop: "15px" }} dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }} />
                             </>
                           )}
 
                           {data?.bundle_subtype === "Tiered" && (
                             <>
-                              <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", maxHeight: "400px", overflowY: "auto", scrollbarWidth: "thin", padding: "10px" }}>
+                              <div style={{ borderRadius: "10px", display: "flex", flexDirection: "column", maxHeight: "400px", gap: "10px" }}>
                                 {data?.bundle_name &&
-                                  <p style={{ fontSize: "15px", fontWeight: "500", lineHeight: "2rem" }}>{data?.bundle_name}</p>
+                                  <p style={{ fontSize: "1.5rem", fontWeight: "500", lineHeight: "1" }}>{data?.bundle_name}</p>
                                 }
-                                <div style={{ fontSize: "15px", fontWeight: "500" }} dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }} />
-                                <div style={{ display: "flex", gap: "0.5rem", margin: "10px 0px 0px 0px" }}>
+                                <div style={{ display: "flex", gap: "0.5rem" }}>
                                   {discountOption?.map((option, index) => (
                                     <div key={index} style={{
-                                      backgroundColor: index === 0 ? "#459E7A" : "#c0c0c0",
-                                      color: "#000000",
-                                      borderRadius: "10px",
-                                      opacity: 0.9,
-                                      display: "flex",
-                                      flexDirection: "column",
-                                      cursor: "pointer",
-                                      gap: "0.5rem",
-                                      padding: "9px",
-                                      width: "100%",
-                                      boxShadow: "0 0 10px rgba(0,0,0,0.1)"
+                                      backgroundColor: index === 0 ? "#7a26bf" : "#dddddd", color: index === 0 ? "#FFFFFF" : "#000000", borderRadius: "10px", opacity: 0.9, display: "flex", flexDirection: "column", cursor: "pointer", gap: "0.5rem", padding: "9px", width: "100%", boxShadow: "0 0 10px rgba(0,0,0,0.1)"
                                     }}>
                                       <p style={{ fontWeight: 600, fontSize: "1.3rem", textAlign: "center" }}>
                                         {option.buy_start}+ <span style={{ fontWeight: 500, fontSize: "1rem" }}>Items</span>
@@ -871,15 +856,12 @@ function BundleMixMatch() {
                                     </div>
                                   ))}
                                 </div>
-                                <div style={{ margin: "10px -10px" }}>
-                                  <Divider />
-                                </div>
-                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                <div style={{ display: "flex", flexDirection: "column", border: "2px solid #7a26bf", padding: "8px", borderRadius: "8px" }}>
                                   {selProductsTired?.length > 0 && selProductsTired.map((value, index) => (
                                     <div key={index}>
                                       <div>
                                         <div style={{ display: "flex" }}>
-                                          <img src={value?.image} style={{ width: "60px", height: "60px", objectFit: "fill", borderRadius: "10px" }} />
+                                          <img src={value?.image} style={{ width: "60px", height: "60px" }} />
                                           <div style={{ marginLeft: "10px" }}>
                                             <p>{value?.title}</p>
                                             <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
@@ -912,10 +894,7 @@ function BundleMixMatch() {
                                     </div>
                                   ))}
                                 </div>
-                                <div style={{ backgroundColor: "#e9e9e9", borderRadius: "10px", display: "flex", justifyContent: "space-between", marginTop: "10px", alignItems: "center", padding: "8px 10px", }}>
-                                  <p style={{ fontSize: "1rem", fontWeight: "600" }}>Total</p>
-                                  <p style={{ fontSize: "1rem", fontWeight: "500" }}>$559.00 <span style={{ textDecoration: "line-through", marginLeft: "5px" }}>$1199.11</span></p>
-                                </div>
+                                <div style={{ fontSize: "15px", fontWeight: "500" }} dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }} />
                               </div>
                             </>
                           )}

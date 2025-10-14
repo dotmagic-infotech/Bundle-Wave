@@ -25,6 +25,7 @@ import WidgetModal from '../../../components/WidgetModal/WidgetModal';
 import PageSkeleton from '../../../components/PageSkeleton';
 import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
+import { getTotalPrice } from "../../../assets/helpers";
 
 const BundleFixed = () => {
   // Hooks
@@ -116,6 +117,7 @@ const BundleFixed = () => {
 
   const toggleVideoModal = () => setVideoModalOpen(prev => !prev);
   const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
+  const total = getTotalPrice(selectedProducts).toFixed(2);
 
   const handleDateChange = (value) => {
     setSelectedDates((prev) => ({
@@ -473,15 +475,12 @@ const BundleFixed = () => {
 
                           <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "10px" }}>
                             {data?.bundle_name &&
-                              <p style={{ margin: '10px 0px', fontSize: "22px", fontWeight: "500", lineHeight: "1" }}>{data?.bundle_name}</p>
+                              <p style={{ marginTop: '10px', fontSize: "22px", fontWeight: "500", lineHeight: "1" }}>{data?.bundle_name}</p>
                             }
-                            
-                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+
+                            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
                               <p style={{ fontSize: "18px", fontWeight: "500" }}>Total Price</p>
-                              <div style={{ display: "flex", alignItems: 'center', gap: "10px" }}>
-                                <p style={{ fontSize: "18px", fontWeight: "600" }}>$57.50</p>
-                                <p style={{ fontSize: "18px", fontWeight: "600", textDecoration: "line-through" }}>$72.00</p>
-                              </div>
+                              <p style={{ fontSize: "18px", fontWeight: "600" }}>${total}</p>
                             </div>
                             <Divider borderColor="border-hover" />
 
