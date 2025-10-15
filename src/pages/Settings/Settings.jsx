@@ -114,7 +114,7 @@ const Settings = () => {
                         </BlockStack>
                     </Box>
                     <Card roundedAbove="sm">
-                        <BlockStack align="space-between" blockAlign="start">
+                        <BlockStack align="space-between">
                             <Checkbox
                                 label="Track inventory"
                                 checked={formState?.track === 1}

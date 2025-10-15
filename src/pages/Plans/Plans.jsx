@@ -192,7 +192,6 @@ const Plans = () => {
     },
   ];
 
-
   const onPlanButtonClick = (planId) => {
     if (selectedPlan?.id && selectedPlan.id !== planId) {
       setPendingPlanId(planId);
@@ -503,9 +502,6 @@ const Plans = () => {
                 >
                   <div style={{ padding: "0px 10px 10px 10px" }}>
                     <Text as="p" variant="bodySm" >For businesses with high Average Order Value (AOV), tailored payment is key. We're here to help you grow with customized plans designed to fit your unique needs. Contact us to discuss how we can best support your business.</Text>
-                    <div style={{ marginTop: "10px" }}>
-                      <Button>Talk to us</Button>
-                    </div>
                   </div>
                 </Collapsible>
               </Card>

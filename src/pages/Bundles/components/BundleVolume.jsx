@@ -718,7 +718,7 @@ const BundleVolume = () => {
                         <div style={{ maxHeight: '500px', overflowX: "auto", display: "flex", flexDirection: "column", scrollbarWidth: "none" }}>
                           <div style={{ width: "100%" }}>
                             {data?.bundle_info &&
-                              <p style={{ marginBottom: '10px', fontSize: "1rem", fontWeight: "500", marginBottom: "10px" }}>{data?.bundle_info}</p>
+                              <p style={{ marginBottom: '10px', fontSize: "1rem", fontWeight: "500" }}>{data?.bundle_info}</p>
                             }
                             <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
                               {discountOption.map((value, index) => (
