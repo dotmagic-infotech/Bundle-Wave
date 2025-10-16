@@ -59,7 +59,7 @@ const Home = () => {
   }, []);
 
   const redirectTheme = () => {
-    const url = `https://${shopName}/admin/themes/current/editor?context=apps&activateAppId=d0627ca0-a5b7-4ed2-89b1-91187e230657/app-embed`;
+    const url = `https://${shopName}/admin/themes/current/editor?context=apps&activateAppId=d0627ca0-a5b7-4ed2-89b1-91187e230657/bundle-wave`;
     window.open(url, '_blank');
   }
 
@@ -115,8 +115,7 @@ const Home = () => {
             <p>Bundle Wave theame extension needs to be activated in your theame to work properly. to activate the app, click the 'Activate' button below, and then click <strong>'Save'</strong> on the following page.</p>
             <div style={{ marginTop: "1rem" }}>
               <InlineStack gap={200}>
-                <Button variant='primary' onClick={redirectTheme}>Activate</Button>
-                <Button variant='secondary'>Learn more</Button>
+                <Button variant='primary' onClick={redirectTheme} disabled={!homeData?.embeded?.is_app_embeded_disabled}>Activate</Button>
               </InlineStack>
             </div>
           </Banner>

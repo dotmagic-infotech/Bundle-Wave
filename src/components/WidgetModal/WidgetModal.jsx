@@ -1,11 +1,14 @@
 // React Imports
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // Shopify Imports
 import { Box, Button, Grid, LegacyCard, TextField } from '@shopify/polaris';
 import { ClipboardIcon } from '@shopify/polaris-icons';
-import { ShopifyContext } from '../ShopifyProvider/ShopifyProvider';
 import { useAppBridge } from '@shopify/app-bridge-react';
+
+// Custom Component
+import { ShopifyContext } from '../ShopifyProvider/ShopifyProvider';
+import { useFetchWithToken } from '../FetchDataAPIs/FetchWithToken';
 
 const WidgetModal = (props) => {
 
@@ -13,6 +16,34 @@ const WidgetModal = (props) => {
     const { copyId } = props;
     const { shopName } = useContext(ShopifyContext);
     const shopify = useAppBridge();
+    const fetchWithToken = useFetchWithToken();
+
+    // State
+    const [data, setData] = useState();
+    const [loading, setloading] = useState(false);
+
+    const fetchAppEmbed = async () => {
+        try {
+            setloading(true);
+            const data = await fetchWithToken({
+                url: `https://bundle-wave-backend.xavierapps.com/api/embeded_status`,
+                method: 'GET',
+            });
+
+            if (data?.data?.status) {
+                setData(data?.data);
+            }
+
+        } catch (error) {
+            console.error("Failed to fetch bundle details:", error);
+        } finally {
+            setloading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchAppEmbed();
+    }, []);
 
     const handleCopy = (value) => {
         navigator.clipboard.writeText(value)
@@ -25,7 +56,7 @@ const WidgetModal = (props) => {
     };
 
     const redirectTheme = () => {
-        const url = `https://${shopName}/admin/themes/current/editor?context=apps&activateAppId=d0627ca0-a5b7-4ed2-89b1-91187e230657/app-embed`;
+        const url = `https://${shopName}/admin/themes/current/editor?context=apps&activateAppId=d0627ca0-a5b7-4ed2-89b1-91187e230657/bundle-wave`;
         window.open(url, '_blank');
     }
 
@@ -35,12 +66,14 @@ const WidgetModal = (props) => {
                 <LegacyCard title="App Embed" sectioned subdued>
                     <p>To enable the widget in your Shopify store, follow these steps:</p>
                     <Box paddingBlockStart={200} paddingBlockEnd={400}>
-                        <li>Navigate to your <strong>Shopify Admin</strong></li>
-                        <li>Go to <strong>Themes</strong> &rarr; click <strong>Customize</strong></li>
-                        <li>Select <strong>App Embed</strong></li>
-                        <li>Enable the widget and click <strong>Save</strong></li>
+                        <ul style={{ paddingLeft: "15px" }}>
+                            <li>Navigate to your <strong>Shopify Admin</strong></li>
+                            <li>Go to <strong>Themes</strong> &rarr; click <strong>Customize</strong></li>
+                            <li>Select <strong>App Embed</strong></li>
+                            <li>Enable the widget and click <strong>Save</strong></li>
+                        </ul>
                     </Box>
-                    <Button onClick={() => redirectTheme()}>App Embed: On</Button>
+                    <Button loading={loading} disabled={data?.is_app_embeded_disabled === false} onClick={() => redirectTheme()}>App Embed: {data?.is_app_embeded_disabled ? "Off" : "On"}</Button>
                 </LegacyCard>
             </Grid.Cell>
             <Grid.Cell>

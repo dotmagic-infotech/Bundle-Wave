@@ -175,13 +175,20 @@ const BundleXY = () => {
     if (!["4", "5"].includes(data?.discount_option_id) && (!data.discount_value || isNaN(data.discount_value) || data.discount_value <= 0)) {
       errors.discount_option_id = "Please enter a valid discount amount.";
     }
+
     if (data?.bundle_subtype === "specific_product") {
-      if (productsbuys.length === 0) errors.productsbuys = "Select at least one item in X products.";
-    } else {
-      if (collectionbuys.length === 0) errors.collectionbuys = "Select at least one item in Y products.";
+      if (productsbuys.length === 0)
+        errors.productsbuys = "Select at least one item in X products.";
+    } else if (data?.bundle_subtype === "specific_collection") {
+      if (collectionbuys.length === 0)
+        errors.collectionbuys = "Select at least one item in Y products.";
+    } else if (data?.bundle_subtype === "all_product") {
+      if (productsgets.length === 0)
+        errors.productsgets = "Select at least one item in Y products.";
     }
 
-    if (productsgets.length === 0) errors.productsgets = "Select at least one item in Y products.";
+    if (productsgets.length === 0)
+      errors.productsgets = "Select at least one item in Y products.";
 
     return errors;
   };
@@ -218,7 +225,7 @@ const BundleXY = () => {
       formData.append("old_media", JSON.stringify(media || []));
 
       formData.append("fixedDeal", JSON.stringify({
-        buys: data?.bundle_subtype === "specific_product" ? productsbuys : collectionbuys || [],
+        buys: data?.bundle_subtype === "specific_product" ? productsbuys : data?.bundle_subtype === "specific_collection" ? collectionbuys : [],
         gets: productsgets || []
       }));
 
@@ -316,7 +323,7 @@ const BundleXY = () => {
                     </BlockStack>
                     <InlineStack gap="200">
                       <div style={{ display: "flex", flexDirection: "column", width: '100%' }}>
-                        {/* <RadioButton
+                        <RadioButton
                           label="All products"
                           checked={data.bundle_subtype === 'all_product'}
                           id="all_product"
@@ -325,7 +332,7 @@ const BundleXY = () => {
                             setProductsbuys([]);
                             setCollectionbuys([]);
                           }}
-                        /> */}
+                        />
                         <RadioButton
                           label="Products in a specific collection"
                           id="specific_collection"
