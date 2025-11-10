@@ -23,8 +23,8 @@ const Home = () => {
   const fetchWithToken = useFetchWithToken();
 
   // state
-  const [welocomePopup, setWelocomePopup] = useState(true);
-  const [showModal, setShowModal] = useState(true);
+  const [welocomePopup, setWelocomePopup] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [homeData, setHomeData] = useState(true);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
@@ -34,22 +34,17 @@ const Home = () => {
   const toggleDeleteModal = () => setDeleteModalOpen(prev => !prev);
 
   useEffect(() => {
-    const hasSeen = localStorage.getItem("firstDownloadApp");
-
-    if (hasSeen === "false") {
-      setWelocomePopup(false);
-      setShowModal(false);
-      localStorage.setItem("firstDownloadApp", "false");
-    }
-
     const fetchUserDashBoard = async () => {
       try {
         const data = await fetchWithToken({
           url: `https://bundle-wave-backend.xavierapps.com/api/user_dashboard?limit=5&shop=${shopName}`,
           method: 'GET',
         });
-
-        setHomeData(data)
+        setHomeData(data);
+        if (data?.show_popup) {
+          setWelocomePopup(true);
+          setShowModal(true);
+        }
       } catch (error) {
         console.error("Failed to fetch bundle details:", error);
       }
@@ -71,7 +66,6 @@ const Home = () => {
 
   const toggleClose = () => {
     setWelocomePopup(false);
-    localStorage.setItem("firstDownloadApp", "false");
   }
 
   const handleClearMetaField = async () => {
