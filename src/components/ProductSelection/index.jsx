@@ -28,16 +28,17 @@ const ProductSelection = ({
     const [popoverTired, setPopoverTired] = useState(false);
 
     useEffect(() => {
-        if (setSelectedProducts?.length > 0) {
+        if (Array.isArray(selectedProducts) && selectedProducts.length > 0) {
             setSelectedCollections([]);
         }
-    }, [setSelectedProducts]);
+    }, [selectedProducts, setSelectedCollections]);
 
+    // ✅ If collections selected, clear products
     useEffect(() => {
-        if (selectedCollections?.length > 0) {
+        if (Array.isArray(selectedCollections) && selectedCollections.length > 0) {
             setSelectedProducts([]);
         }
-    }, [selectedCollections]);
+    }, [selectedCollections, setSelectedProducts]);
 
     const togglePopoverBrowsActive = (() => setPopoverTired((popoverButton) => !popoverButton));
 
@@ -175,7 +176,7 @@ const ProductSelection = ({
                     }
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
-                    {selectedProducts?.map((product, i) => (
+                    {selectedProducts?.length > 0 && selectedProducts?.map((product, i) => (
                         <div key={i} style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <img src={product?.image} width="40" height="40" style={{ borderRadius: '10px', objectFit: 'contain' }} />
@@ -202,7 +203,7 @@ const ProductSelection = ({
                         </div>
                     ))}
 
-                    {selectedCollections?.map((v, i) =>
+                    {selectedCollections?.length > 0 && selectedCollections?.map((v, i) =>
                         <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <div style={{ display: "flex", alignItems: "center", gap: '10px' }}>
                                 <div style={{ width: "40px", height: "40px" }}>

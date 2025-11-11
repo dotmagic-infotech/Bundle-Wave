@@ -251,17 +251,21 @@ const BundleXY = () => {
         body: formData,
         isFormData: true,
       });
-
+ 
       if (result.status) {
         shopify.loading(false);
         navigate("/bundles");
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
       } else {
         shopify.loading(false);
-        shopify.toast.show(result.message || `Failed to ${id ? "Update" : "Save"} Buy X Get Y Bundle`, {
-          isError: true,
-          duration: 8000
-        });
+        if (result.error_type === "all_product") {
+          setErrors({ all_product: `Only one "All Product" bundle is allowed per shop.` });
+        } else {
+          shopify.toast.show(result.message || `Failed to ${id ? "Update" : "Save"} Buy X Get Y Bundle`, {
+            isError: true,
+            duration: 8000
+          });
+        }
       }
     } catch {
       shopify.loading(false);

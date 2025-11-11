@@ -56,8 +56,7 @@ const Analytics = () => {
             if (status) {
                 setTableData(data);
             }
-        } catch (error) {
-            console.log("error::", error)
+        } catch (error) { 
         }
     };
 
@@ -69,8 +68,7 @@ const Analytics = () => {
             if (status) {
                 setOrderData(data);
             }
-        } catch (error) {
-            console.log("error::", error)
+        } catch (error) { 
         }
     };
 

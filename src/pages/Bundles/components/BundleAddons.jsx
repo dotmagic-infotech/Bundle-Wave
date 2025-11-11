@@ -276,6 +276,9 @@ const BundleAddons = () => {
       } else if (data?.bundle_subtype === "specific_product") {
         passData.products = selectedProducts;
         passData.collections = [];
+      } else if (data?.bundle_subtype === "all_product") {
+        passData.products = [];
+        passData.collections = [];
       }
 
       if (data.endTime_status === "1") {
@@ -304,10 +307,14 @@ const BundleAddons = () => {
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
       } else {
         shopify.loading(false);
-        shopify.toast.show(result.message, {
-          isError: true,
-          duration: 8000
-        });
+        if (result.error_type === "all_product") {
+          setErrors({ all_product: `Only one "All Product" bundle is allowed per shop.` });
+        } else {
+          shopify.toast.show(result.message, {
+            isError: true,
+            duration: 8000
+          });
+        }
       }
     } catch {
       shopify.saveBar.hide("save");

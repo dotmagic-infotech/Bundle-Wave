@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from 'react'
 
 // Shopify Polaris
-import { BlockStack, Box, Button, Card, InlineStack, Layout, LegacyCard, Modal, Page, RadioButton, Select, SkeletonBodyText, SkeletonDisplayText, Text, TextContainer, TextField } from '@shopify/polaris'
+import { BlockStack, Box, Button, Card, InlineStack, Layout, Modal, Page, RadioButton, Select, Text, TextField } from '@shopify/polaris'
 import { SaveBar } from '@shopify/app-bridge-react'
 import { ViewIcon } from '@shopify/polaris-icons'
 
@@ -34,7 +34,7 @@ const Frequently = () => {
     bundle_subtype: "all_product",
     discount_option_id: "1",
     discount_label: "Frequently Discount",
-    discount_value: 1,
+    discount_value: 10,
     bundle_title: "Frequently Bought Together",
     status: "Published"
   })
@@ -172,10 +172,14 @@ const Frequently = () => {
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
       } else {
         shopify.loading(false);
-        shopify.toast.show(result.message || `Failed to ${id ? "Update" : "Save"} Frequently Bundle`, {
-          isError: true,
-          duration: 8000
-        });
+        if (result.error_type === "all_product") {
+          setErrors({ all_product: `Only one "All Product" bundle is allowed per shop.` });
+        } else {
+          shopify.toast.show(result.message || `Failed to ${id ? "Update" : "Save"} Frequently Bundle`, {
+            isError: true,
+            duration: 8000
+          });
+        }
       }
     } catch {
       shopify.loading(false);

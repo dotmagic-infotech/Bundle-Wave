@@ -95,6 +95,13 @@ function BundleMixMatch() {
         setSections(data.sections);
         setSelProductsTired(data?.products)
         setSelCollectionTired(data?.collections)
+        // if (data?.bundle_subtype === "Tiered") {
+        //   if (data?.collections?.length > 0) {
+        //     setSelCollectionTired(data?.collections)
+        //   } else {
+        //     setSelProductsTired(data?.products)
+        //   }
+        // }
         setDiscountOption(data?.tiered_discount_options)
 
         setData({
