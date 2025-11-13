@@ -172,8 +172,14 @@ const BundleXY = () => {
     let errors = {};
 
     if (!data.bundle_name) errors.bundle_name = "Bundle name is required.";
-    if (!["4", "5"].includes(data?.discount_option_id) && (!data.discount_value || isNaN(data.discount_value) || data.discount_value <= 0)) {
-      errors.discount_option_id = "Please enter a valid discount amount.";
+    if (!["4", "5"].includes(data?.discount_option_id)) {
+      const value = Number(data.discount_value);
+      if (!value || isNaN(value) || value <= 0) {
+        errors.discount_option_id = "Please enter a valid discount amount.";
+      }
+      if (data.discount_option_id === "1" && value >= 101) {
+        errors.discount_option_id = "Discount must be less than 100.";
+      }
     }
 
     if (data?.bundle_subtype === "specific_product") {
@@ -251,7 +257,7 @@ const BundleXY = () => {
         body: formData,
         isFormData: true,
       });
- 
+
       if (result.status) {
         shopify.loading(false);
         navigate("/bundles");

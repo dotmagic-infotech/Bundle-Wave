@@ -208,8 +208,14 @@ const BundleAddons = () => {
   const validateForm = () => {
     let newErrors = {};
 
-    if (!["4", "5"].includes(data?.discount_option_id) && (!data.discount_value || isNaN(data.discount_value) || data.discount_value <= 0)) {
-      newErrors.discount_option_id = "Please enter a valid discount amount.";
+    if (!["4", "5"].includes(data?.discount_option_id)) {
+      const value = Number(data.discount_value);
+      if (!value || isNaN(value) || value <= 0) {
+        newErrors.discount_option_id = "Please enter a valid discount amount.";
+      }
+      if (data.discount_option_id === "1" && value >= 101) {
+        newErrors.discount_option_id = "Discount must be less than 100.";
+      }
     }
     if (!data.bundle_title) newErrors.bundle_title = "Bundle Title is required.";
     if (!selectedDates?.start) newErrors.startDate = "Start date is required.";
@@ -474,6 +480,7 @@ const BundleAddons = () => {
                             const selectedOption = discountOptions.find(option => option.id === id);
                             if (selectedOption?.disabled === "1") return;
 
+                            handleChangeValue("discount_value", "0");
                             handleChangeValue("discount_option_id", id);
                           }}
                           value={data.discount_option_id}

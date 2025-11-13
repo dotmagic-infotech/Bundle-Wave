@@ -191,11 +191,11 @@ const ProductSelection = ({
                                 </div>
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                {productCount &&
+                                {/* {productCount &&
                                     <Box width="100px">
                                         <TextField type="number" value={product?.product_count || 1} onChange={(value) => handleChangeItemValue(product.id, value)} autoComplete="off" />
                                     </Box>
-                                }
+                                } */}
                                 <div style={{ cursor: 'pointer' }} onClick={() => handleRemoveItem(product.id)} >
                                     <Icon source={XIcon} />
                                 </div>

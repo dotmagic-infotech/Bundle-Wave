@@ -117,8 +117,14 @@ const Frequently = () => {
       newErrors.bundle_name = "The main product cannot be presented as an offered product";
     }
 
-    if (!["4", "5"].includes(data?.discount_option_id) && (!data.discount_value || isNaN(data.discount_value) || data.discount_value <= 0)) {
-      newErrors.discount_value = "Please enter a valid discount amount.";
+    if (!["4", "5"].includes(data?.discount_option_id)) {
+      const value = Number(data.discount_value);
+      if (!value || isNaN(value) || value <= 0) {
+        newErrors.discount_option_id = "Please enter a valid discount amount.";
+      }
+      if (data.discount_option_id === "1" && value >= 101) {
+        newErrors.discount_option_id = "Discount must be less than 100.";
+      }
     }
 
     if (data?.bundle_subtype === "specific_product") {

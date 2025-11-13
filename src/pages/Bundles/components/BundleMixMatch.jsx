@@ -95,13 +95,6 @@ function BundleMixMatch() {
         setSections(data.sections);
         setSelProductsTired(data?.products)
         setSelCollectionTired(data?.collections)
-        // if (data?.bundle_subtype === "Tiered") {
-        //   if (data?.collections?.length > 0) {
-        //     setSelCollectionTired(data?.collections)
-        //   } else {
-        //     setSelProductsTired(data?.products)
-        //   }
-        // }
         setDiscountOption(data?.tiered_discount_options)
 
         setData({
@@ -205,13 +198,19 @@ function BundleMixMatch() {
     return "";
   };
 
-  const handleSubmit = async () => {
+  const validateForm = () => {
     let newErrors = {};
 
     if (!data.bundle_name) newErrors.bundle_name = "Bundle name is required.";
     if (data.bundle_subtype === "Single") {
-      if (!["4", "5"].includes(data?.discount_option_id) && (!data.discount_value || isNaN(data.discount_value) || data.discount_value <= 0)) {
-        newErrors.discount_option_id = "Please enter a valid discount amount.";
+      if (!["4", "5"].includes(data?.discount_option_id)) {
+        const value = Number(data.discount_value);
+        if (!value || isNaN(value) || value <= 0) {
+          newErrors.discount_option_id = "Please enter a valid discount amount.";
+        }
+        if (data.discount_option_id === "1" && value >= 101) {
+          newErrors.discount_option_id = "Discount must be less than 100.";
+        }
       }
 
       if (sections.length === 0) newErrors.section = "Please add at least a product or a collection.";
@@ -220,6 +219,12 @@ function BundleMixMatch() {
     }
     if (validBuyStart) newErrors.tiered_discount_options = "This value must be greater than the previous option.";
 
+    return newErrors;
+  };
+
+  const handleSubmit = async () => {
+    setErrors({});
+    const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -424,7 +429,7 @@ function BundleMixMatch() {
                       <BlockStack align="space-between" gap={"200"}>
                         <Text as={"span"} variant="headingMd">Discount</Text>
                         <InlineStack gap="200">
-                          <Box width="250px">
+                          <Box width="200px">
                             <Select
                               label="Type"
                               options={discountOptions.map(({ label, id, disabled }) => ({
@@ -437,7 +442,7 @@ function BundleMixMatch() {
                                 const selectedOption = discountOptions.find(option => option.id === id);
                                 if (selectedOption?.disabled === "1") return;
 
-                                handleChangeValue("discount_value", "10");
+                                handleChangeValue("discount_value", "0");
                                 handleChangeValue("discount_option_id", id);
                               }}
                               value={data.discount_option_id}

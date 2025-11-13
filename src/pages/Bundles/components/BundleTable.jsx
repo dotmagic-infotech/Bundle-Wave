@@ -141,194 +141,225 @@ function BundleTable() {
 
     const { selectedResources, allResourcesSelected, handleSelectionChange, clearSelection } = useIndexResourceState(resourceData);
 
-    const rowMarkup = bundleData?.length > 0 && bundleData?.map(({ bundle_id, media, bundle_subtype, discount_options, bundle_name, discount_option_id, discount_value, status, active_status, bundle_type_id, bundle_table, bundle_type_name }, index) => (
-        <IndexTable.Row
-            id={bundle_id.toString()}
-            key={bundle_id.toString()}
-            selected={selectedResources.includes(bundle_id.toString())}
-            position={index}
-        >
-            <IndexTable.Cell>
-                <Tooltip
-                    width='wide'
-                    content={
-                        <div style={{ padding: '4px 8px' }}>
-                            {media.map((v, index) => (
-                                <div key={index}>
-                                    <div style={{ display: 'flex', alignItems: "center", marginBottom: '6px' }}>
-                                        <div style={{ width: '40px', height: '40px' }}>
-                                            <img src={v.url} alt="" style={{ width: '100%', height: '100%', borderRadius: '4px' }} />
-                                        </div>
-                                        <div style={{ marginLeft: "10px" }}>
-                                            <p style={{ fontSize: '13px', fontWeight: 600, margin: 0 }}>{v.title}</p>
-                                            {v?.variants?.length > 0 && (
-                                                <ul style={{ margin: 0, paddingLeft: '16px' }}>
-                                                    {v.variants.map((variant, i) => (
-                                                        <li key={i} style={{ fontSize: '12px', color: 'gray' }}>{variant}</li>
-                                                    ))}
-                                                </ul>
-                                            )}
-                                        </div>
-                                    </div>
-                                    {index !== media.length - 1 &&
-                                        <div style={{ margin: "8px 0px" }}>
-                                            <Divider />
-                                        </div>
-                                    }
-                                </div>
-                            ))}
-                        </div>
-                    }
-                    preferredPosition="above"
+    const MediaIcons = ({ media }) => (
+        <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+            {media?.slice(0, 2).map((v, index) => (
+                <div
+                    key={index}
+                    style={{
+                        width: "40px",
+                        height: "40px",
+                        overflow: "hidden",
+                        position: index === 0 ? "static" : "absolute",
+                        left: index === 0 ? "0px" : "20px",
+                        zIndex: index,
+                        borderRadius: "50%",
+                        backgroundColor: "#f6f6f7"
+                    }}
                 >
-                    <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
-                        {media?.slice(0, 2).map((v, index) => (
-                            <div key={index} style={{
-                                width: "40px", height: "40px",
-                                overflow: "hidden",
-                                position: index === 0 ? "static" : "absolute",
-                                left: index === 0 ? "0px" : "20px",
-                                zIndex: index,
-                                borderRadius: "50%",
-                                backgroundColor: "#f6f6f7"
-                            }}>
-                                <img src={v.url} style={{ width: "100%", height: "100%" }} />
-                            </div>
-                        ))}
-                        {media?.length > 2 && (
-                            <div style={{ width: "40px", height: "40px", borderRadius: "50%", fontSize: "16px", fontWeight: "600", backgroundColor: "#f6f6f7", display: "flex", justifyContent: "center", alignItems: "center", border: "1px solid gray", zIndex: 1 }}>
-                                +{media.length - 2}
-                            </div>
-                        )}
-                    </div>
-                </Tooltip>
-            </IndexTable.Cell>
-            <IndexTable.Cell>
-                <div style={{ display: "flex", gap: "1rem" }}>
-                    {bundle_name}
+                    <img src={v.url} style={{ width: "100%", height: "100%" }} />
                 </div>
-            </IndexTable.Cell>
-            <IndexTable.Cell>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                    <Text>{bundle_id}</Text>
-                    <Tooltip content={copiedId === bundle_id ? "Copied" : "Copy"}>
-                        <div
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleCopy(bundle_id, bundle_id);
-                            }}
+            ))}
+
+            {media?.length > 2 && (
+                <div style={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "50%",
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    backgroundColor: "#f6f6f7",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    border: "1px solid gray",
+                    zIndex: 1
+                }}>
+                    +{media.length - 2}
+                </div>
+            )}
+        </div>
+    );
+
+    const rowMarkup = bundleData?.length > 0 && bundleData?.map(({ bundle_id, media, bundle_subtype, discount_options, bundle_name, discount_option_id, discount_value, status, active_status, bundle_type_id, bundle_table, bundle_type_name }, index) => {
+
+        const hasTitle = media?.some(v => v.title?.trim());
+        const mediaIcons = <MediaIcons media={media} />;
+
+        return (
+            <IndexTable.Row
+                id={bundle_id.toString()}
+                key={bundle_id.toString()}
+                selected={selectedResources.includes(bundle_id.toString())}
+                position={index}
+            >
+                <IndexTable.Cell>
+                    {hasTitle ? (
+                        <Tooltip
+                            width='wide'
+                            content={
+                                <div style={{ padding: '4px 8px' }}>
+                                    {media.map((v, index) => (
+                                        <div key={index}>
+                                            <div style={{ display: 'flex', alignItems: "center", marginBottom: '6px' }}>
+                                                <div style={{ width: '40px', height: '40px' }}>
+                                                    <img src={v.url} alt="" style={{ width: '100%', height: '100%', borderRadius: '4px' }} />
+                                                </div>
+                                                <div style={{ marginLeft: "10px" }}>
+                                                    <p style={{ fontSize: '13px', fontWeight: 600, margin: 0 }}>{v.title}</p>
+                                                    {v?.variants?.length > 0 && (
+                                                        <ul style={{ margin: 0, paddingLeft: '16px' }}>
+                                                            {v.variants.map((variant, i) => (
+                                                                <li key={i} style={{ fontSize: '12px', color: 'gray' }}>{variant}</li>
+                                                            ))}
+                                                        </ul>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            {index !== media.length - 1 &&
+                                                <div style={{ margin: "8px 0px" }}>
+                                                    <Divider />
+                                                </div>
+                                            }
+                                        </div>
+                                    ))}
+                                </div>
+                            }
+                            preferredPosition="above"
                         >
-                            <Icon source={ClipboardIcon} />
-                        </div>
-                    </Tooltip>
-                </div>
-            </IndexTable.Cell>
-            <IndexTable.Cell>
-                {discount_option_id === "1"
-                    ? `${discount_value}% OFF`
-                    : discount_option_id === "3"
-                        ? `Set Price $${discount_value}`
-                        : bundle_type_id === "4"
-                            ? `${discount_options?.length} option`
-                            : bundle_type_id === "2"
-                                ? (bundle_subtype === "Single"
-                                    ? `$${discount_value} OFF`
-                                    : `${discount_options?.length} option`)
-                                : "No Discounts"}
-            </IndexTable.Cell>
-            <IndexTable.Cell>
-                {active_status === "Pending" ? (
+                            {mediaIcons}
+                        </Tooltip>
+                    ) : (
+                        mediaIcons
+                    )}
+                </IndexTable.Cell>
+                <IndexTable.Cell>
+                    <div style={{ display: "flex", gap: "1rem" }}>
+                        {bundle_name}
+                    </div>
+                </IndexTable.Cell>
+                <IndexTable.Cell>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <Text>{bundle_id}</Text>
+                        <Tooltip content={copiedId === bundle_id ? "Copied" : "Copy"}>
+                            <div
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleCopy(bundle_id, bundle_id);
+                                }}
+                            >
+                                <Icon source={ClipboardIcon} />
+                            </div>
+                        </Tooltip>
+                    </div>
+                </IndexTable.Cell>
+                <IndexTable.Cell>
+                    {discount_option_id === "1"
+                        ? `${discount_value}% OFF`
+                        : discount_option_id === "3"
+                            ? `Set Price $${discount_value}`
+                            : bundle_type_id === "4"
+                                ? `${discount_options?.length} option`
+                                : bundle_type_id === "2"
+                                    ? (bundle_subtype === "Single"
+                                        ? `$${discount_value} OFF`
+                                        : `${discount_options?.length} option`)
+                                    : "No Discounts"}
+                </IndexTable.Cell>
+                <IndexTable.Cell>
+                    {active_status === "Pending" ? (
                         <Badge tone="info" size="large" icon={ClockIcon}>
                             {active_status}
                         </Badge>
-                ) : active_status === "Expired" ? (
+                    ) : active_status === "Expired" ? (
                         <Badge tone="critical" size="large" icon={AlertCircleIcon}>
                             {active_status}
                         </Badge>
-                ) : (
-                    <ButtonGroup variant="segmented">
-                        <Button
-                            variant={status === "Published" ? "primary" : "secondary"}
-                            loading={loadingButton.id === bundle_id && loadingButton.type === "Published"} // ✅ only show loader if matching
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                status === "Published" ? undefined :
-                                    handleStatusChange("Published", bundle_id, bundle_table);
-                            }}
-                        >
-                            Published
-                        </Button>
+                    ) : (
+                        <ButtonGroup variant="segmented">
+                            <Button
+                                variant={status === "Published" ? "primary" : "secondary"}
+                                loading={loadingButton.id === bundle_id && loadingButton.type === "Published"} // ✅ only show loader if matching
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    status === "Published" ? undefined :
+                                        handleStatusChange("Published", bundle_id, bundle_table);
+                                }}
+                            >
+                                Published
+                            </Button>
 
-                        <Button
-                            variant={status === "Draft" ? "primary" : "secondary"}
-                            loading={loadingButton.id === bundle_id && loadingButton.type === "Draft"} // ✅ same idea
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                status === "Draft" ? undefined :
-                                    handleStatusChange("Draft", bundle_id, bundle_table);
-                            }}
-                        >
-                            Draft
-                        </Button>
-                    </ButtonGroup>
-                )}
-            </IndexTable.Cell>
-            <IndexTable.Cell>
-                {bundle_type_name}
-            </IndexTable.Cell>
-            <IndexTable.Cell>
-                <InlineStack gap={200}>
-                    <Tooltip content="Edit Bundle">
-                        <Button disabled={selectedResources.length > 0} icon={EditIcon} onClick={(event) => {
-                            event.stopPropagation();
-                            let url = "";
-
-                            if (bundle_type_id === "1") {
-                                url = `/bundlesList/fixed_bundle/edit/${bundle_id}`;
-                            } else if (bundle_type_id === "2") {
-                                url = `/bundlesList/mix-match/edit/${bundle_id}`;
-                            } else if (bundle_type_id === "3") {
-                                url = `/bundlesList/buy_xy/edit/${bundle_id}`;
-                            } else if (bundle_type_id === "4") {
-                                url = `/bundlesList/volume_bundle/edit/${bundle_id}`;
-                            } else if (bundle_type_id === "5") {
-                                url = `/bundlesList/addons_bundle/edit/${bundle_id}`;
-                            } else if (bundle_type_id === "6") {
-                                url = `/bundlesList/frequently_bundle/edit/${bundle_id}`;
-                            } else {
-                                alert("Other Bundle");
-                                return;
-                            }
-
-                            navigate(url);
-                        }}></Button>
-                    </Tooltip>
-
-                    <Tooltip content="Clone Bundle">
-                        <Button disabled={selectedResources.length > 0} loading={loadingBundleId === bundle_id} icon={DuplicateIcon} onClick={(event) => {
-                            event.stopPropagation();
-                            handleDuplicateSingle(bundle_id, bundle_table)
-                        }}></Button>
-                    </Tooltip>
-
-                    {status === "Published" &&
-                        <Tooltip content="Preview Bundle">
-                            <Button disabled={selectedResources.length > 0} icon={ViewIcon} onClick={(event) => {
+                            <Button
+                                variant={status === "Draft" ? "primary" : "secondary"}
+                                loading={loadingButton.id === bundle_id && loadingButton.type === "Draft"} // ✅ same idea
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    status === "Draft" ? undefined :
+                                        handleStatusChange("Draft", bundle_id, bundle_table);
+                                }}
+                            >
+                                Draft
+                            </Button>
+                        </ButtonGroup>
+                    )}
+                </IndexTable.Cell>
+                <IndexTable.Cell>
+                    {bundle_type_name}
+                </IndexTable.Cell>
+                <IndexTable.Cell>
+                    <InlineStack gap={200}>
+                        <Tooltip content="Edit Bundle">
+                            <Button disabled={selectedResources.length > 0} icon={EditIcon} onClick={(event) => {
                                 event.stopPropagation();
-                                window.open(`https://${shopName}/?id=${bundle_id}`, '_blank')
+                                let url = "";
+
+                                if (bundle_type_id === "1") {
+                                    url = `/bundlesList/fixed_bundle/edit/${bundle_id}`;
+                                } else if (bundle_type_id === "2") {
+                                    url = `/bundlesList/mix-match/edit/${bundle_id}`;
+                                } else if (bundle_type_id === "3") {
+                                    url = `/bundlesList/buy_xy/edit/${bundle_id}`;
+                                } else if (bundle_type_id === "4") {
+                                    url = `/bundlesList/volume_bundle/edit/${bundle_id}`;
+                                } else if (bundle_type_id === "5") {
+                                    url = `/bundlesList/addons_bundle/edit/${bundle_id}`;
+                                } else if (bundle_type_id === "6") {
+                                    url = `/bundlesList/frequently_bundle/edit/${bundle_id}`;
+                                } else {
+                                    alert("Other Bundle");
+                                    return;
+                                }
+
+                                navigate(url);
                             }}></Button>
                         </Tooltip>
-                    }
 
-                    <Tooltip content="Delete Bundle">
-                        <Button disabled={selectedResources.length > 0} icon={DeleteIcon} onClick={(event) => {
-                            handleChange()
-                        }}></Button>
-                    </Tooltip>
-                </InlineStack>
-            </IndexTable.Cell>
-        </IndexTable.Row>
-    ));
+                        <Tooltip content="Clone Bundle">
+                            <Button disabled={selectedResources.length > 0} loading={loadingBundleId === bundle_id} icon={DuplicateIcon} onClick={(event) => {
+                                event.stopPropagation();
+                                handleDuplicateSingle(bundle_id, bundle_table)
+                            }}></Button>
+                        </Tooltip>
+
+                        {status === "Published" &&
+                            <Tooltip content="Preview Bundle">
+                                <Button disabled={selectedResources.length > 0} icon={ViewIcon} onClick={(event) => {
+                                    event.stopPropagation();
+                                    window.open(`https://${shopName}/?id=${bundle_id}`, '_blank')
+                                }}></Button>
+                            </Tooltip>
+                        }
+
+                        <Tooltip content="Delete Bundle">
+                            <Button disabled={selectedResources.length > 0} icon={DeleteIcon} onClick={(event) => {
+                                handleChange()
+                            }}></Button>
+                        </Tooltip>
+                    </InlineStack>
+                </IndexTable.Cell>
+            </IndexTable.Row>
+        )
+    });
 
     const handleDelete = async () => {
         try {
