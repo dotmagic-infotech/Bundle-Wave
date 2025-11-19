@@ -30,6 +30,7 @@ import DateTimePicker from '../../../components/DateRangePicker/DateTimePicker';
 import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
 import WidgetModal from '../../../components/WidgetModal/WidgetModal';
 import PageSkeleton from '../../../components/PageSkeleton';
+import ProductSelectOnly from '../../../components/ProductSelection/ProductSelectOnly';
 
 function BundleMixMatch() {
 
@@ -55,6 +56,7 @@ function BundleMixMatch() {
   });
   const [files, setFiles] = useState([]);
   const [media, setMedia] = useState([]);
+  const [displayIncludePage, setDisplayIncludePage] = useState([]);
   const [selProductsTired, setSelProductsTired] = useState([]);
   const [selCollectionTired, setSelCollectionTired] = useState([]);
   const [sections, setSections] = useState([]);
@@ -202,6 +204,9 @@ function BundleMixMatch() {
     let newErrors = {};
 
     if (!data.bundle_name) newErrors.bundle_name = "Bundle name is required.";
+    if (data.page_type === "product_page" && displayIncludePage?.length === 0) {
+      newErrors.displayIncludePage = "Select product to show your bundle in  include product page.";
+    }
     if (data.bundle_subtype === "Single") {
       if (!["4", "5"].includes(data?.discount_option_id)) {
         const value = Number(data.discount_value);
@@ -280,6 +285,12 @@ function BundleMixMatch() {
         files.forEach(file => formData.append("media[]", file));
       }
 
+      if (data.page_type === "product_page") {
+        formData.append("includePageId", JSON.stringify(displayIncludePage));
+      } else {
+        formData.append("includePageId", JSON.stringify([]));
+      }
+
       if (data.endTime_status === "1") {
         formData.append("end_date", formatDate(selectedDates.end));
         formData.append("end_time", data.end_time);
@@ -300,7 +311,7 @@ function BundleMixMatch() {
       });
 
       if (result.status) {
-        navigate("/bundles");
+        // navigate("/bundles");
         shopify.loading(false);
         shopify.saveBar.hide("save");
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
@@ -423,6 +434,33 @@ function BundleMixMatch() {
                     </Card>
                   }
 
+                  {/* Included products */}
+                  {data.bundle_subtype === "Tiered" &&
+                    <Card>
+                      <ProductSelection
+                        title="Included Products"
+                        subtitle="Add products you want to sell together"
+                        selectedProducts={selProductsTired}
+                        setSelectedProducts={setSelProductsTired}
+                        selectedCollections={selCollectionTired}
+                        setSelectedCollections={setSelCollectionTired}
+                        multiple={true}
+                        productCount={false}
+                      />
+                    </Card>
+                  }
+
+                  {data?.page_type === "product_page" &&
+                    <Card>
+                      <ProductSelectOnly
+                        title="Display Bundle On Selected Products"
+                        subtitle="Select the products where this bundle should be displayed on the product page."
+                        selectedProducts={displayIncludePage}
+                        setSelectedProducts={setDisplayIncludePage}
+                      />
+                    </Card>
+                  }
+
                   {/* Discount */}
                   {data.bundle_subtype === "Single" &&
                     <Card>
@@ -468,22 +506,6 @@ function BundleMixMatch() {
                           }
                         </InlineStack>
                       </BlockStack>
-                    </Card>
-                  }
-
-                  {/* Included products */}
-                  {data.bundle_subtype === "Tiered" &&
-                    <Card>
-                      <ProductSelection
-                        title="Included Products"
-                        subtitle="Add products you want to sell together"
-                        selectedProducts={selProductsTired}
-                        setSelectedProducts={setSelProductsTired}
-                        selectedCollections={selCollectionTired}
-                        setSelectedCollections={setSelCollectionTired}
-                        multiple={true}
-                        productCount={false}
-                      />
                     </Card>
                   }
 

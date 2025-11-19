@@ -36,7 +36,7 @@ const BundleAddons = () => {
   const [data, setData] = useState({
     bundle_subtype: "all_product",
     bundle_description: "",
-    discount_value: 1,
+    discount_value: 10,
     start_time: "12:00 AM",
     end_time: "12:00 PM",
     endTime_status: "0",
@@ -307,7 +307,7 @@ const BundleAddons = () => {
       });
 
       if (result.status) {
-        navigate("/bundles");
+        // navigate("/bundles");
         shopify.loading(false);
         shopify.saveBar.hide("save");
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);

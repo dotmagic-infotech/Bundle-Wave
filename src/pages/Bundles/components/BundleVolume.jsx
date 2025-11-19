@@ -299,7 +299,7 @@ const BundleVolume = () => {
 
       if (result.status) {
         shopify.loading(false);
-        navigate("/bundles");
+        // navigate("/bundles");
         shopify.saveBar.hide("save");
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
       } else {

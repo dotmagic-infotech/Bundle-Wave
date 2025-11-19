@@ -16,6 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { MetaContext } from '../../../components/MetaDataContext/MetaDataProvider';
 import FileUploadDropZone from '../../../components/FileUploadDropZone/FileUploadDropZone';
 import ProductSelection from '../../../components/ProductSelection/index';
+import ProductSelectOnly from '../../../components/ProductSelection/ProductSelectOnly';
 import ValidationErrors from '../../../components/ValidationErrors';
 import BundlesPreview from '../BundlesPreview';
 import DateTimePicker from '../../../components/DateRangePicker/DateTimePicker';
@@ -51,6 +52,7 @@ const BundleXY = () => {
   const [errors, setErrors] = useState({});
   const [files, setFiles] = useState([]);
   const [media, setMedia] = useState([]);
+  const [displayIncludePage, setDisplayIncludePage] = useState([]);
   const [collectionbuys, setCollectionbuys] = useState([]);
   const [productsbuys, setProductsbuys] = useState([]);
   const [productsgets, setProductsgets] = useState([]);
@@ -181,7 +183,9 @@ const BundleXY = () => {
         errors.discount_option_id = "Discount must be less than 100.";
       }
     }
-
+    if (data.page_type === "product_page" && displayIncludePage?.length === 0) {
+      errors.displayIncludePage = "Select product to show your bundle in  include product page.";
+    }
     if (data?.bundle_subtype === "specific_product") {
       if (productsbuys.length === 0)
         errors.productsbuys = "Select at least one item in X products.";
@@ -239,6 +243,12 @@ const BundleXY = () => {
         files.forEach((file) => formData.append("media[]", file));
       }
 
+      if (data.page_type === "product_page") {
+        formData.append("includePageId", JSON.stringify(displayIncludePage));
+      } else {
+        formData.append("includePageId", JSON.stringify([]));
+      }
+
       if (data.endTime_status === "1") {
         formData.append("end_date", formatDate(selectedDates.end));
         formData.append("end_time", data.end_time);
@@ -260,7 +270,7 @@ const BundleXY = () => {
 
       if (result.status) {
         shopify.loading(false);
-        navigate("/bundles");
+        // navigate("/bundles");
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
       } else {
         shopify.loading(false);
@@ -407,6 +417,17 @@ const BundleXY = () => {
                     />
                   </Card>
                 </BlockStack>
+
+                {data?.page_type === "product_page" &&
+                  <Card>
+                    <ProductSelectOnly
+                      title="Display Bundle On Selected Products"
+                      subtitle="Select the products where this bundle should be displayed on the product page."
+                      selectedProducts={displayIncludePage}
+                      setSelectedProducts={setDisplayIncludePage}
+                    />
+                  </Card>
+                }
 
                 {/* Discount */}
                 <Card>

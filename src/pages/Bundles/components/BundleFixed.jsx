@@ -18,6 +18,7 @@ import BundlesPreview from '../BundlesPreview';
 import { MetaContext } from '../../../components/MetaDataContext/MetaDataProvider';
 import FileUploadDropZone from '../../../components/FileUploadDropZone/FileUploadDropZone';
 import ProductSelection from '../../../components/ProductSelection';
+import ProductSelectOnly from '../../../components/ProductSelection/ProductSelectOnly';
 import ValidationErrors from '../../../components/ValidationErrors';
 import DateTimePicker from '../../../components/DateRangePicker/DateTimePicker';
 import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
@@ -48,6 +49,7 @@ const BundleFixed = () => {
     discount_label: "Fixed Discount"
   });
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [displayIncludePage, setDisplayIncludePage] = useState([]);
   const [files, setFiles] = useState([]);
   const [media, setMedia] = useState([]);
   const [errors, setErrors] = useState({});
@@ -154,6 +156,9 @@ const BundleFixed = () => {
         newErrors.discount_option_id = "Discount must be less than 100.";
       }
     }
+    if (data.page_type === "product_page" && displayIncludePage?.length === 0) {
+      newErrors.displayIncludePage = "Select product to show your bundle in  include product page.";
+    }
     if (!data.bundle_name) newErrors.bundle_name = "Bundle name is required.";
     if (!selectedDates?.start) newErrors.startDate = "Start date is required.";
     if (!data.start_time) newErrors.start_time = "Start time is required.";
@@ -198,6 +203,12 @@ const BundleFixed = () => {
         files.forEach((file) => formData.append("media[]", file));
       }
 
+      if (data.page_type === "product_page") {
+        formData.append("includePageId", JSON.stringify(displayIncludePage));
+      } else {
+        formData.append("includePageId", JSON.stringify([]));
+      }
+
       if (data.endTime_status === "1") {
         formData.append("end_date", formatDate(selectedDates.end));
         formData.append("end_time", data.end_time);
@@ -218,7 +229,7 @@ const BundleFixed = () => {
       });
 
       if (result.status) {
-        navigate("/bundles");
+        // navigate("/bundles");
         shopify.loading(false);
         shopify.saveBar.hide("save");
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
@@ -287,6 +298,17 @@ const BundleFixed = () => {
                     setSelectedProducts={setSelectedProducts}
                   />
                 </Card>
+
+                {data?.page_type === "product_page" &&
+                  <Card>
+                    <ProductSelectOnly
+                      title="Display Bundle On Selected Products"
+                      subtitle="Select the products where this bundle should be displayed on the product page."
+                      selectedProducts={displayIncludePage}
+                      setSelectedProducts={setDisplayIncludePage}
+                    />
+                  </Card>
+                }
 
                 {/* Discount */}
                 <Card>

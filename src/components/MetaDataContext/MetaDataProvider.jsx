@@ -15,7 +15,6 @@ export const DiscountProvider = ({ children }) => {
     const [metaData, setMetaData] = useState([]);
     const [isSubscriptionActive, setIsSubscriptionActive] = useState(false);
 
-
     // First Time Call Api
     useEffect(() => {
         const fetchInitial = async () => {

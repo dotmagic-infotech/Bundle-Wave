@@ -172,7 +172,7 @@ const Frequently = () => {
       });
 
       if (result.status) {
-        navigate("/bundles");
+        // navigate("/bundles");
         shopify.loading(false);
         shopify.saveBar.hide("save");
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
