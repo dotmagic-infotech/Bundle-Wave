@@ -69,50 +69,50 @@ const BundleAddons = () => {
     }, 2000)
   }, [])
 
+  const fetchBundleDetails = async (id) => {
+    try {
+      const data = await fetchWithToken({
+        url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}`,
+        method: 'GET',
+      });
+
+      const selectedOption = discountOptions.find(option => option.id === data.discount_option_id);
+
+      setSelectedDates({
+        start: data.start_date ? new Date(data.start_date) : new Date(),
+        end: data.end_date ? new Date(data.end_date) : new Date(),
+      });
+      setSelectedCollections(data?.collections);
+      setSelectedAddons(data?.addons);
+      setSelectedProducts(data?.products);
+
+      setData({
+        bundle_name: data.bundle_name,
+        discount_label: data.discount_label,
+        bundle_subtype: data?.bundle_subtype,
+        discount_option_id: selectedOption ? selectedOption.id : "",
+        discount_value: data?.discount_value,
+        collections: selectedCollections,
+        products: selectedProducts,
+        bundle_title: data?.bundle_title,
+        bundle_description: data?.bundle_description,
+        display_onShop: data?.display_onShop,
+        selection_type: data?.selection_type,
+        endTime_status: data?.endTime_status,
+        start_time: data?.start_time,
+        end_time: data?.end_time,
+        status: data?.status,
+        selectedAddonIds: data?.selectedAddonIds,
+        noPreselectetIds: data?.noPreselectetIds,
+      });
+    } catch (error) {
+      console.error("Failed to fetch bundle details:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchBundleDetails = async () => {
-      try {
-        const data = await fetchWithToken({
-          url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}?shop=${shopName}`,
-          method: 'GET',
-        });
-
-        const selectedOption = discountOptions.find(option => option.id === data.discount_option_id);
-
-        setSelectedDates({
-          start: data.start_date ? new Date(data.start_date) : new Date(),
-          end: data.end_date ? new Date(data.end_date) : new Date(),
-        });
-        setSelectedCollections(data?.collections);
-        setSelectedAddons(data?.addons);
-        setSelectedProducts(data?.products);
-
-        setData({
-          bundle_name: data.bundle_name,
-          discount_label: data.discount_label,
-          bundle_subtype: data?.bundle_subtype,
-          discount_option_id: selectedOption ? selectedOption.id : "",
-          discount_value: data?.discount_value,
-          collections: selectedCollections,
-          products: selectedProducts,
-          bundle_title: data?.bundle_title,
-          bundle_description: data?.bundle_description,
-          display_onShop: data?.display_onShop,
-          selection_type: data?.selection_type,
-          endTime_status: data?.endTime_status,
-          start_time: data?.start_time,
-          end_time: data?.end_time,
-          status: data?.status,
-          selectedAddonIds: data?.selectedAddonIds,
-          noPreselectetIds: data?.noPreselectetIds,
-        });
-      } catch (error) {
-        console.error("Failed to fetch bundle details:", error);
-      }
-    };
-
     if (id) {
-      fetchBundleDetails();
+      fetchBundleDetails(id);
     }
   }, [id]);
 
@@ -296,8 +296,8 @@ const BundleAddons = () => {
       }
 
       const url = id
-        ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}?shop=${shopName}`
-        : `https://bundle-wave-backend.xavierapps.com/api/bundles/create?shop=${shopName}`;
+        ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}`
+        : `https://bundle-wave-backend.xavierapps.com/api/bundles/create`;
 
       const result = await fetchWithToken({
         url: url,
@@ -308,6 +308,8 @@ const BundleAddons = () => {
 
       if (result.status) {
         // navigate("/bundles");
+        navigate(`/bundlesList/addons_bundle/edit/${result?.id}`)
+        fetchBundleDetails(result?.id);
         shopify.loading(false);
         shopify.saveBar.hide("save");
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
@@ -344,15 +346,15 @@ const BundleAddons = () => {
               navigate("/bundles")
             }
           }}
-          primaryAction={
-            id ? <Button icon={ViewIcon} onClick={() => window.open(`https://${shop}/?id=${id}`, '_blank')}>
-              Preview
-            </Button> : undefined
-          }
           secondaryActions={id ? [
             {
               content: "Widget not visible?",
               onAction: toggleWidgetModal,
+            },
+            {
+              content: "View on store",
+              icon: ViewIcon,
+              onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
             },
           ] : []}
         >

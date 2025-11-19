@@ -47,7 +47,8 @@ const BundleXY = () => {
     endTime_status: "0",
     status: "Published",
     discount_label: "Buy X & Get Y Discount",
-    discount_option_id: "1"
+    discount_option_id: "1",
+    show_action: "new_page"
   });
   const [errors, setErrors] = useState({});
   const [files, setFiles] = useState([]);
@@ -70,48 +71,50 @@ const BundleXY = () => {
     }, 2000)
   }, [])
 
-  useEffect(() => {
-    const fetchBundleDetails = async () => {
-      try {
-        const data = await fetchWithToken({
-          url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}?shop=${shopName}`,
-          method: 'GET',
-        });
+  const fetchBundleDetails = async (id) => {
+    try {
+      const data = await fetchWithToken({
+        url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}`,
+        method: 'GET',
+      });
 
-        const selectedOption = discountOptions.find(option => option.id === data.discount_option_id);
-        setMedia(data.media);
-        setSelectedDates({
-          start: data.start_date ? new Date(data.start_date) : new Date(),
-          end: data.end_date ? new Date(data.end_date) : new Date(),
-        });
+      const selectedOption = discountOptions.find(option => option.id === data.discount_option_id);
+      setMedia(data.media);
+      setSelectedDates({
+        start: data.start_date ? new Date(data.start_date) : new Date(),
+        end: data.end_date ? new Date(data.end_date) : new Date(),
+      });
 
-        if (data?.bundle_subtype === "specific_product") {
-          setProductsbuys(data?.fixedDeal?.buys)
-        } else {
-          setCollectionbuys(data?.fixedDeal?.buys)
-        }
-        setProductsgets(data?.fixedDeal?.gets)
-
-        setData({
-          bundle_subtype: data.bundle_subtype,
-          page_type: data?.page_type,
-          discount_option_id: selectedOption ? selectedOption?.id : "1",
-          discount_value: data?.discount_value,
-          bundle_name: data?.bundle_name,
-          discount_label: data.discount_label,
-          bundle_description: data?.bundle_description,
-          start_time: data?.start_time,
-          endTime_status: data?.endTime_status || "0",
-          end_time: data?.end_time,
-          status: data?.status
-        });
-      } catch (error) {
-        console.error("Failed to fetch bundle details:", error);
+      if (data?.bundle_subtype === "specific_product") {
+        setProductsbuys(data?.fixedDeal?.buys)
+      } else {
+        setCollectionbuys(data?.fixedDeal?.buys)
       }
-    };
+      setProductsgets(data?.fixedDeal?.gets)
+      setDisplayIncludePage(data?.includePageId);
 
+      setData({
+        bundle_subtype: data.bundle_subtype,
+        page_type: data?.page_type,
+        discount_option_id: selectedOption ? selectedOption?.id : "1",
+        discount_value: data?.discount_value,
+        bundle_name: data?.bundle_name,
+        discount_label: data.discount_label,
+        bundle_description: data?.bundle_description,
+        start_time: data?.start_time,
+        endTime_status: data?.endTime_status || "0",
+        end_time: data?.end_time,
+        status: data?.status,
+        show_action: data?.page_type
+      });
+    } catch (error) {
+      console.error("Failed to fetch bundle details:", error);
+    }
+  };
+
+  useEffect(() => {
     if (id) {
-      fetchBundleDetails();
+      fetchBundleDetails(id);
     }
   }, [id]);
 
@@ -258,8 +261,8 @@ const BundleXY = () => {
       }
 
       const url = id
-        ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}?shop=${shopName}`
-        : `https://bundle-wave-backend.xavierapps.com/api/bundles/create?shop=${shopName}`;
+        ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}`
+        : `https://bundle-wave-backend.xavierapps.com/api/bundles/create`;
 
       const result = await fetchWithToken({
         url: url,
@@ -269,8 +272,10 @@ const BundleXY = () => {
       });
 
       if (result.status) {
-        shopify.loading(false);
         // navigate("/bundles");
+        navigate(`/bundlesList/buy_xy/edit/${result?.id}`)
+        fetchBundleDetails(result?.id);
+        shopify.loading(false);
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
       } else {
         shopify.loading(false);
@@ -301,19 +306,37 @@ const BundleXY = () => {
         <Page
           title={`${id ? "Update" : "Create"} Buy X Get Y`}
           backAction={{ onAction: () => navigate("/bundles") }}
-          primaryAction={
-            id ? <Button icon={ViewIcon}
-              onClick={() => window.open(`https://${shop}/?id=${id}`, '_blank')}
-            >
-              Preview
-            </Button> : undefined
-          }
           secondaryActions={id ? [
             {
               content: "Widget not visible?",
               onAction: toggleWidgetModal,
             },
+            ...(data?.show_action === "new_page" ?
+              [
+                {
+                  content: "View on store",
+                  icon: ViewIcon,
+                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                },
+              ]
+              : []),
           ] : []}
+          actionGroups={id && data?.show_action === "product_page" ? [
+            {
+              title: 'View In Store',
+              icon: ViewIcon,
+              actions: [
+                {
+                  content: 'New page',
+                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                },
+                {
+                  content: 'Include product page',
+                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                },
+              ],
+            },
+          ] : undefined}
         >
           <SaveBar id="save">
             <button variant="primary" onClick={handleSubmit}>Save</button>

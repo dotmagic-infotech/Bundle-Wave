@@ -64,45 +64,45 @@ const BundleVolume = () => {
     }, 2000)
   }, [])
 
+  const fetchBundleDetails = async (id) => {
+    try {
+      const data = await fetchWithToken({
+        url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}`,
+        method: 'GET',
+      });
+
+      const selectedOption = discountOptions.find(option => option.id === data.discount_option_id);
+      setSelectedDates({
+        start: data.start_date ? new Date(data.start_date) : new Date(),
+        end: data.end_date ? new Date(data.end_date) : new Date(),
+      });
+
+      setDiscountOption(data?.discount_options)
+
+      setSelectedProducts(data?.products)
+      setSelectedCollections(data?.collections)
+
+      setData({
+        bundle_subtype: data.bundle_subtype,
+        different_variants: data.different_variants,
+        theme_variant: data.theme_variant,
+        discount_option_id: selectedOption ? selectedOption?.id : "",
+        bundle_name: data?.bundle_name,
+        discount_label: data.discount_label,
+        bundle_info: data?.bundle_info,
+        start_time: data?.start_time,
+        endTime_status: data?.endTime_status || "0",
+        end_time: data?.end_time,
+        status: data?.status
+      });
+    } catch (error) {
+      console.error("Failed to fetch bundle details:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchBundleDetails = async () => {
-      try {
-        const data = await fetchWithToken({
-          url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}?shop=${shopName}`,
-          method: 'GET',
-        });
-
-        const selectedOption = discountOptions.find(option => option.id === data.discount_option_id);
-        setSelectedDates({
-          start: data.start_date ? new Date(data.start_date) : new Date(),
-          end: data.end_date ? new Date(data.end_date) : new Date(),
-        });
-
-        setDiscountOption(data?.discount_options)
-
-        setSelectedProducts(data?.products)
-        setSelectedCollections(data?.collections)
-
-        setData({
-          bundle_subtype: data.bundle_subtype,
-          different_variants: data.different_variants,
-          theme_variant: data.theme_variant,
-          discount_option_id: selectedOption ? selectedOption?.id : "",
-          bundle_name: data?.bundle_name,
-          discount_label: data.discount_label,
-          bundle_info: data?.bundle_info,
-          start_time: data?.start_time,
-          endTime_status: data?.endTime_status || "0",
-          end_time: data?.end_time,
-          status: data?.status
-        });
-      } catch (error) {
-        console.error("Failed to fetch bundle details:", error);
-      }
-    };
-
     if (id) {
-      fetchBundleDetails();
+      fetchBundleDetails(id);
     }
   }, [id]);
 
@@ -287,8 +287,8 @@ const BundleVolume = () => {
       }
 
       const url = id
-        ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}?shop=${shopName}`
-        : `https://bundle-wave-backend.xavierapps.com/api/bundles/create?shop=${shopName}`;
+        ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}`
+        : `https://bundle-wave-backend.xavierapps.com/api/bundles/create`;
 
       const result = await fetchWithToken({
         url: url,
@@ -298,8 +298,10 @@ const BundleVolume = () => {
       });
 
       if (result.status) {
-        shopify.loading(false);
         // navigate("/bundles");
+        navigate(`/bundlesList/volume_bundle/edit/${result?.id}`)
+        fetchBundleDetails(result?.id);
+        shopify.loading(false);
         shopify.saveBar.hide("save");
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
       } else {
@@ -330,17 +332,15 @@ const BundleVolume = () => {
         <Page
           title={`${id ? "Update" : "Create"} Volume discount`}
           backAction={{ onAction: () => navigate("/bundles") }}
-          primaryAction={
-            id ? <Button icon={ViewIcon}
-              onClick={() => window.open(`https://${shop}/?id=${id}`, '_blank')}
-            >
-              Preview
-            </Button> : undefined
-          }
           secondaryActions={id ? [
             {
               content: "Widget not visible?",
               onAction: toggleWidgetModal,
+            },
+            {
+              content: "View on store",
+              icon: ViewIcon,
+              onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
             },
           ] : []}
         >

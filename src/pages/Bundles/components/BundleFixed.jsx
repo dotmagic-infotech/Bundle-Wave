@@ -46,7 +46,8 @@ const BundleFixed = () => {
     discount_option_id: "1",
     discount_value: "10",
     page_type: "new_page",
-    discount_label: "Fixed Discount"
+    discount_label: "Fixed Discount",
+    show_action: "new_page"
   });
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [displayIncludePage, setDisplayIncludePage] = useState([]);
@@ -67,53 +68,55 @@ const BundleFixed = () => {
     }, 2000)
   }, []);
 
+  const fetchBundleDetails = async (id) => {
+    try {
+      const data = await fetchWithToken({
+        url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}`,
+        method: 'GET',
+      });
+
+      const selectedOption = discountOptions.find(option => option.id === data.discount_option_id);
+      const productData = data.products.map((v) => ({
+        id: v.id,
+        variants: v.variants,
+        title: v.title,
+        image: v.image,
+        hasOnlyDefaultVariant: v.hasOnlyDefaultVariant,
+        product_count: v.product_count
+      }));
+
+      setMedia(data.media);
+      setSelectedDates({
+        start: data.start_date ? new Date(data.start_date) : new Date(),
+        end: data.end_date ? new Date(data.end_date) : new Date(),
+      });
+
+      setSelectedProducts(productData);
+      setDisplayIncludePage(data?.includePageId);
+
+      setData({
+        page_type: data?.page_type,
+        discount_option_id: selectedOption ? selectedOption.id : "",
+        discount_value: data.discount_value || "",
+        status: data.status || "Draft",
+        bundle_name: data.bundle_name || "",
+        discount_label: data.discount_label || "",
+        bundle_description: data.bundle_description || "",
+        endTime_status: data.endTime_status,
+        startDate: data.start_date ? new Date(data.start_date) : null,
+        start_time: data.start_time || "1:00 AM",
+        endDate: data.end_date ? new Date(data.end_date) : null,
+        end_time: data.end_time || "1:00 AM",
+        show_action: data?.page_type
+      });
+    } catch (error) {
+      console.error("Failed to fetch bundle details:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchBundleDetails = async () => {
-      try {
-        const data = await fetchWithToken({
-          url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}?shop=${shopName}`,
-          method: 'GET',
-        });
-
-        const selectedOption = discountOptions.find(option => option.id === data.discount_option_id);
-        const productData = data.products.map((v) => ({
-          id: v.id,
-          variants: v.variants,
-          title: v.title,
-          image: v.image,
-          hasOnlyDefaultVariant: v.hasOnlyDefaultVariant,
-          product_count: v.product_count
-        }));
-
-        setMedia(data.media);
-        setSelectedDates({
-          start: data.start_date ? new Date(data.start_date) : new Date(),
-          end: data.end_date ? new Date(data.end_date) : new Date(),
-        });
-
-        setSelectedProducts(productData);
-
-        setData({
-          page_type: data?.page_type,
-          discount_option_id: selectedOption ? selectedOption.id : "",
-          discount_value: data.discount_value || "",
-          status: data.status || "Draft",
-          bundle_name: data.bundle_name || "",
-          discount_label: data.discount_label || "",
-          bundle_description: data.bundle_description || "",
-          endTime_status: data.endTime_status,
-          startDate: data.start_date ? new Date(data.start_date) : null,
-          start_time: data.start_time || "1:00 AM",
-          endDate: data.end_date ? new Date(data.end_date) : null,
-          end_time: data.end_time || "1:00 AM",
-        });
-      } catch (error) {
-        console.error("Failed to fetch bundle details:", error);
-      }
-    };
-
     if (id) {
-      fetchBundleDetails();
+      fetchBundleDetails(id);
     }
   }, [id]);
 
@@ -218,8 +221,8 @@ const BundleFixed = () => {
       }
 
       const url = id
-        ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}?shop=${shopName}`
-        : `https://bundle-wave-backend.xavierapps.com/api/bundles/create?shop=${shopName}`;
+        ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}`
+        : `https://bundle-wave-backend.xavierapps.com/api/bundles/create`;
 
       const result = await fetchWithToken({
         url: url,
@@ -230,6 +233,8 @@ const BundleFixed = () => {
 
       if (result.status) {
         // navigate("/bundles");
+        navigate(`/bundlesList/fixed_bundle/edit/${result?.id}`)
+        fetchBundleDetails(result?.id);
         shopify.loading(false);
         shopify.saveBar.hide("save");
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
@@ -259,13 +264,37 @@ const BundleFixed = () => {
               navigate("/bundles");
             }
           }}
-          primaryAction={id ? <Button icon={ViewIcon} onClick={() => window.open(`https://${shop}/?id=${id}`, '_blank')}>Preview</Button> : undefined}
           secondaryActions={id ? [
             {
               content: "Widget not visible?",
               onAction: toggleWidgetModal,
             },
+            ...(data?.show_action === "new_page" ?
+              [
+                {
+                  content: "View on store",
+                  icon: ViewIcon,
+                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                },
+              ]
+              : []),
           ] : []}
+          actionGroups={id && data?.show_action === "product_page" ? [
+            {
+              title: 'View In Store',
+              icon: ViewIcon,
+              actions: [
+                {
+                  content: 'New page',
+                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                },
+                {
+                  content: 'Include product page',
+                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                },
+              ],
+            },
+          ] : undefined}
         >
           <SaveBar id="save">
             <button variant="primary" onClick={handleSubmit}>Save</button>

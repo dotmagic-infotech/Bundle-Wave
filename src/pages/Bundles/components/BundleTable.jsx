@@ -33,6 +33,7 @@ function BundleTable() {
     const [bundleData, setBundleData] = useState([]);
     const [pagination, setPagination] = useState({});
     const [popoverActive, setPopoverActive] = useState(false);
+    const [activePopoverId, setActivePopoverId] = useState(null);
     const [active, setActive] = useState(false);
     const [activeDublicate, setActiveDublicate] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -45,6 +46,10 @@ function BundleTable() {
 
     const handleTabChange = (selectedTabIndex) => setSelectedTabs(tabs[selectedTabIndex].id);
     const togglePopoverActive = (() => setPopoverActive((popoverActive) => !popoverActive));
+    const toggleViewActiveFor = (id) => {
+        setActivePopoverId(prev => (prev === id ? null : id));
+    };
+    const closeView = () => setActivePopoverId(null);
     const handleChange = (() => setActive(!active));
     const handleDublicateChange = (() => setActiveDublicate(!activeDublicate));
 
@@ -78,7 +83,6 @@ function BundleTable() {
 
     useEffect(() => {
         shopify.saveBar.hide("save");
-
         fetchData();
     }, [currentPage, selectedTabs]);
 
@@ -343,10 +347,31 @@ function BundleTable() {
 
                         {status === "Published" &&
                             <Tooltip content="Preview Bundle">
-                                <Button disabled={selectedResources.length > 0} icon={ViewIcon} onClick={(event) => {
-                                    event.stopPropagation();
-                                    window.open(`https://${shopName}/?id=${bundle_id}`, '_blank')
-                                }}></Button>
+                                <Popover
+                                    active={activePopoverId === bundle_id}
+                                    activator={
+                                        <Button disabled={selectedResources.length > 0} icon={ViewIcon}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                toggleViewActiveFor(bundle_id);
+                                            }}
+                                        ></Button>
+                                    }
+                                    autofocusTarget="first-node"
+                                    onClose={() => {
+                                        if (activePopoverId === bundle_id) closeView();
+                                    }}
+                                >
+                                    <Popover.Pane>
+                                        <ActionList
+                                            actionRole="menuitem"
+                                            items={[
+                                                { content: 'New page', onAction: () => window.open(`https://${shopName}/?id=${bundle_id}`, '_blank') },
+                                                { content: 'include product page', onAction: () => window.open(`https://${shopName}/?id=${bundle_id}`, '_blank') },
+                                            ]}
+                                        />
+                                    </Popover.Pane>
+                                </Popover>
                             </Tooltip>
                         }
 

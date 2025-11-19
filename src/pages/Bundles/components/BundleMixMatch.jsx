@@ -52,7 +52,8 @@ function BundleMixMatch() {
     endTime_status: "0",
     status: "Published",
     discount_option_id: "1",
-    discount_label: "Mix and Match Discount"
+    discount_label: "Mix and Match Discount",
+    show_action: "new_page"
   });
   const [files, setFiles] = useState([]);
   const [media, setMedia] = useState([]);
@@ -79,48 +80,50 @@ function BundleMixMatch() {
     }, 2000)
   }, [])
 
+  const fetchBundleDetails = async (id) => {
+    try {
+      const data = await fetchWithToken({
+        url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}`,
+        method: 'GET',
+      });
+
+      const selectedOption = discountOptions.find(option => option.id === data.discount_option_id);
+      setMedia(data.media);
+      setSelectedDates({
+        start: data.start_date ? new Date(data.start_date) : new Date(),
+        end: data.end_date ? new Date(data.end_date) : new Date(),
+      });
+
+      setSections(data.sections);
+      setSelProductsTired(data?.products)
+      setSelCollectionTired(data?.collections)
+      setDisplayIncludePage(data?.includePageId);
+      setDiscountOption(data?.tiered_discount_options)
+
+      setData({
+        discount_option_id: selectedOption ? selectedOption.id : "selCollectionTired1",
+        discount_value: data.discount_value,
+        bundle_subtype: data.bundle_subtype,
+        page_type: data?.page_type,
+        status: data.status,
+        sections: data.sections,
+        bundle_name: data.bundle_name,
+        discount_label: data.discount_label,
+        bundle_description: data.bundle_description || "",
+        endTime_status: data.endTime_status,
+        start_time: data.start_time,
+        end_time: data?.end_time,
+        show_action: data?.page_type
+      });
+    } catch (error) {
+      console.error("Failed to fetch bundle details:", error);
+      shopify.saveBar.hide("save");
+    }
+  };
+
   useEffect(() => {
-    const fetchBundleDetails = async () => {
-      try {
-        const data = await fetchWithToken({
-          url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}?shop=${shopName}`,
-          method: 'GET',
-        });
-
-        const selectedOption = discountOptions.find(option => option.id === data.discount_option_id);
-        setMedia(data.media);
-        setSelectedDates({
-          start: data.start_date ? new Date(data.start_date) : new Date(),
-          end: data.end_date ? new Date(data.end_date) : new Date(),
-        });
-
-        setSections(data.sections);
-        setSelProductsTired(data?.products)
-        setSelCollectionTired(data?.collections)
-        setDiscountOption(data?.tiered_discount_options)
-
-        setData({
-          discount_option_id: selectedOption ? selectedOption.id : "selCollectionTired1",
-          discount_value: data.discount_value,
-          bundle_subtype: data.bundle_subtype,
-          page_type: data?.page_type,
-          status: data.status,
-          sections: data.sections,
-          bundle_name: data.bundle_name,
-          discount_label: data.discount_label,
-          bundle_description: data.bundle_description || "",
-          endTime_status: data.endTime_status,
-          start_time: data.start_time,
-          end_time: data?.end_time,
-        });
-      } catch (error) {
-        console.error("Failed to fetch bundle details:", error);
-        shopify.saveBar.hide("save");
-      }
-    };
-
     if (id) {
-      fetchBundleDetails();
+      fetchBundleDetails(id);
     }
   }, [id]);
 
@@ -300,8 +303,8 @@ function BundleMixMatch() {
       }
 
       const url = id
-        ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}?shop=${shopName}`
-        : `https://bundle-wave-backend.xavierapps.com/api/bundles/create?shop=${shopName}`;
+        ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}`
+        : `https://bundle-wave-backend.xavierapps.com/api/bundles/create`;
 
       const result = await fetchWithToken({
         url: url,
@@ -312,6 +315,8 @@ function BundleMixMatch() {
 
       if (result.status) {
         // navigate("/bundles");
+        navigate(`/bundlesList/mix-match/edit/${result?.id}`)
+        fetchBundleDetails(result?.id);
         shopify.loading(false);
         shopify.saveBar.hide("save");
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
@@ -337,19 +342,37 @@ function BundleMixMatch() {
         <Page
           title={`${id ? "Update" : "Create"} Mix and Match`}
           backAction={{ onAction: () => navigate("/bundles") }}
-          primaryAction={
-            id ? <Button icon={ViewIcon}
-              onClick={() => window.open(`https://${shop}/?id=${id}`, '_blank')}
-            >
-              Preview
-            </Button> : undefined
-          }
           secondaryActions={id ? [
             {
               content: "Widget not visible?",
               onAction: toggleWidgetModal,
             },
+            ...(data?.show_action === "new_page" ?
+              [
+                {
+                  content: "View on store",
+                  icon: ViewIcon,
+                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                },
+              ]
+              : []),
           ] : []}
+          actionGroups={id && data?.show_action === "product_page" ? [
+            {
+              title: 'View In Store',
+              icon: ViewIcon,
+              actions: [
+                {
+                  content: 'New page',
+                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                },
+                {
+                  content: 'Include product page',
+                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                },
+              ],
+            },
+          ] : undefined}
         >
           <SaveBar id="save">
             <button variant="primary" onClick={handleSubmit}>Save</button>

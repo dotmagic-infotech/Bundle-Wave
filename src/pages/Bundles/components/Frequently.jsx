@@ -50,34 +50,34 @@ const Frequently = () => {
     }, 2000)
   }, [])
 
+  const fetchBundleDetails = async (id) => {
+    try {
+      const data = await fetchWithToken({
+        url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}`,
+        method: 'GET',
+      });
+
+      const selectedOption = discountOptions.find(option => option.id === data.discount_option_id);
+      setSelectedProducts(data?.products);
+      setSelectedProductsOffers(data?.offered_products);
+
+      setData({
+        bundle_subtype: data?.bundle_subtype,
+        discount_label: data.discount_label,
+        discount_option_id: selectedOption ? selectedOption.id : "",
+        discount_value: data?.discount_value,
+        bundle_name: data?.bundle_name,
+        bundle_title: data?.bundle_title,
+        status: data?.status,
+      });
+    } catch (error) {
+      console.error("Failed to fetch bundle details:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchBundleDetails = async () => {
-      try {
-        const data = await fetchWithToken({
-          url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}?shop=${shopName}`,
-          method: 'GET',
-        });
-
-        const selectedOption = discountOptions.find(option => option.id === data.discount_option_id);
-        setSelectedProducts(data?.products);
-        setSelectedProductsOffers(data?.offered_products);
-
-        setData({
-          bundle_subtype: data?.bundle_subtype,
-          discount_label: data.discount_label,
-          discount_option_id: selectedOption ? selectedOption.id : "",
-          discount_value: data?.discount_value,
-          bundle_name: data?.bundle_name,
-          bundle_title: data?.bundle_title,
-          status: data?.status,
-        });
-      } catch (error) {
-        console.error("Failed to fetch bundle details:", error);
-      }
-    };
-
     if (id) {
-      fetchBundleDetails();
+      fetchBundleDetails(id);
     }
   }, [id]);
 
@@ -161,8 +161,8 @@ const Frequently = () => {
         passData.offered_products = selectedProductsOffers
       }
       const url = id
-        ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}?shop=${shopName}`
-        : `https://bundle-wave-backend.xavierapps.com/api/bundles/create?shop=${shopName}`;
+        ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}`
+        : `https://bundle-wave-backend.xavierapps.com/api/bundles/create`;
 
       const result = await fetchWithToken({
         url: url,
@@ -173,6 +173,8 @@ const Frequently = () => {
 
       if (result.status) {
         // navigate("/bundles");
+        navigate(`/bundlesList/frequently_bundle/edit/${result?.id}`)
+        fetchBundleDetails(result?.id);
         shopify.loading(false);
         shopify.saveBar.hide("save");
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
@@ -209,17 +211,15 @@ const Frequently = () => {
               navigate("/bundles")
             }
           }}
-          primaryAction={
-            id ? <Button icon={ViewIcon}
-              onClick={() => window.open(`https://${shop}/?id=${id}`, '_blank')}
-            >
-              Preview
-            </Button> : undefined
-          }
           secondaryActions={id ? [
             {
               content: "Widget not visible?",
               onAction: toggleWidgetModal,
+            },
+            {
+              content: "View on store",
+              icon: ViewIcon,
+              onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
             },
           ] : []}
         >
