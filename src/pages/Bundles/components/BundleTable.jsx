@@ -140,9 +140,8 @@ function BundleTable() {
 
     // IndexTable State
     const resourceData = bundleData?.map(item => ({
-        id: item.bundle_id,
+        id: String(item.bundle_id),
     }));
-
     const { selectedResources, allResourcesSelected, handleSelectionChange, clearSelection } = useIndexResourceState(resourceData);
 
     const MediaIcons = ({ media }) => (
@@ -185,7 +184,109 @@ function BundleTable() {
         </div>
     );
 
-    const rowMarkup = bundleData?.length > 0 && bundleData?.map(({ bundle_id, media, bundle_subtype, discount_options, bundle_name, discount_option_id, discount_value, status, active_status, bundle_type_id, bundle_table, bundle_type_name }, index) => {
+    const handleDelete = async () => {
+        try {
+            setLoadData(true);
+            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/delete-multiple`;
+
+            const { data } = await apiRequest(url, 'POST', {
+                bundle_data: bundleData
+                    .filter(({ bundle_id }) => selectedResources.includes(bundle_id))
+                    .map(({ bundle_id, bundle_table }) => ({ bundle_id, bundle_table }))
+            });
+
+            setLoadData(false);
+            if (data?.status) {
+                fetchData();
+                handleChange();
+                clearSelection();
+                setCurrentPage(1);
+            } else {
+                clearSelection();
+                handleChange();
+                shopify.toast.show(data?.message, {
+                    isError: true,
+                    duration: 8000
+                });
+            }
+        } catch (error) {
+            console.error("Failed to fetch bundle details:", error);
+        }
+    }
+
+    const handleDublicate = async () => {
+        try {
+            setLoadData(true);
+            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/duplicate-multiple?shop=${shopName}`;
+            const { data } = await apiRequest(url, 'POST', {
+                bundle_data: bundleData
+                    .filter(({ bundle_id }) => selectedResources.includes(bundle_id))
+                    .map(({ bundle_id, bundle_table }) => ({ bundle_id, bundle_table }))
+            });
+
+            setLoadData(false);
+
+            if (data?.status) {
+                fetchData();
+                handleDublicateChange();
+                clearSelection();
+                setCurrentPage(1);
+            } else {
+                clearSelection();
+                handleDublicateChange();
+                shopify.toast.show(data?.message, {
+                    isError: true,
+                    duration: 8000
+                });
+            }
+        } catch (error) {
+            console.error("Failed to fetch bundle details:", error);
+        }
+    }
+
+    const handleDuplicateSingle = async (bundle_id, bundle_table) => {
+        try {
+            setLoadingBundleId(bundle_id);
+
+            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/duplicate-multiple?shop=${shopName}`;
+            const payload = {
+                bundle_data: [{ bundle_id, bundle_table }]
+            };
+
+            const { data } = await apiRequest(url, 'POST', payload);
+
+            if (data?.status) {
+                fetchData();
+                clearSelection();
+                setCurrentPage(1);
+            } else {
+                clearSelection();
+                shopify.toast.show(data?.message, {
+                    isError: true,
+                    duration: 8000
+                });
+            }
+        } catch (error) {
+            console.error("Failed to duplicate bundle:", error);
+            setLoadingBundleId(null);
+        } finally {
+            setLoadingBundleId(null);
+        }
+    };
+
+    const handleNextPage = () => {
+        if (pagination.current_page < pagination.total_pages) {
+            setCurrentPage((prevPage) => prevPage + 1);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (pagination.current_page > 1) {
+            setCurrentPage((prevPage) => prevPage - 1);
+        }
+    };
+
+    const rowMarkup = bundleData?.length > 0 && bundleData?.map(({ bundle_id, media, bundle_subtype, discount_options, bundle_name, discount_option_id, discount_value, status, active_status, bundle_type_id, bundle_table, bundle_type_name, page_type, url }, index) => {
 
         const hasTitle = media?.some(v => v.title?.trim());
         const mediaIcons = <MediaIcons media={media} />;
@@ -196,6 +297,19 @@ function BundleTable() {
                 key={bundle_id.toString()}
                 selected={selectedResources.includes(bundle_id.toString())}
                 position={index}
+                onClick={() => {
+                    let url = "";
+
+                    if (bundle_type_id === "1") url = `/bundlesList/fixed_bundle/edit/${bundle_id}`;
+                    else if (bundle_type_id === "2") url = `/bundlesList/mix-match/edit/${bundle_id}`;
+                    else if (bundle_type_id === "3") url = `/bundlesList/buy_xy/edit/${bundle_id}`;
+                    else if (bundle_type_id === "4") url = `/bundlesList/volume_bundle/edit/${bundle_id}`;
+                    else if (bundle_type_id === "5") url = `/bundlesList/addons_bundle/edit/${bundle_id}`;
+                    else if (bundle_type_id === "6") url = `/bundlesList/frequently_bundle/edit/${bundle_id}`;
+                    else return;
+
+                    navigate(url);
+                }}
             >
                 <IndexTable.Cell>
                     {hasTitle ? (
@@ -311,7 +425,41 @@ function BundleTable() {
                     {bundle_type_name}
                 </IndexTable.Cell>
                 <IndexTable.Cell>
-                    <InlineStack gap={200}>
+                    <InlineStack gap={100}>
+                        {status === "Published" &&
+                            <Tooltip content="Preview Bundle">
+                                <Popover
+                                    active={activePopoverId === bundle_id}
+                                    activator={
+                                        <Button disabled={selectedResources.length > 0} icon={ViewIcon}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                if (page_type === "product_page") {
+                                                    toggleViewActiveFor(bundle_id);
+                                                } else {
+                                                    window.open(`https://${shopName}/?id=${bundle_id}`, '_blank')
+                                                }
+                                            }}
+                                        ></Button>
+                                    }
+                                    autofocusTarget="first-node"
+                                    onClose={() => {
+                                        if (activePopoverId === bundle_id) closeView();
+                                    }}
+                                >
+                                    <Popover.Pane>
+                                        <ActionList
+                                            actionRole="menuitem"
+                                            items={[
+                                                { content: 'New page', onAction: () => window.open(`https://${shopName}/?id=${bundle_id}`, '_blank') },
+                                                { content: 'Include product page', onAction: () => window.open(`https://${shopName}/products/${url}`, '_blank') },
+                                            ]}
+                                        />
+                                    </Popover.Pane>
+                                </Popover>
+                            </Tooltip>
+                        }
+
                         <Tooltip content="Edit Bundle">
                             <Button disabled={selectedResources.length > 0} icon={EditIcon} onClick={(event) => {
                                 event.stopPropagation();
@@ -345,148 +493,18 @@ function BundleTable() {
                             }}></Button>
                         </Tooltip>
 
-                        {status === "Published" &&
-                            <Tooltip content="Preview Bundle">
-                                <Popover
-                                    active={activePopoverId === bundle_id}
-                                    activator={
-                                        <Button disabled={selectedResources.length > 0} icon={ViewIcon}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                toggleViewActiveFor(bundle_id);
-                                            }}
-                                        ></Button>
-                                    }
-                                    autofocusTarget="first-node"
-                                    onClose={() => {
-                                        if (activePopoverId === bundle_id) closeView();
-                                    }}
-                                >
-                                    <Popover.Pane>
-                                        <ActionList
-                                            actionRole="menuitem"
-                                            items={[
-                                                { content: 'New page', onAction: () => window.open(`https://${shopName}/?id=${bundle_id}`, '_blank') },
-                                                { content: 'include product page', onAction: () => window.open(`https://${shopName}/?id=${bundle_id}`, '_blank') },
-                                            ]}
-                                        />
-                                    </Popover.Pane>
-                                </Popover>
-                            </Tooltip>
-                        }
 
-                        <Tooltip content="Delete Bundle">
+                        {/* <Tooltip content="Delete Bundle">
                             <Button disabled={selectedResources.length > 0} icon={DeleteIcon} onClick={(event) => {
-                                handleChange()
+                                event.stopPropagation();
+                                handleChange();
                             }}></Button>
-                        </Tooltip>
+                        </Tooltip> */}
                     </InlineStack>
                 </IndexTable.Cell>
             </IndexTable.Row>
         )
     });
-
-    const handleDelete = async () => {
-        try {
-            setLoadData(true);
-            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/delete-multiple?shop=${shopName}`;
-
-            const { data } = await apiRequest(url, 'POST', {
-                bundle_data: bundleData
-                    .filter(({ bundle_id }) => selectedResources.includes(bundle_id))
-                    .map(({ bundle_id, bundle_table }) => ({ bundle_id, bundle_table }))
-            });
-
-            setLoadData(false);
-            if (data?.status) {
-                fetchData();
-                handleChange();
-                clearSelection();
-                setCurrentPage(1);
-            } else {
-                clearSelection();
-                handleChange();
-                shopify.toast.show(data?.message, {
-                    isError: true,
-                    duration: 8000
-                });
-            }
-        } catch (error) {
-            console.error("Failed to fetch bundle details:", error);
-        }
-    }
-
-    const handleDublicate = async () => {
-        try {
-            setLoadData(true);
-            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/duplicate-multiple?shop=${shopName}`;
-            const { data } = await apiRequest(url, 'POST', {
-                bundle_data: bundleData
-                    .filter(({ bundle_id }) => selectedResources.includes(bundle_id))
-                    .map(({ bundle_id, bundle_table }) => ({ bundle_id, bundle_table }))
-            });
-
-            setLoadData(false);
-
-            if (data?.status) {
-                fetchData();
-                handleDublicateChange();
-                clearSelection();
-                setCurrentPage(1);
-            } else {
-                clearSelection();
-                handleDublicateChange();
-                shopify.toast.show(data?.message, {
-                    isError: true,
-                    duration: 8000
-                });
-            }
-        } catch (error) {
-            console.error("Failed to fetch bundle details:", error);
-        }
-    }
-
-    const handleDuplicateSingle = async (bundle_id, bundle_table) => {
-        try {
-            setLoadingBundleId(bundle_id);
-
-            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/duplicate-multiple?shop=${shopName}`;
-            const payload = {
-                bundle_data: [{ bundle_id, bundle_table }]
-            };
-
-            const { data } = await apiRequest(url, 'POST', payload);
-
-            if (data?.status) {
-                fetchData();
-                clearSelection();
-                setCurrentPage(1);
-            } else {
-                clearSelection();
-                shopify.toast.show(data?.message, {
-                    isError: true,
-                    duration: 8000
-                });
-            }
-        } catch (error) {
-            console.error("Failed to duplicate bundle:", error);
-            setLoadingBundleId(null);
-        } finally {
-            setLoadingBundleId(null);
-        }
-    };
-
-    const handleNextPage = () => {
-        if (pagination.current_page < pagination.total_pages) {
-            setCurrentPage((prevPage) => prevPage + 1);
-        }
-    };
-
-    const handlePreviousPage = () => {
-        if (pagination.current_page > 1) {
-            setCurrentPage((prevPage) => prevPage - 1);
-        }
-    };
 
     return (
         <Page

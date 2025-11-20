@@ -23,7 +23,6 @@ import DateTimePicker from '../../../components/DateRangePicker/DateTimePicker';
 import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
 import WidgetModal from '../../../components/WidgetModal/WidgetModal';
 import PageSkeleton from '../../../components/PageSkeleton';
-import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
 import { getTotalPrice } from '../../../assets/helpers';
 
@@ -33,7 +32,6 @@ const BundleXY = () => {
   const { discountOptions } = useContext(MetaContext);
   const { id } = useParams();
   const navigate = useNavigate();
-  const { shopName } = useContext(ShopifyContext);
   const fetchWithToken = useFetchWithToken();
 
   // State
@@ -48,7 +46,7 @@ const BundleXY = () => {
     status: "Published",
     discount_label: "Buy X & Get Y Discount",
     discount_option_id: "1",
-    show_action: "new_page"
+    url: ""
   });
   const [errors, setErrors] = useState({});
   const [files, setFiles] = useState([]);
@@ -59,20 +57,15 @@ const BundleXY = () => {
   const [productsgets, setProductsgets] = useState([]);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [widgetModalOpen, setWidgetModalOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedDates, setSelectedDates] = useState({
     start: new Date(),
     end: new Date(),
   });
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000)
-  }, [])
-
   const fetchBundleDetails = async (id) => {
     try {
+      setLoading(true);
       const data = await fetchWithToken({
         url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}`,
         method: 'GET',
@@ -105,10 +98,12 @@ const BundleXY = () => {
         endTime_status: data?.endTime_status || "0",
         end_time: data?.end_time,
         status: data?.status,
-        show_action: data?.page_type
+        url: data?.url
       });
     } catch (error) {
       console.error("Failed to fetch bundle details:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -311,32 +306,12 @@ const BundleXY = () => {
               content: "Widget not visible?",
               onAction: toggleWidgetModal,
             },
-            ...(data?.show_action === "new_page" ?
-              [
-                {
-                  content: "View on store",
-                  icon: ViewIcon,
-                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
-                },
-              ]
-              : []),
-          ] : []}
-          actionGroups={id && data?.show_action === "product_page" ? [
             {
-              title: 'View In Store',
+              content: "View on store",
               icon: ViewIcon,
-              actions: [
-                {
-                  content: 'New page',
-                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
-                },
-                {
-                  content: 'Include product page',
-                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
-                },
-              ],
+              onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
             },
-          ] : undefined}
+          ] : []}
         >
           <SaveBar id="save">
             <button variant="primary" onClick={handleSubmit}>Save</button>

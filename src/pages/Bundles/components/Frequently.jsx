@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from 'react'
 
 // Shopify Polaris
-import { BlockStack, Box, Button, Card, InlineStack, Layout, Modal, Page, RadioButton, Select, Text, TextField } from '@shopify/polaris'
+import { BlockStack, Box, Card, InlineStack, Layout, Modal, Page, RadioButton, Select, Text, TextField } from '@shopify/polaris'
 import { SaveBar } from '@shopify/app-bridge-react'
 import { ViewIcon } from '@shopify/polaris-icons'
 
@@ -15,7 +15,6 @@ import ProductSelection from '../../../components/ProductSelection'
 import { MetaContext } from '../../../components/MetaDataContext/MetaDataProvider'
 import BundlesPreview from '../BundlesPreview'
 import PageSkeleton from '../../../components/PageSkeleton'
-import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider'
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken'
 import WidgetModal from '../../../components/WidgetModal/WidgetModal'
 import { getTotalPrice } from '../../../assets/helpers'
@@ -26,7 +25,6 @@ const Frequently = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { discountOptions } = useContext(MetaContext);
-  const { shopName } = useContext(ShopifyContext);
   const fetchWithToken = useFetchWithToken();
 
   // State
@@ -40,18 +38,13 @@ const Frequently = () => {
   })
   const [errors, setErrors] = useState({})
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedProductsOffers, setSelectedProductsOffers] = useState([]);
   const [widgetModalOpen, setWidgetModalOpen] = useState(false);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000)
-  }, [])
-
   const fetchBundleDetails = async (id) => {
     try {
+      setLoading(true);
       const data = await fetchWithToken({
         url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}`,
         method: 'GET',
@@ -72,6 +65,8 @@ const Frequently = () => {
       });
     } catch (error) {
       console.error("Failed to fetch bundle details:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -81,14 +76,14 @@ const Frequently = () => {
     }
   }, [id]);
 
-  const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
-  const total = getTotalPrice(selectedProductsOffers).toFixed(2);
-
   useEffect(() => {
     if (selectedProducts?.length === 0) {
       setSelectedProductsOffers([])
     }
   }, [selectedProducts])
+
+  const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
+  const total = getTotalPrice(selectedProductsOffers).toFixed(2);
 
   const handleChangeValue = (key, value) => {
     setData((prevData) => ({

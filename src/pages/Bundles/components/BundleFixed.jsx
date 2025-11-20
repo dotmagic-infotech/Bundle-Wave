@@ -24,7 +24,6 @@ import DateTimePicker from '../../../components/DateRangePicker/DateTimePicker';
 import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
 import WidgetModal from '../../../components/WidgetModal/WidgetModal';
 import PageSkeleton from '../../../components/PageSkeleton';
-import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
 import { getTotalPrice } from "../../../assets/helpers";
 
@@ -33,7 +32,6 @@ const BundleFixed = () => {
   const { id } = useParams();
   const { discountOptions } = useContext(MetaContext);
   const shopify = useAppBridge();
-  const { shopName } = useContext(ShopifyContext);
   const navigate = useNavigate();
   const fetchWithToken = useFetchWithToken();
 
@@ -47,7 +45,8 @@ const BundleFixed = () => {
     discount_value: "10",
     page_type: "new_page",
     discount_label: "Fixed Discount",
-    show_action: "new_page"
+    show_action: "new_page",
+    url: ""
   });
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [displayIncludePage, setDisplayIncludePage] = useState([]);
@@ -56,20 +55,15 @@ const BundleFixed = () => {
   const [errors, setErrors] = useState({});
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [widgetModalOpen, setWidgetModalOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedDates, setSelectedDates] = useState({
     start: new Date(),
     end: new Date(),
   });
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000)
-  }, []);
-
   const fetchBundleDetails = async (id) => {
     try {
+      setLoading(true);
       const data = await fetchWithToken({
         url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}`,
         method: 'GET',
@@ -107,10 +101,13 @@ const BundleFixed = () => {
         start_time: data.start_time || "1:00 AM",
         endDate: data.end_date ? new Date(data.end_date) : null,
         end_time: data.end_time || "1:00 AM",
-        show_action: data?.page_type
+        show_action: data?.page_type,
+        url: data?.url
       });
     } catch (error) {
       console.error("Failed to fetch bundle details:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -251,7 +248,7 @@ const BundleFixed = () => {
       shopify.saveBar.hide("save");
     }
   };
-
+  
   return (
     <>
       {loading ? (
@@ -290,7 +287,7 @@ const BundleFixed = () => {
                 },
                 {
                   content: 'Include product page',
-                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                  onAction: () => window.open(`https://${shop}/products/${data?.url}`, '_blank'),
                 },
               ],
             },

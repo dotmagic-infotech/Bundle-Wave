@@ -19,7 +19,6 @@ import twoimage from "../../../assets/PngImage/2.svg"
 
 // Custom Component
 import { MetaContext } from '../../../components/MetaDataContext/MetaDataProvider';
-import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
 import FileUploadDropZone from '../../../components/FileUploadDropZone/FileUploadDropZone';
 import ProductWithCollections from '../../../components/ProductWithCollections/ProductWithCollections';
@@ -38,7 +37,6 @@ function BundleMixMatch() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { discountOptions } = useContext(MetaContext);
-  const { shopName } = useContext(ShopifyContext);
   const fetchWithToken = useFetchWithToken();
 
   // State
@@ -53,7 +51,8 @@ function BundleMixMatch() {
     status: "Published",
     discount_option_id: "1",
     discount_label: "Mix and Match Discount",
-    show_action: "new_page"
+    show_action: "new_page",
+    url: ""
   });
   const [files, setFiles] = useState([]);
   const [media, setMedia] = useState([]);
@@ -66,22 +65,15 @@ function BundleMixMatch() {
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [widgetModalOpen, setWidgetModalOpen] = useState(false);
   const [selectedFirst, setSelectedFirst] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedDates, setSelectedDates] = useState({ start: new Date(), end: new Date() });
   const [discountOption, setDiscountOption] = useState([
     { id: 1, discountValue: "10", buy_start: "1", buy_end: "", type: "1", range: "", allow_users: "" }
   ]);
 
-  const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000)
-  }, [])
-
   const fetchBundleDetails = async (id) => {
     try {
+      setLoading(true);
       const data = await fetchWithToken({
         url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}`,
         method: 'GET',
@@ -113,11 +105,14 @@ function BundleMixMatch() {
         endTime_status: data.endTime_status,
         start_time: data.start_time,
         end_time: data?.end_time,
-        show_action: data?.page_type
+        show_action: data?.page_type,
+        url: data?.url
       });
     } catch (error) {
       console.error("Failed to fetch bundle details:", error);
       shopify.saveBar.hide("save");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -148,6 +143,7 @@ function BundleMixMatch() {
     setValidBuyStart(hasInvalidBuyStart);
   }, [discountOption]);
 
+  const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
   const toggleVideoModal = () => setVideoModalOpen(prev => !prev);
 
   const handleChangeValue = (key, value) => {
@@ -368,7 +364,7 @@ function BundleMixMatch() {
                 },
                 {
                   content: 'Include product page',
-                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                  onAction: () => window.open(`https://${shop}/products/${data?.url}`, '_blank'),
                 },
               ],
             },

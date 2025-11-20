@@ -20,7 +20,6 @@ import DateTimePicker from '../../../components/DateRangePicker/DateTimePicker'
 import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo'
 import WidgetModal from '../../../components/WidgetModal/WidgetModal'
 import PageSkeleton from '../../../components/PageSkeleton'
-import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider'
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken'
 
 const BundleAddons = () => {
@@ -29,7 +28,6 @@ const BundleAddons = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { discountOptions, metaData } = useContext(MetaContext);
-  const { shopName } = useContext(ShopifyContext);
   const fetchWithToken = useFetchWithToken();
 
   // State
@@ -57,20 +55,15 @@ const BundleAddons = () => {
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [widgetModalOpen, setWidgetModalOpen] = useState(false);
   const [checkedItems, setCheckedItems] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedDates, setSelectedDates] = useState({
     start: new Date(),
     end: new Date(),
   });
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000)
-  }, [])
-
   const fetchBundleDetails = async (id) => {
     try {
+      setLoading(true);
       const data = await fetchWithToken({
         url: `https://bundle-wave-backend.xavierapps.com/api/bundles/${id}`,
         method: 'GET',
@@ -107,6 +100,8 @@ const BundleAddons = () => {
       });
     } catch (error) {
       console.error("Failed to fetch bundle details:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
