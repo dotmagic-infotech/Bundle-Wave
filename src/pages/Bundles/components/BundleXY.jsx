@@ -38,7 +38,6 @@ const BundleXY = () => {
   const [data, setData] = useState({
     bundle_description: "",
     bundle_subtype: "specific_product",
-    page_type: "new_page",
     discount_value: 10,
     start_time: "12:00 AM",
     end_time: "12:00 PM",
@@ -88,7 +87,6 @@ const BundleXY = () => {
 
       setData({
         bundle_subtype: data.bundle_subtype,
-        page_type: data?.page_type,
         discount_option_id: selectedOption ? selectedOption?.id : "1",
         discount_value: data?.discount_value,
         bundle_name: data?.bundle_name,
@@ -181,9 +179,6 @@ const BundleXY = () => {
         errors.discount_option_id = "Discount must be less than 100.";
       }
     }
-    if (data.page_type === "product_page" && displayIncludePage?.length === 0) {
-      errors.displayIncludePage = "Select product to show your bundle in  include product page.";
-    }
     if (data?.bundle_subtype === "specific_product") {
       if (productsbuys.length === 0)
         errors.productsbuys = "Select at least one item in X products.";
@@ -219,7 +214,6 @@ const BundleXY = () => {
           .split("T")[0];
 
       formData.append("bundle_subtype", data?.bundle_subtype);
-      formData.append("page_type", data.page_type);
       formData.append("discount_option_id", data.discount_option_id);
       formData.append("discount_value", data.discount_value);
       formData.append("bundle_name", data.bundle_name);
@@ -239,12 +233,6 @@ const BundleXY = () => {
 
       if (files?.length > 0) {
         files.forEach((file) => formData.append("media[]", file));
-      }
-
-      if (data.page_type === "product_page") {
-        formData.append("includePageId", JSON.stringify(displayIncludePage));
-      } else {
-        formData.append("includePageId", JSON.stringify([]));
       }
 
       if (data.endTime_status === "1") {
@@ -322,13 +310,6 @@ const BundleXY = () => {
           </SaveBar>
 
           {errors && <ValidationErrors errors={errors} />}
-
-          <div style={{ marginBottom: "10px" }}>
-            <ButtonGroup variant='segmented'>
-              <Button variant={data?.page_type === "new_page" ? "primary" : "secondary"} onClick={() => handleChangeValue("page_type", "new_page")}>Create New Page</Button>
-              <Button variant={data?.page_type === "product_page" ? "primary" : "secondary"} onClick={() => handleChangeValue("page_type", "product_page")}>Included Product Page</Button>
-            </ButtonGroup>
-          </div>
 
           <Layout>
             <Layout.Section>
@@ -415,17 +396,6 @@ const BundleXY = () => {
                     />
                   </Card>
                 </BlockStack>
-
-                {data?.page_type === "product_page" &&
-                  <Card>
-                    <ProductSelectOnly
-                      title="Display Bundle On Selected Products"
-                      subtitle="Select the products where this bundle should be displayed on the product page."
-                      selectedProducts={displayIncludePage}
-                      setSelectedProducts={setDisplayIncludePage}
-                    />
-                  </Card>
-                }
 
                 {/* Discount */}
                 <Card>
