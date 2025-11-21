@@ -846,7 +846,8 @@ function BundleMixMatch() {
                                                 <img
                                                   src={product?.image}
                                                   alt={product?.title}
-                                                  style={{ width: "60px", height: "60px", borderRadius: "10px", marginLeft: "10px", objectFit: "fill" }}
+                                                  width="60" height="60"
+                                                  style={{ marginLeft: "10px" }}
                                                 />
                                                 <div style={{ marginLeft: "10px" }}>Sections
                                                   <p>{product?.title}</p>
@@ -862,7 +863,8 @@ function BundleMixMatch() {
                                             <div key={index}>
                                               <div style={{ display: "flex", padding: "15px 10px" }}>
                                                 <img src={product?.image} alt={product?.title}
-                                                  style={{ width: "60px", height: "60px", borderRadius: "10px", marginLeft: "10px", objectFit: "fill" }}
+                                                  width="60" height="60"
+                                                  style={{ marginLeft: "10px" }}
                                                 />
                                                 <div style={{ marginLeft: "10px" }}>
                                                   <p>{product?.title}</p>
@@ -932,7 +934,7 @@ function BundleMixMatch() {
                                     <div key={index}>
                                       <div>
                                         <div style={{ display: "flex" }}>
-                                          <img src={value?.image} style={{ width: "60px", height: "60px", objectFit: "fill", borderRadius: "10px" }} />
+                                          <img src={value?.image} style={{ width: "60px", height: "60px" }} />
                                           <div style={{ marginLeft: "10px" }}>
                                             <p>{value?.title}</p>
                                             <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>

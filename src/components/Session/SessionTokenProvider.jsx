@@ -37,7 +37,7 @@ export const SessionTokenProvider = ({ children }) => {
 
         fetchToken();
 
-        const interval = setInterval(fetchToken, 3600000);
+        const interval = setInterval(fetchToken, 50 * 60 * 1000);
         return () => clearInterval(interval);
     }, [shopify]);
 

@@ -20,13 +20,13 @@ import { SessionTokenProvider } from './components/Session/SessionTokenProvider.
 createRoot(document.getElementById('root')).render(
   <AppProvider i18n={translations}>
     <SessionTokenProvider>
-      <ShopifyProvider>
-        <DiscountProvider>
+      <DiscountProvider>
+        <ShopifyProvider>
           <BrowserRouter>
             <App />
           </BrowserRouter>
-        </DiscountProvider>
-      </ShopifyProvider>
+        </ShopifyProvider>
+      </DiscountProvider>
     </SessionTokenProvider>
   </AppProvider>
 )

@@ -26,11 +26,13 @@ import WidgetModal from '../../../components/WidgetModal/WidgetModal';
 import PageSkeleton from '../../../components/PageSkeleton';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
 import { getTotalPrice } from "../../../assets/helpers";
+import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 
 const BundleFixed = () => {
   // Hooks
   const { id } = useParams();
   const { discountOptions } = useContext(MetaContext);
+  const { shopName } = useContext(ShopifyContext);
   const shopify = useAppBridge();
   const navigate = useNavigate();
   const fetchWithToken = useFetchWithToken();
@@ -248,7 +250,7 @@ const BundleFixed = () => {
       shopify.saveBar.hide("save");
     }
   };
-  
+
   return (
     <>
       {loading ? (
