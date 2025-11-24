@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from 'react';
 
 // Shopify Polaris
-import { BlockStack, Box, Button, ButtonGroup, Card, Checkbox, Divider, Icon, InlineStack, Layout, Modal, Page, RadioButton, Select, Text, TextField } from '@shopify/polaris';
+import { BlockStack, Box, Button, Card, Checkbox, Divider, Icon, InlineStack, Layout, Modal, Page, RadioButton, Select, Text, TextField } from '@shopify/polaris';
 import { SaveBar } from '@shopify/app-bridge-react';
 
 // Shopify Icons
@@ -16,7 +16,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { MetaContext } from '../../../components/MetaDataContext/MetaDataProvider';
 import FileUploadDropZone from '../../../components/FileUploadDropZone/FileUploadDropZone';
 import ProductSelection from '../../../components/ProductSelection/index';
-import ProductSelectOnly from '../../../components/ProductSelection/ProductSelectOnly';
 import ValidationErrors from '../../../components/ValidationErrors';
 import BundlesPreview from '../BundlesPreview';
 import DateTimePicker from '../../../components/DateRangePicker/DateTimePicker';
@@ -25,11 +24,13 @@ import WidgetModal from '../../../components/WidgetModal/WidgetModal';
 import PageSkeleton from '../../../components/PageSkeleton';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
 import { getTotalPrice } from '../../../assets/helpers';
+import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 
 const BundleXY = () => {
 
   // Hooks
   const { discountOptions } = useContext(MetaContext);
+  const { shopName } = useContext(ShopifyContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const fetchWithToken = useFetchWithToken();
@@ -297,7 +298,7 @@ const BundleXY = () => {
             {
               content: "View on store",
               icon: ViewIcon,
-              onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+              onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
             },
           ] : []}
         >

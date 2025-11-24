@@ -21,13 +21,15 @@ import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo'
 import WidgetModal from '../../../components/WidgetModal/WidgetModal'
 import PageSkeleton from '../../../components/PageSkeleton'
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken'
+import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider'
 
 const BundleAddons = () => {
 
   // Hooks
   const navigate = useNavigate();
   const { id } = useParams();
-  const { discountOptions, metaData } = useContext(MetaContext);
+  const { discountOptions } = useContext(MetaContext);
+  const { shopName } = useContext(ShopifyContext);
   const fetchWithToken = useFetchWithToken();
 
   // State
@@ -45,7 +47,8 @@ const BundleAddons = () => {
     discount_label: "Add-On Discount",
     discount_option_id: "1",
     selectedAddonIds: [],
-    noPreselectetIds: "1"
+    noPreselectetIds: "1",
+    url: ""
   })
   const [errors, setErrors] = useState({})
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -79,6 +82,8 @@ const BundleAddons = () => {
       setSelectedAddons(data?.addons);
       setSelectedProducts(data?.products);
 
+      console.log("data:::", data);
+
       setData({
         bundle_name: data.bundle_name,
         discount_label: data.discount_label,
@@ -97,6 +102,7 @@ const BundleAddons = () => {
         status: data?.status,
         selectedAddonIds: data?.selectedAddonIds,
         noPreselectetIds: data?.noPreselectetIds,
+        url: data?.url,
       });
     } catch (error) {
       console.error("Failed to fetch bundle details:", error);
@@ -349,7 +355,13 @@ const BundleAddons = () => {
             {
               content: "View on store",
               icon: ViewIcon,
-              onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+              onAction: () => {
+                if (data?.url) {
+                  window.open(`https://${shopName}/products/${data?.url}`, '_blank')
+                } else {
+                  window.open(`https://${shopName}/?id=${id}`, '_blank');
+                }
+              }
             },
           ] : []}
         >

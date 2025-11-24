@@ -30,6 +30,7 @@ import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
 import WidgetModal from '../../../components/WidgetModal/WidgetModal';
 import PageSkeleton from '../../../components/PageSkeleton';
 import ProductSelectOnly from '../../../components/ProductSelection/ProductSelectOnly';
+import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 
 function BundleMixMatch() {
 
@@ -37,6 +38,7 @@ function BundleMixMatch() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { discountOptions } = useContext(MetaContext);
+  const { shopName } = useContext(ShopifyContext);
   const fetchWithToken = useFetchWithToken();
 
   // State
@@ -348,7 +350,7 @@ function BundleMixMatch() {
                 {
                   content: "View on store",
                   icon: ViewIcon,
-                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                  onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
                 },
               ]
               : []),
@@ -360,11 +362,11 @@ function BundleMixMatch() {
               actions: [
                 {
                   content: 'New page',
-                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                  onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
                 },
                 {
                   content: 'Include product page',
-                  onAction: () => window.open(`https://${shop}/products/${data?.url}`, '_blank'),
+                  onAction: () => window.open(`https://${shopName}/products/${data?.url}`, '_blank'),
                 },
               ],
             },

@@ -18,6 +18,7 @@ import PageSkeleton from '../../../components/PageSkeleton'
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken'
 import WidgetModal from '../../../components/WidgetModal/WidgetModal'
 import { getTotalPrice } from '../../../assets/helpers'
+import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider'
 
 const Frequently = () => {
 
@@ -25,6 +26,7 @@ const Frequently = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { discountOptions } = useContext(MetaContext);
+  const { shopName } = useContext(ShopifyContext);
   const fetchWithToken = useFetchWithToken();
 
   // State
@@ -34,7 +36,8 @@ const Frequently = () => {
     discount_label: "Frequently Discount",
     discount_value: 10,
     bundle_title: "Frequently Bought Together",
-    status: "Published"
+    status: "Published",
+    url: ""
   })
   const [errors, setErrors] = useState({})
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -62,6 +65,7 @@ const Frequently = () => {
         bundle_name: data?.bundle_name,
         bundle_title: data?.bundle_title,
         status: data?.status,
+        url: data?.url
       });
     } catch (error) {
       console.error("Failed to fetch bundle details:", error);
@@ -214,7 +218,13 @@ const Frequently = () => {
             {
               content: "View on store",
               icon: ViewIcon,
-              onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+              onAction: () => {
+                if (data?.url) {
+                  window.open(`https://${shopName}/products/${data?.url}`, '_blank')
+                } else {
+                  window.open(`https://${shopName}/?id=${id}`, '_blank');
+                }
+              }
             },
           ] : []}
         >

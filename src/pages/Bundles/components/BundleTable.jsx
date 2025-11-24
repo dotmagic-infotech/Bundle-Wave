@@ -437,7 +437,11 @@ function BundleTable() {
                                                 if (page_type === "product_page") {
                                                     toggleViewActiveFor(bundle_id);
                                                 } else {
-                                                    window.open(`https://${shopName}/?id=${bundle_id}`, '_blank')
+                                                    if (bundle_subtype === "all_product") {
+                                                        window.open(`https://${shopName}/products/${url}`, '_blank')
+                                                    } else {
+                                                        window.open(`https://${shopName}/?id=${bundle_id}`, '_blank')
+                                                    }
                                                 }
                                             }}
                                         ></Button>
@@ -562,7 +566,7 @@ function BundleTable() {
                                         >
                                             <ActionList
                                                 actionRole="menuitem"
-                                                items={[{ content: 'Delete', onAction: handleChange }, { content: 'Clone', onAction: handleDublicateChange }]}
+                                                items={[{ content: 'Delete', icon: DeleteIcon, onAction: handleChange }, { content: 'Clone', icon: DuplicateIcon, onAction: handleDublicateChange }]}
                                             />
                                         </Popover>
                                     </div>

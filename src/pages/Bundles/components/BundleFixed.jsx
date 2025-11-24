@@ -273,7 +273,7 @@ const BundleFixed = () => {
                 {
                   content: "View on store",
                   icon: ViewIcon,
-                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                  onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
                 },
               ]
               : []),
@@ -285,11 +285,11 @@ const BundleFixed = () => {
               actions: [
                 {
                   content: 'New page',
-                  onAction: () => window.open(`https://${shop}/?id=${id}`, '_blank'),
+                  onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
                 },
                 {
                   content: 'Include product page',
-                  onAction: () => window.open(`https://${shop}/products/${data?.url}`, '_blank'),
+                  onAction: () => window.open(`https://${shopName}/products/${data?.url}`, '_blank'),
                 },
               ],
             },
