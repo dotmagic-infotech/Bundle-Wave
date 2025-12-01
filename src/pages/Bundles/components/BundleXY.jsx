@@ -23,7 +23,7 @@ import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
 import WidgetModal from '../../../components/WidgetModal/WidgetModal';
 import PageSkeleton from '../../../components/PageSkeleton';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
-import { getTotalPrice } from '../../../assets/helpers';
+import { getDiscountAndFinal, getTotalPrice } from '../../../assets/helpers';
 import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 
 const BundleXY = () => {
@@ -51,7 +51,6 @@ const BundleXY = () => {
   const [errors, setErrors] = useState({});
   const [files, setFiles] = useState([]);
   const [media, setMedia] = useState([]);
-  const [displayIncludePage, setDisplayIncludePage] = useState([]);
   const [collectionbuys, setCollectionbuys] = useState([]);
   const [productsbuys, setProductsbuys] = useState([]);
   const [productsgets, setProductsgets] = useState([]);
@@ -84,7 +83,6 @@ const BundleXY = () => {
         setCollectionbuys(data?.fixedDeal?.buys)
       }
       setProductsgets(data?.fixedDeal?.gets)
-      setDisplayIncludePage(data?.includePageId);
 
       setData({
         bundle_subtype: data.bundle_subtype,
@@ -113,7 +111,10 @@ const BundleXY = () => {
   }, [id]);
 
   const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
-  const total = getTotalPrice(productsbuys).toFixed(2);
+  const totalBuy = Number(getTotalPrice(productsbuys).toFixed(2));
+  const totalGet = Number(getTotalPrice(productsgets).toFixed(2));
+  const totalBundlePrice = totalBuy + totalGet
+  const { discountPrice, finalPrice } = getDiscountAndFinal(data?.discount_option_id, totalBundlePrice, data?.discount_value);
 
   const handleChangeValue = (key, value) => {
     setData((prevData) => ({
@@ -298,7 +299,13 @@ const BundleXY = () => {
             {
               content: "View on store",
               icon: ViewIcon,
-              onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
+              onAction: () => {
+                if (data?.url) {
+                  window.open(`https://${shopName}/products/${data?.url}`, '_blank')
+                } else {
+                  window.open(`https://${shopName}/?id=${id}`, '_blank');
+                }
+              }
             },
           ] : []}
         >
@@ -614,11 +621,14 @@ const BundleXY = () => {
                             <div style={{ display: "flex", justifyContent: "space-between" }}>
                               <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>
                               <div style={{ display: "flex", alignItems: 'center', gap: "10px" }}>
-                                <p style={{ fontSize: "20px", fontWeight: "600" }}>${total}</p>
+                                <p style={{ fontSize: "20px", fontWeight: "600" }}>${finalPrice}</p>
+                                {data?.discount_option_id !== "5" &&
+                                  <p style={{ fontSize: "18px", fontWeight: "600", textDecoration: "line-through" }}>${totalBundlePrice.toFixed(2)}</p>
+                                }
                               </div>
                             </div>
 
-                            <Divider borderColor="border-hover" />
+                            <Divider borderColor="border-hover" /> 
 
                             <div style={{ border: "1px solid #7a26bf", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
                               {(data?.bundle_subtype === "specific_product" ? productsbuys : collectionbuys)?.map((value, index) => (
@@ -657,7 +667,7 @@ const BundleXY = () => {
                                       <img src={value?.image} width="60px" height="60px" />
                                       <div style={{ marginLeft: "10px" }}>
                                         <p style={{ fontSize: "15px", fontWeight: "500" }}>{value?.title}</p>
-                                        <p style={{ fontSize: "15px", marginTop: '5px', fontWeight: "500" }}>$50.00</p>
+                                        <p style={{ fontSize: "15px", marginTop: '10px', fontWeight: "500" }}>{value?.variants?.[0]?.price ? `$${value?.variants?.[0]?.price}` : ""}</p>
                                       </div>
                                     </div>
                                     {value?.variants?.length > 1 &&
@@ -669,11 +679,11 @@ const BundleXY = () => {
                                     }
                                   </div>
 
-                                  {index === 0 && (
+                                  {(index === 0 && data.discount_option_id !== "5") && (
                                     <div style={{
                                       position: 'absolute', top: "10px", right: "-19px", width: "95px", height: "23px", transform: "rotate(39deg)", backgroundColor: "rgb(122, 38, 191)", color: "white", padding: "10px", fontWeight: "500", display: "flex", justifyContent: "center", alignItems: "center"
                                     }}>
-                                      {data?.discount_value === "100" ? "FREE" : `${data?.discount_value}% OFF`}
+                                      {data?.discount_value === "100" ? "FREE" : `${data.discount_option_id === "1" ? `${data?.discount_value}% OFF` : `$${data?.discount_value} OFF`}`}
                                     </div>
                                   )}
 
@@ -696,7 +706,8 @@ const BundleXY = () => {
                       getY={productsgets}
                       title={data?.bundle_name}
                       data={data}
-                      total={total}
+                      finalPrice={finalPrice}
+                      total={totalBundlePrice}
                       media={media}
                     />
                   </BlockStack>

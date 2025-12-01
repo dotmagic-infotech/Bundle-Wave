@@ -169,7 +169,7 @@ const Home = () => {
                   </Box>
                   <BlockStack gap={100}>
                     <Text as='p' fontWeight='medium' variant='headingMd'>Bundle clicks</Text>
-                    <Text as='p' fontWeight='medium' variant='headingSm'>10</Text>
+                    <Text as='p' fontWeight='medium' variant='headingSm'>{homeData?.total_clicks || 0}</Text>
                   </BlockStack>
                 </InlineStack>
               </Card>

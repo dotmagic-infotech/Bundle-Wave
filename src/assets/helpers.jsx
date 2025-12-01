@@ -10,3 +10,30 @@ export const getTotalPrice = (list = []) => {
         return 0;
     }
 };
+
+export const getDiscountAndFinal = (doid, total = 0, discountValue = 0) => {
+    const d = Number(doid);
+    const original = Number(total) || 0;
+    const dv = Number(discountValue) || 0;
+
+    let discountPrice = 0;
+
+    if (d === 1) {
+        // percentage discount
+        const pct = Math.max(0, Math.min(dv, 100));
+        discountPrice = (original * pct) / 100;
+    } else if (d === 2) {
+        // fixed amount discount
+        discountPrice = Math.max(0, dv);
+    }
+
+    // discount cannot exceed total
+    if (discountPrice > original) discountPrice = original;
+
+    const finalPrice = original - discountPrice;
+
+    return {
+        discountPrice: discountPrice.toFixed(2),
+        finalPrice: finalPrice.toFixed(2),
+    };
+};

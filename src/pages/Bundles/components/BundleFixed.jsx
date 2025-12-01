@@ -25,7 +25,7 @@ import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
 import WidgetModal from '../../../components/WidgetModal/WidgetModal';
 import PageSkeleton from '../../../components/PageSkeleton';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
-import { getTotalPrice } from "../../../assets/helpers";
+import { getDiscountAndFinal, getTotalPrice } from "../../../assets/helpers";
 import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 
 const BundleFixed = () => {
@@ -122,6 +122,7 @@ const BundleFixed = () => {
   const toggleVideoModal = () => setVideoModalOpen(prev => !prev);
   const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
   const total = getTotalPrice(selectedProducts).toFixed(2);
+  const { discountPrice, finalPrice } = getDiscountAndFinal(data?.discount_option_id, total, data?.discount_value);
 
   const handleDateChange = (value) => {
     setSelectedDates((prev) => ({
@@ -536,7 +537,12 @@ const BundleFixed = () => {
 
                             <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
                               <p style={{ fontSize: "18px", fontWeight: "500" }}>Total Price</p>
-                              <p style={{ fontSize: "18px", fontWeight: "600" }}>${total}</p>
+                              <div style={{ display: "flex", gap: "5px" }}>
+                                <p style={{ fontSize: "18px", fontWeight: "600" }}>${finalPrice}</p>
+                                {data?.discount_option_id !== "5" &&
+                                  <p style={{ fontSize: "18px", fontWeight: "600", textDecoration: "line-through" }}>${total}</p>
+                                }
+                              </div>
                             </div>
                             <Divider borderColor="border-hover" />
 
@@ -572,6 +578,8 @@ const BundleFixed = () => {
                       title={data?.bundle_name}
                       description={data?.bundle_description}
                       media={media}
+                      finalPrice={finalPrice}
+                      total={total}
                       modalSize="large"
                       products={selectedProducts}
                       discount_value={data?.discount_value}

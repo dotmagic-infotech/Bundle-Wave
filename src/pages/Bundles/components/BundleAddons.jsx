@@ -843,7 +843,8 @@ const BundleAddons = () => {
                                     <Checkbox checked={isChecked || !!checkedItems[index]} onChange={() => handleCheckboxChange(index)} />
                                     <img src={value?.image} style={{ width: "50px", height: "50px", marginLeft: "10px", objectFit: "fill" }} />
                                     <div style={{ marginLeft: "10px" }}>
-                                      <p>{value?.title}</p>
+                                      <p style={{ lineHeight: "normal" }}>{value?.title}</p>
+                                      <p style={{ marginTop: '5px', fontWeight: "500" }}>${value?.variants[0]?.price}</p>
                                     </div>
                                   </div>
                                 </div>

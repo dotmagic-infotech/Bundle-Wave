@@ -900,7 +900,7 @@ function BundleMixMatch() {
                                   <p style={{ fontSize: "1.5rem", fontWeight: "500", lineHeight: "1" }}>{data?.bundle_name}</p>
                                 }
                                 <div style={{ display: "flex", gap: "0.5rem" }}>
-                                  {discountOption?.map((option, index) => (
+                                  {discountOption?.filter(tier => tier.type !== "5")?.map((option, index) => (
                                     <div key={index} style={{
                                       backgroundColor: index === 0 ? "#7a26bf" : "#dddddd", color: index === 0 ? "#FFFFFF" : "#000000", borderRadius: "10px", opacity: 0.9, display: "flex", flexDirection: "column", cursor: "pointer", gap: "0.5rem", padding: "9px", width: "100%", boxShadow: "0 0 10px rgba(0,0,0,0.1)"
                                     }}>
@@ -908,7 +908,7 @@ function BundleMixMatch() {
                                         {option.buy_start}+ <span style={{ fontWeight: 500, fontSize: "1rem" }}>Items</span>
                                       </p>
                                       <p style={{ fontWeight: 500, fontSize: "0.9rem", textAlign: "center" }}>
-                                        {option?.discountValue}% OFF
+                                        {option?.type === "1" ? `${option?.discountValue}% OFF` : `$${option?.discountValue} OFF` }
                                       </p>
                                     </div>
                                   ))}
@@ -921,7 +921,7 @@ function BundleMixMatch() {
                                           <img src={value?.image} style={{ width: "60px", height: "60px" }} />
                                           <div style={{ marginLeft: "10px" }}>
                                             <p>{value?.title}</p>
-                                            <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
+                                            <p style={{ marginTop: '5px', fontWeight: "500" }}>${value?.variants[0]?.price}</p>
                                           </div>
                                         </div>
                                       </div>

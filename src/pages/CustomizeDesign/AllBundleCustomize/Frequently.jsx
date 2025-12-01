@@ -180,7 +180,7 @@ function Frequently() {
                     <RangeSlider
                         label="Border Radius"
                         min={1}
-                        max={50}
+                        max={30}
                         value={data.border.borderRadius}
                         onChange={(value) =>
                             handleChangeValue("border", "borderRadius", value)

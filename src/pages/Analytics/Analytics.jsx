@@ -606,7 +606,7 @@ const Analytics = () => {
                                         <DataTable
                                             columnContentTypes={['text', 'text', 'text', 'text']}
                                             headings={[
-                                                <div style={{ width: "100%", color: "black", fontWeight: "500", fontSize: "1rem" }}>Order</div>,
+                                                // <div style={{ width: "100%", color: "black", fontWeight: "500", fontSize: "1rem" }}>Order</div>,
                                                 <div style={{ width: "100%", color: "black", fontWeight: "500", fontSize: "1rem" }}>Order date</div>,
                                                 <div style={{ width: "100%", color: "black", fontWeight: "500", fontSize: "1rem" }}>Items</div>,
                                                 <div style={{ width: "100%", color: "black", fontWeight: "500", fontSize: "1rem" }}>Total Tex</div>,
@@ -618,7 +618,7 @@ const Analytics = () => {
                                             stickyHeader
                                             fixedFirstColumns={fixedFirstColumns}
                                             rows={(orderData?.orders?.orders_data || []).map(({ order_number, order_date, total_discounts, total_items, total_price, total_tax }) => [
-                                                <div style={{ height: "100%", display: "flex", alignItems: "center" }}>{order_number}</div>,
+                                                // <div style={{ height: "100%", display: "flex", alignItems: "center" }}>{order_number}</div>,
                                                 <div style={{ height: "100%", display: "flex", alignItems: "center" }}>{order_date}</div>,
                                                 <div style={{ height: "100%", display: "flex", alignItems: "center" }}>{total_items}</div>,
                                                 <div style={{ height: "100%", display: "flex", alignItems: "center" }}>{total_tax}</div>,

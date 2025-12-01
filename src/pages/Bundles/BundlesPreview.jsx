@@ -7,7 +7,7 @@ import { Button, Modal, Checkbox, RadioButton, Divider } from "@shopify/polaris"
 // Shopify Icons
 import { BlankIcon, ChevronDownIcon, ChevronRightIcon } from "@shopify/polaris-icons";
 
-const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", title, description, discount_value = "", media = [], data = [], products = [], offerProducts = [], collections = [], secondCollection = [], discountOptions = [], sections = [], discountOption = [], buysX = [], getY = [], total = "" }) => {
+const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", title, description, discount_value = "", media = [], data = [], products = [], offerProducts = [], collections = [], secondCollection = [], discountOptions = [], sections = [], discountOption = [], buysX = [], getY = [], finalPrice = "", total = "" }) => {
 
     // State
     const [active, setActive] = useState(false);
@@ -91,8 +91,10 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                         <div style={{ display: "flex", justifyContent: "space-between", }}>
                                             <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>
                                             <div style={{ display: "flex", alignItems: 'center', gap: "10px" }}>
-                                                <p style={{ fontSize: "20px", fontWeight: "600" }}>$57.50</p>
-                                                <p style={{ fontSize: "20px", fontWeight: "600", textDecoration: "line-through" }}>$72.00</p>
+                                                <p style={{ fontSize: "20px", fontWeight: "600" }}>${finalPrice}</p>
+                                                {data?.discount_option_id !== "5" &&
+                                                    <p style={{ fontSize: "18px", fontWeight: "600", textDecoration: "line-through" }}>${total}</p>
+                                                }
                                             </div>
                                         </div>
                                         <Divider borderColor="border-hover" />
@@ -121,7 +123,6 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                         color: "rgb(255, 255, 255)",
                                         fontSize: "18px",
                                         cursor: "pointer",
-                                        borderRadius: "10px",
                                         width: "100%",
                                         padding: "10px 5px",
                                         marginTop: "10px"
@@ -368,7 +369,10 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                             <div style={{ display: "flex", justifyContent: "space-between", }}>
                                 <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>
                                 <div style={{ display: "flex", alignItems: 'center', gap: "10px" }}>
-                                    <p style={{ fontSize: "20px", fontWeight: "600" }}>${total}</p>
+                                    <p style={{ fontSize: "20px", fontWeight: "600" }}>${finalPrice}</p>
+                                    {data?.discount_option_id !== "5" &&
+                                        <p style={{ fontSize: "20px", fontWeight: "600", textDecoration: "line-through" }}>${total.toFixed(2)}</p>
+                                    }
                                 </div>
                             </div>
 

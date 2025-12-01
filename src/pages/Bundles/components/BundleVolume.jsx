@@ -21,7 +21,7 @@ import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
 import PageSkeleton from '../../../components/PageSkeleton';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
 import WidgetModal from '../../../components/WidgetModal/WidgetModal';
-import { getTotalPrice } from '../../../assets/helpers';
+import { getDiscountAndFinal, getTotalPrice } from '../../../assets/helpers';
 import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 
 const BundleVolume = () => {
@@ -107,6 +107,7 @@ const BundleVolume = () => {
 
   const toggleVideoModal = () => setVideoModalOpen(prev => !prev);
   const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
+
   const total = getTotalPrice(selectedProducts).toFixed(2);
 
   const handleCheckboxFour = (index) => {
@@ -603,7 +604,7 @@ const BundleVolume = () => {
                       </BlockStack>
                       <InlineStack gap="200">
 
-                        <div style={{ display: "flex", flexDirection: "column", marginTop: '10px' }}>
+                        {/* <div style={{ display: "flex", flexDirection: "column", marginTop: '10px' }}>
                           <Checkbox
                             label="Let customers choose different variants for each item"
                             checked={data.different_variants === "1"}
@@ -621,7 +622,7 @@ const BundleVolume = () => {
                               onChange={(value) => handleChangeValue("theme_variant", value ? "1" : "0")}
                             />
                           }
-                        </div>
+                        </div> */}
                         {/* Discount */}
                         <div style={{ width: "100%" }}>
                           <Card>
@@ -730,51 +731,62 @@ const BundleVolume = () => {
                               <p style={{ marginBottom: '10px', fontSize: "1rem", fontWeight: "500" }}>{data?.bundle_info}</p>
                             }
                             <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-                              {discountOption.map((value, index) => (
-                                <div key={index}>
-                                  <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "#7a26bf" : "black", borderRadius: "10px", padding: "20px 10px", position: "relative" }}>
-                                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", }}>
-                                      <div style={{ display: "flex", alignItems: "center", }}>
-                                        <RadioButton
-                                          checked={value?.selected_default === "1"}
-                                          onChange={() => handleCheckboxFour(index)}
-                                        />
-                                        <div style={{ display: "flex", gap: "0.5rem" }}>
-                                          <p style={{ fontWeight: "400" }}>
-                                            {value?.description}
-                                          </p>
-                                          {value?.Label &&
-                                            <p style={{ backgroundColor: "black", padding: "0px 8px", color: 'white', borderRadius: "10px", fontSize: "10px", maxWidth: "80px", height: "20px" }}>{value?.Label}</p>
+                              {discountOption.map((value, index) => {
+                                const total = getTotalPrice(selectedProducts).toFixed(2);
+                                const multiplyPrice = total * value?.required_items
+                                const { discountPrice, finalPrice } = getDiscountAndFinal(value?.type, multiplyPrice, value?.discount_value);
+
+                                return (
+                                  <div key={index}>
+                                    <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "#7a26bf" : "black", borderRadius: "10px", padding: "20px 10px", position: "relative" }}>
+                                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", }}>
+                                        <div style={{ display: "flex", alignItems: "center", }}>
+                                          <RadioButton
+                                            checked={value?.selected_default === "1"}
+                                            onChange={() => handleCheckboxFour(index)}
+                                          />
+                                          <div style={{ display: "flex", gap: "0.5rem" }}>
+                                            <p style={{ fontWeight: "400" }}>
+                                              {value?.description}
+                                            </p>
+                                            {value?.Label &&
+                                              <p style={{ backgroundColor: "black", padding: "0px 8px", color: 'white', borderRadius: "10px", fontSize: "10px", maxWidth: "80px", height: "20px" }}>{value?.Label}</p>
+                                            }
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <p style={{ fontWeight: "500", fontSize: "1rem" }}>${finalPrice}</p>
+                                          {value?.type !== "5" &&
+                                            <p style={{ fontWeight: "500", fontSize: "1rem", textDecoration: "line-through" }}>${multiplyPrice}</p>
                                           }
                                         </div>
                                       </div>
-                                      <p style={{ fontWeight: "500", fontSize: "1rem" }}>${total}</p>
-                                    </div>
-                                    {value?.Badge &&
-                                      <div style={{ backgroundColor: "#7a26bf", display: "flex", justifyContent: 'center', alignItems: "center", height: "20px", position: "absolute", right: "10px", top: "-10px", padding: '7px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
-                                        {value?.Badge}
-                                      </div>
-                                    }
-                                    {selectedOption === index &&
-                                      <>
-                                        {value?.required_items > 3 &&
-                                          <div style={{ marginTop: "10px" }}>
-                                            <Divider />
-                                            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
-                                              <p>Quantity</p>
-                                              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                                                <div style={{ width: "20px", height: "20px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "black", color: "white", borderRadius: "10px", cursor: "pointer", userSelect: "none" }}>-</div>
-                                                {value?.required_items}
-                                                <div style={{ width: "20px", height: "20px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "black", color: "white", borderRadius: "10px", cursor: "pointer", userSelect: "none" }}>+</div>
+                                      {value?.Badge &&
+                                        <div style={{ backgroundColor: "#7a26bf", display: "flex", justifyContent: 'center', alignItems: "center", height: "20px", position: "absolute", right: "10px", top: "-10px", padding: '7px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
+                                          {value?.Badge}
+                                        </div>
+                                      }
+                                      {selectedOption === index &&
+                                        <>
+                                          {value?.required_items > 3 &&
+                                            <div style={{ marginTop: "10px" }}>
+                                              <Divider />
+                                              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
+                                                <p>Quantity</p>
+                                                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                                                  <div style={{ width: "20px", height: "20px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "black", color: "white", borderRadius: "10px", cursor: "pointer", userSelect: "none" }}>-</div>
+                                                  {value?.required_items}
+                                                  <div style={{ width: "20px", height: "20px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "black", color: "white", borderRadius: "10px", cursor: "pointer", userSelect: "none" }}>+</div>
+                                                </div>
                                               </div>
                                             </div>
-                                          </div>
-                                        }
-                                      </>
-                                    }
+                                          }
+                                        </>
+                                      }
+                                    </div>
                                   </div>
-                                </div>
-                              ))}
+                                )
+                              })}
                             </div>
                           </div>
                         </div>
