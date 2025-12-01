@@ -10,11 +10,32 @@ export const DiscountProvider = ({ children }) => {
     // Hooks
     const token = useSessionToken();
 
+    const defaultDiscountOptions = [
+        {
+            id: "1",
+            label: "Percentage Discount",
+            value: "percentage",
+            disabled: "0"
+        },
+        {
+            id: "2",
+            label: "Fixed Amount Discount",
+            value: "fixed",
+            disabled: "0"
+        },
+        {
+            id: "5",
+            label: "No Discount",
+            value: "nodiscount",
+            disabled: "0"
+        }
+    ];
+
     // State
-    const [discountOptions, setDiscountOptions] = useState([]);
+    const [discountOptions, setDiscountOptions] = useState(defaultDiscountOptions);
     const [metaData, setMetaData] = useState([]);
     const [isSubscriptionActive, setIsSubscriptionActive] = useState(false);
-
+    
     // First Time Call Api
     useEffect(() => {
         const fetchInitial = async () => {

@@ -831,8 +831,18 @@ const BundleAddons = () => {
                           />
                         </div>
                         <div style={{ width: "100%" }}>
-                          <p style={{ marginTop: '10px', fontSize: "1rem", fontWeight: "500", marginBottom: "5px" }}>{data?.bundle_title}</p>
-                          <span>{data?.bundle_description}</span>
+                          <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{selectedProducts[0]?.title || selectedCollections[0]?.title}</p>
+                          {selectedProducts?.length > 0 &&
+                            <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{`$${selectedProducts[0]?.variants[0]?.price}`}</p>
+                          }
+                          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: '10px', marginBottom: "5px" }}>
+                            <p style={{ fontSize: "1rem", fontWeight: "500" }}>{data?.bundle_title}</p>
+                            {data?.discount_option_id !== "5" &&
+                              <p style={{ backgroundColor: "#7a26bf", color: "white", padding: "0px 6px", height: "fit-content", borderRadius: "5px", fontSize: "12px" }}>
+                                {data?.discount_option_id === "1" ? `${data?.discount_value}% OFF` : `$${data?.discount_value} OFF`}
+                              </p>
+                            }
+                          </div>
                           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "10px" }}>
                             {selectedAddons.map((value, index) => {
                               const isChecked = data?.selectedAddonIds.includes(value?.id) ? true : false;

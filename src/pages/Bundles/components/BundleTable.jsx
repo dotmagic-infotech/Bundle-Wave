@@ -452,13 +452,25 @@ function BundleTable() {
                                     }}
                                 >
                                     <Popover.Pane>
-                                        <ActionList
-                                            actionRole="menuitem"
-                                            items={[
-                                                { content: 'New page', onAction: () => window.open(`https://${shopName}/?id=${bundle_id}`, '_blank') },
-                                                { content: 'Include product page', onAction: () => window.open(`https://${shopName}/products/${url}`, '_blank') },
-                                            ]}
-                                        />
+                                        <div onClick={(e) => e.stopPropagation()}>
+                                            <ActionList
+                                                actionRole="menuitem"
+                                                items={[
+                                                    {
+                                                        content: 'New page', onAction: () => {
+                                                            toggleViewActiveFor(bundle_id);
+                                                            window.open(`https://${shopName}/?id=${bundle_id}`, '_blank');
+                                                        }
+                                                    },
+                                                    {
+                                                        content: 'Include product page', onAction: () => {
+                                                            toggleViewActiveFor(bundle_id);
+                                                            window.open(`https://${shopName}/products/${url}`, '_blank')
+                                                        }
+                                                    },
+                                                ]}
+                                            />
+                                        </div>
                                     </Popover.Pane>
                                 </Popover>
                             </Tooltip>

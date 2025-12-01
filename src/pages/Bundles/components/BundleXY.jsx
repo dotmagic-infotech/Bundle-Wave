@@ -616,7 +616,7 @@ const BundleXY = () => {
                           </div>
                           <div style={{ width: "100%", display: "flex", flexDirection: "column", marginTop: "10px", gap: "10px" }}>
                             {data?.bundle_name &&
-                              <p style={{ fontSize: "1.5rem", fontWeight: "500", marginBottom: "10px", lineHeight: "1" }}>{data?.bundle_name}</p>
+                              <p style={{ fontSize: "1.5rem", fontWeight: "500", marginBottom: "10px", lineHeight: "normal" }}>{data?.bundle_name}</p>
                             }
                             <div style={{ display: "flex", justifyContent: "space-between" }}>
                               <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>

@@ -511,6 +511,12 @@ function Mixmatch() {
       <Grid.Cell columnSpan={{ xs: 6, md: 6, lg: 8, xl: 8 }}>
         <div style={{ marginBottom: "1rem" }}>
           <Card>
+            <div style={{ display: "flex", justifyContent: "end", padding: "0px 10px 10px", borderBottom: "1px solid black", margin: "0px -16px 10px -16px" }}>
+              <ButtonGroup>
+                <Button>Cancel</Button>
+                <Button variant="primary" onClick={handleSubmit}>Save</Button>
+              </ButtonGroup>
+            </div>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Banner
                 title="Preview uses sample content for layout demonstration. Your store's real data will appear after publishing."
@@ -523,7 +529,7 @@ function Mixmatch() {
                   {data.selectDisplay.structure === "tiered_discount" ?
                     <div style={{
                       width: "430px", padding: "20px", border: `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`,
-                      backgroundColor: data?.background?.background_type === "colored" ? BackGroundColor : "transparent", display: "flex", flexDirection: "column", gap: '0.5rem'
+                      backgroundColor: data?.background?.background_type === "colored" ? data.background.background_color : "transparent", display: "flex", flexDirection: "column", gap: '0.5rem'
                     }}>
                       <p style={{
                         fontSize: `${10 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign:
@@ -560,7 +566,7 @@ function Mixmatch() {
                           name: "18k Dangling Pendant Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---2_197e4e51-6b44-4e54-9244-d3666bc5b514.jpg?v=1758263763", price: "$22.00", oPrice: "25.00"
                         }, { name: "18k Dangling Obsidian Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-limelight-sequin-motif-earrings.jpg?v=1758263767", price: "$25.00", oPrice: "$27.00" }].map((_, index) => (
                           <div key={index}>
-                            <div style={{ borderRadius: `${data.border.borderRadius}px`, backgroundColor: data?.background?.background_type === "colored" ? BackGroundColor : "transparent" }}>
+                            <div style={{ borderRadius: `${data.border.borderRadius}px`, backgroundColor: data?.background?.background_type === "colored" ? data.background.background_color : "transparent" }}>
                               <div style={{ display: "flex", alignItems: "start", }}>
                                 <img src={_?.image} style={{ width: "70px", height: "70px", objectFit: "fill" }} />
                                 <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "1rem", width: "100%" }}>
@@ -613,7 +619,8 @@ function Mixmatch() {
                       </div>
                       <div style={{ display: "flex", justifyContent: "center" }}>
                         <button style={{
-                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "18px", fontWeight: "400", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px` }}>Add to cart</button>
+                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "18px", fontWeight: "400", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`
+                        }}>Add to cart</button>
                       </div>
                     </div>
                     :
@@ -711,7 +718,7 @@ function Mixmatch() {
               ) : data.selectDisplay.type === "product_page" ? (
                 <>
                   {data.selectDisplay.structure === "tiered_discount" ?
-                    <div style={{ display: "flex", gap: "1rem", padding: "40px", width: "100%" }}>
+                    <div style={{ display: "flex", justifyContent: "center", gap: "1rem", width: "100%" }}>
                       <div style={{ maxWidth: "400px" }}>
                         <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-fluid-lines-necklace.jpg?v=1758263767' width="100%" />
                         <div style={{ display: "flex", gap: "0.2rem" }}>
@@ -804,7 +811,7 @@ function Mixmatch() {
                         </div>
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem", width: "400px" }}>
-                        <p style={{ fontSize: '25px', fontWeight: "700", lineHeight: "normal", }}>Mix & Match - Earrings Collection</p> 
+                        <p style={{ fontSize: '25px', fontWeight: "700", lineHeight: "normal", }}>Mix & Match - Earrings Collection</p>
                         <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
                           <div style={{ display: "flex", flexDirection: "column", gap: '0.5rem' }}>
                             <div style={{ border: "1px solid black", padding: "10px", borderRadius: "10px" }}>
@@ -846,12 +853,6 @@ function Mixmatch() {
                   }
                 </>
               ) : null}
-            </div>
-            <div style={{ display: "flex", justifyContent: "end", padding: "10px 10px 0px", borderTop: "1px solid black", margin: "10px -16px 0px -16px" }}>
-              <ButtonGroup>
-                <Button>Cancel</Button>
-                <Button variant="primary" onClick={handleSubmit}>Save</Button>
-              </ButtonGroup>
             </div>
           </Card>
         </div>

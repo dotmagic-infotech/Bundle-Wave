@@ -550,10 +550,17 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                         </div>
                         <div style={{ width: "50%", display: "flex", flexDirection: "column", gap: "10px" }}>
                             <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>{products[0]?.title || collections[0]?.title}</p>
+                            {products?.length > 0 &&
+                                <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{`$${products[0]?.variants[0]?.price}`}</p>
+                            }
                             <p>{data?.bundle_description}</p>
                             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                                 <p style={{ fontSize: "18px", fontWeight: 500, color: "black" }}>{data?.bundle_title}</p>
-                                <p style={{ backgroundColor: "#7a26bf", color: "white", padding: "0px 6px", height: "fit-content", borderRadius: "5px", fontSize: "12px" }}>{data?.discount_value}% OFF</p>
+                                {data?.discount_option_id !== "5" &&
+                                    <p style={{ backgroundColor: "#7a26bf", color: "white", padding: "0px 6px", height: "fit-content", borderRadius: "5px", fontSize: "12px" }}>
+                                        {data?.discount_option_id === "1" ? `${data?.discount_value}% OFF` : `$${data?.discount_value} OFF`}
+                                    </p>
+                                }
                             </div>
                             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                                 {secondCollection.map((value, index) => {
