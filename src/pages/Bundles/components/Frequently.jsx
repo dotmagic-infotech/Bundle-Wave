@@ -17,7 +17,7 @@ import BundlesPreview from '../BundlesPreview'
 import PageSkeleton from '../../../components/PageSkeleton'
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken'
 import WidgetModal from '../../../components/WidgetModal/WidgetModal'
-import { getTotalPrice } from '../../../assets/helpers'
+import { getDiscountAndFinal, getTotalPrice } from '../../../assets/helpers'
 import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider'
 
 const Frequently = () => {
@@ -88,6 +88,7 @@ const Frequently = () => {
 
   const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
   const total = getTotalPrice(selectedProductsOffers).toFixed(2);
+  const { discountPrice, finalPrice } = getDiscountAndFinal(data?.discount_option_id, total, data?.discount_value);
 
   const handleChangeValue = (key, value) => {
     setData((prevData) => ({
@@ -447,6 +448,7 @@ const Frequently = () => {
                       modalSize="large"
                       data={data}
                       total={total}
+                      finalPrice={finalPrice}
                       products={selectedProducts}
                       offerProducts={selectedProductsOffers}
                     />

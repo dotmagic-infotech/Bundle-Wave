@@ -6,6 +6,7 @@ import { Button, Modal, Checkbox, RadioButton, Divider } from "@shopify/polaris"
 
 // Shopify Icons
 import { BlankIcon, ChevronDownIcon, ChevronRightIcon } from "@shopify/polaris-icons";
+import { getDiscountAndFinal, getTotalPrice } from "../../assets/helpers";
 
 const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", title, description, discount_value = "", media = [], data = [], products = [], offerProducts = [], collections = [], secondCollection = [], discountOptions = [], sections = [], discountOption = [], buysX = [], getY = [], finalPrice = "", total = "" }) => {
 
@@ -143,10 +144,10 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                             {data?.bundle_subtype === "Single" ? (
                                 <img src={sections?.[0]?.products?.[0]?.image || sections?.[0]?.collection?.[0]?.image} style={{ width: "100%", height: "465px", objectFit: "cover" }} />
                             ) : (
-                                <img src={products?.[0]?.image} style={{ width: "100%", height: "465px", objectFit: "cover" }} />
+                                <img src={products?.[0]?.image || collections?.[0]?.image} style={{ width: "100%", height: "465px", objectFit: "cover" }} />
                             )}
                             <div style={{ display: "flex", gap: "10px" }}>
-                                {sections?.[0]?.products?.slice(0, 4).map((img, index) => (
+                                {collections?.slice(0, 4).map((img, index) => (
                                     <img key={index} src={img?.image} width="100" height="100"
                                         style={{
                                             cursor: "pointer",
@@ -252,7 +253,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                     </div>
                                     <button style={{
                                         backgroundColor: "#7a26bf", marginTop: "10px", border: "none", color: "white", fontSize: "18px", fontWeight: "400", cursor: "pointer", width: "100%", borderRadius: "10px", padding: `10px`,
-                                    }}>Add to cart | Save {data?.discount_value}%</button>
+                                    }}>Add to cart {data?.discount_option_id !== "5" && `| Save ${data?.discount_option_id === "1" ? `${data?.discount_value}%` : `$${data?.discount_value}`}`}</button>
                                     <div style={{ fontSize: "15px", fontWeight: "500", marginTop: "10px" }} dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }} />
                                 </>
                             )}
@@ -262,25 +263,15 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                     <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
                                         <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>{title}</p>
                                         <div style={{ display: "flex", gap: "0.5rem" }}>
-                                            {discountOption?.map((option, index) => (
+                                            {discountOption?.filter(tier => tier.type !== "5")?.map((option, index) => (
                                                 <div key={index} style={{
-                                                    backgroundColor: index === 0 ? "#7a26bf" : "#dddddd",
-                                                    color: index === 0 ? "#FFFFFF" : "#000000",
-                                                    borderRadius: "10px",
-                                                    opacity: 0.9,
-                                                    display: "flex",
-                                                    flexDirection: "column",
-                                                    cursor: "pointer",
-                                                    gap: "0.5rem",
-                                                    padding: "10px",
-                                                    width: "100%",
-                                                    boxShadow: "0 0 10px rgba(0,0,0,0.1)"
+                                                    backgroundColor: index === 0 ? "#7a26bf" : "#dddddd", color: index === 0 ? "#FFFFFF" : "#000000", borderRadius: "10px", opacity: 0.9, display: "flex", flexDirection: "column", cursor: "pointer", gap: "0.5rem", padding: "15px", width: "100%", boxShadow: "0 0 10px rgba(0,0,0,0.1)"
                                                 }}>
                                                     <p style={{ fontWeight: 600, fontSize: "1.3rem", textAlign: "center" }}>
                                                         {option.buy_start}+ <span style={{ fontWeight: 500, fontSize: "1rem" }}>Items</span>
                                                     </p>
                                                     <p style={{ fontWeight: 500, fontSize: "0.9rem", textAlign: "center" }}>
-                                                        {option?.discountValue}% OFF
+                                                        {option?.type === "1" ? `${option?.discountValue}% OFF` : `$${option?.discountValue} OFF`}
                                                     </p>
                                                 </div>
                                             ))}
@@ -475,49 +466,44 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                             <p style={{ margin: '18px 0px 12px 0px', fontSize: "1rem", fontWeight: "600" }}>{title}</p>
 
                             <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-                                {discountOptions.map((value, index) => (
-                                    <div key={index}>
-                                        <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "#7a26bf" : "black", borderRadius: "10px", padding: "30px 15px", position: "relative" }}>
-                                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", }}>
-                                                <div style={{ display: "flex", alignItems: "center", }}>
-                                                    <RadioButton
-                                                        checked={value?.selected_default === "1"}
-                                                        onChange={() => handleCheckboxFour(index)}
-                                                    />
-                                                    <div style={{ display: "flex", gap: "0.5rem" }}>
-                                                        <p style={{ fontSize: "15px", fontWeight: "600" }}>{value?.description}</p>
-                                                        {value?.Label &&
-                                                            <p style={{ backgroundColor: "black", padding: "0px 10px", color: 'white', borderRadius: "10px", fontSize: "10px" }}>{value?.Label}</p>
+                                {discountOptions.map((value, index) => {
+                                    const total = getTotalPrice(products).toFixed(2);
+                                    const multiplyPrice = total * value?.required_items
+                                    const { discountPrice, finalPrice } = getDiscountAndFinal(value?.type, multiplyPrice, value?.discount_value);
+
+                                    return (
+                                        <div key={index}>
+                                            <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "#7a26bf" : "black", borderRadius: "10px", padding: "20px 10px", position: "relative" }}>
+                                                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", }}>
+                                                    <div style={{ display: "flex", alignItems: "center", }}>
+                                                        <RadioButton
+                                                            checked={value?.selected_default === "1"}
+                                                        />
+                                                        <div style={{ display: "flex", gap: "0.5rem" }}>
+                                                            <p style={{ fontWeight: "400" }}>
+                                                                {value?.description}
+                                                            </p>
+                                                            {value?.Label &&
+                                                                <p style={{ backgroundColor: "black", padding: "0px 8px", color: 'white', borderRadius: "10px", fontSize: "10px", maxWidth: "80px", height: "20px" }}>{value?.Label}</p>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <p style={{ fontWeight: "500", fontSize: "1rem" }}>${finalPrice}</p>
+                                                        {value?.type !== "5" &&
+                                                            <p style={{ fontWeight: "500", fontSize: "1rem", textDecoration: "line-through" }}>${multiplyPrice.toFixed(2)}</p>
                                                         }
                                                     </div>
                                                 </div>
-                                                <p style={{ fontWeight: "500", fontSize: "1rem" }}>${total}</p>
+                                                {value?.Badge &&
+                                                    <div style={{ backgroundColor: "#7a26bf", display: "flex", justifyContent: 'center', alignItems: "center", height: "20px", position: "absolute", right: "10px", top: "-10px", padding: '7px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
+                                                        {value?.Badge}
+                                                    </div>
+                                                }
                                             </div>
-                                            {value?.Badge &&
-                                                <div style={{ backgroundColor: "#7a26bf", display: "flex", justifyContent: 'center', alignItems: "center", position: "absolute", right: "20px", top: "-11px", padding: '2px 8px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
-                                                    {value?.Badge}
-                                                </div>
-                                            }
-                                            {value?.selected_default === "1" &&
-                                                <>
-                                                    {value?.required_items > 3 &&
-                                                        <div style={{ marginTop: "10px" }}>
-                                                            <Divider />
-                                                            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
-                                                                <p>Quantity</p>
-                                                                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                                                                    <div style={{ width: "20px", height: "20px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "black", color: "white", borderRadius: "10px", cursor: "pointer", userSelect: "none" }}>-</div>
-                                                                    {value?.required_items}
-                                                                    <div style={{ width: "20px", height: "20px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "black", color: "white", borderRadius: "10px", cursor: "pointer", userSelect: "none" }}>+</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                </>
-                                            }
                                         </div>
-                                    </div>
-                                ))}
+                                    )
+                                })}
                             </div>
                             <button disabled style={{
                                 backgroundColor: "rgb(122, 38, 191)", border: "none", color: "white", fontSize: "18px", cursor: "pointer", borderRadius: "10px", width: "100%", padding: "10px 5px", margin: "10px 0px"
@@ -652,7 +638,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                 }}>Add to cart</button>
                             </div>
                         </div>
-                        <p style={{ margin: '25px 0px', fontSize: "2rem", fontWeight: "500", marginBottom: "10px" }}>{data?.bundle_title}</p>
+                        <p style={{ margin: '14px 0px 14px', fontSize: "1.7rem", fontWeight: "500", marginBottom: "10px" }}>{data?.bundle_title}</p>
                         <div style={{
                             display: "flex",
                             overflowX: "auto",
@@ -690,7 +676,16 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                 padding: "10px",
                                 width: "200px"
                             }}>
-                                <p style={{ fontSize: "1rem", fontWeight: "600" }}>Total: ${total}</p>
+                                {data?.discount_option_id === "5"
+                                    ? <p style={{ fontSize: "1rem", fontWeight: "600" }}>Total: ${total}</p>
+                                    :
+                                    <p style={{ fontSize: "1rem", fontWeight: "600" }}>
+                                        Total: ${finalPrice}
+                                        <span style={{ fontSize: "1rem", fontWeight: "600", textDecoration: "line-through", marginLeft: "10px" }}>
+                                            ${total}
+                                        </span>
+                                    </p>
+                                }
                                 <button disabled style={{
                                     backgroundColor: "rgb(122, 38, 191)",
                                     border: "none",

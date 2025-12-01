@@ -52,7 +52,6 @@ const BundleVolume = () => {
   const [errors, setErrors] = useState({});
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [widgetModalOpen, setWidgetModalOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(0);
   const [loading, setLoading] = useState(false);
   const [selectedDates, setSelectedDates] = useState({
     start: new Date(),
@@ -109,10 +108,6 @@ const BundleVolume = () => {
   const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
 
   const total = getTotalPrice(selectedProducts).toFixed(2);
-
-  const handleCheckboxFour = (index) => {
-    setSelectedOption(index);
-  };
 
   const handleChangeValue = (key, value) => {
     setData((prevData) => ({
@@ -743,7 +738,6 @@ const BundleVolume = () => {
                                         <div style={{ display: "flex", alignItems: "center", }}>
                                           <RadioButton
                                             checked={value?.selected_default === "1"}
-                                            onChange={() => handleCheckboxFour(index)}
                                           />
                                           <div style={{ display: "flex", gap: "0.5rem" }}>
                                             <p style={{ fontWeight: "400" }}>
@@ -757,7 +751,7 @@ const BundleVolume = () => {
                                         <div>
                                           <p style={{ fontWeight: "500", fontSize: "1rem" }}>${finalPrice}</p>
                                           {value?.type !== "5" &&
-                                            <p style={{ fontWeight: "500", fontSize: "1rem", textDecoration: "line-through" }}>${multiplyPrice}</p>
+                                            <p style={{ fontWeight: "500", fontSize: "1rem", textDecoration: "line-through" }}>${multiplyPrice.toFixed(2)}</p>
                                           }
                                         </div>
                                       </div>
@@ -765,23 +759,6 @@ const BundleVolume = () => {
                                         <div style={{ backgroundColor: "#7a26bf", display: "flex", justifyContent: 'center', alignItems: "center", height: "20px", position: "absolute", right: "10px", top: "-10px", padding: '7px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
                                           {value?.Badge}
                                         </div>
-                                      }
-                                      {selectedOption === index &&
-                                        <>
-                                          {value?.required_items > 3 &&
-                                            <div style={{ marginTop: "10px" }}>
-                                              <Divider />
-                                              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
-                                                <p>Quantity</p>
-                                                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                                                  <div style={{ width: "20px", height: "20px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "black", color: "white", borderRadius: "10px", cursor: "pointer", userSelect: "none" }}>-</div>
-                                                  {value?.required_items}
-                                                  <div style={{ width: "20px", height: "20px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "black", color: "white", borderRadius: "10px", cursor: "pointer", userSelect: "none" }}>+</div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          }
-                                        </>
                                       }
                                     </div>
                                   </div>

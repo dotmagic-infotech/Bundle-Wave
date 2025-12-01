@@ -222,6 +222,10 @@ function BundleMixMatch() {
       if (sections.length === 0) newErrors.section = "Please add at least a product or a collection.";
     } else if (data.bundle_subtype === "Tiered") {
       if (selProductsTired.length === 0 && selCollectionTired.length === 0) newErrors.tieredProductError = "Please add at least a product or a collection.";
+      const invalid = discountOption.some(v => v.type === "1" && Number(v.discountValue) >= 101);
+      if (invalid) {
+        newErrors.discountOption = "Percentage must be less than 100 for Percentage Discount options.";
+      }
     }
     if (validBuyStart) newErrors.tiered_discount_options = "This value must be greater than the previous option.";
 
@@ -808,7 +812,7 @@ function BundleMixMatch() {
                           {data?.bundle_subtype === "Single" ? (
                             <img src={files[0] instanceof File ? URL.createObjectURL(files[0]) : files[0] || sections?.[0]?.products?.[0]?.image || sections?.[0]?.collection?.[0]?.image} style={{ width: "100%", height: "247px", objectFit: "cover" }} />
                           ) : (
-                            <img src={files[0] instanceof File ? URL.createObjectURL(files[0]) : files[0] || selProductsTired?.[0]?.image} style={{ width: "100%", height: "247px", objectFit: "cover" }} />
+                            <img src={files[0] instanceof File ? URL.createObjectURL(files[0]) : files[0] || selCollectionTired?.[0]?.image || selProductsTired?.[0]?.image} style={{ width: "100%", height: "247px", objectFit: "cover" }} />
                           )}
                         </div>
                         <div style={{ width: "100%" }}>
@@ -908,7 +912,7 @@ function BundleMixMatch() {
                                         {option.buy_start}+ <span style={{ fontWeight: 500, fontSize: "1rem" }}>Items</span>
                                       </p>
                                       <p style={{ fontWeight: 500, fontSize: "0.9rem", textAlign: "center" }}>
-                                        {option?.type === "1" ? `${option?.discountValue}% OFF` : `$${option?.discountValue} OFF` }
+                                        {option?.type === "1" ? `${option?.discountValue}% OFF` : `$${option?.discountValue} OFF`}
                                       </p>
                                     </div>
                                   ))}
