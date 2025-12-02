@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 
 // Shopify Imports
-import { ActionList, BlockStack, Box, Button, Icon, Popover, Text, TextField } from "@shopify/polaris";
+import { ActionList, Badge, BlockStack, Box, Button, Icon, Popover, Text, TextField } from "@shopify/polaris";
 import { SearchIcon, XIcon } from "@shopify/polaris-icons";
 
 // Custom Component
@@ -54,7 +54,7 @@ const ProductSelection = ({
                 title: product?.title,
                 image: product?.images[0]?.originalSrc,
                 hasOnlyDefaultVariant: product?.hasOnlyDefaultVariant === false ? '0' : '1',
-                variants: product.variants.map(variant => ({ id: variant.id, price: variant?.price, image: variant?.image?.originalSrc, title: variant?.title, compare_price: variant?.compareAtPrice })),
+                variants: product.variants.map(variant => ({ id: variant.id, price: variant?.price, image: variant?.image?.originalSrc, availableForSale: variant?.availableForSale, title: variant?.title, compare_price: variant?.compareAtPrice })),
             };
         });
         setSelectedProducts(productData || []);
@@ -95,7 +95,8 @@ const ProductSelection = ({
                 price: variant?.price,
                 title: variant?.title,
                 image: variant?.image?.originalSrc,
-                compare_price: variant?.compareAtPrice
+                compare_price: variant?.compareAtPrice,
+                availableForSale: variant.availableForSale
             }));
 
             setSelectedProducts((prevProducts) =>
@@ -107,7 +108,7 @@ const ProductSelection = ({
             );
             shopify.saveBar.show('save')
         } catch (error) {
-            console.error("Error selecting variants:", error);
+            
         }
     };
 
@@ -176,32 +177,36 @@ const ProductSelection = ({
                     }
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
-                    {selectedProducts?.length > 0 && selectedProducts?.map((product, i) => (
-                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <img src={product?.image} width="40" height="40" style={{ borderRadius: '10px', objectFit: 'contain' }} />
-                                <div>
-                                    <Text as="p">{product.title}</Text>
-                                    {product?.hasOnlyDefaultVariant === "0" && (
-                                        <div style={{ display: "flex", alignItems: "center", gap: '0.5rem' }}>
-                                            <p style={{ color: "gray" }}>{product.variants.length} variants selected</p>
-                                            <p style={{ color: "blue", cursor: "pointer" }} onClick={() => handleVariantSelection(product?.id, product?.variants, product?.title)}>Edit Variants</p>
-                                        </div>
-                                    )}
+                    {selectedProducts?.length > 0 && selectedProducts?.map((product, i) => {
+                        const anySoldOut = product?.variants?.some(v => !v.availableForSale);
+
+                        return (
+                            <div key={i} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <img src={product?.image} width="40" height="40" style={{ borderRadius: '10px', objectFit: 'contain' }} />
+                                    <div>
+                                        <Text as="p">{product.title}</Text>
+                                        {product?.hasOnlyDefaultVariant === "0" && (
+                                            <div style={{ display: "flex", alignItems: "center", gap: '0.5rem' }}>
+                                                <p style={{ color: "gray" }}>{product.variants.length} variants selected</p>
+                                                <p style={{ color: "blue", cursor: "pointer" }} onClick={() => handleVariantSelection(product?.id, product?.variants, product?.title)}>Edit Variants</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    {anySoldOut &&
+                                        <Box>
+                                            <Badge tone="critical">Sold Out</Badge>
+                                        </Box>
+                                    }
+                                    <div style={{ cursor: 'pointer' }} onClick={() => handleRemoveItem(product.id)} >
+                                        <Icon source={XIcon} />
+                                    </div>
                                 </div>
                             </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                {/* {productCount &&
-                                    <Box width="100px">
-                                        <TextField type="number" value={product?.product_count || 1} onChange={(value) => handleChangeItemValue(product.id, value)} autoComplete="off" />
-                                    </Box>
-                                } */}
-                                <div style={{ cursor: 'pointer' }} onClick={() => handleRemoveItem(product.id)} >
-                                    <Icon source={XIcon} />
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
 
                     {selectedCollections?.length > 0 && selectedCollections?.map((v, i) =>
                         <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>

@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from 'react'
 
 // Shopify Imports
-import { ActionList, BlockStack, Box, Button, Card, Collapsible, Icon, Modal, Popover, Select, Text, TextField } from '@shopify/polaris';
+import { ActionList, Badge, BlockStack, Box, Button, Card, Collapsible, Icon, Modal, Popover, Select, Text, TextField } from '@shopify/polaris';
 import { CaretUpIcon, ChevronDownIcon, DeleteIcon, EditIcon, PlusIcon, XIcon } from '@shopify/polaris-icons';
 
 // Custom Component
@@ -85,7 +85,7 @@ function ProductWithCollections({ sections, setSections }) {
                                 existingVariantIds.add(variant.id);
                             });
                         } catch (err) {
-                            console.error("Error fetching collection variants:", err);
+                            // console.error("Error fetching collection variants:", err);
                         }
                     }
 
@@ -107,7 +107,7 @@ function ProductWithCollections({ sections, setSections }) {
                             title: product.title,
                             image: product.images[0]?.originalSrc,
                             hasOnlyDefaultVariant: product.hasOnlyDefaultVariant === false ? '0' : '1',
-                            variants: filteredVariants.map(variant => ({ id: variant.id, price: variant?.price, image: variant?.image?.originalSrc, title: variant?.title })),
+                            variants: filteredVariants.map(variant => ({ id: variant.id, price: variant?.price, image: variant?.image?.originalSrc, availableForSale: variant.availableForSale, title: variant?.title })),
                         });
                     });
 
@@ -129,7 +129,7 @@ function ProductWithCollections({ sections, setSections }) {
                     updateSection({ products: filteredProducts });
                     shopify.saveBar.show("save");
                 } catch (error) {
-                    console.error("Error selecting products:", error);
+                    // console.error("Error selecting products:", error);
                 }
             } else if (sectionToEdit.collection?.length > 0) {
                 try {
@@ -188,7 +188,7 @@ function ProductWithCollections({ sections, setSections }) {
                     );
                     shopify.saveBar.show("save");
                 } catch (error) {
-                    console.error("Error selecting collection:", error);
+                    // console.error("Error selecting collection:", error);
                 }
             }
         }
@@ -229,7 +229,7 @@ function ProductWithCollections({ sections, setSections }) {
                         existingVariantIds.add(variant.id);
                     });
                 } catch (error) {
-                    console.error("Failed to fetch collection variants:", error);
+                    // console.error("Failed to fetch collection variants:", error);
                 }
             }
 
@@ -249,7 +249,7 @@ function ProductWithCollections({ sections, setSections }) {
                     title: product.title,
                     image: product.images[0]?.originalSrc,
                     hasOnlyDefaultVariant: product.hasOnlyDefaultVariant === false ? '0' : '1',
-                    variants: filteredVariants.map(variant => ({ id: variant.id, price: variant?.price, image: variant?.image?.originalSrc, title: variant?.title, compare_price: variant?.compareAtPrice })),
+                    variants: filteredVariants.map(variant => ({ id: variant.id, price: variant?.price, image: variant?.image?.originalSrc, title: variant?.title, availableForSale: variant.availableForSale, compare_price: variant?.compareAtPrice })),
                 });
             });
 
@@ -286,7 +286,7 @@ function ProductWithCollections({ sections, setSections }) {
             });
             shopify.saveBar.show('save');
         } catch (err) {
-            console.error("Error In Product NOT Found", err);
+            // console.error("Error In Product NOT Found", err);
         }
     };
 
@@ -357,7 +357,7 @@ function ProductWithCollections({ sections, setSections }) {
 
             shopify.saveBar.show('save');
         } catch (error) {
-            console.error("Error In Collection NOT Found", error);
+            // console.error("Error In Collection NOT Found", error);
         }
     };
 
@@ -427,20 +427,17 @@ function ProductWithCollections({ sections, setSections }) {
         const image = section.sectionImage;
 
         if (image) {
-            if (image instanceof File) {
-                return URL.createObjectURL(image);
-            }
-            if (typeof image === "string") {
-                return image;
-            }
+            if (image instanceof File) return URL.createObjectURL(image);
+            if (typeof image === "string") return image;
         }
-
-        if (section.media) {
+        if (section?.media) {
             return section.media;
         }
 
-        if (section.sectionImage === null || section?.media === null) {
-            return section.products?.[0].image;
+        if (!section?.sectionImage && !section?.media) {
+            return section?.products?.[0]?.image
+                ?? section?.products?.[0]?.images?.[0]?.originalSrc
+                ?? "https://bundle-wave-backend.xavierapps.com/assets/bundles/placeholderImage.jpeg";
         }
 
         return "https://bundle-wave-backend.xavierapps.com/assets/bundles/placeholderImage.jpeg";
@@ -639,26 +636,34 @@ function ProductWithCollections({ sections, setSections }) {
                                             <Button onClick={() => handleEditSection(v.id)}>Edit</Button>
                                         </div>
                                         <div style={{ marginTop: "10px", display: "flex", flexDirection: "column", gap: "10px" }}>
-                                            {v.products?.length > 0 && v.products?.map((product, i) => (
-                                                <div key={i} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                        <img src={product?.image} width="40" height="40" style={{ borderRadius: '10px', objectFit: 'contain' }} />
-                                                        <div>
-                                                            <Text as="p">{product.title}</Text>
-                                                            {product?.hasOnlyDefaultVariant === "0" && (
-                                                                <div style={{ display: "flex", alignItems: "center", gap: '0.5rem' }}>
-                                                                    <p style={{ color: "gray" }}>{product.variants.length} variants selected</p>
-                                                                </div>
-                                                            )}
+                                            {v.products?.length > 0 && v.products?.map((product, i) => {
+                                                const anySoldOut = product?.variants?.some(v => !v.availableForSale);
+                                                return (
+                                                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                            <img src={product?.image} width="40" height="40" style={{ borderRadius: '10px', objectFit: 'contain' }} />
+                                                            <div>
+                                                                <Text as="p">{product.title}</Text>
+                                                                {product?.hasOnlyDefaultVariant === "0" && (
+                                                                    <div style={{ display: "flex", alignItems: "center", gap: '0.5rem' }}>
+                                                                        <p style={{ color: "gray" }}>{product.variants.length} variants selected</p>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                            {anySoldOut &&
+                                                                <Box>
+                                                                    <Badge tone="critical">Sold Out</Badge>
+                                                                </Box>
+                                                            }
+                                                            <div style={{ cursor: 'pointer' }} onClick={() => handleRemoveItem(product.id, v.id)} >
+                                                                <Icon source={XIcon} />
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                        <div style={{ cursor: 'pointer' }} onClick={() => handleRemoveItem(product.id, v.id)} >
-                                                            <Icon source={XIcon} />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
+                                                );
+                                            })}
                                             {v.collection?.length > 0 && v.collection?.map((v, i) =>
                                                 <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                                     <div style={{ display: "flex", alignItems: "center", gap: '10px' }}>

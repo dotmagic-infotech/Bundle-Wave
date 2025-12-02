@@ -2,7 +2,7 @@
 import { useContext } from "react";
 
 // Shopify Imports
-import { BlockStack, Button, Icon, Text, TextField } from "@shopify/polaris";
+import { Badge, BlockStack, Box, Button, Icon, Text, TextField } from "@shopify/polaris";
 import { SearchIcon, XIcon } from "@shopify/polaris-icons";
 
 // Custom Component
@@ -24,14 +24,12 @@ const ProductSelectOnly = ({
         const products = await shopify.resourcePicker({ type: 'product', multiple: multipleProduct && metaData?.product_count, selectionIds: selectedProducts });
 
         const productData = products?.map(product => {
-            
+
             return {
                 id: product.id,
-                // product_count: existingProduct?.product_count || 1,
                 title: product?.title,
                 image: product?.images[0]?.originalSrc,
-                // hasOnlyDefaultVariant: product?.hasOnlyDefaultVariant === false ? '0' : '1',
-                // variants: product.variants.map(variant => ({ id: variant.id, title: variant?.title, })),
+                variants: product.variants.map(variant => ({ id: variant.id, title: variant?.title, availableForSale: variant?.availableForSale })),
             };
         });
         setSelectedProducts(productData || []);
@@ -59,21 +57,30 @@ const ProductSelectOnly = ({
                     <Button onClick={handleBrowseProducts} disabled={disabled}>Browse</Button>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
-                    {selectedProducts?.length > 0 && selectedProducts?.map((product, i) => (
-                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <img src={product?.image} width="40" height="40" style={{ borderRadius: '10px', objectFit: 'contain' }} />
-                                <div>
-                                    <Text as="p">{product.title}</Text>
+                    {selectedProducts?.length > 0 && selectedProducts?.map((product, i) => {
+                        const anySoldOut = product?.variants?.some(v => !v.availableForSale);
+
+                        return (
+                            <div key={i} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <img src={product?.image} width="40" height="40" style={{ borderRadius: '10px', objectFit: 'contain' }} />
+                                    <div>
+                                        <Text as="p">{product.title}</Text>
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    {anySoldOut &&
+                                        <Box>
+                                            <Badge tone="critical">Sold Out</Badge>
+                                        </Box>
+                                    }
+                                    <div style={{ cursor: 'pointer' }} onClick={() => handleRemoveItem(product.id)} >
+                                        <Icon source={XIcon} />
+                                    </div>
                                 </div>
                             </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <div style={{ cursor: 'pointer' }} onClick={() => handleRemoveItem(product.id)} >
-                                    <Icon source={XIcon} />
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </>
