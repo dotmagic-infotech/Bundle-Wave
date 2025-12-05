@@ -82,8 +82,6 @@ const BundleAddons = () => {
       setSelectedAddons(data?.addons);
       setSelectedProducts(data?.products);
 
-      console.log("data:::", data);
-
       setData({
         bundle_name: data.bundle_name,
         discount_label: data.discount_label,
@@ -543,28 +541,30 @@ const BundleAddons = () => {
                 </Card>
 
                 {/* Display on your shop */}
-                <Card>
-                  <BlockStack gap="300">
-                    <Text as="span" variant="headingMd">Display on your shop</Text>
-                    <div style={{ display: "flex", flexDirection: "column" }}>
-                      <RadioButton
-                        label="Inline block on the main product’s page"
-                        checked={data?.display_onShop === "product_page"}
-                        id="product_page"
-                        onChange={() => handleChangeValue("display_onShop", "product_page")}
-                      />
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                {data?.bundle_subtype !== "all_product" &&
+                  <Card>
+                    <BlockStack gap="300">
+                      <Text as="span" variant="headingMd">Display on your shop</Text>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
                         <RadioButton
-                          label="Pop-up after clicking on Add To Cart button"
-                          id="cart_button"
-                          checked={data?.display_onShop === "cart_button"}
-                          onChange={() => handleChangeValue("display_onShop", "cart_button")}
+                          label="Inline block on the main product’s page"
+                          checked={data?.display_onShop === "product_page"}
+                          id="product_page"
+                          onChange={() => handleChangeValue("display_onShop", "product_page")}
                         />
-                        <Badge tone="info">New</Badge>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                          <RadioButton
+                            label="Pop-up after clicking on Add To Cart button"
+                            id="cart_button"
+                            checked={data?.display_onShop === "cart_button"}
+                            onChange={() => handleChangeValue("display_onShop", "cart_button")}
+                          />
+                          <Badge tone="info">New</Badge>
+                        </div>
                       </div>
-                    </div>
-                  </BlockStack>
-                </Card>
+                    </BlockStack>
+                  </Card>
+                }
 
                 {/* Advanced settings */}
                 <div style={{ marginBottom: "10px" }}>

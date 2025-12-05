@@ -475,7 +475,7 @@ function Frequently() {
                                             </div>
                                             <div style={{ display: "flex", justifyContent: "center" }}>
                                                 <button style={{
-                                                    backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", fontWeight: "400", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
+                                                    backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", fontWeight: "400", cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
                                                 }}>
                                                     Add to cart
                                                 </button>
@@ -529,7 +529,6 @@ function Frequently() {
                                                         color: data.button.textColor,
                                                         fontSize: "18px",
                                                         cursor: "pointer",
-                                                        borderRadius: "10px",
                                                         padding: `${data?.button?.height}px 12px`,
                                                         width: `${data?.button?.width}%`
                                                     }}>Add selected to cart | Save 50%</button>

@@ -478,7 +478,7 @@ function Addons() {
                                                             ? "center"
                                                             : "end"
                                                 }}>Product Add-ons</p>
-                                                <div style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, borderRadius: "10px", padding: "2px 7px" }}>20% OFF</div>
+                                                <div style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, borderRadius: "5px", padding: "2px 7px" }}>20% OFF</div>
                                             </div>
                                             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                                                 {product.map((imgSrc, index) => (
@@ -502,7 +502,7 @@ function Addons() {
                                                 ))}
                                             </div>
                                             <div style={{ display: "flex", justifyContent: "center" }}>
-                                                <button style={{ marginTop: "20px", backgroundColor: data?.button?.buttonColor, color: data.button.textColor, cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, borderRadius: "10px", border: "none", fontSize: "18px" }}>Add to cart</button>
+                                                <button style={{ marginTop: "20px", backgroundColor: data?.button?.buttonColor, color: data.button.textColor, cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, border: "none", fontSize: "18px" }}>Add to cart</button>
                                             </div>
                                         </div>
                                     </div>
@@ -534,7 +534,7 @@ function Addons() {
                                                     ? "center"
                                                     : "end"
                                         }}>Product Add-ons</p>
-                                        <div style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, borderRadius: "10px", padding: "2px 7px" }}>20% OFF</div>
+                                        <div style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, borderRadius: "5px", padding: "2px 7px" }}>20% OFF</div>
                                     </div>
                                     <p style={{ fontSize: `${data?.title?.fontSize}`, fontWeight: `${data?.title?.fontWeight}`, margin: '10px 0px' }}>Complete your look with our exclusive add-ons! Pair your favorite earrings<br /> with matching styles for extra sparkle and savings.</p>
                                     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
@@ -564,7 +564,7 @@ function Addons() {
                                         <Divider borderColor="border-hover" />
                                     </div>
                                     <div style={{ display: "flex", justifyContent: "center" }}>
-                                        <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, marginTop: "2px" }}>
+                                        <button style={{ backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, marginTop: "2px" }}>
                                             Add to cart
                                         </button>
                                     </div>

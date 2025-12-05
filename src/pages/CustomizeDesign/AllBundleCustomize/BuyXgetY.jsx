@@ -84,7 +84,7 @@ function BuyXgetY() {
             label="Select Display"
             options={[
               { label: "Main product page", value: "main_product_page" },
-              { label: "Pop-up", value: "pop_up", },
+              // { label: "Pop-up", value: "pop_up" },
             ]}
             value={data?.selectDisplay?.type}
             onChange={(value) =>
@@ -472,9 +472,9 @@ function BuyXgetY() {
                         }].map((_, index, arr) => (
                           <div key={index} style={{ position: "relative" }}>
                             <div style={{
-                              position: "absolute", top: "-3px", right: "-32px", width: "90px", height: "23px", transform: "rotate(38deg)", backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, padding: "10px", fontWeight: 600, display: "flex", justifyContent: "center", alignItems: "center"
+                              position: "absolute", top: "-3px", right: "-32px", width: "90px", height: "23px", transform: "rotate(38deg)", backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, padding: "10px", fontWeight: 600, display: "flex", justifyContent: "center", alignItems: "center", fontSize: "16px"
                             }}>
-                              Free
+                              FREE
                             </div>
                             <div style={{ display: "flex", gap: "10px" }}>
                               <img src={_?.image} width="60px" height="60px" />
@@ -499,7 +499,7 @@ function BuyXgetY() {
                       </div>
                     </div>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                      <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
+                      <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
                         Add to cart
                       </button>
                     </div>
@@ -570,7 +570,7 @@ function BuyXgetY() {
                     <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>0 Items Add</p>
                   </div>
                   <div style={{ display: "flex", justifyContent: "center" }}>
-                    <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
+                    <button style={{ backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
                       Add to cart
                     </button>
                   </div>

@@ -619,7 +619,7 @@ function Mixmatch() {
                       </div>
                       <div style={{ display: "flex", justifyContent: "center" }}>
                         <button style={{
-                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "18px", fontWeight: "400", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`
+                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "18px", fontWeight: "400", cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`
                         }}>Add to cart</button>
                       </div>
                     </div>
@@ -709,7 +709,7 @@ function Mixmatch() {
                       </InlineStack>
                       <div style={{ display: "flex", justifyContent: "center" }}>
                         <button style={{
-                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, marginTop: "20px"
+                          backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: `${data.title.fontSize}px`, fontWeight: "500", cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, marginTop: "20px"
                         }}>Go to Bundle Builder</button>
                       </div>
                     </div>
@@ -794,7 +794,7 @@ function Mixmatch() {
                           </div>
                           <div style={{ display: "flex", justifyContent: "center" }}>
                             <button style={{
-                              marginTop: "10px", backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "18px", fontWeight: "400", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
+                              marginTop: "10px", backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "18px", fontWeight: "400", cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
                             }}>Add to cart</button>
                           </div>
                           <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px" }}>✨ Buy more, save more! Pick your favorite earrings and create a custom set while enjoying bigger discounts for multiple pairs.</p>
@@ -843,7 +843,7 @@ function Mixmatch() {
                         </div>
                         <div style={{ display: "flex", justifyContent: "center" }}>
                           <button style={{
-                            backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "18px", fontWeight: "400", cursor: "pointer", borderRadius: "10px", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
+                            backgroundColor: `${data?.button?.buttonColor}`, border: "none", color: `${data?.button?.textColor}`, fontSize: "18px", fontWeight: "400", cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
                           }}>Add to cart | Save 20%</button>
                         </div>
                         <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Pick any 2 earrings from our curated collection and create your perfect mix & match set.<br />
