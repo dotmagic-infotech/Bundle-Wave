@@ -18,7 +18,6 @@ import BundlesPreview from '../BundlesPreview';
 import { MetaContext } from '../../../components/MetaDataContext/MetaDataProvider';
 import FileUploadDropZone from '../../../components/FileUploadDropZone/FileUploadDropZone';
 import ProductSelection from '../../../components/ProductSelection';
-import ProductSelectOnly from '../../../components/ProductSelection/ProductSelectOnly';
 import ValidationErrors from '../../../components/ValidationErrors';
 import DateTimePicker from '../../../components/DateRangePicker/DateTimePicker';
 import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
@@ -45,13 +44,11 @@ const BundleFixed = () => {
     status: "Published",
     discount_option_id: "1",
     discount_value: "10",
-    page_type: "new_page",
     discount_label: "Fixed Discount",
     show_action: "new_page",
     url: ""
   });
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const [displayIncludePage, setDisplayIncludePage] = useState([]);
   const [files, setFiles] = useState([]);
   const [media, setMedia] = useState([]);
   const [errors, setErrors] = useState({});
@@ -88,10 +85,8 @@ const BundleFixed = () => {
       });
 
       setSelectedProducts(productData);
-      setDisplayIncludePage(data?.includePageId);
 
       setData({
-        page_type: data?.page_type,
         discount_option_id: selectedOption ? selectedOption.id : "",
         discount_value: data.discount_value || "",
         status: data.status || "Draft",
@@ -103,7 +98,6 @@ const BundleFixed = () => {
         start_time: data.start_time || "1:00 AM",
         endDate: data.end_date ? new Date(data.end_date) : null,
         end_time: data.end_time || "1:00 AM",
-        show_action: data?.page_type,
         url: data?.url
       });
     } catch (error) {
@@ -159,9 +153,6 @@ const BundleFixed = () => {
         newErrors.discount_option_id = "Discount must be less than 100.";
       }
     }
-    if (data.page_type === "product_page" && displayIncludePage?.length === 0) {
-      newErrors.displayIncludePage = "Select product to show your bundle in  include product page.";
-    }
     if (!data.bundle_name) newErrors.bundle_name = "Bundle name is required.";
     if (!selectedDates?.start) newErrors.startDate = "Start date is required.";
     if (!data.start_time) newErrors.start_time = "Start time is required.";
@@ -188,7 +179,6 @@ const BundleFixed = () => {
           .toISOString()
           .split("T")[0];
 
-      formData.append("page_type", data.page_type);
       formData.append("products", JSON.stringify(selectedProducts));
       formData.append("discount_option_id", data.discount_option_id);
       formData.append("discount_value", data.discount_value);
@@ -204,12 +194,6 @@ const BundleFixed = () => {
 
       if (files?.length > 0) {
         files.forEach((file) => formData.append("media[]", file));
-      }
-
-      if (data.page_type === "product_page") {
-        formData.append("includePageId", JSON.stringify(displayIncludePage));
-      } else {
-        formData.append("includePageId", JSON.stringify([]));
       }
 
       if (data.endTime_status === "1") {
@@ -308,13 +292,6 @@ const BundleFixed = () => {
             <ValidationErrors errors={errors} />
           }
 
-          <div style={{ marginBottom: "10px" }}>
-            <ButtonGroup variant='segmented'>
-              <Button variant={data?.page_type === "new_page" ? "primary" : "secondary"} onClick={() => handleChangeValue("page_type", "new_page")}>Create New Page</Button>
-              <Button variant={data?.page_type === "product_page" ? "primary" : "secondary"} onClick={() => handleChangeValue("page_type", "product_page")}>Included Product Page</Button>
-            </ButtonGroup>
-          </div>
-
           <Layout>
             <Layout.Section>
               <BlockStack gap={"300"}>
@@ -327,17 +304,6 @@ const BundleFixed = () => {
                     setSelectedProducts={setSelectedProducts}
                   />
                 </Card>
-
-                {data?.page_type === "product_page" &&
-                  <Card>
-                    <ProductSelectOnly
-                      title="Display Bundle On Selected Products"
-                      subtitle="Select the products where this bundle should be displayed on the product page."
-                      selectedProducts={displayIncludePage}
-                      setSelectedProducts={setDisplayIncludePage}
-                    />
-                  </Card>
-                }
 
                 {/* Discount */}
                 <Card>

@@ -29,7 +29,6 @@ import DateTimePicker from '../../../components/DateRangePicker/DateTimePicker';
 import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
 import WidgetModal from '../../../components/WidgetModal/WidgetModal';
 import PageSkeleton from '../../../components/PageSkeleton';
-import ProductSelectOnly from '../../../components/ProductSelection/ProductSelectOnly';
 import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 
 function BundleMixMatch() {
@@ -58,7 +57,6 @@ function BundleMixMatch() {
   });
   const [files, setFiles] = useState([]);
   const [media, setMedia] = useState([]);
-  const [displayIncludePage, setDisplayIncludePage] = useState([]);
   const [selProductsTired, setSelProductsTired] = useState([]);
   const [selCollectionTired, setSelCollectionTired] = useState([]);
   const [sections, setSections] = useState([]);
@@ -91,7 +89,6 @@ function BundleMixMatch() {
       setSections(data.sections);
       setSelProductsTired(data?.products)
       setSelCollectionTired(data?.collections)
-      setDisplayIncludePage(data?.includePageId);
       setDiscountOption(data?.tiered_discount_options)
 
       setData({
@@ -205,9 +202,6 @@ function BundleMixMatch() {
     let newErrors = {};
 
     if (!data.bundle_name) newErrors.bundle_name = "Bundle name is required.";
-    if (data.page_type === "product_page" && displayIncludePage?.length === 0) {
-      newErrors.displayIncludePage = "Select product to show your bundle in  include product page.";
-    }
     if (data.bundle_subtype === "Single") {
       if (!["4", "5"].includes(data?.discount_option_id)) {
         const value = Number(data.discount_value);
@@ -288,12 +282,6 @@ function BundleMixMatch() {
 
       if (files?.length > 0) {
         files.forEach(file => formData.append("media[]", file));
-      }
-
-      if (data.page_type === "product_page") {
-        formData.append("includePageId", JSON.stringify(displayIncludePage));
-      } else {
-        formData.append("includePageId", JSON.stringify([]));
       }
 
       if (data.endTime_status === "1") {
@@ -386,13 +374,6 @@ function BundleMixMatch() {
 
           {errors && <ValidationErrors errors={errors} />}
 
-          <div style={{ marginBottom: "10px" }}>
-            <ButtonGroup variant='segmented'>
-              <Button variant={data?.page_type === "new_page" ? "primary" : "secondary"} onClick={() => handleChangeValue("page_type", "new_page")}>Create New Page</Button>
-              <Button variant={data?.page_type === "product_page" ? "primary" : "secondary"} onClick={() => handleChangeValue("page_type", "product_page")}>Included Product Page</Button>
-            </ButtonGroup>
-          </div>
-
           <Layout>
             <Layout.Section>
               <BlockStack gap={"300"}>
@@ -471,17 +452,6 @@ function BundleMixMatch() {
                         setSelectedCollections={setSelCollectionTired}
                         multiple={true}
                         productCount={false}
-                      />
-                    </Card>
-                  }
-
-                  {data?.page_type === "product_page" &&
-                    <Card>
-                      <ProductSelectOnly
-                        title="Display Bundle On Selected Products"
-                        subtitle="Select the products where this bundle should be displayed on the product page."
-                        selectedProducts={displayIncludePage}
-                        setSelectedProducts={setDisplayIncludePage}
                       />
                     </Card>
                   }
