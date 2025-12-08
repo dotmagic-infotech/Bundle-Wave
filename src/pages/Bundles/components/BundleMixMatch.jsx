@@ -343,7 +343,7 @@ function BundleMixMatch() {
       ) : (
         <Page
           title={`${id ? "Update" : "Create"} Mix and Match`}
-          backAction={{ onAction: () => navigate("/bundles") }}
+          backAction={{ onAction: () => navigate(-1) }}
           secondaryActions={id ? [
             {
               content: "Widget not visible?",

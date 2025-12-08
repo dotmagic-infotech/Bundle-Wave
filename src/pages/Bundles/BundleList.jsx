@@ -143,8 +143,8 @@ const BundleList = () => {
                         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                             {bundleData?.bundle_list.map((bundle, index) => (
                                 <Card key={index}>
-                                    <InlineStack align='space-between' blockAlign='center'>
-                                        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                                    <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
+                                        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", flex: "0 0 calc(100% - 260px)", maxWidth: "calc(100% - 260px)" }}>
                                             <div style={{ display: "flex", flexDirection: "column", gap: "10px", height: "100px" }}>
                                                 <Text variant='headingLg' fontWeight='medium'>{bundle.title}</Text>
                                                 <Text variant='bodyLg'>{bundle.description}</Text>
@@ -163,12 +163,10 @@ const BundleList = () => {
                                                 }}></Button>
                                             </div>
                                         </div>
-                                        <Box>
-                                            <div>
-                                                <img src={bundle.img_src} alt={bundle.title} style={{ width: "260px", height: "100%", objectFit: "contain" }} />
-                                            </div>
-                                        </Box>
-                                    </InlineStack>
+                                        <div>
+                                            <img src={bundle.img_src} alt={bundle.title} style={{ width: "260px", height: "100%", objectFit: "contain" }} />
+                                        </div>
+                                    </div>
                                 </Card>
                             ))}
                         </div>

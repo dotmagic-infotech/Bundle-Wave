@@ -326,7 +326,7 @@ const BundleVolume = () => {
       ) : (
         <Page
           title={`${id ? "Update" : "Create"} Volume discount`}
-          backAction={{ onAction: () => navigate("/bundles") }}
+          backAction={{ onAction: () => navigate(-1) }}
           secondaryActions={id ? [
             {
               content: "Widget not visible?",

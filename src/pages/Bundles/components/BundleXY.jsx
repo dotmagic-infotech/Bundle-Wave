@@ -290,7 +290,7 @@ const BundleXY = () => {
       ) : (
         <Page
           title={`${id ? "Update" : "Create"} Buy X Get Y`}
-          backAction={{ onAction: () => navigate("/bundles") }}
+          backAction={{ onAction: () => navigate(-1) }}
           secondaryActions={id ? [
             {
               content: "Widget not visible?",
@@ -628,7 +628,7 @@ const BundleXY = () => {
                               </div>
                             </div>
 
-                            <Divider borderColor="border-hover" /> 
+                            <Divider borderColor="border-hover" />
 
                             <div style={{ border: "1px solid #7a26bf", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
                               {(data?.bundle_subtype === "specific_product" ? productsbuys : collectionbuys)?.map((value, index) => (

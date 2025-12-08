@@ -342,7 +342,7 @@ const BundleAddons = () => {
           backAction={{
             onAction: () => {
               shopify.saveBar.hide('save')
-              navigate("/bundles")
+              navigate(-1);
             }
           }}
           secondaryActions={id ? [
