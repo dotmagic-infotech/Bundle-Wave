@@ -559,7 +559,7 @@ function BundleTable() {
                                 label="Search"
                                 labelHidden
                                 value={searchValue}
-                                placeholder="Search"
+                                placeholder="Search Bundles..."
                                 autoComplete="off"
                             />
                         </div>

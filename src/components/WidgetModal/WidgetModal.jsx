@@ -21,6 +21,7 @@ const WidgetModal = (props) => {
     // State
     const [data, setData] = useState();
     const [loading, setloading] = useState(false);
+    const [isProductBlockAdded, setIsProductBlockAdded] = useState(false);
 
     const fetchAppEmbed = async () => {
         try {
@@ -60,6 +61,11 @@ const WidgetModal = (props) => {
         window.open(url, '_blank');
     }
 
+    const redirectToProductBlock = () => {
+        const url = `https://${shopName}/admin/themes/current/editor?template=product`;
+        window.open(url, "_blank");
+    };
+
     return (
         <Grid columns={{ xs: 1, sm: 1, md: 3, lg: 3, xl: 3 }}>
             <Grid.Cell>
@@ -90,10 +96,41 @@ const WidgetModal = (props) => {
                 </LegacyCard>
             </Grid.Cell>
             <Grid.Cell>
+                <LegacyCard title="Product Block Status" sectioned subdued>
+                    <p>
+                        This checks whether your bundle block is added to the product page.
+                    </p>
+
+                    <Box paddingBlockStart={200}>
+                        {isProductBlockAdded ? (
+                            <>
+                                <p style={{ color: "green", fontWeight: 500 }}>
+                                    ✅ Bundle block is active on product page.
+                                </p>
+
+                                <Button onClick={redirectToStoreProduct}>
+                                    View Bundle on Product
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <p style={{ color: "red", fontWeight: 500 }}>
+                                    ❌ Bundle block is NOT added yet.
+                                </p>
+
+                                <Button onClick={redirectToProductBlock}>
+                                    Add Bundle Block to Product
+                                </Button>
+                            </>
+                        )}
+                    </Box>
+                </LegacyCard>
+            </Grid.Cell>
+            {/* <Grid.Cell>
                 <LegacyCard title="Does it look good on your shop?" sectioned subdued>
                     <p>Tell us if everything looks good or if something needs fixing.</p>
                 </LegacyCard>
-            </Grid.Cell>
+            </Grid.Cell> */}
         </Grid>
     );
 };
