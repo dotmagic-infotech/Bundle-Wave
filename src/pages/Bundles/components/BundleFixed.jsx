@@ -7,7 +7,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 // Shopify Polaris Imports
-import { BlockStack, Box, Card, InlineStack, Layout, Page, Text, Checkbox, Button, Select, TextField, Modal, Divider, LegacyCard, ButtonGroup } from "@shopify/polaris";
+import { BlockStack, Box, Card, InlineStack, Layout, Page, Text, Checkbox, Select, TextField, Modal, Divider, LegacyCard } from "@shopify/polaris";
 import { SaveBar, useAppBridge } from '@shopify/app-bridge-react';
 
 // Shopify Polaris Icons
@@ -501,12 +501,12 @@ const BundleFixed = () => {
                               <p style={{ marginTop: '10px', fontSize: "22px", fontWeight: "500", lineHeight: "1" }}>{data?.bundle_name}</p>
                             }
 
-                            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
-                              <p style={{ fontSize: "18px", fontWeight: "500" }}>Total Price</p>
+                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                              <p style={{ fontSize: "15px", fontWeight: "500" }}>Total Price</p>
                               <div style={{ display: "flex", gap: "5px" }}>
-                                <p style={{ fontSize: "18px", fontWeight: "600" }}>${finalPrice}</p>
+                                <p style={{ fontSize: "15px", fontWeight: "600" }}>${finalPrice}</p>
                                 {data?.discount_option_id !== "5" &&
-                                  <p style={{ fontSize: "18px", fontWeight: "600", textDecoration: "line-through" }}>${total}</p>
+                                  <p style={{ fontSize: "15px", textDecoration: "line-through" }}>${total}</p>
                                 }
                               </div>
                             </div>
@@ -516,14 +516,10 @@ const BundleFixed = () => {
                               {selectedProducts?.length > 0 && selectedProducts.map((product, index) => (
                                 <div key={index}>
                                   <div style={{ display: "flex" }}>
-                                    <img
-                                      src={product?.image}
-                                      alt={product?.title}
-                                      style={{ width: "60px", height: "60px" }}
-                                    />
-                                    <div style={{ marginLeft: "10px" }}>
+                                    <div className='xa_product_img' style={{ backgroundImage: `url(${product?.image})` }}></div>
+                                    <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "8px" }}>
                                       <p style={{ fontSize: "13px", fontWeight: "500" }}>{product?.title}</p>
-                                      <p style={{ marginTop: '5px', fontWeight: "500" }}>${product?.variants[0]?.price}</p>
+                                      <p>${product?.variants[0]?.price}</p>
                                     </div>
                                   </div>
                                   {index !== selectedProducts.length - 1 && (

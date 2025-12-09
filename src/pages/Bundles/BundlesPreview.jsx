@@ -103,10 +103,10 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                             {products?.length > 0 && products.map((product, index) => (
                                                 <div key={index}>
                                                     <div style={{ display: "flex" }}>
-                                                        <img src={product?.image} alt={product?.title} style={{ width: "72px", height: "72px", objectFit: "fill" }} />
-                                                        <div style={{ marginLeft: "10px" }}>
+                                                        <div className='xa_pro_img' style={{ backgroundImage: `url(${product?.image})` }}></div>
+                                                        <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.9rem" }}>
                                                             <p style={{ fontSize: "15px", fontWeight: "500" }}>{product?.title}</p>
-                                                            <p style={{ fontSize: "15px", marginTop: '10px', fontWeight: "500" }}>${product?.variants[0]?.price}</p>
+                                                            <p style={{ fontSize: "15px" }}>${product?.variants[0]?.price}</p>
                                                         </div>
                                                     </div>
                                                     {index !== products.length - 1 && (
@@ -118,16 +118,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                             ))}
                                         </div>
                                     </div>
-                                    <button disabled style={{
-                                        backgroundColor: "rgb(122, 38, 191)",
-                                        border: "none",
-                                        color: "rgb(255, 255, 255)",
-                                        fontSize: "18px",
-                                        cursor: "pointer",
-                                        width: "100%",
-                                        padding: "10px 5px",
-                                        marginTop: "10px"
-                                    }}>Add bundle to cart | Save {discount_value}%</button>
+                                    <button disabled className="xa_cart_btn" style={{ marginTop: "10px" }}>Add bundle to cart | Save {discount_value}%</button>
                                     <div
                                         style={{ marginTop: "10px" }}
                                         dangerouslySetInnerHTML={{ __html: description }}
@@ -373,10 +364,10 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                     <div key={index}>
                                         <div style={{ padding: "15px 10px" }}>
                                             <div style={{ display: "flex" }}>
-                                                <img src={value?.image} width="72" height="72" />
-                                                <div style={{ marginLeft: "10px" }}>
+                                                <div className='xa_pro_img' style={{ backgroundImage: `url(${value?.image})` }}></div>
+                                                <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.9rem" }}>
                                                     <p style={{ fontSize: "15px", fontWeight: "500" }}>{value?.title}</p>
-                                                    <p style={{ fontSize: "15px", marginTop: '10px', fontWeight: "500" }}>{value?.variants?.[0]?.price ? `$${value?.variants?.[0]?.price}` : ""}</p>
+                                                    <p style={{ fontSize: "15px" }}>{value?.variants?.[0]?.price ? `$${value?.variants?.[0]?.price}` : ""}</p>
                                                 </div>
                                             </div>
                                             {value?.variants?.length > 1 &&
@@ -401,10 +392,10 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                     <div key={index} style={{ position: "relative" }}>
                                         <div style={{ padding: "15px 10px" }}>
                                             <div style={{ display: "flex" }}>
-                                                <img src={value?.image} width="72" height="72" />
-                                                <div style={{ marginLeft: "10px" }}>
+                                                <div className='xa_pro_img' style={{ backgroundImage: `url(${value?.image})` }}></div>
+                                                <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.9rem" }}>
                                                     <p style={{ fontSize: "15px", fontWeight: "500" }}>{value?.title}</p>
-                                                    <p style={{ fontSize: "15px", marginTop: '10px', fontWeight: "500" }}>${value?.variants[0]?.price}</p>
+                                                    <p style={{ fontSize: "15px" }}>${value?.variants[0]?.price}</p>
                                                 </div>
                                             </div>
                                             {value?.variants?.length > 1 &&
@@ -429,10 +420,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                 ))}
                             </div>
 
-                            <button disabled style={{
-                                backgroundColor: "rgb(122, 38, 191)", border: "none", color: "white", fontSize: "18px", cursor: "pointer", borderRadius: "10px", width: "100%", padding: "10px 5px",
-                            }}>Add to cart</button>
-
+                            <button disabled className="xa_cart_btn">Add to cart</button>
                             <div style={{ fontSize: "15px", fontWeight: "500" }} dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }} />
                         </div>
                     </div>
@@ -504,9 +492,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                     )
                                 })}
                             </div>
-                            <button disabled style={{
-                                backgroundColor: "rgb(122, 38, 191)", border: "none", color: "white", fontSize: "18px", cursor: "pointer", borderRadius: "10px", width: "100%", padding: "10px 5px", margin: "10px 0px"
-                            }}>Add to cart</button>
+                            <button disabled className="xa_cart_btn" style={{ margin: "10px 0px" }}>Add to cart</button>
                         </div>
                     </div>
                 )
@@ -514,27 +500,34 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                 return (
                     <div style={{ height: '500px', display: "flex", gap: "20px", padding: "20px" }}>
                         <div style={{ width: "50%" }}>
-                            <img
-                                src={products[0]?.image || collections[0]?.image}
-                                style={{ width: "100%", height: "465px", }}
-                            />
-                            <div style={{ display: "flex", gap: "10px" }}>
-                                {secondCollection?.slice(0, 4).map((img, index) => (
-                                    <img
-                                        key={index}
-                                        src={img?.image}
-                                        width="100"
-                                        height="100"
-                                        style={{
-                                            cursor: "pointer",
-                                            border: "1px solid #ccc",
-                                        }}
-                                    />
-                                ))}
-                            </div>
+                            {data?.bundle_subtype === "specific_product" ? (
+                                <img src={products[0]?.image} style={{ width: "100%", height: "465px", }} />
+                            ) : (
+                                <img src="https://bundle-wave-backend.xavierapps.com/assets/bundles/placeholderImage.jpeg" style={{ width: "100%", height: "465px", }} />
+                            )}
+                            {data?.bundle_subtype === "specific_product" && (
+                                <div style={{ display: "flex", gap: "10px" }}>
+                                    {secondCollection?.slice(0, 4).map((img, index) => (
+                                        <img
+                                            key={index}
+                                            src={img?.image}
+                                            width="100"
+                                            height="100"
+                                            style={{
+                                                cursor: "pointer",
+                                                border: "1px solid #ccc",
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                         <div style={{ width: "50%", display: "flex", flexDirection: "column", gap: "10px" }}>
-                            <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>{products[0]?.title || collections[0]?.title}</p>
+                            {data?.bundle_subtype === "specific_product" ? (
+                                <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{products[0]?.title}</p>
+                            ) : (
+                                <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>Product title</p>
+                            )}
                             {products?.length > 0 &&
                                 <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{`$${products[0]?.variants[0]?.price}`}</p>
                             }
@@ -542,8 +535,8 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                                 <p style={{ fontSize: "18px", fontWeight: 500, color: "black" }}>{data?.bundle_title}</p>
                                 {data?.discount_option_id !== "5" &&
-                                    <p style={{ backgroundColor: "#7a26bf", color: "white", padding: "0px 6px", height: "fit-content", borderRadius: "5px", fontSize: "12px" }}>
-                                        {data?.discount_option_id === "1" ? `${data?.discount_value}% OFF` : `$${data?.discount_value} OFF`}
+                                    <p style={{ backgroundColor: "#7a26bf", color: "white", padding: "0px 8px", height: "fit-content", borderRadius: "5px", fontSize: "12px" }}>
+                                        {data?.discount_option_id === "2" ? `$${data?.discount_value} OFF` : data?.discount_value === '100' ? "Free" : `${data?.discount_value}% OFF`}
                                     </p>
                                 }
                             </div>
@@ -555,7 +548,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                         <div key={index}>
                                             <div style={{ border: "2px solid black", borderRadius: "10px", display: "flex", alignItems: "center", padding: "10px", cursor: "pointer" }}>
                                                 <Checkbox checked={isChecked || !!checkedItems[index]} onChange={() => handleCheckboxChange(index)} />
-                                                <img src={value?.image} width="72" height="72" />
+                                                <div className='xa_pro_img' style={{ backgroundImage: `url(${value?.image})` }}></div>
                                                 <div style={{ marginLeft: "10px" }}>
                                                     <p style={{ fontSize: "15px", fontWeight: "500" }}>{value?.title}</p>
                                                     <p style={{ fontSize: "15px", marginTop: "10px", fontWeight: "500" }}>${value?.variants[0]?.price}</p>
@@ -565,19 +558,9 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                     )
                                 })}
                             </div>
-                            <button disabled style={{
-                                backgroundColor: "rgb(122, 38, 191)",
-                                border: "none",
-                                color: "rgb(255, 255, 255)",
-                                fontSize: "18px",
-                                cursor: "pointer",
-                                borderRadius: "10px",
-                                width: "100%",
-                                padding: "10px 5px",
-                                marginTop: "10px"
-                            }}>Add to cart</button>
+                            <button disabled className="xa_cart_btn" style={{ marginTop: "10px" }}>Add to cart</button>
                         </div>
-                    </div >
+                    </div>
                 )
             case "6":
                 return (
@@ -624,26 +607,11 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                     </div>
                                 }
 
-                                <button disabled style={{
-                                    backgroundColor: "rgb(122, 38, 191)",
-                                    border: "none",
-                                    color: "rgb(255, 255, 255)",
-                                    fontSize: "18px",
-                                    cursor: "pointer",
-                                    borderRadius: "10px",
-                                    width: "100%",
-                                    padding: "10px 5px",
-                                    marginTop: "10px"
-                                }}>Add to cart</button>
+                                <button disabled className="xa_cart_btn" style={{ marginTop: "10px" }}>Add to cart</button>
                             </div>
                         </div>
                         <p style={{ margin: '14px 0px 14px', fontSize: "1.7rem", fontWeight: "500", marginBottom: "10px" }}>{data?.bundle_title}</p>
-                        <div style={{
-                            display: "flex",
-                            overflowX: "auto",
-                            paddingBottom: "10px",
-                            marginTop: "10px"
-                        }}>
+                        <div style={{ display: "flex", overflowX: "auto", paddingBottom: "10px", marginTop: "10px" }}>
                             {offerProducts.map((item, index, arr) => (
                                 <div key={index} style={{ flex: "0 0 auto" }}>
                                     <div style={{ display: "flex", alignItems: "center" }}>
@@ -652,7 +620,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                                 src={item?.image || "https://via.placeholder.com/150"}
                                                 width="150px"
                                                 height="150px"
-                                                style={{ width: "100%", height: "100%", borderRadius: "10px" }}
+                                                style={{ width: "100%", height: "100%", borderRadius: "10px", border: "1px solid #ccc" }}
                                             />
                                             <div style={{ position: "absolute", top: "8px", right: "8px" }}>
                                                 <Checkbox labelHidden />
@@ -685,17 +653,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                         </span>
                                     </p>
                                 }
-                                <button disabled style={{
-                                    backgroundColor: "rgb(122, 38, 191)",
-                                    border: "none",
-                                    color: "rgb(255, 255, 255)",
-                                    fontSize: "18px",
-                                    cursor: "pointer",
-                                    borderRadius: "10px",
-                                    width: "100%",
-                                    padding: "10px 5px",
-                                    marginTop: "10px"
-                                }}>Add to cart</button>
+                                <button disabled className="xa_cart_btn" style={{ marginTop: "10px" }}>Add to cart</button>
                             </div>
                         </div>
                     </div>

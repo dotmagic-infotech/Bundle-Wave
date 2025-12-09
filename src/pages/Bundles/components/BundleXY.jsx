@@ -616,14 +616,14 @@ const BundleXY = () => {
                           </div>
                           <div style={{ width: "100%", display: "flex", flexDirection: "column", marginTop: "10px", gap: "10px" }}>
                             {data?.bundle_name &&
-                              <p style={{ fontSize: "1.5rem", fontWeight: "500", marginBottom: "10px", lineHeight: "normal" }}>{data?.bundle_name}</p>
+                              <p style={{ fontSize: "1.5rem", fontWeight: "500", lineHeight: "normal" }}>{data?.bundle_name}</p>
                             }
                             <div style={{ display: "flex", justifyContent: "space-between" }}>
-                              <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>
-                              <div style={{ display: "flex", alignItems: 'center', gap: "10px" }}>
-                                <p style={{ fontSize: "20px", fontWeight: "600" }}>${finalPrice}</p>
+                              <p style={{ fontSize: "15px", fontWeight: "500" }}>Total Price</p>
+                              <div style={{ display: "flex", alignItems: 'center', gap: "5px" }}>
+                                <p style={{ fontSize: "15px", fontWeight: "600" }}>${finalPrice}</p>
                                 {data?.discount_option_id !== "5" &&
-                                  <p style={{ fontSize: "18px", fontWeight: "600", textDecoration: "line-through" }}>${totalBundlePrice.toFixed(2)}</p>
+                                  <p style={{ fontSize: "15px", textDecoration: "line-through" }}>${totalBundlePrice.toFixed(2)}</p>
                                 }
                               </div>
                             </div>
@@ -635,10 +635,10 @@ const BundleXY = () => {
                                 <div key={index}>
                                   <div style={{ padding: "12px 10px" }}>
                                     <div style={{ display: "flex" }}>
-                                      <img src={value?.image} width="60px" height="60px" />
-                                      <div style={{ marginLeft: "10px" }}>
+                                      <div className='xa_product_img' style={{ backgroundImage: `url(${value?.image})` }}></div>
+                                      <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "8px" }}>
                                         <p style={{ fontSize: "15px", fontWeight: "500" }}>{value?.title}</p>
-                                        <p style={{ fontSize: "15px", marginTop: '10px', fontWeight: "500" }}>{value?.variants?.[0]?.price ? `$${value?.variants?.[0]?.price}` : ""}</p>
+                                        <p>{value?.variants?.[0]?.price ? `$${value?.variants?.[0]?.price}` : ""}</p>
                                       </div>
                                     </div>
                                     {value?.variants?.length > 1 &&
@@ -664,10 +664,10 @@ const BundleXY = () => {
                                 <div key={index} style={{ position: "relative" }}>
                                   <div style={{ padding: "12px 10px" }}>
                                     <div style={{ display: "flex" }}>
-                                      <img src={value?.image} width="60px" height="60px" />
-                                      <div style={{ marginLeft: "10px" }}>
+                                      <div className='xa_product_img' style={{ backgroundImage: `url(${value?.image})` }}></div>
+                                      <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "8px" }}>
                                         <p style={{ fontSize: "15px", fontWeight: "500" }}>{value?.title}</p>
-                                        <p style={{ fontSize: "15px", marginTop: '10px', fontWeight: "500" }}>{value?.variants?.[0]?.price ? `$${value?.variants?.[0]?.price}` : ""}</p>
+                                        <p>{value?.variants?.[0]?.price ? `$${value?.variants?.[0]?.price}` : ""}</p>
                                       </div>
                                     </div>
                                     {value?.variants?.length > 1 &&

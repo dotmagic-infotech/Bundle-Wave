@@ -160,6 +160,10 @@ const Frequently = () => {
         passData.products = selectedProducts;
         passData.offered_products = selectedProductsOffers
       }
+      if (data?.bundle_subtype === "all_product") {
+        passData.products = [];
+        passData.offered_products = []
+      }
       const url = id
         ? `https://bundle-wave-backend.xavierapps.com/api/bundles/update/${id}`
         : `https://bundle-wave-backend.xavierapps.com/api/bundles/create`;

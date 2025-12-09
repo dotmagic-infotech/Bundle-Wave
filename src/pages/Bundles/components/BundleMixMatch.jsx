@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from 'react'
 
 // Shopify Polaris
-import { BlockStack, Box, Button, ButtonGroup, Card, Checkbox, Divider, InlineError, InlineStack, Layout, LegacyStack, Modal, Page, RadioButton, Select, Text, TextField } from '@shopify/polaris'
+import { BlockStack, Box, Button, Card, Checkbox, Divider, InlineError, InlineStack, Layout, LegacyStack, Modal, Page, RadioButton, Select, Text, TextField } from '@shopify/polaris'
 import { SaveBar } from '@shopify/app-bridge-react';
 
 // Shopify Icons

@@ -825,21 +825,26 @@ const BundleAddons = () => {
                     {(selectedProducts.length > 0 || selectedCollections.length > 0) && selectedAddons.length > 0 &&
                       <div style={{ maxHeight: '500px', overflowX: "auto", display: "flex", flexDirection: "column", scrollbarWidth: "none" }}>
                         <div style={{ width: "100%" }}>
-                          <img
-                            src={selectedProducts[0]?.image || selectedCollections[0]?.image}
-                            style={{ width: "100%", height: "290px", objectFit: "cover" }}
-                          />
+                          {data?.bundle_subtype === "specific_product" ? (
+                            <img src={selectedProducts[0]?.image} style={{ width: "100%", height: "290px", objectFit: "cover" }} />
+                          ) : (
+                            <img src="https://bundle-wave-backend.xavierapps.com/assets/bundles/placeholderImage.jpeg" style={{ width: "100%", height: "290px", objectFit: "cover" }} />
+                          )}
                         </div>
                         <div style={{ width: "100%" }}>
-                          <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{selectedProducts[0]?.title || selectedCollections[0]?.title}</p>
+                          {data?.bundle_subtype === "specific_product" ? (
+                            <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{selectedProducts[0]?.title}</p>
+                          ) : (
+                            <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>Product title</p>
+                          )}
                           {selectedProducts?.length > 0 &&
                             <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{`$${selectedProducts[0]?.variants[0]?.price}`}</p>
                           }
                           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: '10px', marginBottom: "5px" }}>
                             <p style={{ fontSize: "1rem", fontWeight: "500" }}>{data?.bundle_title}</p>
                             {data?.discount_option_id !== "5" &&
-                              <p style={{ backgroundColor: "#7a26bf", color: "white", padding: "0px 6px", height: "fit-content", borderRadius: "5px", fontSize: "12px" }}>
-                                {data?.discount_option_id === "1" ? `${data?.discount_value}% OFF` : `$${data?.discount_value} OFF`}
+                              <p style={{ backgroundColor: "#7a26bf", color: "white", padding: "0px 8px", height: "fit-content", borderRadius: "5px", fontSize: "12px" }}>
+                                {data?.discount_option_id === "2" ? `$${data?.discount_value} OFF` : data?.discount_value === '100' ? "Free" : `${data?.discount_value}% OFF`}
                               </p>
                             }
                           </div>
@@ -851,7 +856,7 @@ const BundleAddons = () => {
                                 <div key={index}>
                                   <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", alignItems: "center", padding: "10px" }}>
                                     <Checkbox checked={isChecked || !!checkedItems[index]} onChange={() => handleCheckboxChange(index)} />
-                                    <img src={value?.image} style={{ width: "50px", height: "50px", marginLeft: "10px", objectFit: "fill" }} />
+                                    <div className='xa_product_img' style={{ backgroundImage: `url(${value?.image})` }}></div>
                                     <div style={{ marginLeft: "10px" }}>
                                       <p style={{ lineHeight: "normal" }}>{value?.title}</p>
                                       <p style={{ marginTop: '5px', fontWeight: "500" }}>${value?.variants[0]?.price}</p>
