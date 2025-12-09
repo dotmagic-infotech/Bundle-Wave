@@ -42,7 +42,8 @@ const BundleVolume = () => {
     status: "Published",
     discount_label: "Volume Discount",
     bundle_info: "Buy more, Save more",
-    url: ""
+    url: "",
+    display_on: 'all_product',
   })
   const [discountOption, setDiscountOption] = useState([
     { id: 1, required_items: "1", type: "1", discount_value: "10", description: "Buy 1 items", Label: "", Badge: "", selected_default: "0", allow_users: "0" }
@@ -90,6 +91,7 @@ const BundleVolume = () => {
         end_time: data?.end_time,
         status: data?.status,
         url: data?.url,
+        display_on: data?.bundle_subtype,
       });
     } catch (error) {
       console.error("Failed to fetch bundle details:", error);
@@ -340,18 +342,24 @@ const BundleVolume = () => {
               content: "Widget not visible?",
               onAction: toggleWidgetModal,
             },
-            {
-              content: "View on store",
-              icon: ViewIcon,
-              onAction: () => {
-                if (data?.url) {
-                  window.open(`https://${shopName}/${data?.url}`, '_blank')
-                } else {
-                  window.open(`https://${shopName}/?id=${id}`, '_blank');
-                }
-              }
-            },
           ] : []}
+          actionGroups={id ? [
+            {
+              title: 'View In Store',
+              icon: ViewIcon,
+              actions: [
+                {
+                  content: 'Home page',
+                  disabled: data?.display_on === "all_product",
+                  onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
+                },
+                {
+                  content: 'Include product page',
+                  onAction: () => window.open(`https://${shopName}/${data?.url}`, '_blank'),
+                },
+              ],
+            },
+          ] : undefined}
         >
           <SaveBar id="save">
             <button variant="primary" onClick={handleSubmit}>Save</button>

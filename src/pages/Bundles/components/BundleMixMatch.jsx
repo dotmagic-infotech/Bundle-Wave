@@ -51,7 +51,6 @@ function BundleMixMatch() {
     status: "Published",
     discount_option_id: "1",
     discount_label: "Mix and Match Discount",
-    show_action: "new_page",
     url: ""
   });
   const [files, setFiles] = useState([]);
@@ -341,23 +340,14 @@ function BundleMixMatch() {
               content: "Widget not visible?",
               onAction: toggleWidgetModal,
             },
-            ...(data?.show_action === "new_page" ?
-              [
-                {
-                  content: "View on store",
-                  icon: ViewIcon,
-                  onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
-                },
-              ]
-              : []),
           ] : []}
-          actionGroups={id && data?.show_action === "product_page" ? [
+          actionGroups={id ? [
             {
               title: 'View In Store',
               icon: ViewIcon,
               actions: [
                 {
-                  content: 'New page',
+                  content: 'Home page',
                   onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
                 },
                 {

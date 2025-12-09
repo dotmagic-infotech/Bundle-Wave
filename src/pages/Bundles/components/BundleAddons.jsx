@@ -48,7 +48,8 @@ const BundleAddons = () => {
     discount_option_id: "1",
     selectedAddonIds: [],
     noPreselectetIds: "1",
-    url: ""
+    url: "",
+    display_on: 'all_product',
   })
   const [errors, setErrors] = useState({})
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -101,6 +102,7 @@ const BundleAddons = () => {
         selectedAddonIds: data?.selectedAddonIds,
         noPreselectetIds: data?.noPreselectetIds,
         url: data?.url,
+        display_on: data?.bundle_subtype,
       });
     } catch (error) {
       console.error("Failed to fetch bundle details:", error);
@@ -353,18 +355,24 @@ const BundleAddons = () => {
               content: "Widget not visible?",
               onAction: toggleWidgetModal,
             },
-            {
-              content: "View on store",
-              icon: ViewIcon,
-              onAction: () => {
-                if (data?.url) {
-                  window.open(`https://${shopName}/${data?.url}`, '_blank')
-                } else {
-                  window.open(`https://${shopName}/?id=${id}`, '_blank');
-                }
-              }
-            },
           ] : []}
+          actionGroups={id ? [
+            {
+              title: 'View In Store',
+              icon: ViewIcon,
+              actions: [
+                {
+                  content: 'Home page',
+                  disabled: data?.display_on === "all_product",
+                  onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
+                },
+                {
+                  content: 'Include product page',
+                  onAction: () => window.open(`https://${shopName}/${data?.url}`, '_blank'),
+                },
+              ],
+            },
+          ] : undefined}
         >
           <SaveBar id="save">
             <button variant="primary" onClick={handleSubmit}>Save</button>

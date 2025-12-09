@@ -45,8 +45,7 @@ const BundleFixed = () => {
     discount_option_id: "1",
     discount_value: "10",
     discount_label: "Fixed Discount",
-    show_action: "new_page",
-    url: ""
+    url: "",
   });
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [files, setFiles] = useState([]);
@@ -98,7 +97,7 @@ const BundleFixed = () => {
         start_time: data.start_time || "1:00 AM",
         endDate: data.end_date ? new Date(data.end_date) : null,
         end_time: data.end_time || "1:00 AM",
-        url: data?.url
+        url: data?.url,
       });
     } catch (error) {
       console.error("Failed to fetch bundle details:", error);
@@ -257,23 +256,14 @@ const BundleFixed = () => {
               content: "Widget not visible?",
               onAction: toggleWidgetModal,
             },
-            ...(data?.show_action === "new_page" ?
-              [
-                {
-                  content: "View on store",
-                  icon: ViewIcon,
-                  onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
-                },
-              ]
-              : []),
           ] : []}
-          actionGroups={id && data?.show_action === "product_page" ? [
+          actionGroups={id ? [
             {
               title: 'View In Store',
               icon: ViewIcon,
               actions: [
                 {
-                  content: 'New page',
+                  content: 'Home page',
                   onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
                 },
                 {

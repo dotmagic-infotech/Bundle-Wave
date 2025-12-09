@@ -427,22 +427,14 @@ function BundleTable() {
                 <IndexTable.Cell>
                     <InlineStack gap={100}>
                         {status === "Published" &&
-                            <Tooltip content="Preview Bundle">
+                            <Tooltip content="Preview">
                                 <Popover
                                     active={activePopoverId === bundle_id}
                                     activator={
                                         <Button disabled={selectedResources.length > 0} icon={ViewIcon}
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                if (page_type === "product_page") {
-                                                    toggleViewActiveFor(bundle_id);
-                                                } else {
-                                                    if (bundle_subtype === "all_product") {
-                                                        window.open(`https://${shopName}/${url}`, '_blank')
-                                                    } else {
-                                                        window.open(`https://${shopName}/?id=${bundle_id}`, '_blank')
-                                                    }
-                                                }
+                                                toggleViewActiveFor(bundle_id);
                                             }}
                                         ></Button>
                                     }
@@ -457,13 +449,16 @@ function BundleTable() {
                                                 actionRole="menuitem"
                                                 items={[
                                                     {
-                                                        content: 'New page', onAction: () => {
+                                                        content: 'Home page',
+                                                        disabled: bundle_subtype === "all_product",
+                                                        onAction: () => {
                                                             toggleViewActiveFor(bundle_id);
                                                             window.open(`https://${shopName}/?id=${bundle_id}`, '_blank');
                                                         }
                                                     },
                                                     {
-                                                        content: 'Include product page', onAction: () => {
+                                                        content: 'Include product page',
+                                                        onAction: () => {
                                                             toggleViewActiveFor(bundle_id);
                                                             window.open(`https://${shopName}/${url}`, '_blank')
                                                         }
@@ -476,7 +471,7 @@ function BundleTable() {
                             </Tooltip>
                         }
 
-                        <Tooltip content="Edit Bundle">
+                        <Tooltip content="Edit">
                             <Button disabled={selectedResources.length > 0} icon={EditIcon} onClick={(event) => {
                                 event.stopPropagation();
                                 let url = "";
@@ -502,13 +497,12 @@ function BundleTable() {
                             }}></Button>
                         </Tooltip>
 
-                        <Tooltip content="Clone Bundle">
+                        <Tooltip content="Clone">
                             <Button disabled={selectedResources.length > 0} loading={loadingBundleId === bundle_id} icon={DuplicateIcon} onClick={(event) => {
                                 event.stopPropagation();
                                 handleDuplicateSingle(bundle_id, bundle_table)
                             }}></Button>
                         </Tooltip>
-
 
                         {/* <Tooltip content="Delete Bundle">
                             <Button disabled={selectedResources.length > 0} icon={DeleteIcon} onClick={(event) => {

@@ -37,7 +37,8 @@ const Frequently = () => {
     discount_value: 10,
     bundle_title: "Frequently Bought Together",
     status: "Published",
-    url: ""
+    url: "",
+    display_on: 'all_product',
   })
   const [errors, setErrors] = useState({})
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -65,7 +66,8 @@ const Frequently = () => {
         bundle_name: data?.bundle_name,
         bundle_title: data?.bundle_title,
         status: data?.status,
-        url: data?.url
+        url: data?.url,
+        display_on: data?.bundle_subtype,
       });
     } catch (error) {
       console.error("Failed to fetch bundle details:", error);
@@ -223,18 +225,24 @@ const Frequently = () => {
               content: "Widget not visible?",
               onAction: toggleWidgetModal,
             },
-            {
-              content: "View on store",
-              icon: ViewIcon,
-              onAction: () => {
-                if (data?.url) {
-                  window.open(`https://${shopName}/${data?.url}`, '_blank')
-                } else {
-                  window.open(`https://${shopName}/?id=${id}`, '_blank');
-                }
-              }
-            },
           ] : []}
+          actionGroups={id ? [
+            {
+              title: 'View In Store',
+              icon: ViewIcon,
+              actions: [
+                {
+                  content: 'Home page',
+                  disabled: data?.display_on === "all_product",
+                  onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
+                },
+                {
+                  content: 'Include product page',
+                  onAction: () => window.open(`https://${shopName}/${data?.url}`, '_blank'),
+                },
+              ],
+            },
+          ] : undefined}
         >
           <SaveBar id="save">
             <button variant="primary" onClick={handleSubmit}>Save</button>

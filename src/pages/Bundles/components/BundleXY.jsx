@@ -46,7 +46,8 @@ const BundleXY = () => {
     status: "Published",
     discount_label: "Buy X & Get Y Discount",
     discount_option_id: "1",
-    url: ""
+    url: "",
+    display_on: 'all_product',
   });
   const [errors, setErrors] = useState({});
   const [files, setFiles] = useState([]);
@@ -95,7 +96,8 @@ const BundleXY = () => {
         endTime_status: data?.endTime_status || "0",
         end_time: data?.end_time,
         status: data?.status,
-        url: data?.url
+        url: data?.url,
+        display_on: data?.bundle_subtype,
       });
     } catch (error) {
       console.error("Failed to fetch bundle details:", error);
@@ -263,11 +265,6 @@ const BundleXY = () => {
       formData.append("endTime_status", data.endTime_status || "0");
       formData.append("old_media", JSON.stringify(media || []));
 
-      // formData.append("fixedDeal", JSON.stringify({
-      //   buys: data?.bundle_subtype === "specific_product" ? productsbuys : data?.bundle_subtype === "specific_collection" ? collectionbuys : [],
-      //   gets: productsgets || []
-      // }));
-
       formData.append("fixedDeal", JSON.stringify({
         buys: data?.bundle_subtype === "specific_product" ? productsbuys : data?.bundle_subtype === "specific_collection"
           ? collectionbuys.map(c => ({
@@ -349,18 +346,24 @@ const BundleXY = () => {
               content: "Widget not visible?",
               onAction: toggleWidgetModal,
             },
-            {
-              content: "View on store",
-              icon: ViewIcon,
-              onAction: () => {
-                if (data?.url) {
-                  window.open(`https://${shopName}/${data?.url}`, '_blank')
-                } else {
-                  window.open(`https://${shopName}/?id=${id}`, '_blank');
-                }
-              }
-            },
           ] : []}
+          actionGroups={id ? [
+            {
+              title: 'View In Store',
+              icon: ViewIcon,
+              actions: [
+                {
+                  content: 'Home page',
+                  disabled: data?.display_on === "all_product",
+                  onAction: () => window.open(`https://${shopName}/?id=${id}`, '_blank'),
+                },
+                {
+                  content: 'Include product page',
+                  onAction: () => window.open(`https://${shopName}/${data?.url}`, '_blank'),
+                },
+              ],
+            },
+          ] : undefined}
         >
           <SaveBar id="save">
             <button variant="primary" onClick={handleSubmit}>Save</button>
