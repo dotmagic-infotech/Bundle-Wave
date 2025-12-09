@@ -23,7 +23,7 @@ import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
 import WidgetModal from '../../../components/WidgetModal/WidgetModal';
 import PageSkeleton from '../../../components/PageSkeleton';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
-import { getDiscountAndFinal, getTotalPrice } from '../../../assets/helpers';
+import { getDiscountAndFinal, getTotalPrice, normalizeProduct } from '../../../assets/helpers';
 import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 
 const BundleXY = () => {
@@ -111,7 +111,7 @@ const BundleXY = () => {
   }, [id]);
 
   const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
-  const totalBuy = Number(getTotalPrice(productsbuys).toFixed(2));
+  const totalBuy = Number(getTotalPrice(data?.bundle_subtype === "specific_product" ? productsbuys : collectionbuys[0]?.products).toFixed(2));
   const totalGet = Number(getTotalPrice(productsgets).toFixed(2));
   const totalBundlePrice = totalBuy + totalGet
   const { discountPrice, finalPrice } = getDiscountAndFinal(data?.discount_option_id, totalBundlePrice, data?.discount_value);
@@ -159,12 +159,47 @@ const BundleXY = () => {
         id: item.id,
         title: item.title,
         image: item.image?.originalSrc || "",
+        products: [],
       }));
 
       setCollectionbuys(collectionData);
       shopify.saveBar.show("save");
+
+      for (const col of collectionData) {
+        if (col.id) await fetchProductsForCollection(col.id);
+      }
     } catch (error) {
       console.error("Error selecting collection:", error);
+    }
+  };
+
+  const fetchProductsForCollection = async (collectionGid) => {
+    try {
+      if (!collectionGid) return;
+
+      const res = await fetchWithToken({
+        url: `https://bundle-wave-backend.xavierapps.com/api/get_product`,
+        method: 'POST',
+        body: { collectionId: collectionGid },
+      });
+
+      const fetched = res?.data?.products || [];
+      const normalized = fetched.map(normalizeProduct).filter(p => p.id);
+
+      setCollectionbuys(prev => {
+        const found = prev?.some(c => String(c.id) === String(collectionGid));
+        if (found) {
+          return prev.map(c =>
+            String(c.id) === String(collectionGid)
+              ? { ...c, products: normalized }
+              : c
+          );
+        } else {
+          return [...(prev || []), { id: collectionGid, title: "", image: "", products: normalized }];
+        }
+      });
+    } catch (err) {
+      console.error("Failed to load products for collection:", err);
     }
   };
 
@@ -228,8 +263,19 @@ const BundleXY = () => {
       formData.append("endTime_status", data.endTime_status || "0");
       formData.append("old_media", JSON.stringify(media || []));
 
+      // formData.append("fixedDeal", JSON.stringify({
+      //   buys: data?.bundle_subtype === "specific_product" ? productsbuys : data?.bundle_subtype === "specific_collection" ? collectionbuys : [],
+      //   gets: productsgets || []
+      // }));
+
       formData.append("fixedDeal", JSON.stringify({
-        buys: data?.bundle_subtype === "specific_product" ? productsbuys : data?.bundle_subtype === "specific_collection" ? collectionbuys : [],
+        buys: data?.bundle_subtype === "specific_product" ? productsbuys : data?.bundle_subtype === "specific_collection"
+          ? collectionbuys.map(c => ({
+            id: c.id,
+            title: c.title,
+            image: c.image
+          }))
+          : [],
         gets: productsgets || []
       }));
 
@@ -257,7 +303,6 @@ const BundleXY = () => {
       });
 
       if (result.status) {
-        // navigate("/bundles");
         navigate(`/bundlesList/buy_xy/edit/${result?.id}`)
         fetchBundleDetails(result?.id);
         shopify.loading(false);
@@ -290,7 +335,15 @@ const BundleXY = () => {
       ) : (
         <Page
           title={`${id ? "Update" : "Create"} Buy X Get Y`}
-          backAction={{ onAction: () => navigate(-1) }}
+          backAction={{
+            onAction: () => {
+              if (id) {
+                navigate('/bundles');
+              } else {
+                navigate(-1);
+              }
+            }
+          }}
           secondaryActions={id ? [
             {
               content: "Widget not visible?",
@@ -631,7 +684,7 @@ const BundleXY = () => {
                             <Divider borderColor="border-hover" />
 
                             <div style={{ border: "1px solid #7a26bf", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
-                              {(data?.bundle_subtype === "specific_product" ? productsbuys : collectionbuys)?.map((value, index) => (
+                              {(data?.bundle_subtype === "specific_product" ? productsbuys : collectionbuys[0]?.products)?.map((value, index) => (
                                 <div key={index}>
                                   <div style={{ padding: "12px 10px" }}>
                                     <div style={{ display: "flex" }}>
@@ -650,7 +703,7 @@ const BundleXY = () => {
                                     }
                                   </div>
 
-                                  {index !== (data?.bundle_subtype === "specific_product" ? productsbuys : collectionbuys).length - 1 && (
+                                  {index !== (data?.bundle_subtype === "specific_product" ? productsbuys : collectionbuys[0]?.products).length - 1 && (
                                     <hr style={{ margin: "0px 10px" }} />
                                   )}
                                 </div>

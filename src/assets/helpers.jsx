@@ -37,3 +37,10 @@ export const getDiscountAndFinal = (doid, total = 0, discountValue = 0) => {
         finalPrice: finalPrice.toFixed(2),
     };
 };
+
+export const normalizeProduct = (p) => ({
+  id: p.id || null,
+  title: p.title || "",
+  image: p.image || "",
+  variants: p.variants || [],
+});

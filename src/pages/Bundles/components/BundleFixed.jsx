@@ -245,7 +245,11 @@ const BundleFixed = () => {
           title={`${id ? "Update" : "Create"} Fixed Bundle`}
           backAction={{
             onAction: () => {
-              navigate(-1);
+              if (id) {
+                navigate('/bundles');
+              } else {
+                navigate(-1);
+              }
             }
           }}
           secondaryActions={id ? [

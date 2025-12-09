@@ -341,8 +341,11 @@ const BundleAddons = () => {
           title={`${id ? "Update" : "Create"} Add-ons`}
           backAction={{
             onAction: () => {
-              shopify.saveBar.hide('save')
-              navigate(-1);
+              if (id) {
+                navigate('/bundles');
+              } else {
+                navigate(-1);
+              }
             }
           }}
           secondaryActions={id ? [

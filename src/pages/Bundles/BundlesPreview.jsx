@@ -13,7 +13,6 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
     // State
     const [active, setActive] = useState(false);
     const [checkedItems, setCheckedItems] = useState({});
-    const [selectedOption, setSelectedOption] = useState(0);
     const [selectedFirst, setSelectedFirst] = useState(0);
 
     const toggleModal = (() => setActive((active) => !active));
@@ -23,10 +22,6 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
             ...prev,
             [index]: !prev[index],
         }));
-    };
-
-    const handleCheckboxFour = (index) => {
-        setSelectedOption(index);
     };
 
     const handleDisable = () => {
@@ -334,7 +329,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                 )
             case "3":
                 return (
-                    <div style={{ maxHeight: '1000px', display: "flex", padding: "20px" }}>
+                    <div style={{ maxHeight: '100%', display: "flex", padding: "20px" }}>
                         <div style={{ width: "50%" }}>
                             <img src={media[0] || buysX[0]?.image || collections[0]?.image} style={{ width: "100%", height: "465px" }} />
                             <div style={{ display: "flex", gap: "10px" }}>
@@ -360,7 +355,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                             <Divider borderColor="border-hover" />
 
                             <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
-                                {buysX.map((value, index) => (
+                                {(data?.bundle_subtype === "specific_product" ? buysX : buysX[0]?.products)?.map((value, index) => (
                                     <div key={index}>
                                         <div style={{ padding: "15px 10px" }}>
                                             <div style={{ display: "flex" }}>
@@ -378,7 +373,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                                 </select>
                                             }
                                         </div>
-                                        {index !== buysX.length - 1 && (
+                                        {index !== (data?.bundle_subtype === "specific_product" ? buysX : buysX[0]?.products).length - 1 && (
                                             <hr style={{ margin: "0px 10px" }} />
                                         )}
                                     </div>

@@ -211,8 +211,11 @@ const Frequently = () => {
           title={`${id ? "Update" : "Create"} Frequently bought together`}
           backAction={{
             onAction: () => {
-              shopify.saveBar.hide('save')
-              navigate(-1)
+              if (id) {
+                navigate('/bundles');
+              } else {
+                navigate(-1);
+              }
             }
           }}
           secondaryActions={id ? [
