@@ -221,7 +221,7 @@ const Frequently = () => {
               icon: ViewIcon,
               onAction: () => {
                 if (data?.url) {
-                  window.open(`https://${shopName}/products/${data?.url}`, '_blank')
+                  window.open(`https://${shopName}/${data?.url}`, '_blank')
                 } else {
                   window.open(`https://${shopName}/?id=${id}`, '_blank');
                 }

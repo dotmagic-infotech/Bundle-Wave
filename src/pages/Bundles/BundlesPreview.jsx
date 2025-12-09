@@ -185,11 +185,11 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                                                 )}
                                                             </div>
 
-                                                            <img src={sectionImg} width="72" height="72" style={{ marginLeft: "10px" }} />
+                                                            <div className='xa_pro_img' style={{ backgroundImage: `url(${sectionImg})`, marginLeft: "10px" }} />
 
-                                                            <div style={{ marginLeft: "10px" }}>
+                                                            <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.9rem" }}>
                                                                 <p style={{ fontSize: "16px", fontWeight: 500 }}>{value?.sectionTitle || value?.collection?.[0]?.title}</p>
-                                                                <p style={{ marginTop: '10px', fontSize: "15px" }}>{value?.discription}</p>
+                                                                <span>{value?.discription}</span>
                                                             </div>
                                                         </div>
                                                         <div>
@@ -213,15 +213,23 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                                                 <div key={index}>
                                                                     <div style={{ display: "flex", justifyContent: "space-between", padding: "15px 10px" }}>
                                                                         <div style={{ display: 'flex' }}>
-                                                                            <img src={product?.image} width="72" height="72" style={{ marginLeft: "10px" }} />
-                                                                            <div style={{ marginLeft: "10px" }}>
+                                                                            <div className='xa_pro_img' style={{ backgroundImage: `url(${product?.image})`, marginLeft: "10px" }} />
+                                                                            <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.9rem" }}>
                                                                                 <p style={{ fontSize: "16px", fontWeight: 500 }}>{product?.title}</p>
-                                                                                <p style={{ fontSize: "16px", marginTop: '10px', fontWeight: 500 }}>${product?.variants[0]?.price}</p>
+                                                                                <span>${product?.variants[0]?.price}</span>
                                                                             </div>
                                                                         </div>
-                                                                        <select disabled class="addon-variant-select" style={{ width: "67px", height: "31px", borderRadius: "8px", padding: "0px 8px", backgroundColor: "black", color: "white" }}>
-                                                                            <option value="" selected>Add</option>
-                                                                        </select>
+                                                                        {value?.variants?.length > 1 ?
+                                                                            <select disabled style={{
+                                                                                width: "67px", height: "31px", padding: "0px 8px", backgroundColor: "#7a26bf", color: "white", border: "none"
+                                                                            }}>
+                                                                                <option value="" selected="">Add</option>
+                                                                            </select>
+                                                                            :
+                                                                            <button disabled style={{
+                                                                                width: "67px", height: "31px", padding: "0px 8px", backgroundColor: "#7a26bf", color: "white", border: "none"
+                                                                            }}>Add</button>
+                                                                        }
                                                                     </div>
                                                                     {index !== value.products.length - 1 && <Divider />}
                                                                 </div>
@@ -230,10 +238,10 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                                             {value?.collection?.map((product, index) => (
                                                                 <div key={index}>
                                                                     <div style={{ display: "flex", padding: "15px 10px" }}>
-                                                                        <img src={product?.image} width="72" height="72" style={{ marginLeft: "10px" }} />
-                                                                        <div style={{ marginLeft: "10px" }}>
+                                                                        <div className='xa_pro_img' style={{ backgroundImage: `url(${product?.image})`, marginLeft: "10px" }} />
+                                                                        <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.9rem" }}>
                                                                             <p style={{ fontSize: "16px", fontWeight: 500 }}>{product?.title}</p>
-                                                                            <p style={{ fontSize: "16px", marginTop: '10px', fontWeight: 500 }}>$50.00</p>
+                                                                            <span>$50.00</span>
                                                                         </div>
                                                                     </div>
                                                                     {index !== value.collection.length - 1 && <Divider />}
@@ -251,9 +259,9 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                         <p style={{ fontWeight: "500", fontSize: "1rem" }}>Total Price</p>
                                         <p style={{ fontWeight: "500", fontSize: "1rem" }}>0 items added</p>
                                     </div>
-                                    <button style={{
-                                        backgroundColor: "#7a26bf", marginTop: "10px", border: "none", color: "white", fontSize: "18px", fontWeight: "400", cursor: "pointer", width: "100%", borderRadius: "10px", padding: `10px`,
-                                    }}>Add to cart {data?.discount_option_id !== "5" && `| Save ${data?.discount_option_id === "1" ? `${data?.discount_value}%` : `$${data?.discount_value}`}`}</button>
+                                    <button className="xa_cart_btn" style={{ marginTop: "10px" }}>
+                                        Add to cart {data?.discount_option_id !== "5" && `| Save ${data?.discount_option_id === "1" ? `${data?.discount_value}%` : `$${data?.discount_value}`}`}
+                                    </button>
                                     <div style={{ fontSize: "15px", fontWeight: "500", marginTop: "10px" }} dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }} />
                                 </>
                             )}
@@ -281,22 +289,22 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                                 <div key={index}>
                                                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                                                         <div style={{ display: "flex" }}>
-                                                            <img src={value?.image} width="72" height="72" />
-                                                            <div style={{ marginLeft: "10px" }}>
+                                                            <div className='xa_pro_img' style={{ backgroundImage: `url(${value?.image})` }} />
+                                                            <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.9rem" }}>
                                                                 <p style={{ fontSize: "16px", fontWeight: 500 }}>{value?.title}</p>
-                                                                <p style={{ fontSize: "16px", marginTop: '10px', fontWeight: 500 }}>${value?.variants[0]?.price}</p>
+                                                                <p style={{ fontSize: "16px" }}>${value?.variants[0]?.price}</p>
                                                             </div>
                                                         </div>
                                                         <div>
                                                             {value?.variants?.length > 1 ?
                                                                 <select disabled style={{
-                                                                    width: "67px", height: "31px", borderRadius: "8px", padding: "0px 8px", backgroundColor: "#7a26bf", color: "white", border: "none"
+                                                                    width: "67px", height: "31px", padding: "0px 8px", backgroundColor: "#7a26bf", color: "white", border: "none"
                                                                 }}>
                                                                     <option value="" selected="">Add</option>
                                                                 </select>
                                                                 :
                                                                 <button disabled style={{
-                                                                    width: "67px", height: "31px", borderRadius: "8px", padding: "0px 8px", backgroundColor: "#7a26bf", color: "white", border: "none"
+                                                                    width: "67px", height: "31px", padding: "0px 8px", backgroundColor: "#7a26bf", color: "white", border: "none"
                                                                 }}>Add</button>
                                                             }
                                                         </div>
@@ -310,10 +318,10 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                                 <div key={index}>
                                                     <div>
                                                         <div style={{ display: "flex" }}>
-                                                            <img src={value?.image} style={{ width: "60px", height: "60px", objectFit: "fill", borderRadius: "10px" }} />
-                                                            <div style={{ marginLeft: "10px" }}>
-                                                                <p>{value?.title}</p>
-                                                                <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
+                                                            <div className='xa_pro_img' style={{ backgroundImage: `url(${value?.image})` }} />
+                                                            <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.9rem" }}>
+                                                                <p style={{ fontSize: "16px", fontWeight: 500 }}>{value?.title}</p>
+                                                                <p style={{ fontSize: "16px" }}>$50.00</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -325,16 +333,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                                 </div>
                                             ))}
                                         </div>
-                                        <button disabled style={{
-                                            backgroundColor: "rgb(122, 38, 191)",
-                                            border: "none",
-                                            color: "rgb(255, 255, 255)",
-                                            fontSize: "18px",
-                                            cursor: "pointer",
-                                            borderRadius: "10px",
-                                            width: "100%",
-                                            padding: "10px 5px",
-                                        }}>Add to cart</button>
+                                        <button disabled className="xa_cart_btn">Add to cart</button>
                                         <div style={{ fontSize: "15px", fontWeight: "500" }} dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }} />
                                     </div>
                                 </>

@@ -438,7 +438,7 @@ function BundleTable() {
                                                     toggleViewActiveFor(bundle_id);
                                                 } else {
                                                     if (bundle_subtype === "all_product") {
-                                                        window.open(`https://${shopName}/products/${url}`, '_blank')
+                                                        window.open(`https://${shopName}/${url}`, '_blank')
                                                     } else {
                                                         window.open(`https://${shopName}/?id=${bundle_id}`, '_blank')
                                                     }
@@ -465,7 +465,7 @@ function BundleTable() {
                                                     {
                                                         content: 'Include product page', onAction: () => {
                                                             toggleViewActiveFor(bundle_id);
-                                                            window.open(`https://${shopName}/products/${url}`, '_blank')
+                                                            window.open(`https://${shopName}/${url}`, '_blank')
                                                         }
                                                     },
                                                 ]}

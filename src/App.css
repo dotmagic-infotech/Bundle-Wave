@@ -74,6 +74,36 @@
     transition: all 0.3s ease;
 }
 
+.xa_product_img {
+    width: 60px;
+    height: 60px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #EEE;
+    border: 1px solid #CBCBCB;
+}
+
+.xa_pro_img {
+    width: 72px;
+    height: 72px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #EEE;
+    border: 1px solid #CBCBCB;
+}
+
+.xa_cart_btn {
+    background-color: rgb(122, 38, 191);
+    border: none;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    padding: 8px 5px;
+}
+
 /* Hide on mobile screens */
 @media screen and (max-width: 768px) {
     .contact-button {
@@ -115,8 +145,8 @@
     z-index: 2147483000;
     padding: 20px;
     transform-origin: right bottom;
-    height: 100%; 
-    width: 100%; 
+    height: 100%;
+    width: 100%;
     border-radius: 16px;
     overflow: auto;
     scrollbar-width: thin;
@@ -175,6 +205,6 @@
     padding: 10px;
     font-weight: 600;
     cursor: pointer;
-    width: 100%; 
+    width: 100%;
     transition: background-color 0.2s ease;
 }

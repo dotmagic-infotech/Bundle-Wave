@@ -274,7 +274,7 @@ const BundleFixed = () => {
                 },
                 {
                   content: 'Include product page',
-                  onAction: () => window.open(`https://${shopName}/products/${data?.url}`, '_blank'),
+                  onAction: () => window.open(`https://${shopName}/${data?.url}`, '_blank'),
                 },
               ],
             },

@@ -45,7 +45,6 @@ function BundleMixMatch() {
     discount_value: "10",
     bundle_description: "",
     bundle_subtype: "Single",
-    page_type: "new_page",
     start_time: "12:00 AM",
     end_time: "12:00 PM",
     endTime_status: "0",
@@ -95,7 +94,6 @@ function BundleMixMatch() {
         discount_option_id: selectedOption ? selectedOption.id : "selCollectionTired1",
         discount_value: data.discount_value,
         bundle_subtype: data.bundle_subtype,
-        page_type: data?.page_type,
         status: data.status,
         sections: data.sections,
         bundle_name: data.bundle_name,
@@ -104,7 +102,6 @@ function BundleMixMatch() {
         endTime_status: data.endTime_status,
         start_time: data.start_time,
         end_time: data?.end_time,
-        show_action: data?.page_type,
         url: data?.url
       });
     } catch (error) {
@@ -240,7 +237,6 @@ function BundleMixMatch() {
       const formData = new FormData();
       formData.append("bundle_subtype", data.bundle_subtype);
       formData.append("discount_option_id", data.discount_option_id || 1);
-      formData.append("page_type", data.page_type);
       formData.append("discount_value", data.discount_value);
       formData.append("bundle_name", data.bundle_name);
       formData.append("discount_label", data.discount_label);
@@ -358,7 +354,7 @@ function BundleMixMatch() {
                 },
                 {
                   content: 'Include product page',
-                  onAction: () => window.open(`https://${shopName}/products/${data?.url}`, '_blank'),
+                  onAction: () => window.open(`https://${shopName}/${data?.url}`, '_blank'),
                 },
               ],
             },
@@ -797,7 +793,7 @@ function BundleMixMatch() {
 
                                   return (
                                     <div key={index}>
-                                      <div style={{ display: "flex", padding: "15px 10px" }}>
+                                      <div style={{ display: "flex", padding: "10px" }}>
                                         <div style={{ cursor: "pointer", display: 'flex' }}>
                                           {selectedFirst === "" ?
                                             <Button icon={ChevronRightIcon} variant="plain" onClick={() => setSelectedFirst(index)}></Button>
@@ -805,10 +801,10 @@ function BundleMixMatch() {
                                             <Button icon={ChevronDownIcon} variant="plain" onClick={() => setSelectedFirst("")}></Button>
                                           }
                                         </div>
-                                        <img src={sectionImg} width="60" height="60" style={{ marginLeft: "10px" }} />
-                                        <div style={{ marginLeft: "10px" }}>
-                                          <p>{value?.sectionTitle || value?.collection[0]?.title}</p>
-                                          <p style={{ marginTop: '5px', fontWeight: "500" }}>{value?.discription}</p>
+                                        <div className='xa_product_img' style={{ backgroundImage: `url(${sectionImg})`, marginLeft: "10px" }}></div>
+                                        <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
+                                          <p style={{ fontWeight: "500" }}>{value?.sectionTitle || value?.collection[0]?.title}</p>
+                                          <span>{value?.discription}</span>
                                         </div>
                                       </div>
                                       <div style={{ margin: "0px 10px" }}>
@@ -819,15 +815,11 @@ function BundleMixMatch() {
                                           {value.products?.length > 0 && value.products.map((product, index) => (
                                             <div key={index}>
                                               <div style={{ display: "flex", padding: "15px 10px" }}>
-                                                <img
-                                                  src={product?.image}
-                                                  alt={product?.title}
-                                                  width="60" height="60"
-                                                  style={{ marginLeft: "10px" }}
-                                                />
-                                                <div style={{ marginLeft: "10px" }}>Sections
-                                                  <p>{product?.title}</p>
-                                                  <p style={{ marginTop: '5px', fontWeight: "500" }}>${product?.variants[0]?.price}</p>
+                                                <div className='xa_product_img' style={{ backgroundImage: `url(${product?.image})`, marginLeft: "10px" }}></div>
+
+                                                <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
+                                                  <p style={{ fontWeight: "500" }}>{product?.title}</p>
+                                                  <span>${product?.variants[0]?.price}</span>
                                                 </div>
                                               </div>
                                               {index !== value.products.length - 1 && (
@@ -838,13 +830,10 @@ function BundleMixMatch() {
                                           {value.collection?.length > 0 && value.collection.map((product, index) => (
                                             <div key={index}>
                                               <div style={{ display: "flex", padding: "15px 10px" }}>
-                                                <img src={product?.image} alt={product?.title}
-                                                  width="60" height="60"
-                                                  style={{ marginLeft: "10px" }}
-                                                />
-                                                <div style={{ marginLeft: "10px" }}>
-                                                  <p>{product?.title}</p>
-                                                  <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
+                                                <div className='xa_product_img' style={{ backgroundImage: `url(${product?.image})`, marginLeft: "10px" }}></div>
+                                                <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
+                                                  <p style={{ fontWeight: "500" }}>{product?.title}</p>
+                                                  <span>$50.00</span>
                                                 </div>
                                               </div>
                                               {index !== value.collection?.length - 1 && (
@@ -892,7 +881,7 @@ function BundleMixMatch() {
                                     <div key={index}>
                                       <div>
                                         <div style={{ display: "flex" }}>
-                                          <img src={value?.image} style={{ width: "60px", height: "60px" }} />
+                                          <div className='xa_product_img' style={{ backgroundImage: `url(${value?.image})` }}></div>
                                           <div style={{ marginLeft: "10px" }}>
                                             <p>{value?.title}</p>
                                             <p style={{ marginTop: '5px', fontWeight: "500" }}>${value?.variants[0]?.price}</p>
@@ -910,7 +899,7 @@ function BundleMixMatch() {
                                     <div key={index}>
                                       <div>
                                         <div style={{ display: "flex" }}>
-                                          <img src={value?.image} style={{ width: "60px", height: "60px" }} />
+                                          <div className='xa_product_img' style={{ backgroundImage: `url(${value?.image})` }}></div>
                                           <div style={{ marginLeft: "10px" }}>
                                             <p>{value?.title}</p>
                                             <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
