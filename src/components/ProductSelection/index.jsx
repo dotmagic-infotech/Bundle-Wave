@@ -7,6 +7,8 @@ import { SearchIcon, XIcon } from "@shopify/polaris-icons";
 
 // Custom Component
 import { MetaContext } from "../MetaDataContext/MetaDataProvider";
+import { useFetchWithToken } from "../FetchDataAPIs/FetchWithToken";
+import { normalizeProduct } from "../../assets/helpers";
 
 const ProductSelection = ({
     title,
@@ -23,6 +25,7 @@ const ProductSelection = ({
 
     // Hooks
     const { metaData } = useContext(MetaContext);
+    const fetchWithToken = useFetchWithToken();
 
     // State
     const [popoverTired, setPopoverTired] = useState(false);
@@ -72,6 +75,40 @@ const ProductSelection = ({
         });
         setSelectedCollections(collectionData || []);
         shopify.saveBar.show('save');
+
+        for (const col of collectionData) {
+            if (col.id) await fetchProductsForCollection(col.id);
+        }
+    };
+
+    const fetchProductsForCollection = async (collectionGid) => {
+        try {
+            if (!collectionGid) return;
+
+            const res = await fetchWithToken({
+                url: `https://bundle-wave-backend.xavierapps.com/api/get_product`,
+                method: 'POST',
+                body: { collectionId: collectionGid },
+            });
+
+            const fetched = res?.data?.products || [];
+            const normalized = fetched.map(normalizeProduct).filter(p => p.id);
+
+            setSelectedCollections(prev => {
+                const found = prev?.some(c => String(c.id) === String(collectionGid));
+                if (found) {
+                    return prev.map(c =>
+                        String(c.id) === String(collectionGid)
+                            ? { ...c, products: normalized }
+                            : c
+                    );
+                } else {
+                    return [...(prev || []), { id: collectionGid, title: "", image: "", products: normalized }];
+                }
+            });
+        } catch (err) {
+            console.error("Failed to load products for collection:", err);
+        }
     };
 
     const handleVariantSelection = async (productId, productVariants, productName) => {
@@ -108,17 +145,8 @@ const ProductSelection = ({
             );
             shopify.saveBar.show('save')
         } catch (error) {
-            
-        }
-    };
 
-    const handleChangeItemValue = (productId, value) => {
-        shopify.saveBar.show("save")
-        setSelectedProducts((prev) =>
-            prev.map((product) =>
-                product.id === productId ? { ...product, product_count: Number(value) || 1 } : product
-            )
-        );
+        }
     };
 
     const handleRemoveItem = (id) => {

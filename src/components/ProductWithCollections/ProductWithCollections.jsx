@@ -10,6 +10,7 @@ import { MetaContext } from '../MetaDataContext/MetaDataProvider';
 import { useFetchWithToken } from '../FetchDataAPIs/FetchWithToken';
 import { ShopifyContext } from '../ShopifyProvider/ShopifyProvider';
 import SingleFileUploadDropZone from '../FileUploadDropZone/SingleFileUploadDropZone';
+import { normalizeProduct } from '../../assets/helpers';
 
 function ProductWithCollections({ sections, setSections }) {
 
@@ -303,61 +304,44 @@ function ProductWithCollections({ sections, setSections }) {
             if (!collections || collections.length === 0) return;
 
             const selectedCollection = collections[0];
-            const existingVariantIds = new Set();
+            const collectionGid = selectedCollection.id; // full GID
 
-            sections.forEach(section => {
-                if (section.products && Array.isArray(section.products)) {
-                    section.products.forEach(product => {
-                        product.variants.forEach(variant => {
-                            existingVariantIds.add(variant.id);
-                        });
-                    });
-                }
-            });
-
-            const collectionVariants = await fetchWithToken({
-                url: `https://bundle-wave-backend.xavierapps.com/api/collection_varients?shop=${shopName}`,
+            const res = await fetchWithToken({
+                url: `https://bundle-wave-backend.xavierapps.com/api/get_product`,
                 method: 'POST',
-                body: [selectedCollection.id.split('/').pop()],
-                isFormData: false,
+                body: { collectionId: collectionGid },
             });
 
-            const hasDuplicateVariant = collectionVariants.some(obj =>
-                existingVariantIds.has(obj.id)
-            );
+            const fetched = res?.data?.products || [];
 
-            if (hasDuplicateVariant) {
-                shopify.toast.show(`${selectedCollection.title} products already added. Please choose another collection.`, {
-                    isError: true,
-                    duration: 5000
-                });
-                return;
-            }
+            const normalizedProducts = (fetched.map(normalizeProduct) || []).filter(p => p.id);
 
             const collectionData = {
-                id: selectedCollection.id,
+                id: collectionGid,
                 title: selectedCollection.title,
-                image: selectedCollection.image ? selectedCollection.image.originalSrc : null,
+                image: selectedCollection.image?.originalSrc || null,
+                products: normalizedProducts,
             };
 
             const newSection = {
-                collection: [collectionData],
-                quantity: "1",
-                discountRequirement: "exact_quantity",
-                discription: "Collections Description",
                 id: Date.now(),
+                collection: [collectionData],
+                quantity: '1',
+                discountRequirement: 'exact_quantity',
+                discription: 'Collections Description',
+                media: null,
             };
 
             setSections(prevSections => {
                 const updated = [...prevSections, newSection];
                 setOpen(updated.length - 1);
-
                 return updated;
             });
 
+            shopify.toast.show('Collection added.', { isError: false, duration: 4000 });
             shopify.saveBar.show('save');
         } catch (error) {
-            // console.error("Error In Collection NOT Found", error);
+            console.error('Error adding collection:', error);
         }
     };
 

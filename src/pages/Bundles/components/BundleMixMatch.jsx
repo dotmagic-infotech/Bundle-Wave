@@ -251,11 +251,51 @@ function BundleMixMatch() {
       formData.append("endTime_status", data.endTime_status || "0");
       formData.append("old_media", JSON.stringify(media));
 
+      const sanitizeVariant = (v) => ({
+        id: v.id,
+        title: v.title ?? v.name ?? "",
+        price: v.price ?? v.amount ?? null,
+        availableForSale: v.availableForSale ?? true,
+        compare_price: v.compare_price ?? v.compareAtPrice ?? null,
+        selectedOptions: v.selectedOptions ?? [],
+        image: typeof v.image === "string" ? v.image : null,
+      });
+
+      const sanitizeProduct = (p) => ({
+        id: p.id,
+        title: p.title ?? "",
+        options: p.options ?? [],
+        variants: Array.isArray(p.variants) ? p.variants.map(sanitizeVariant) : [],
+        image: typeof p.image === "string" ? p.image : null,
+        hasOnlyDefaultVariant: p.hasOnlyDefaultVariant ?? p.hasOnlyDefaultVariant === false ? "0" : "1",
+      });
+
+      const sanitizeCollection = (c) => ({
+        id: c.id,
+        title: c.title ?? "",
+        image: typeof c.image === "string" ? c.image : null,
+      });
+
       // Append SECTIONS as JSON WITHOUT the image blobs
       const sectionsToSend = sections.map((section, index) => {
         const { sectionImage, ...rest } = section;
-        return rest;
+        // return rest;
+
+        return {
+          // copy primitive props from section (adjust fields you need)
+          id: rest.id,
+          sectionTitle: rest.sectionTitle ?? null,
+          discription: rest.discription ?? null,
+          quantity: rest.quantity ?? null,
+          minimum: rest.minimum ?? null,
+          maximum: rest.maximum ?? null,
+          discountRequirement: rest.discountRequirement ?? null,
+          media: typeof rest.media === "string" ? rest.media : null,
+          products: Array.isArray(rest.products) ? rest.products.map(sanitizeProduct) : [],
+          collection: Array.isArray(rest.collection) ? rest.collection.map(sanitizeCollection) : [],
+        };
       });
+
       formData.append("sections", JSON.stringify(sectionsToSend));
 
       // Attach section images as binary
@@ -272,7 +312,13 @@ function BundleMixMatch() {
       });
 
       formData.append("products", JSON.stringify(selProductsTired));
-      formData.append("collections", JSON.stringify(selCollectionTired));
+      formData.append("collections", JSON.stringify(
+        selCollectionTired?.length > 0 ? selCollectionTired.map(c => ({
+          id: c.id,
+          title: c.title,
+          image: c.image
+        })) : []
+      ));
       formData.append("tiered_discount_options", JSON.stringify(discountOption));
 
       if (files?.length > 0) {
@@ -299,7 +345,6 @@ function BundleMixMatch() {
       });
 
       if (result.status) {
-        // navigate("/bundles");
         navigate(`/bundlesList/mix-match/edit/${result?.id}`)
         fetchBundleDetails(result?.id);
         shopify.loading(false);
@@ -788,66 +833,76 @@ function BundleMixMatch() {
                               <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
                                 {sections.map((value, index) => {
                                   const sectionImg = getSectionImage(value);
+                                  const collection0 = value?.collection?.[0]; // safe reference
+                                  const sectionTitle = value?.sectionTitle || collection0?.title || '';
+                                  const sectionDescription = value?.discription || '';
+
+                                  // product arrays (safe)
+                                  const products = value?.products || [];
+                                  const collectionProducts = collection0?.products || [];
 
                                   return (
-                                    <div key={index}>
+                                    <div key={value?.id ?? index}>
                                       <div style={{ display: "flex", padding: "10px" }}>
                                         <div style={{ cursor: "pointer", display: 'flex' }}>
-                                          {selectedFirst === "" ?
-                                            <Button icon={ChevronRightIcon} variant="plain" onClick={() => setSelectedFirst(index)}></Button>
-                                            :
-                                            <Button icon={ChevronDownIcon} variant="plain" onClick={() => setSelectedFirst("")}></Button>
-                                          }
+                                          {selectedFirst === index ? (
+                                            <Button icon={ChevronDownIcon} variant="plain" onClick={() => setSelectedFirst(null)} />
+                                          ) : (
+                                            <Button icon={ChevronRightIcon} variant="plain" onClick={() => setSelectedFirst(index)} />
+                                          )}
                                         </div>
-                                        <div className='xa_product_img' style={{ backgroundImage: `url(${sectionImg})`, marginLeft: "10px" }}></div>
+
+                                        <div
+                                          className='xa_product_img'
+                                          style={{
+                                            backgroundImage: `url(${sectionImg})`,
+                                            marginLeft: "10px"
+                                          }}
+                                        />
+
                                         <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
-                                          <p style={{ fontWeight: "500" }}>{value?.sectionTitle || value?.collection[0]?.title}</p>
-                                          <span>{value?.discription}</span>
+                                          <p style={{ fontWeight: "500" }}>{sectionTitle}</p>
+                                          <span>{sectionDescription}</span>
                                         </div>
                                       </div>
+
                                       <div style={{ margin: "0px 10px" }}>
                                         <Divider />
                                       </div>
-                                      {selectedFirst === index &&
-                                        <div>
-                                          {value.products?.length > 0 && value.products.map((product, index) => (
-                                            <div key={index}>
-                                              <div style={{ display: "flex", padding: "15px 10px" }}>
-                                                <div className='xa_product_img' style={{ backgroundImage: `url(${product?.image})`, marginLeft: "10px" }}></div>
 
+                                      {selectedFirst === index && (
+                                        <div>
+                                          {products.length > 0 && products.map((product, pIndex) => (
+                                            <div key={product?.id ?? `p-${pIndex}`}>
+                                              <div style={{ display: "flex", padding: "15px 10px" }}>
+                                                <div className='xa_product_img' style={{ backgroundImage: `url(${product?.image})`, marginLeft: "10px" }} />
                                                 <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
-                                                  <p style={{ fontWeight: "500" }}>{product?.title}</p>
-                                                  <span>${product?.variants[0]?.price}</span>
+                                                  <p style={{ fontWeight: "500", lineHeight: 'normal' }}>{product?.title}</p>
+                                                  <span>${product?.variants?.[0]?.price ?? ''}</span>
                                                 </div>
                                               </div>
-                                              {index !== value.products.length - 1 && (
-                                                <div><Divider /></div>
-                                              )}
+                                              {pIndex !== products.length - 1 && <Divider />}
                                             </div>
                                           ))}
-                                          {value.collection?.length > 0 && value.collection.map((product, index) => (
-                                            <div key={index}>
+
+                                          {collectionProducts.length > 0 && collectionProducts.map((product, cIndex) => (
+                                            <div key={product?.id ?? `c-${cIndex}`}>
                                               <div style={{ display: "flex", padding: "15px 10px" }}>
-                                                <div className='xa_product_img' style={{ backgroundImage: `url(${product?.image})`, marginLeft: "10px" }}></div>
+                                                <div className='xa_product_img' style={{ backgroundImage: `url(${product?.image})`, marginLeft: "10px" }} />
                                                 <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
-                                                  <p style={{ fontWeight: "500" }}>{product?.title}</p>
-                                                  <span>$50.00</span>
+                                                  <p style={{ fontWeight: "500", lineHeight: 'normal' }}>{product?.title}</p>
+                                                  <span>${product?.variants?.[0]?.price ?? ''}</span>
                                                 </div>
                                               </div>
-                                              {index !== value.collection?.length - 1 && (
-                                                <div>
-                                                  <Divider />
-                                                </div>
-                                              )}
+                                              {cIndex !== collectionProducts.length - 1 && <Divider />}
                                             </div>
                                           ))}
                                         </div>
-                                      }
-                                      {index !== sections.length - 1 && (
-                                        <div><Divider /></div>
                                       )}
+
+                                      {index !== sections.length - 1 && <Divider />}
                                     </div>
-                                  )
+                                  );
                                 })}
                               </div>
                               <div style={{ fontSize: "15px", fontWeight: "500", marginTop: "15px" }} dangerouslySetInnerHTML={{ __html: data?.bundle_description || "" }} />
@@ -893,18 +948,18 @@ function BundleMixMatch() {
                                       )}
                                     </div>
                                   ))}
-                                  {selCollectionTired?.length > 0 && selCollectionTired?.map((value, index) => (
+                                  {selCollectionTired[0]?.products?.length > 0 && selCollectionTired[0]?.products?.map((value, index) => (
                                     <div key={index}>
                                       <div>
                                         <div style={{ display: "flex" }}>
                                           <div className='xa_product_img' style={{ backgroundImage: `url(${value?.image})` }}></div>
-                                          <div style={{ marginLeft: "10px" }}>
-                                            <p>{value?.title}</p>
-                                            <p style={{ marginTop: '5px', fontWeight: "500" }}>$50.00</p>
+                                          <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
+                                            <p style={{ fontWeight: "500", lineHeight: 'normal' }}>{value?.title}</p>
+                                            <p>${value?.variants[0]?.price}</p>
                                           </div>
                                         </div>
                                       </div>
-                                      {index !== selCollectionTired?.length - 1 && (
+                                      {index !== selCollectionTired[0]?.products?.length - 1 && (
                                         <div style={{ margin: "15px 10px" }}>
                                           <Divider />
                                         </div>
