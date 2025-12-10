@@ -38,7 +38,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
 
             return Data;
         } else if (bundle_type_id === "5") {
-            return (products.length === 0 || collections.length === 0) && secondCollection.length === 0;
+            return (products.length === 0 || (collections.length === 0 && secondCollection.length === 0));
         } else if (bundle_type_id === "6") {
             return products.length === 0;
         }
@@ -52,6 +52,11 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
         if (section?.sectionImage?.length > 0) return section.sectionImage[0];
         return "";
     };
+
+    const variantList =
+        products?.[0]?.variants?.length > 0
+            ? products[0].variants
+            : collections?.[0]?.products?.[0]?.variants || [];
 
     const renderBundle = () => {
         switch (bundle_type_id) {
@@ -220,7 +225,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                                                             }
                                                                         </div>
                                                                     </div>
-                                                                        {pIndex !== products.length - 1 && <Divider />}
+                                                                    {pIndex !== products.length - 1 && <Divider />}
                                                                 </div>
                                                             ))}
 
@@ -443,18 +448,17 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                     <div style={{ height: '500px', display: "flex", padding: "20px" }}>
                         <div style={{ width: "50%" }}>
                             <img
-                                src={products[0]?.image || collections[0]?.image}
+                                src={products[0]?.image || collections?.[0]?.products?.[0]?.image}
                                 style={{ width: "100%", height: "470px", }}
                             />
                         </div>
                         <div style={{ width: "50%", paddingLeft: "20px" }}>
-                            <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>{products[0]?.title || collections[0]?.title}</p>
+                            <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>{products[0]?.title || collections?.[0]?.products?.[0]?.title}</p>
 
-                            {products[0]?.variants?.length > 1 &&
+                            {products[0]?.variants?.length > 1 || collections?.[0]?.products?.[0]?.variants?.length > 1 &&
                                 <div style={{ marginTop: "18px" }}>
-                                    <p style={{ fontSize: "14px", fontWeight: 400, color: "black", margin: "4px 0px", }}>Denominations</p>
                                     <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-                                        {products[0]?.variants.map((value, index) => (
+                                        {(products[0]?.variants || collections?.[0]?.products?.[0]?.variants).map((value, index) => (
                                             <div key={index} style={{ lineHeight: "normal", cursor: "pointer", backgroundColor: index === 0 ? "#7a26bf" : "", color: index === 0 ? "white" : "", border: `1px solid #7a26bf`, padding: "8px 10px", borderRadius: "10px" }}>
                                                 {value?.title}
                                             </div>
@@ -467,7 +471,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
 
                             <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
                                 {discountOptions.map((value, index) => {
-                                    const total = getTotalPrice(products).toFixed(2);
+                                    const total = type === "specific_product" ? getTotalPrice(products).toFixed(2) : getTotalPrice([collections?.[0]?.products?.[0]]).toFixed(2);
                                     const multiplyPrice = total * value?.required_items
                                     const { discountPrice, finalPrice } = getDiscountAndFinal(value?.type, multiplyPrice, value?.discount_value);
 
@@ -516,7 +520,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                             {data?.bundle_subtype === "specific_product" ? (
                                 <img src={products[0]?.image} style={{ width: "100%", height: "465px", }} />
                             ) : (
-                                <img src="https://bundle-wave-backend.xavierapps.com/assets/bundles/placeholderImage.jpeg" style={{ width: "100%", height: "465px", }} />
+                                <img src={collections[0]?.products?.[0]?.image} style={{ width: "100%", height: "465px", }} />
                             )}
                             {data?.bundle_subtype === "specific_product" && (
                                 <div style={{ display: "flex", gap: "10px" }}>
@@ -539,11 +543,33 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                             {data?.bundle_subtype === "specific_product" ? (
                                 <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{products[0]?.title}</p>
                             ) : (
-                                <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>Product title</p>
+                                <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{collections?.[0]?.products[0]?.title}</p>
                             )}
                             {products?.length > 0 &&
                                 <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{`$${products[0]?.variants[0]?.price}`}</p>
                             }
+
+                            {variantList.length > 1 && (
+                                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                                    {variantList.map((value, index) => (
+                                        <div
+                                            key={index}
+                                            style={{
+                                                lineHeight: "normal",
+                                                cursor: "pointer",
+                                                backgroundColor: index === 0 ? "#7a26bf" : "",
+                                                color: index === 0 ? "white" : "",
+                                                border: `1px solid #7a26bf`,
+                                                padding: "8px 10px",
+                                                borderRadius: "10px",
+                                            }}
+                                        >
+                                            {value?.title}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
                             <p>{data?.bundle_description}</p>
                             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                                 <p style={{ fontSize: "18px", fontWeight: 500, color: "black" }}>{data?.bundle_title}</p>

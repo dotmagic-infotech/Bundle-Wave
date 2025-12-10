@@ -22,6 +22,7 @@ import WidgetModal from '../../../components/WidgetModal/WidgetModal'
 import PageSkeleton from '../../../components/PageSkeleton'
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken'
 import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider'
+import { normalizeProduct } from '../../../assets/helpers'
 
 const BundleAddons = () => {
 
@@ -162,22 +163,36 @@ const BundleAddons = () => {
 
   const handleBrowseCollections = async () => {
     try {
-      const collection = await shopify.resourcePicker({
+      const picker = await shopify.resourcePicker({
         type: "collection",
         multiple: false,
         selectionIds: selectedCollections,
       });
 
-      const collectionData = collection.selection.map((item) => ({
+      const picked = (picker.selection || []).map(item => ({
         id: item.id,
         title: item.title,
         image: item.image?.originalSrc || "",
       }));
 
-      setSelectedCollections(collectionData);
+      if (picked.length === 0) {
+        setSelectedCollections([]);
+        shopify.saveBar.show("save");
+        return;
+      }
+
+      const col = picked[0];
+      const res = await fetchWithToken({
+        url: "https://bundle-wave-backend.xavierapps.com/api/get_product",
+        method: "POST",
+        body: { collectionId: col.id },
+      });
+      const products = (res?.data?.products || []).map(normalizeProduct).filter(p => p.id);
+      setSelectedCollections([{ ...col, products }]);
+
       shopify.saveBar.show("save");
-    } catch (error) {
-      console.error("Error selecting collection:", error);
+    } catch (err) {
+      console.error("Error selecting collection:", err);
     }
   };
 
@@ -278,7 +293,11 @@ const BundleAddons = () => {
       }
 
       if (data?.bundle_subtype === "specific_collection") {
-        passData.collections = selectedCollections;
+        passData.collections = selectedCollections?.length > 0 ? selectedCollections.map(c => ({
+          id: c.id,
+          title: c.title,
+          image: c.image
+        })) : [];
         passData.products = [];
       } else if (data?.bundle_subtype === "specific_product") {
         passData.products = selectedProducts;
@@ -839,17 +858,20 @@ const BundleAddons = () => {
                           {data?.bundle_subtype === "specific_product" ? (
                             <img src={selectedProducts[0]?.image} style={{ width: "100%", height: "290px", objectFit: "cover" }} />
                           ) : (
-                            <img src="https://bundle-wave-backend.xavierapps.com/assets/bundles/placeholderImage.jpeg" style={{ width: "100%", height: "290px", objectFit: "cover" }} />
+                            <img src={selectedCollections?.[0]?.products?.[0]?.image} style={{ width: "100%", height: "290px", objectFit: "cover" }} />
                           )}
                         </div>
                         <div style={{ width: "100%" }}>
                           {data?.bundle_subtype === "specific_product" ? (
                             <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{selectedProducts[0]?.title}</p>
                           ) : (
-                            <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>Product title</p>
+                            <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{selectedCollections?.[0]?.products[0]?.title}</p>
                           )}
                           {selectedProducts?.length > 0 &&
                             <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{`$${selectedProducts[0]?.variants[0]?.price}`}</p>
+                          }
+                          {selectedCollections?.length > 0 &&
+                            <p style={{ marginTop: '10px', fontSize: "1.3rem", fontWeight: "500", marginBottom: "5px" }}>{`$${selectedCollections?.[0]?.products[0]?.variants[0]?.price}`}</p>
                           }
                           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: '10px', marginBottom: "5px" }}>
                             <p style={{ fontSize: "1rem", fontWeight: "500" }}>{data?.bundle_title}</p>

@@ -21,7 +21,7 @@ import YoutubeVideo from '../../../components/YoutubeVideo/YoutubeVideo';
 import PageSkeleton from '../../../components/PageSkeleton';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
 import WidgetModal from '../../../components/WidgetModal/WidgetModal';
-import { getDiscountAndFinal, getTotalPrice } from '../../../assets/helpers';
+import { getDiscountAndFinal, getTotalPrice, normalizeProduct } from '../../../assets/helpers';
 import { ShopifyContext } from '../../../components/ShopifyProvider/ShopifyProvider';
 
 const BundleVolume = () => {
@@ -109,7 +109,7 @@ const BundleVolume = () => {
   const toggleVideoModal = () => setVideoModalOpen(prev => !prev);
   const toggleWidgetModal = () => setWidgetModalOpen(prev => !prev);
 
-  const total = getTotalPrice(selectedProducts).toFixed(2);
+  const total = data?.bundle_subtype === "specific_product" ? getTotalPrice(selectedProducts).toFixed(2) : getTotalPrice([selectedCollections?.[0]?.products?.[0]]).toFixed(2);
 
   const handleChangeValue = (key, value) => {
     setData((prevData) => ({
@@ -183,22 +183,38 @@ const BundleVolume = () => {
 
   const handleBrowseCollections = async () => {
     try {
-      const collection = await shopify.resourcePicker({
+      const picker = await shopify.resourcePicker({
         type: "collection",
         multiple: false,
         selectionIds: selectedCollections,
       });
 
-      const collectionData = collection.selection.map((item) => ({
+      const picked = (picker.selection || []).map(item => ({
         id: item.id,
         title: item.title,
         image: item.image?.originalSrc || "",
       }));
 
-      setSelectedCollections(collectionData);
+      if (picked.length === 0) {
+        setSelectedCollections([]);
+        shopify.saveBar.show("save");
+        return;
+      }
+
+      const col = picked[0];
+      const res = await fetchWithToken({
+        url: "https://bundle-wave-backend.xavierapps.com/api/get_product",
+        method: "POST",
+        body: { collectionId: col.id },
+      });
+      const products = (res?.data?.products || []).map(normalizeProduct).filter(p => p.id);
+
+      // **Replace** previous collections with the newly picked one
+      setSelectedCollections([{ ...col, products }]);
+
       shopify.saveBar.show("save");
-    } catch (error) {
-      console.error("Error selecting collection:", error);
+    } catch (err) {
+      console.error("Error selecting collection:", err);
     }
   };
 
@@ -273,7 +289,13 @@ const BundleVolume = () => {
       formData.append("status", data.status || "Draft");
       formData.append("bundle_type_id", 4);
       formData.append("products", JSON.stringify(selectedProducts));
-      formData.append("collections", JSON.stringify(selectedCollections));
+      formData.append("collections", JSON.stringify(
+        selectedCollections?.length > 0 ? selectedCollections.map(c => ({
+          id: c.id,
+          title: c.title,
+          image: c.image
+        })) : []
+      ));
 
       if (data.endTime_status === "1") {
         formData.append("end_date", formatDate(selectedDates.end));
@@ -295,7 +317,6 @@ const BundleVolume = () => {
       });
 
       if (result.status) {
-        // navigate("/bundles");
         navigate(`/bundlesList/volume_bundle/edit/${result?.id}`)
         fetchBundleDetails(result?.id);
         shopify.loading(false);
@@ -732,58 +753,68 @@ const BundleVolume = () => {
                 <Card>
                   <BlockStack gap="300">
                     <Text as="span" variant="headingMd">Bundle preview</Text>
-                    {(data?.bundle_subtype === "specific_product"
-                      ? selectedProducts?.length > 0
-                      : selectedCollections?.length > 0
-                    ) && (
-                        <div style={{ maxHeight: '500px', overflowX: "auto", display: "flex", flexDirection: "column", scrollbarWidth: "none" }}>
-                          <div style={{ width: "100%" }}>
-                            {data?.bundle_info &&
-                              <p style={{ marginBottom: '10px', fontSize: "1rem", fontWeight: "500" }}>{data?.bundle_info}</p>
-                            }
-                            <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-                              {discountOption.map((value, index) => {
-                                const total = getTotalPrice(selectedProducts).toFixed(2);
-                                const multiplyPrice = total * value?.required_items
-                                const { discountPrice, finalPrice } = getDiscountAndFinal(value?.type, multiplyPrice, value?.discount_value);
+                    {(data?.bundle_subtype === "specific_product" ? selectedProducts?.length > 0 : selectedCollections?.length > 0) && (
+                      <div style={{ maxHeight: '500px', overflowX: "auto", display: "flex", flexDirection: "column", scrollbarWidth: "none" }}>
+                        <div style={{ width: "100%" }}>
+                          {data?.bundle_subtype === "specific_product" ? (
+                            <>
+                              <img src={selectedProducts?.[0]?.image} style={{ width: "100%", height: "247px", objectFit: "cover" }} />
+                              <p style={{ marginTop: '10px', fontSize: "22px", fontWeight: "500", lineHeight: "1" }}>{selectedProducts?.[0]?.title}</p>
+                              <p style={{ marginTop: '10px', fontSize: "20px" }}>${selectedProducts?.[0]?.variants?.[0]?.price}</p>
+                            </>
+                          ) : (
+                            <>
+                              <img src={selectedCollections?.[0]?.products?.[0]?.image} style={{ width: "100%", height: "247px", objectFit: "cover" }} />
+                              <p style={{ marginTop: '10px', fontSize: "22px", fontWeight: "500", lineHeight: "1" }}>{selectedCollections?.[0]?.products?.[0]?.title}</p>
+                              <p style={{ marginTop: '10px', fontSize: "20px" }}>${selectedCollections?.[0]?.products?.[0]?.variants?.[0]?.price}</p>
+                            </>
+                          )}
+                          {data?.bundle_info &&
+                            <p style={{ marginBottom: '10px', fontSize: "1rem", fontWeight: "500", marginTop: "10px" }}>{data?.bundle_info}</p>
+                          }
+                          <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+                            {discountOption.map((value, index) => {
+                              const total = data?.bundle_subtype === "specific_product" ? getTotalPrice(selectedProducts) : getTotalPrice([selectedCollections?.[0]?.products?.[0]]);
+                              const multiplyPrice = total * value?.required_items
+                              const { discountPrice, finalPrice } = getDiscountAndFinal(value?.type, multiplyPrice, value?.discount_value);
 
-                                return (
-                                  <div key={index}>
-                                    <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "#7a26bf" : "black", borderRadius: "10px", padding: "20px 10px", position: "relative" }}>
-                                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", }}>
-                                        <div style={{ display: "flex", alignItems: "center", }}>
-                                          <RadioButton
-                                            checked={value?.selected_default === "1"}
-                                          />
-                                          <div style={{ display: "flex", gap: "0.5rem" }}>
-                                            <p style={{ fontWeight: "400" }}>
-                                              {value?.description}
-                                            </p>
-                                            {value?.Label &&
-                                              <p style={{ backgroundColor: "black", padding: "0px 8px", color: 'white', borderRadius: "10px", fontSize: "10px", maxWidth: "80px", height: "20px" }}>{value?.Label}</p>
-                                            }
-                                          </div>
-                                        </div>
-                                        <div>
-                                          <p style={{ fontWeight: "500", fontSize: "1rem" }}>${finalPrice}</p>
-                                          {value?.type !== "5" &&
-                                            <p style={{ fontWeight: "500", fontSize: "1rem", textDecoration: "line-through" }}>${multiplyPrice.toFixed(2)}</p>
+                              return (
+                                <div key={index}>
+                                  <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "#7a26bf" : "black", borderRadius: "10px", padding: "20px 10px", position: "relative" }}>
+                                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", }}>
+                                      <div style={{ display: "flex", alignItems: "center", }}>
+                                        <RadioButton
+                                          checked={value?.selected_default === "1"}
+                                        />
+                                        <div style={{ display: "flex", gap: "0.5rem" }}>
+                                          <p style={{ fontWeight: "400" }}>
+                                            {value?.description}
+                                          </p>
+                                          {value?.Label &&
+                                            <p style={{ backgroundColor: "black", padding: "0px 8px", color: 'white', borderRadius: "10px", fontSize: "10px", maxWidth: "80px", height: "20px" }}>{value?.Label}</p>
                                           }
                                         </div>
                                       </div>
-                                      {value?.Badge &&
-                                        <div style={{ backgroundColor: "#7a26bf", display: "flex", justifyContent: 'center', alignItems: "center", height: "20px", position: "absolute", right: "10px", top: "-10px", padding: '7px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
-                                          {value?.Badge}
-                                        </div>
-                                      }
+                                      <div>
+                                        <p style={{ fontWeight: "500", fontSize: "1rem" }}>${finalPrice}</p>
+                                        {value?.type !== "5" &&
+                                          <p style={{ fontWeight: "500", fontSize: "1rem", textDecoration: "line-through" }}>${multiplyPrice.toFixed(2)}</p>
+                                        }
+                                      </div>
                                     </div>
+                                    {value?.Badge &&
+                                      <div style={{ backgroundColor: "#7a26bf", display: "flex", justifyContent: 'center', alignItems: "center", height: "20px", position: "absolute", right: "10px", top: "-10px", padding: '7px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
+                                        {value?.Badge}
+                                      </div>
+                                    }
                                   </div>
-                                )
-                              })}
-                            </div>
+                                </div>
+                              )
+                            })}
                           </div>
                         </div>
-                      )}
+                      </div>
+                    )}
 
                     <BundlesPreview
                       bundle_type_id="4"
