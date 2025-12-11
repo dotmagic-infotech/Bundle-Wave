@@ -47,7 +47,7 @@ const BundleXY = () => {
     discount_label: "Buy X & Get Y Discount",
     discount_option_id: "1",
     url: "",
-    display_on: 'all_product',
+    display_on: 'specific_product',
   });
   const [errors, setErrors] = useState({});
   const [files, setFiles] = useState([]);
@@ -224,9 +224,6 @@ const BundleXY = () => {
     } else if (data?.bundle_subtype === "specific_collection") {
       if (collectionbuys.length === 0)
         errors.collectionbuys = "Select at least one item in Y products.";
-    } else if (data?.bundle_subtype === "all_product") {
-      if (productsgets.length === 0)
-        errors.productsgets = "Select at least one item in Y products.";
     }
 
     if (productsgets.length === 0)
@@ -306,14 +303,6 @@ const BundleXY = () => {
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
       } else {
         shopify.loading(false);
-        if (result.error_type === "all_product") {
-          setErrors({ all_product: `Only one "All Product" bundle is allowed per shop.` });
-        } else {
-          shopify.toast.show(result.message || `Failed to ${id ? "Update" : "Save"} Buy X Get Y Bundle`, {
-            isError: true,
-            duration: 8000
-          });
-        }
       }
     } catch {
       shopify.loading(false);
@@ -367,7 +356,7 @@ const BundleXY = () => {
         >
           <SaveBar id="save">
             <button variant="primary" onClick={handleSubmit}>Save</button>
-            <button variant="breadcrumb" onClick={() => {
+            <button onClick={() => {
               shopify.saveBar.hide('save');
               navigate("/bundles")
             }}></button>
@@ -386,16 +375,6 @@ const BundleXY = () => {
                     </BlockStack>
                     <InlineStack gap="200">
                       <div style={{ display: "flex", flexDirection: "column", width: '100%' }}>
-                        <RadioButton
-                          label="All products"
-                          checked={data.bundle_subtype === 'all_product'}
-                          id="all_product"
-                          onChange={() => {
-                            handleChangeValue("bundle_subtype", "all_product");
-                            setProductsbuys([]);
-                            setCollectionbuys([]);
-                          }}
-                        />
                         <RadioButton
                           label="Products in a specific collection"
                           id="specific_collection"
