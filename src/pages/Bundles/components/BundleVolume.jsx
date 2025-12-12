@@ -384,7 +384,7 @@ const BundleVolume = () => {
         >
           <SaveBar id="save">
             <button variant="primary" onClick={handleSubmit}>Save</button>
-            <button variant="breadcrumb" onClick={() => {
+            <button onClick={() => {
               shopify.saveBar.hide('save');
               navigate("/bundles")
             }}></button>
@@ -636,7 +636,7 @@ const BundleVolume = () => {
                       </BlockStack>
                       <InlineStack gap="200">
 
-                        {/* <div style={{ display: "flex", flexDirection: "column", marginTop: '10px' }}>
+                        <div style={{ display: "flex", flexDirection: "column", marginTop: '10px' }}>
                           <Checkbox
                             label="Let customers choose different variants for each item"
                             checked={data.different_variants === "1"}
@@ -647,14 +647,7 @@ const BundleVolume = () => {
                               }
                             }}
                           />
-                          {data?.different_variants === "1" &&
-                            <Checkbox
-                              label="Show theme variant picker"
-                              checked={data.theme_variant === "1"}
-                              onChange={(value) => handleChangeValue("theme_variant", value ? "1" : "0")}
-                            />
-                          }
-                        </div> */}
+                        </div>
                         {/* Discount */}
                         <div style={{ width: "100%" }}>
                           <Card>

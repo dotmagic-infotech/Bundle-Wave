@@ -163,6 +163,7 @@ const Plans = () => {
         shopify.toast.show("Plan cancelled successfully");
         fetchPlans();
         fetchSelectedPlans();
+        setIsSubscriptionActive(true);
       } else {
         shopify.toast.show("Failed to cancel plan");
       }

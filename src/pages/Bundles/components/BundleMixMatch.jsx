@@ -405,7 +405,7 @@ function BundleMixMatch() {
         >
           <SaveBar id="save">
             <button variant="primary" onClick={handleSubmit}>Save</button>
-            <button variant="breadcrumb" onClick={() => {
+            <button onClick={() => {
               shopify.saveBar.hide('save');
               navigate("/bundles")
             }}></button>
