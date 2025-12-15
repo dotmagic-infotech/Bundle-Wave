@@ -85,7 +85,8 @@ function Addons() {
                     <Select
                         label="Select Display"
                         options={[
-                            { label: "Main product page", value: "main_product_page" },
+                            { label: "Product page", value: "main_product_page" },
+                            { label: "Included Product Page", value: "included_product_page" },
                             { label: "Pop-up", value: "pop_up", },
                         ]}
                         value={data.selectDisplay.type}
@@ -445,68 +446,102 @@ function Addons() {
                             }}
                         >
                             {data.selectDisplay.type === "main_product_page" ? (
-                                <>
-                                    <div style={{ display: "flex", gap: "10px", margin: "12px 0px" }}>
-                                        <div style={{ maxWidth: "400px" }}>
+                                <div style={{ display: "flex", gap: "10px", margin: "12px 0px" }}>
+                                    <div style={{ maxWidth: "400px" }}>
+                                        <img
+                                            src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387"
+                                            width="100%"
+                                        />
+                                        <div style={{ display: "flex", gap: "0.2rem" }}>
                                             <img
-                                                src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387"
-                                                width="100%"
+                                                src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch5.jpg?v=1758271387"
+                                                width="80px"
+                                                height="80px"
                                             />
-                                            <div style={{ display: "flex", gap: "0.2rem" }}>
-                                                <img
-                                                    src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch5.jpg?v=1758271387"
-                                                    width="80px"
-                                                    height="80px"
-                                                />
-                                                <img
-                                                    src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch.webp?v=1758271387"
-                                                    width="80px"
-                                                    height="80px"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div style={{ width: "400px" }}>
-                                            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                                                <p style={{ fontSize: "25px", fontWeight: "700" }}>✨ Add-Ons Bundle</p>
-
-                                            </div>
-                                            <p style={{ fontSize: `${data?.title?.fontSize}`, fontWeight: `${data?.title?.fontWeight}`, margin: '10px 0px' }}>Complete your look with our exclusive add-ons! Pair your favorite earrings with matching styles for extra sparkle and savings.</p>
-                                            <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "10px 0px" }}>
-                                                <p style={{
-                                                    fontSize: `${8 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
-                                                        : data.tite_alignment.alignment === "center"
-                                                            ? "center"
-                                                            : "end"
-                                                }}>Product Add-ons</p>
-                                                <div style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, borderRadius: "5px", padding: "2px 7px" }}>20% OFF</div>
-                                            </div>
-                                            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                                                {product.map((imgSrc, index) => (
-                                                    <div key={index}>
-                                                        <div style={{ border: index === 0 ? `${data.border.borderWidth}px solid ${data.border.color}` : `${data.border.borderWidth}px solid black`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
-                                                            <div style={{ display: "flex", alignItems: "center", }}>
-                                                                <Checkbox checked={index === 0} />
-                                                                <img src={imgSrc?.image} style={{ width: "60px", height: "60px" }} />
-                                                                <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                                                                    <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.name}</p>
-                                                                    <div style={{ display: 'flex' }}>
-                                                                        <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.price}</p>
-                                                                        <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>{imgSrc?.oprice}</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <VariantItems variantType={data?.variants?.type} variant={imgSrc?.variant} data={data} />
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div style={{ display: "flex", justifyContent: "center" }}>
-                                                <button style={{ marginTop: "20px", backgroundColor: data?.button?.buttonColor, color: data.button.textColor, cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, border: "none", fontSize: "18px" }}>Add to cart</button>
-                                            </div>
+                                            <img
+                                                src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch.webp?v=1758271387"
+                                                width="80px"
+                                                height="80px"
+                                            />
                                         </div>
                                     </div>
-                                </>
+                                    <div style={{ width: "400px" }}>
+                                        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                                            <p style={{ fontSize: "25px", fontWeight: "700" }}>✨ Add-Ons Bundle</p>
+
+                                        </div>
+                                        <p style={{ fontSize: `${data?.title?.fontSize}`, fontWeight: `${data?.title?.fontWeight}`, margin: '10px 0px' }}>Complete your look with our exclusive add-ons! Pair your favorite earrings with matching styles for extra sparkle and savings.</p>
+                                        <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "10px 0px" }}>
+                                            <p style={{
+                                                fontSize: `${8 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
+                                                    : data.tite_alignment.alignment === "center"
+                                                        ? "center"
+                                                        : "end"
+                                            }}>Product Add-ons</p>
+                                            <div style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, borderRadius: "5px", padding: "2px 7px" }}>20% OFF</div>
+                                        </div>
+                                        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                                            {product.map((imgSrc, index) => (
+                                                <div key={index}>
+                                                    <div style={{ border: index === 0 ? `${data.border.borderWidth}px solid ${data.border.color}` : `${data.border.borderWidth}px solid black`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
+                                                        <div style={{ display: "flex", alignItems: "center", }}>
+                                                            <Checkbox checked={index === 0} />
+                                                            <img src={imgSrc?.image} style={{ width: "60px", height: "60px" }} />
+                                                            <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                                                                <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.name}</p>
+                                                                <div style={{ display: 'flex' }}>
+                                                                    <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.price}</p>
+                                                                    <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>{imgSrc?.oprice}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <VariantItems variantType={data?.variants?.type} variant={imgSrc?.variant} data={data} />
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div style={{ display: "flex", justifyContent: "center" }}>
+                                            <button style={{ marginTop: "20px", backgroundColor: data?.button?.buttonColor, color: data.button.textColor, cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, border: "none", fontSize: "18px" }}>Add to cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : data.selectDisplay.type === "included_product_page" ? (
+                                <div style={{ display: "flex", flexDirection: "column", width: "50%", border: `1px solid black`, padding: "12px", borderRadius: `8px`, }}>
+                                    <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+                                        <p style={{
+                                            fontSize: `${8 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
+                                                : data.tite_alignment.alignment === "center"
+                                                    ? "center"
+                                                    : "end"
+                                        }}>Product Add-ons</p>
+                                        <div style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, borderRadius: "5px", padding: "2px 7px" }}>20% OFF</div>
+                                    </div>
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                                        {product.map((imgSrc, index) => (
+                                            <div key={index}>
+                                                <div style={{ border: index === 0 ? `${data.border.borderWidth}px solid ${data.border.color}` : `${data.border.borderWidth}px solid black`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
+                                                    <div style={{ display: "flex", alignItems: "center", }}>
+                                                        <Checkbox checked={index === 0} />
+                                                        <img src={imgSrc?.image} style={{ width: "60px", height: "60px" }} />
+                                                        <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                                                            <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.name}</p>
+                                                            <div style={{ display: 'flex' }}>
+                                                                <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.price}</p>
+                                                                <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>{imgSrc?.oprice}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <VariantItems variantType={data?.variants?.type} variant={imgSrc?.variant} data={data} />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div style={{ display: "flex", justifyContent: "center" }}>
+                                        <button style={{ marginTop: "20px", backgroundColor: data?.button?.buttonColor, color: data.button.textColor, cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, border: "none", fontSize: "18px" }}>Add to cart</button>
+                                    </div>
+                                </div>
                             ) : data.selectDisplay.type === "pop_up" ? (
                                 <div style={{ backgroundColor: "white", borderRadius: "10px", padding: "10px", position: "relative" }}>
                                     <div style={{ display: "flex", alignItems: "center" }}>

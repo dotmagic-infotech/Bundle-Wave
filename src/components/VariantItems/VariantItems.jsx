@@ -5,11 +5,11 @@ import { useState } from "react";
 import { Icon } from "@shopify/polaris";
 import { ChevronDownIcon, ChevronRightIcon } from "@shopify/polaris-icons";
 
-export default function VariantItems({ variantType, variant = [], data }) {
+export default function VariantItems({ variantType, variant = [], data, defultSelect = true }) {
     const firstVariant = variant[0] || {};
 
     // State
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(defultSelect);
 
     const handleSwatch = () => {
         setOpen((prev) => !prev);
@@ -27,7 +27,7 @@ export default function VariantItems({ variantType, variant = [], data }) {
             ) : (
                 variant.length > 0 && (
                     <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "10px" }}>
-                        <div style={{ backgroundColor: "transparent", border: `1px solid black`, padding: "8px", borderRadius: "5px", width: "100%" }}>
+                        <div style={{ backgroundColor: "transparent", border: `1px solid black`, padding: "5px", borderRadius: "5px", width: "100%" }}>
                             <div style={{ display: "flex", gap: "5px", cursor: "pointer", userSelect: "none" }} onClick={handleSwatch}>
                                 {open ?
                                     <div><Icon source={ChevronDownIcon} /></div>

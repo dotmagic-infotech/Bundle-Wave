@@ -3,12 +3,13 @@ import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, RadioButton, ButtonGroup, Button, Badge } from "@shopify/polaris";
-import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon } from "@shopify/polaris-icons";
+import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
 import { ShopifyContext } from "../../../components/ShopifyProvider/ShopifyProvider";
 import { useFetchWithToken } from "../../../components/FetchDataAPIs/FetchWithToken";
+import VariantItems from "../../../components/VariantItems/VariantItems";
 
 function Volumediscount() {
 
@@ -20,7 +21,7 @@ function Volumediscount() {
     const [openIndex, setOpenIndex] = useState(null);
     const [data, setData] = useState({
         selectDisplay: {
-            type: "included_product_page",
+            type: "product_page",
         },
         tite_alignment: {
             alignment: "left"
@@ -36,8 +37,10 @@ function Volumediscount() {
             borderRadius: 10,
         },
         variants: {
-            background_color: "#ffffff",
-            border_color: "#000000"
+            type: "color_swatch",
+            background_color: "#FFFFFF",
+            text_color: "#000000",
+            border_color: "#7a26bf"
         },
         button: {
             width: 100,
@@ -83,6 +86,7 @@ function Volumediscount() {
                     <Select
                         label="Select Display"
                         options={[
+                            { label: "Product Page", value: "product_page" },
                             { label: "Included Product Page", value: "included_product_page" },
                         ]}
                         value={data.selectDisplay.type}
@@ -366,7 +370,7 @@ function Volumediscount() {
                             ></Banner>
                         </div>
                         <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem", }}>
-                            {data.selectDisplay.type === "included_product_page" ? (
+                            {data.selectDisplay.type === "product_page" ? (
                                 <div style={{ display: "flex", gap: "15px", margin: "12px 0px" }}>
                                     <div style={{ maxWidth: "400px" }}>
                                         <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758" width="100%" />
@@ -422,8 +426,63 @@ function Volumediscount() {
                                         </div>
                                     </div>
                                 </div>
-                            ) : null
-                            }
+                            ) : data?.selectDisplay.type === "included_product_page" ? (
+                                <div style={{ display: "flex", flexDirection: "column", width: "50%", gap: "1rem", border: "1px solid black", padding: "12px", borderRadius: `8px`, }}>
+                                    <p style={{ fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "500", color: data.title.fontColor }}>Buy more, Save more</p>
+
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                                        {[{ oPrice: "$42.00", price: "$38.00", discount: "20", variant: [] }, {
+                                            oPrice: "$59.00", price: "$84.00", discount: "30", variant: [{
+                                                color: ["#C9A227", "#A75D67", "#F5F5F5", "#BFC1C2"]
+                                            }],
+                                        }, { oPrice: "$126.00", price: "$63.00", discount: "50", variant: [] }].map((offer, index) => (
+                                            <div key={index}>
+                                                <div style={{ border: `${data.border.borderWidth}px solid ${index === 1 ? data.border.color : "black"}`, borderRadius: `${data.border.borderRadius}px`, padding: "16px 12px", backgroundColor: "transparent", position: "relative" }}>
+                                                    {index === 2 &&
+                                                        <div style={{
+                                                            width: "fit-content", backgroundColor: data?.button?.buttonColor, color: "white", padding: "1px 6px", borderRadius: "5px", position: "absolute", top: "-10px", right: "20px", fontWeight: 600, fontSize: "11px",
+                                                        }}>Free Shipping</div>
+                                                    }
+                                                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                                        <div style={{ display: "flex", alignItems: "center" }}>
+                                                            <input type="radio" checked={index === 1} style={{ accentColor: "#7a26bf", marginRight: "8px", width: "1rem", height: "1rem" }} />
+                                                            <p style={{ fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginRight: "10px" }}>Buy {index + 1} items</p>
+                                                            <Badge tone="new">Save {offer?.discount}%</Badge>
+                                                        </div>
+                                                        <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                                                            <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize + 3}px`, color: data.title.fontColor }}>{offer?.price}</p>
+                                                            <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize + 3}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>{offer?.oPrice}</p>
+                                                        </div>
+                                                    </div>
+                                                    {index === 1 &&
+                                                        <VariantItems
+                                                            variantType={data?.variants?.type}
+                                                            variant={offer?.variant}
+                                                            data={data}
+                                                            defultSelect={false}
+                                                        />
+                                                    }
+                                                    {index === 1 &&
+                                                        <VariantItems
+                                                            variantType={data?.variants?.type}
+                                                            variant={offer?.variant}
+                                                            data={data}
+                                                            defultSelect={false}
+                                                        />
+                                                    }
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div style={{ display: "flex", justifyContent: "center" }}>
+                                        <button style={{
+                                            backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "15px", cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`
+                                        }}>
+                                            Add to cart
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : null}
                         </div>
                     </Card>
                 </div >

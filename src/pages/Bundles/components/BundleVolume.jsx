@@ -795,6 +795,17 @@ const BundleVolume = () => {
                                         }
                                       </div>
                                     </div>
+                                    {value?.selected_default === "1" && data?.different_variants === '1' &&
+                                      <>
+                                        {Array.from({ length: value?.required_items }).map((_, idx) => (
+                                          <select disabled style={{ width: "100%", height: "36px", backgroundColor: "#fafafa", borderRadius: "8px", marginTop: "10px" }}>
+                                            <option selected>
+                                              Variants
+                                            </option>
+                                          </select>
+                                        ))}
+                                      </>
+                                    }
                                     {value?.Badge &&
                                       <div style={{ backgroundColor: "#7a26bf", display: "flex", justifyContent: 'center', alignItems: "center", height: "20px", position: "absolute", right: "10px", top: "-10px", padding: '7px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
                                         {value?.Badge}
@@ -815,6 +826,7 @@ const BundleVolume = () => {
                       type={data?.bundle_subtype}
                       title={data?.bundle_info}
                       total={total}
+                      data={data}
                       products={selectedProducts}
                       collections={selectedCollections}
                       discountOptions={discountOption}

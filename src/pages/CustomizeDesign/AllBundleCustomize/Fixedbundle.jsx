@@ -576,7 +576,6 @@ function Fixedbundle() {
                               src={_?.image}
                               width="70px"
                               height="70px"
-                              style={{ borderRadius: "10px" }}
                             />
                             <div>
                               <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
@@ -587,7 +586,7 @@ function Fixedbundle() {
                           <VariantItems variantType={data?.variants?.type} variant={_?.variant} data={data} />
 
                           {index !== arr.length - 1 && (
-                            <div style={{ marginTop: "15px" }}>
+                            <div style={{ margin: "15px 0px" }}>
                               <Divider />
                             </div>
                           )}
