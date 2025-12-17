@@ -147,7 +147,7 @@ function Mixmatch() {
       ),
     },
     {
-      label: "Background",
+      label: "Background (Included Product Page)",
       icon: ColorIcon,
       content: (
         <>
@@ -614,7 +614,7 @@ function Mixmatch() {
                         <Divider borderColor="border-hover" />
                       </div>
                       <div style={{ backgroundColor: `#efefef`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%" }}>
-                        <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$67.00 - 20% OFF</p>
+                        <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$67.00</p>
                         <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>2 items added</p>
                       </div>
                       <div style={{ display: "flex", justifyContent: "center" }}>

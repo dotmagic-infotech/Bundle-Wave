@@ -130,7 +130,7 @@ function Fixedbundle() {
       ),
     },
     {
-      label: "Background",
+      label: "Background (Included Product Page)",
       icon: ColorIcon,
       content: (
         <>
@@ -592,11 +592,6 @@ function Fixedbundle() {
                           )}
                         </div>
                       ))}
-                    </div>
-
-                    <div style={{ backgroundColor: `#efefef`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%", }}>
-                      <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>Total</p>
-                      <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>$72.00</p>
                     </div>
                     <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize + 2}px`, cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
                       Add bundle to cart | Save 20%

@@ -303,6 +303,10 @@ const BundleXY = () => {
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
       } else {
         shopify.loading(false);
+        shopify.toast.show(result.message || `Failed to ${id ? "Update" : "Save"} Fixed Bundle`, {
+          isError: true,
+          duration: 8000
+        });
       }
     } catch {
       shopify.loading(false);

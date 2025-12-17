@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, ButtonGroup, Button, Select, Divider } from "@shopify/polaris";
-import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ResetIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon, XIcon } from "@shopify/polaris-icons";
+import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon, XIcon } from "@shopify/polaris-icons";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
@@ -27,6 +27,10 @@ function BuyXgetY() {
       fontColor: "#000000",
       fontSize: 14,
       fontWeight: 400,
+    },
+    background: {
+      background_type: "transparent",
+      background_color: "#FFFFFF",
     },
     border: {
       color: "#000000",
@@ -91,6 +95,35 @@ function BuyXgetY() {
               handleChangeValue("selectDisplay", "type", value)
             }
           />
+        </>
+      ),
+    },
+    {
+      label: "Background (Included Product Page)",
+      icon: ColorIcon,
+      content: (
+        <>
+          <Select
+            label="Select Background Type"
+            options={[
+              { label: "Transparent", value: "transparent" },
+              { label: "Colored", value: "colored" },
+            ]}
+            value={data?.background?.background_type}
+            onChange={(value) =>
+              handleChangeValue("background", "background_type", value)
+            }
+          />
+          {data?.background?.background_type === "colored" &&
+            <>
+              <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+              <ColorPickerPopover
+                lable="Background Color"
+                color={data?.background?.background_color}
+                onChange={(color) => handleChangeValue("background", "background_color", color)}
+              />
+            </>
+          }
         </>
       ),
     },
@@ -262,6 +295,10 @@ function BuyXgetY() {
         fontColor: data.title.fontColor,
         fontSize: data.title.fontSize,
         fontWeight: data.title.fontWeight,
+      },
+      background: {
+        background_type: data?.background?.background_type,
+        background_color: data?.background?.background_color,
       },
       border: {
         color: data.border.color,
@@ -506,9 +543,9 @@ function BuyXgetY() {
                   </div>
                 </div>
               ) : data?.selectDisplay.type === "include_product_page" ? (
-                <div style={{ display: "flex", flexDirection: "column", width: "50%", gap: "1rem", border: "1px solid black", padding: "12px", borderRadius: `8px`, }}>
-                  <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal" }}>🎁 Buy 2 Earrings Bundle</p>
-                  <div style={{ backgroundColor: "white", width: "100%", height: "auto", display: "flex", flexDirection: "column", gap: "10px" }}>
+                <div style={{ display: "flex", flexDirection: "column", width: "50%", gap: "1rem", border: "1px solid black", padding: "12px", borderRadius: `8px`, background: data?.background?.background_type === "transparent" ? 'transparent' : data?.background?.background_color }}>
+                  <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal", color: data.title.fontColor }}>🎁 Buy 2 Earrings Bundle</p>
+                  <div style={{ width: "100%", height: "auto", display: "flex", flexDirection: "column", gap: "10px" }}>
                     <div style={{ border: `${data?.border?.borderWidth}px solid ${data?.border?.color}`, padding: "10px", borderRadius: `${data?.border?.borderRadius}px` }}>
                       {products.map((_, index, arr) => (
                         <div key={index}>
@@ -524,7 +561,7 @@ function BuyXgetY() {
 
                           {index !== arr.length - 1 && (
                             <div style={{ margin: "10px 0px" }}>
-                              <Divider borderColor="border-hover" />
+                              <Divider />
                             </div>
                           )}
                         </div>

@@ -324,14 +324,10 @@ const BundleVolume = () => {
         shopify.toast.show(`${id ? "Update" : "Create"} Successful Bundle`);
       } else {
         shopify.loading(false);
-        if (result.error_type === "all_product") {
-          setErrors({ all_product: `Only one "All Product" bundle is allowed per shop.` });
-        } else {
-          shopify.toast.show(result.message || `Failed to ${id ? "Update" : "Save"} Volume Bundle`, {
-            isError: true,
-            duration: 8000
-          });
-        }
+        shopify.toast.show(result.message || `Failed to ${id ? "Update" : "Save"} Volume Bundle`, {
+          isError: true,
+          duration: 8000
+        });
       }
     } catch {
       shopify.loading(false);

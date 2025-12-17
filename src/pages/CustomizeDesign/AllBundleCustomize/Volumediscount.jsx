@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, RadioButton, ButtonGroup, Button, Badge } from "@shopify/polaris";
-import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
+import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
@@ -30,6 +30,10 @@ function Volumediscount() {
             fontColor: "#000000",
             fontSize: 12,
             fontWeight: 600,
+        },
+        background: {
+            background_type: "transparent",
+            background_color: "#FFFFFF",
         },
         border: {
             color: "#7a26bf",
@@ -119,6 +123,35 @@ function Volumediscount() {
                             );
                         })}
                     </ButtonGroup>
+                </>
+            ),
+        },
+        {
+            label: "Background (Included Product Page)",
+            icon: ColorIcon,
+            content: (
+                <>
+                    <Select
+                        label="Select Background Type"
+                        options={[
+                            { label: "Transparent", value: "transparent" },
+                            { label: "Colored", value: "colored" },
+                        ]}
+                        value={data?.background?.background_type}
+                        onChange={(value) =>
+                            handleChangeValue("background", "background_type", value)
+                        }
+                    />
+                    {data?.background?.background_type === "colored" &&
+                        <>
+                            <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                            <ColorPickerPopover
+                                lable="Background Color"
+                                color={data?.background?.background_color}
+                                onChange={(color) => handleChangeValue("background", "background_color", color)}
+                            />
+                        </>
+                    }
                 </>
             ),
         },
@@ -250,6 +283,10 @@ function Volumediscount() {
                 fontColor: data.title.fontColor,
                 fontSize: data.title.fontSize,
                 fontWeight: data.title.fontWeight
+            },
+            background: {
+                background_type: data?.background?.background_type,
+                background_color: data?.background?.background_color,
             },
             border: {
                 color: data.border.color,
@@ -427,7 +464,7 @@ function Volumediscount() {
                                     </div>
                                 </div>
                             ) : data?.selectDisplay.type === "included_product_page" ? (
-                                <div style={{ display: "flex", flexDirection: "column", width: "50%", gap: "1rem", border: "1px solid black", padding: "12px", borderRadius: `8px`, }}>
+                                <div style={{ display: "flex", flexDirection: "column", width: "50%", gap: "1rem", border: "1px solid black", padding: "12px", borderRadius: `8px`, background: data?.background?.background_type === "transparent" ? 'transparent' : data?.background?.background_color }}>
                                     <p style={{ fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "500", color: data.title.fontColor }}>Buy more, Save more</p>
 
                                     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
@@ -447,7 +484,7 @@ function Volumediscount() {
                                                         <div style={{ display: "flex", alignItems: "center" }}>
                                                             <input type="radio" checked={index === 1} style={{ accentColor: "#7a26bf", marginRight: "8px", width: "1rem", height: "1rem" }} />
                                                             <p style={{ fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginRight: "10px" }}>Buy {index + 1} items</p>
-                                                            <Badge tone="new">Save {offer?.discount}%</Badge>
+                                                            <div style={{ backgroundColor: data?.button?.buttonColor, color: data?.button?.textColor, borderRadius: "10px", padding: "2px 8px" }}>Save {offer?.discount}%</div>
                                                         </div>
                                                         <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                                                             <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize + 3}px`, color: data.title.fontColor }}>{offer?.price}</p>

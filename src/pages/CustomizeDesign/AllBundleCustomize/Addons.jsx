@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Divider, Select, Checkbox, Button, ButtonGroup } from "@shopify/polaris";
-import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon, XIcon, } from "@shopify/polaris-icons";
+import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon, XIcon, } from "@shopify/polaris-icons";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
@@ -24,6 +24,10 @@ function Addons() {
         },
         tite_alignment: {
             alignment: "left"
+        },
+        background: {
+            background_type: "transparent",
+            background_color: "#FFFFFF",
         },
         title: {
             fontColor: "#000000",
@@ -119,6 +123,35 @@ function Addons() {
                             );
                         })}
                     </ButtonGroup>
+                </>
+            ),
+        },
+        {
+            label: "Background (Included Product Page)",
+            icon: ColorIcon,
+            content: (
+                <>
+                    <Select
+                        label="Select Background Type"
+                        options={[
+                            { label: "Transparent", value: "transparent" },
+                            { label: "Colored", value: "colored" },
+                        ]}
+                        value={data?.background?.background_type}
+                        onChange={(value) =>
+                            handleChangeValue("background", "background_type", value)
+                        }
+                    />
+                    {data?.background?.background_type === "colored" &&
+                        <>
+                            <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                            <ColorPickerPopover
+                                lable="Background Color"
+                                color={data?.background?.background_color}
+                                onChange={(color) => handleChangeValue("background", "background_color", color)}
+                            />
+                        </>
+                    }
                 </>
             ),
         },
@@ -288,6 +321,10 @@ function Addons() {
             },
             tite_alignment: {
                 alignment: data.tite_alignment.alignment
+            },
+            background: {
+                background_type: data?.background?.background_type,
+                background_color: data?.background?.background_color,
             },
             title: {
                 fontColor: data.title.fontColor,
@@ -507,7 +544,7 @@ function Addons() {
                                     </div>
                                 </div>
                             ) : data.selectDisplay.type === "included_product_page" ? (
-                                <div style={{ display: "flex", flexDirection: "column", width: "50%", border: `1px solid black`, padding: "12px", borderRadius: `8px`, }}>
+                                <div style={{ display: "flex", flexDirection: "column", width: "50%", border: `1px solid black`, padding: "12px", borderRadius: `8px`, background: data?.background?.background_type === "transparent" ? 'transparent' : data?.background?.background_color }}>
                                     <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
                                         <p style={{
                                             fontSize: `${8 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"

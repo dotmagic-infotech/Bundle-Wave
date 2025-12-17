@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, Button, ButtonGroup, Checkbox, Divider } from "@shopify/polaris";
-import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
+import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
@@ -25,6 +25,11 @@ function Frequently() {
         },
         tite_alignment: {
             alignment: "left"
+        },
+        background: {
+            background_type: "transparent",
+            background_color: "#FFFFFF",
+            text_color: "#000000",
         },
         title: {
             fontColor: "#000000",
@@ -118,6 +123,41 @@ function Frequently() {
                             );
                         })}
                     </ButtonGroup>
+                </>
+            ),
+        },
+        {
+            label: "Background",
+            icon: ColorIcon,
+            content: (
+                <>
+                    <Select
+                        label="Select Background Type"
+                        options={[
+                            { label: "Transparent", value: "transparent" },
+                            { label: "Colored", value: "colored" },
+                        ]}
+                        value={data?.background?.background_type}
+                        onChange={(value) =>
+                            handleChangeValue("background", "background_type", value)
+                        }
+                    />
+                    {data?.background?.background_type === "colored" &&
+                        <>
+                            <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                            <ColorPickerPopover
+                                lable="Background Color"
+                                color={data.background.background_color}
+                                onChange={(color) => handleChangeValue("background", "background_color", color)}
+                            />
+                            <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                            <ColorPickerPopover
+                                lable="Text Color"
+                                color={data?.background?.text_color}
+                                onChange={(color) => handleChangeValue("background", "text_color", color)}
+                            />
+                        </>
+                    }
                 </>
             ),
         },
@@ -292,6 +332,11 @@ function Frequently() {
                 fontColor: data.title?.fontColor,
                 fontSize: data.title?.fontSize,
                 fontWeight: data.title?.fontWeight,
+            },
+            background: {
+                background_type: data?.background?.background_type,
+                background_color: data?.background?.background_color,
+                text_color: data?.background?.text_color,
             },
             border: {
                 color: data.border?.color,
@@ -510,29 +555,21 @@ function Frequently() {
                                                             <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", color: data.title.fontColor }}>{imgSrc?.name}</p>
                                                             <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "5px", color: data.title.fontColor }}>{imgSrc?.price}</p>
                                                         </div>
-                                                        <VariantItems variantType={data?.variants?.type} variant={imgSrc?.variant} data={data} />
+                                                        <VariantItems variantType={data?.variants?.type} variant={imgSrc?.variant} data={data} defultSelect={false} />
                                                     </div>
                                                 ))}
                                             </div>
-                                            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", minWidth: "150px" }}>
-                                                <div style={{ display: "flex", gap: '7px' }}>
-                                                    <p style={{ fontSize: `${data?.title?.fontSize + 3}px`, fontWeight: "500" }}>Total: </p>
-                                                    <div style={{ display: 'flex' }}>
-                                                        <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize + 3}px`, color: data.title.fontColor }}>$42.00</p>
-                                                        <p style={{ fontWeight: "600", fontSize: `${data.title.fontSize + 3}px`, color: data.title.fontColor, opacity: 0.5, marginLeft: "3px", textDecoration: "line-through" }}>$84.00</p>
+                                            <div style={{ background: data?.background?.background_type === "transparent" ? 'transparent' : data?.background?.background_color, color: data?.background?.background_type === "transparent" ? 'black' : data?.background?.text_color, borderRadius: "12px", padding: "24px", minWidth: "240px", height: "fit-content", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column", gap: "7px" }}>
+                                                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
+                                                    <span style={{ fontSize: "18px" }}>Total:</span>
+                                                    <div>
+                                                        <span style={{ fontSize: "20px", fontWeight: "600" }}>$42.00</span>
+                                                        <span style={{ fontSize: "14px", textDecoration: "line-through", marginLeft: "5px" }}>$84.00</span>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <button style={{
-                                                        backgroundColor: data.button.buttonColor,
-                                                        border: "none",
-                                                        color: data.button.textColor,
-                                                        fontSize: "18px",
-                                                        cursor: "pointer",
-                                                        padding: `${data?.button?.height}px 12px`,
-                                                        width: `${data?.button?.width}%`
-                                                    }}>Add selected to cart | Save 50%</button>
-                                                </div>
+                                                <div style={{ fontSize: "13px" }}>Save 10% when buying together!</div>
+                                                <button style={{ width: "100%", background: data.button.buttonColor, color: data.button.textColor, border: "none", padding: "10px 24px", fontSize: "15px", fontWeight: 500, cursor: "pointer", transition: "background 0.2s" }}>Add selected to cart</button>
+                                                <div style={{ textAlign: "center", fontSize: "13px" }}>1 items selected</div>
                                             </div>
                                         </div>
                                     </div>
@@ -541,7 +578,7 @@ function Frequently() {
                         </div>
                     </Card>
                 </div>
-            </Grid.Cell >
+            </Grid.Cell>
         </Grid >
     );
 }
