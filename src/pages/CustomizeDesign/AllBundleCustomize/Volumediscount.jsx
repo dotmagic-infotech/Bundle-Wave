@@ -413,12 +413,7 @@ function Volumediscount() {
                                         <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758" width="100%" />
                                     </div>
                                     <div style={{ width: "400px" }}>
-                                        <p style={{
-                                            fontSize: "25px", fontWeight: "600", color: data.title.fontColor, lineHeight: "normal", textAlign: data.tite_alignment.alignment === "left" ? "start"
-                                                : data.tite_alignment.alignment === "center"
-                                                    ? "center"
-                                                    : "end"
-                                        }}>Rose Gold Drop Earrings</p>
+                                        <p style={{ fontSize: "25px", fontWeight: "600", color: data.title.fontColor, lineHeight: "normal" }}>Rose Gold Drop Earrings</p>
                                         <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
                                             {["Gold", "Rose Gold", "White Gold", "Silver"].map((_, index, arr) => (
                                                 <div key={index} style={{ border: `1px solid ${data?.button?.buttonColor}`, padding: "5px 10px", borderRadius: "10px", cursor: "pointer", backgroundColor: index === 0 ? data?.button?.buttonColor : "", color: index === 0 ? data?.button?.textColor : "black" }}>
@@ -427,7 +422,10 @@ function Volumediscount() {
                                             ))}
                                         </div>
                                         <p style={{
-                                            margin: '10px 0px', fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "500", color: data.title.fontColor,
+                                            margin: '10px 0px', fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "500", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
+                                                : data.tite_alignment.alignment === "center"
+                                                    ? "center"
+                                                    : "end"
                                         }}>Buy more, Save more</p>
 
                                         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
@@ -465,7 +463,12 @@ function Volumediscount() {
                                 </div>
                             ) : data?.selectDisplay.type === "included_product_page" ? (
                                 <div style={{ display: "flex", flexDirection: "column", width: "50%", gap: "1rem", border: "1px solid black", padding: "12px", borderRadius: `8px`, background: data?.background?.background_type === "transparent" ? 'transparent' : data?.background?.background_color }}>
-                                    <p style={{ fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "500", color: data.title.fontColor }}>Buy more, Save more</p>
+                                    <p style={{
+                                        fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "500", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
+                                            : data.tite_alignment.alignment === "center"
+                                                ? "center"
+                                                : "end"
+                                    }}>Buy more, Save more</p>
 
                                     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                                         {[{ oPrice: "$42.00", price: "$38.00", discount: "20", variant: [] }, {
@@ -482,7 +485,7 @@ function Volumediscount() {
                                                     }
                                                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                                         <div style={{ display: "flex", alignItems: "center" }}>
-                                                            <input type="radio" checked={index === 1} style={{ accentColor: "#7a26bf", marginRight: "8px", width: "1rem", height: "1rem" }} />
+                                                            <input type="radio" checked={index === 1} style={{ accentColor: `${data.button.buttonColor}`, marginRight: "8px", width: "1rem", height: "1rem" }} />
                                                             <p style={{ fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginRight: "10px" }}>Buy {index + 1} items</p>
                                                             <div style={{ backgroundColor: data?.button?.buttonColor, color: data?.button?.textColor, borderRadius: "10px", padding: "2px 8px" }}>Save {offer?.discount}%</div>
                                                         </div>

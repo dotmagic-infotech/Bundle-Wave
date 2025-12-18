@@ -773,7 +773,7 @@ const BundleXY = () => {
             size='large'
           >
             <Modal.Section>
-              <WidgetModal copyId={id} />
+              <WidgetModal copyId={id} checkEmbeded="bxgy" />
             </Modal.Section>
           </Modal>
         </Page>

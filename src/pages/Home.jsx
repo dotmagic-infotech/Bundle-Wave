@@ -26,12 +26,9 @@ const Home = () => {
   const [welocomePopup, setWelocomePopup] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [homeData, setHomeData] = useState(true);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const { lgDown } = useBreakpoints();
   const fixedFirstColumns = lgDown ? 2 : 0;
-
-  const toggleDeleteModal = () => setDeleteModalOpen(prev => !prev);
 
   useEffect(() => {
     const fetchUserDashBoard = async () => {
@@ -68,23 +65,6 @@ const Home = () => {
     setWelocomePopup(false);
   }
 
-  const handleClearMetaField = async () => {
-    try {
-      const data = await fetchWithToken({
-        url: `https://bundle-wave-backend.xavierapps.com/webhooks/remove_all_data?shop=${shopName}`,
-        method: 'GET',
-      });
-      if (data.status) {
-        shopify.toast.show(`Successfully Removed App Data`);
-        toggleDeleteModal();
-      } else {
-        shopify.toast.show(`Failed to Remove App Data`);
-      }
-    } catch (error) {
-      console.error("Failed to fetch bundle details:", error);
-    }
-  };
-
   return (
     <>
       {showModal && (
@@ -113,20 +93,6 @@ const Home = () => {
               </InlineStack>
             </div>
           </Banner>
-
-          <div style={{ marginTop: "0px" }}>
-            <Banner title="How the Button Should Work" tone="info">
-              <p>
-                <strong>A clear warning so the merchant understands:</strong><br />
-                Clicking this button will permanently delete all bundles, discounts, settings, and shop data stored by this app. This action cannot be undone. After deleting, you may uninstall the app safely.
-              </p>
-              <div style={{ marginTop: "1rem" }}>
-                <InlineStack gap={200}>
-                  <Button variant='primary' onClick={toggleDeleteModal}>Delete app data</Button>
-                </InlineStack>
-              </div>
-            </Banner>
-          </div>
 
           <CalloutCard
             title="Need some ideas?"
@@ -324,30 +290,6 @@ const Home = () => {
               Thank you for trying our app ;). If you have any questions or need help you can{' '}
               <span style={{ color: "blue" }}>talk to us via Live Chat</span> or via the email info@xavierapps.com.</Text>
           </BlockStack>
-        </Modal.Section>
-      </Modal>
-
-      <Modal
-        open={deleteModalOpen}
-        onClose={toggleDeleteModal}
-        title="Are you sure you want to delete App data?"
-        // size='small'
-        primaryAction={{
-          content: "Delete",
-          destructive: true,
-          onAction: () => {
-            handleClearMetaField();
-          },
-        }}
-        secondaryActions={[
-          {
-            content: "Cancel",
-            onAction: toggleDeleteModal,
-          },
-        ]}
-      >
-        <Modal.Section>
-          This action cannot be undone. Deleting the App Data will remove it permanently from your store.
         </Modal.Section>
       </Modal>
     </>

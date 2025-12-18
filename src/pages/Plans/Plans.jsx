@@ -239,7 +239,7 @@ const Plans = () => {
           {/* Left Column */}
           <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 4, xl: 4 }}>
             <div style={{ backgroundColor: "rgba(255, 255, 255, 1)", borderRadius: "10px", overflow: "hidden", height: "260px", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", }}>
-              <Box background={selectedPlan?.title ? "bg-fill-success" : "bg-fill-critical-active"} padding="300">
+              <div style={{ backgroundColor: selectedPlan?.title ? "#7a26bf" : "bg-fill-critical-active", padding: "12px" }}>
                 <InlineStack gap="200">
                   <p style={{ fontSize: "1rem", fontWeight: "500", color: "white" }}>
                     {selectedPlan?.title ? selectedPlan?.title : "No Active"} Plan
@@ -248,7 +248,7 @@ const Plans = () => {
                     <p style={{ backgroundColor: "white", borderRadius: "10px", padding: "0px 10px", fontWeight: "500" }}>{selectedPlan?.planTime}</p>
                   }
                 </InlineStack>
-              </Box>
+              </div>
 
               <Box padding="200">
                 <List>
@@ -347,7 +347,7 @@ const Plans = () => {
               }}
             >
               Yearly
-              <span style={{ marginLeft: "6px", backgroundColor: "#b9f8ac", border: "1px solid #64c1aa", borderRadius: "4px", color: "#008060", fontSize: "11px", padding: "2px 4px" }}>
+              <span style={{ marginLeft: "6px", backgroundColor: "#ca98f3", border: "1px solid #ca98f3", borderRadius: "4px", color: "black", fontSize: "11px", padding: "2px 4px" }}>
                 Up to {planData[1]?.yearOfferDiscount}% OFF
               </span>
             </div>
@@ -417,7 +417,7 @@ const Plans = () => {
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: "30px" }}>
                           <p style={{ color: "black", fontSize: "1.5rem", fontWeight: "500" }}>{plan.title}</p>
                           {plan.price !== "0" && selectedViewPlan === "Yearly" && (
-                            <div style={{ color: "white", backgroundColor: "black", borderRadius: "10px", padding: "5px 10px", fontSize: "0.8rem", fontWeight: "500" }}>
+                            <div style={{ color: "white", backgroundColor: "#7a26bf", borderRadius: "10px", padding: "5px 10px", fontSize: "0.8rem", fontWeight: "500" }}>
                               Save {plan?.yearOfferDiscount}%
                             </div>
                           )}
@@ -470,7 +470,7 @@ const Plans = () => {
                     </div>
                   </div>
                   {index === 1 &&
-                    <div style={{ position: 'absolute', top: "-24px", right: "0px", padding: "4px", width: "100%", backgroundColor: "black", borderRadius: "10px 10px 0px 0px" }} >
+                    <div style={{ position: 'absolute', top: "-24px", right: "0px", padding: "4px", width: "100%", backgroundColor: "#7a26bf", borderRadius: "10px 10px 0px 0px" }} >
                       <p style={{ fontWeight: "500", color: "white", textAlign: "center" }}>Most Popular</p>
                     </div>
                   }

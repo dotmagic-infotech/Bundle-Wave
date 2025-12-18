@@ -382,6 +382,11 @@ function Fixedbundle() {
       image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758",
       price: "$42.00",
     },
+    {
+      name: "18k Dangling Pendant Earrings",
+      image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-dangling-pendant-earrings_17e71027-81d8-4a49-a455-2e5c205963ee.jpg?v=1758263763",
+      price: "$15.00",
+    },
   ];
 
   return (

@@ -559,7 +559,7 @@ function Addons() {
                                             <div key={index}>
                                                 <div style={{ border: index === 0 ? `${data.border.borderWidth}px solid ${data.border.color}` : `${data.border.borderWidth}px solid black`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
                                                     <div style={{ display: "flex", alignItems: "center", }}>
-                                                        <Checkbox checked={index === 0} />
+                                                        <input type="checkbox" checked={index === 0} style={{ accentColor: `${data.button.buttonColor}`, marginRight: "8px", width: "1rem", height: "1rem" }} />
                                                         <img src={imgSrc?.image} style={{ width: "60px", height: "60px" }} />
                                                         <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                                                             <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.name}</p>

@@ -480,7 +480,7 @@ const Frequently = () => {
             size='large'
           >
             <Modal.Section>
-              <WidgetModal copyId={id} />
+              <WidgetModal copyId={id} checkEmbeded="fbt" />
             </Modal.Section>
           </Modal>
         </Page>

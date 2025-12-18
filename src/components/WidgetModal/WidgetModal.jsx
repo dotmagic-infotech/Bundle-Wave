@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from 'react';
 
 // Shopify Imports
-import { Box, Button, Grid, LegacyCard, TextField } from '@shopify/polaris';
+import { Box, Button, Grid, LegacyCard, SkeletonBodyText, SkeletonDisplayText, TextField } from '@shopify/polaris';
 import { ClipboardIcon } from '@shopify/polaris-icons';
 import { useAppBridge } from '@shopify/app-bridge-react';
 
@@ -13,7 +13,7 @@ import { useFetchWithToken } from '../FetchDataAPIs/FetchWithToken';
 const WidgetModal = (props) => {
 
     // Props
-    const { copyId } = props;
+    const { copyId, checkEmbeded } = props;
     const { shopName } = useContext(ShopifyContext);
     const shopify = useAppBridge();
     const fetchWithToken = useFetchWithToken();
@@ -33,6 +33,8 @@ const WidgetModal = (props) => {
 
             if (data?.data?.status) {
                 setData(data?.data);
+                const embedStatus = data?.data?.[checkEmbeded];
+                setIsProductBlockAdded(Boolean(embedStatus));
             }
 
         } catch (error) {
@@ -63,6 +65,11 @@ const WidgetModal = (props) => {
 
     const redirectToProductBlock = () => {
         const url = `https://${shopName}/admin/themes/current/editor?template=product`;
+        window.open(url, "_blank");
+    };
+
+    const redirectToProduct = () => {
+        const url = `https://${shopName}/${data?.url}`;
         window.open(url, "_blank");
     };
 
@@ -101,24 +108,36 @@ const WidgetModal = (props) => {
                         This checks whether your bundle block is added to the product page.
                     </p>
 
-                    <Box paddingBlockStart={200}>
+                    <Box>
                         {isProductBlockAdded ? (
                             <>
-                                <p style={{ color: "green", fontWeight: 500 }}>
-                                    ✅ Bundle block is active on product page.
-                                </p>
+                                {loading ? (
+                                    <p style={{ margin: "10px 0px" }}>
+                                        <SkeletonBodyText lines={1} />
+                                    </p>
+                                ) : (
+                                    <p style={{ color: "green", fontWeight: 500, margin: "10px 0px" }}>
+                                        ✅ Bundle block is active on product page.
+                                    </p>
+                                )}
 
-                                <Button onClick={redirectToStoreProduct}>
+                                <Button loading={loading} onClick={redirectToProduct}>
                                     View Bundle on Product
                                 </Button>
                             </>
                         ) : (
                             <>
-                                <p style={{ color: "red", fontWeight: 500 }}>
-                                    ❌ Bundle block is NOT added yet.
-                                </p>
+                                {loading ? (
+                                    <p style={{ margin: "10px 0px" }}>
+                                        <SkeletonBodyText lines={1} />
+                                    </p>
+                                ) : (
+                                    <p style={{ color: "red", fontWeight: 500, margin: "10px 0px" }}>
+                                        ❌ Bundle block is NOT added yet.
+                                    </p>
+                                )}
 
-                                <Button onClick={redirectToProductBlock}>
+                                <Button loading={loading} onClick={redirectToProductBlock}>
                                     Add Bundle Block to Product
                                 </Button>
                             </>

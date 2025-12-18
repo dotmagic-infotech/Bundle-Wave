@@ -935,7 +935,7 @@ const BundleAddons = () => {
             size='large'
           >
             <Modal.Section>
-              <WidgetModal copyId={id} />
+              <WidgetModal copyId={id} checkEmbeded="addons" />
             </Modal.Section>
           </Modal>
         </Page>

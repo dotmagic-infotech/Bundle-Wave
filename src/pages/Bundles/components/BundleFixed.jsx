@@ -564,7 +564,7 @@ const BundleFixed = () => {
             size='large'
           >
             <Modal.Section>
-              <WidgetModal copyId={id} />
+              <WidgetModal copyId={id} checkEmbeded="fixed" />
             </Modal.Section>
           </Modal>
         </Page>
