@@ -14,7 +14,6 @@ import './App.css'
 import Home from './pages/Home'
 import BundleTable from './pages/Bundles/components/BundleTable';
 import BundleList from './pages/Bundles/BundleList';
-// import BundleListCopy from './pages/Bundles/BundleListCopyy';
 import Analytics from './pages/Analytics/Analytics';
 import BundleFixed from './pages/Bundles/components/BundleFixed';
 import BundleMixMatch from './pages/Bundles/components/BundleMixMatch';

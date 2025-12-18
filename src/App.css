@@ -208,3 +208,54 @@
     width: 100%;
     transition: background-color 0.2s ease;
 }
+
+/* Sales Badge */
+.ribbon::before,
+.ribbon::after {
+    position: absolute;
+    content: '';
+    display: block;
+    border: 5px solid var(--ribbon-bgcolor, #7a26bf);
+}
+
+.ribbon span {
+    position: absolute;
+    display: block;
+    width: 225px;
+    padding: 5px 0;
+    background-color: var(--ribbon-bgcolor, #7a26bf);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+    color: var(--ribbon-color, #fff);
+    font: 500 14px/1 'Lato';
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* top right*/
+.ribbon-top-right {
+    top: -10px;
+    right: -10px;
+}
+
+.ribbon-top-right::before,
+.ribbon-top-right::after {
+    border-top-color: transparent;
+    border-right-color: transparent;
+}
+
+.ribbon-top-right::before {
+    top: 0;
+    left: 25px;
+}
+
+.ribbon-top-right::after {
+    bottom: 25px;
+    right: 0;
+}
+
+.ribbon-top-right span {
+    left: -39px;
+    top: 20px;
+    transform: rotate(45deg);
+}

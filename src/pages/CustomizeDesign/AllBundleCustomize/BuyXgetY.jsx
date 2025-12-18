@@ -502,16 +502,16 @@ function BuyXgetY() {
                         <button disabled style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, cursor: "pointer", width: "40px", height: "40px", borderRadius: "50%", padding: "8px 8px 16px", fontWeight: 500, fontSize: "33px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1, }}>+</button>
                       </div>
 
-                      <div style={{ border: `${data?.border?.borderWidth}px solid ${data?.border?.color}`, padding: "10px", borderRadius: `${data?.border?.borderRadius}px`, overflow: "hidden" }}>
+                      <div style={{ border: `${data?.border?.borderWidth}px solid ${data?.border?.color}`, padding: "10px", borderRadius: `${data?.border?.borderRadius}px`, position: "relative" }}>
+                        <div style={{ height: "110px", width: "110px", position: "absolute", overflow: "hidden", right: "-10px", top: "-10px" }}>
+                          <div class="ribbon ribbon-top-right" style={{ "--ribbon-bgcolor": data?.button?.buttonColor, "--ribbon-color": data?.button?.textColor }}>
+                            <span>FREE</span>
+                          </div>
+                        </div>
                         {[{
                           name: "18k Solid Bloom Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758", price: "$20.00"
-                        }].map((_, index, arr) => (
-                          <div key={index} style={{ position: "relative" }}>
-                            <div style={{
-                              position: "absolute", top: "-3px", right: "-32px", width: "90px", height: "23px", transform: "rotate(38deg)", backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, padding: "10px", fontWeight: 600, display: "flex", justifyContent: "center", alignItems: "center", fontSize: "16px"
-                            }}>
-                              FREE
-                            </div>
+                        }, { name: "18k Interlinked Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766", price: "$22.00" }].map((_, index, arr) => (
+                          <div key={index}>
                             <div style={{ display: "flex", gap: "10px" }}>
                               <img src={_?.image} width="60px" height="60px" />
                               <div>
@@ -572,16 +572,16 @@ function BuyXgetY() {
                       <button disabled style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, cursor: "pointer", width: "40px", height: "40px", borderRadius: "50%", padding: "8px 8px 16px", fontWeight: 500, fontSize: "33px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1, border: "none" }}>+</button>
                     </div>
 
-                    <div style={{ border: `${data?.border?.borderWidth}px solid ${data?.border?.color}`, padding: "10px", borderRadius: `${data?.border?.borderRadius}px`, overflow: "hidden" }}>
+                    <div style={{ border: `${data?.border?.borderWidth}px solid ${data?.border?.color}`, padding: "10px", borderRadius: `${data?.border?.borderRadius}px`, position: "relative" }}>
+                      <div style={{ height: "110px", width: "110px", position: "absolute", overflow: "hidden", right: "-10px", top: "-10px" }}>
+                        <div class="ribbon ribbon-top-right" style={{ "--ribbon-bgcolor": data?.button?.buttonColor, "--ribbon-color": data?.button?.textColor }}>
+                          <span>FREE</span>
+                        </div>
+                      </div>
                       {[{
                         name: "18k Solid Bloom Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758", price: "$20.00"
-                      }].map((_, index, arr) => (
-                        <div key={index} style={{ position: "relative" }}>
-                          <div style={{
-                            position: "absolute", top: "-3px", right: "-32px", width: "90px", height: "23px", transform: "rotate(38deg)", backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, padding: "10px", fontWeight: 600, display: "flex", justifyContent: "center", alignItems: "center", fontSize: "16px"
-                          }}>
-                            FREE
-                          </div>
+                      }, { name: "18k Interlinked Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766", price: "$22.00" }].map((_, index, arr) => (
+                        <div key={index}>
                           <div style={{ display: "flex", gap: "10px" }}>
                             <img src={_?.image} width="60px" height="60px" />
                             <div>
