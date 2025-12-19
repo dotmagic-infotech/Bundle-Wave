@@ -341,7 +341,7 @@ function ProductWithCollections({ sections, setSections }) {
             shopify.toast.show('Collection added.', { isError: false, duration: 4000 });
             shopify.saveBar.show('save');
         } catch (error) {
-            console.error('Error adding collection:', error);
+            // console.error('Error adding collection:', error);
         }
     };
 

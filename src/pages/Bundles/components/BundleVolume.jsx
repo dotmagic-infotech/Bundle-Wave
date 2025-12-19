@@ -94,7 +94,7 @@ const BundleVolume = () => {
         display_on: data?.bundle_subtype,
       });
     } catch (error) {
-      console.error("Failed to fetch bundle details:", error);
+      // console.error("Failed to fetch bundle details:", error);
     } finally {
       setLoading(false);
     }
@@ -214,7 +214,7 @@ const BundleVolume = () => {
 
       shopify.saveBar.show("save");
     } catch (err) {
-      console.error("Error selecting collection:", err);
+      // console.error("Error selecting collection:", err);
     }
   };
 
@@ -769,7 +769,7 @@ const BundleVolume = () => {
 
                               return (
                                 <div key={index}>
-                                  <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "#7a26bf" : "black", borderRadius: "10px", padding: "20px 10px", position: "relative" }}>
+                                  <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "#7a26bf" : "black", borderRadius: "10px", padding: "26px 10px", position: "relative" }}>
                                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", }}>
                                       <div style={{ display: "flex", alignItems: "center", }}>
                                         <RadioButton
@@ -780,14 +780,14 @@ const BundleVolume = () => {
                                             {value?.description}
                                           </p>
                                           {value?.Label &&
-                                            <p style={{ backgroundColor: "black", padding: "0px 8px", color: 'white', borderRadius: "10px", fontSize: "10px", maxWidth: "80px", height: "20px" }}>{value?.Label}</p>
+                                            <p style={{ backgroundColor: "#7a26bf", padding: "0px 8px", color: 'white', borderRadius: "10px", fontSize: "10px", maxWidth: "80px", height: "20px" }}>{value?.Label}</p>
                                           }
                                         </div>
                                       </div>
                                       <div>
-                                        <p style={{ fontWeight: "500", fontSize: "1rem" }}>${finalPrice}</p>
+                                        <p style={{ fontWeight: "500", fontSize: "1.4rem" }}>${finalPrice}</p>
                                         {value?.type !== "5" &&
-                                          <p style={{ fontWeight: "500", fontSize: "1rem", textDecoration: "line-through" }}>${multiplyPrice.toFixed(2)}</p>
+                                          <p style={{ textAlign: "end", fontWeight: "400", fontSize: "1rem", textDecoration: "line-through" }}>${multiplyPrice.toFixed(2)}</p>
                                         }
                                       </div>
                                     </div>
@@ -803,8 +803,12 @@ const BundleVolume = () => {
                                       </>
                                     }
                                     {value?.Badge &&
-                                      <div style={{ backgroundColor: "#7a26bf", display: "flex", justifyContent: 'center', alignItems: "center", height: "20px", position: "absolute", right: "10px", top: "-10px", padding: '7px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
-                                        {value?.Badge}
+                                      <div style={{
+                                        height: "50px", width: "130px", position: "absolute", overflow: "hidden", right: "30px", top: "-10px"
+                                      }}>
+                                        <div class="badge-ribbon badge-ribbon-top-right" style={{ "--ribbon-bgcolor": "#7a26bf", "--ribbon-color": "white" }}>
+                                          <span style={{ font: "500 10px/1 'Lato'" }}>{value?.Badge}</span>
+                                        </div>
                                       </div>
                                     }
                                   </div>

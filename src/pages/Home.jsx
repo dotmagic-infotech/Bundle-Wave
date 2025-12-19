@@ -43,7 +43,7 @@ const Home = () => {
           setShowModal(true);
         }
       } catch (error) {
-        console.error("Failed to fetch bundle details:", error);
+        // console.error("Failed to fetch bundle details:", error);
       }
     };
 

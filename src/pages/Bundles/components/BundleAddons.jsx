@@ -106,7 +106,7 @@ const BundleAddons = () => {
         display_on: data?.bundle_subtype,
       });
     } catch (error) {
-      console.error("Failed to fetch bundle details:", error);
+      // console.error("Failed to fetch bundle details:", error);
     } finally {
       setLoading(false);
     }
@@ -192,7 +192,7 @@ const BundleAddons = () => {
 
       shopify.saveBar.show("save");
     } catch (err) {
-      console.error("Error selecting collection:", err);
+      // console.error("Error selecting collection:", err);
     }
   };
 

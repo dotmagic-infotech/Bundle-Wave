@@ -67,7 +67,7 @@ function Fixedbundle() {
 
       setData(data);
     } catch (error) {
-      console.error("Failed to fetch bundle details:", error);
+      // console.error("Failed to fetch bundle details:", error);
     }
   };
 

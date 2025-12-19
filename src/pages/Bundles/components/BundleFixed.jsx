@@ -100,7 +100,7 @@ const BundleFixed = () => {
         url: data?.url,
       });
     } catch (error) {
-      console.error("Failed to fetch bundle details:", error);
+      // console.error("Failed to fetch bundle details:", error);
     } finally {
       setLoading(false);
     }

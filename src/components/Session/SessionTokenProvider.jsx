@@ -29,7 +29,7 @@ export const SessionTokenProvider = ({ children }) => {
                 const sessionToken = await getSessionToken(app);
                 setToken(sessionToken);
             } catch (err) {
-                console.error("Error getting session token:", err);
+                // console.error("Error getting session token:", err);
             } finally {
                 setLoading(false);
             }

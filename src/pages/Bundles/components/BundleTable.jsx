@@ -75,7 +75,7 @@ function BundleTable() {
                 setPagination(data?.pagination);
             }
         } catch (error) {
-            console.error("Error fetching data:", error);
+            // console.error("Error fetching data:", error);
         } finally {
             setLoading(false);
         }
@@ -118,7 +118,7 @@ function BundleTable() {
                 });
             }
         } catch (error) {
-            console.error("Error updating status:", error);
+            // console.error("Error updating status:", error);
         } finally {
             setLoadingButton({ id: null, type: null });
         }
@@ -210,7 +210,7 @@ function BundleTable() {
                 });
             }
         } catch (error) {
-            console.error("Failed to fetch bundle details:", error);
+            // console.error("Failed to fetch bundle details:", error);
         }
     }
 
@@ -240,7 +240,7 @@ function BundleTable() {
                 });
             }
         } catch (error) {
-            console.error("Failed to fetch bundle details:", error);
+            // console.error("Failed to fetch bundle details:", error);
         }
     }
 
@@ -267,7 +267,7 @@ function BundleTable() {
                 });
             }
         } catch (error) {
-            console.error("Failed to duplicate bundle:", error);
+            // console.error("Failed to duplicate bundle:", error);
             setLoadingBundleId(null);
         } finally {
             setLoadingBundleId(null);

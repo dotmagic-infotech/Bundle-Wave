@@ -104,7 +104,7 @@ function BundleMixMatch() {
         url: data?.url
       });
     } catch (error) {
-      console.error("Failed to fetch bundle details:", error);
+      // console.error("Failed to fetch bundle details:", error);
       shopify.saveBar.hide("save");
     } finally {
       setLoading(false);

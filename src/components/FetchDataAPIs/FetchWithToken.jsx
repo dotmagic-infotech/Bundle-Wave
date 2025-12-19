@@ -33,7 +33,6 @@ export const useFetchWithToken = () => {
 
         if (!response.ok) {
             const error = await response.text();
-            // console.log("error-->", error)
         }
 
         return await response.json();

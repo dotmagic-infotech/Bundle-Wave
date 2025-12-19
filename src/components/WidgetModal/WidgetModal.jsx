@@ -38,7 +38,7 @@ const WidgetModal = (props) => {
             }
 
         } catch (error) {
-            console.error("Failed to fetch bundle details:", error);
+            // console.error("Failed to fetch bundle details:", error);
         } finally {
             setloading(false);
         }

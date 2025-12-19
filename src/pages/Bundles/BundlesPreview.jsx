@@ -405,7 +405,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                             <div style={{ display: "flex", justifyContent: "center", margin: "-15px 0px" }}>
                                 <button disabled style={{ backgroundColor: "rgb(122, 38, 191)", border: "none", color: "rgb(255, 255, 255)", cursor: "pointer", width: "40px", height: "40px", borderRadius: "50%", padding: "8px 8px 16px", fontWeight: 500, fontSize: "33px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1 }}>+</button>
                             </div>
-                            <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginTop: "-6px", position: "relative", overflow: "hidden" }}>
+                            <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginTop: "-6px", position: "relative" }}>
                                 {getY.map((value, index) => (
                                     <div key={index} style={{ position: "relative" }}>
                                         <div style={{ padding: "15px 10px" }}>
@@ -426,8 +426,10 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                         </div>
 
                                         {index === 0 && (
-                                            <div style={{ position: 'absolute', top: "10px", right: "-19px", width: "95px", height: "23px", transform: "rotate(39deg)", backgroundColor: "rgb(122, 38, 191)", color: "white", padding: "10px", fontWeight: "500", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                                {data?.discount_value === "100" ? "FREE" : `${data?.discount_value}% OFF`}
+                                            <div style={{ height: "110px", width: "110px", position: "absolute", overflow: "hidden", right: "-10px", top: "-10px" }}>
+                                                <div class="ribbon ribbon-top-right" style={{ "--ribbon-bgcolor": "#7a26bf", "--ribbon-color": "white" }}>
+                                                    <span>{data?.discount_value === "100" ? "FREE" : `${data?.discount_value}% OFF`}</span>
+                                                </div>
                                             </div>
                                         )}
 
@@ -477,7 +479,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
 
                                     return (
                                         <div key={index}>
-                                            <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "#7a26bf" : "black", borderRadius: "10px", padding: "20px 10px", position: "relative" }}>
+                                            <div style={{ border: "2px solid", borderColor: value?.selected_default === "1" ? "#7a26bf" : "black", borderRadius: "10px", padding: "26px 10px", position: "relative" }}>
                                                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", }}>
                                                     <div style={{ display: "flex", alignItems: "center", }}>
                                                         <RadioButton
@@ -488,14 +490,14 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                                                 {value?.description}
                                                             </p>
                                                             {value?.Label &&
-                                                                <p style={{ backgroundColor: "black", padding: "0px 8px", color: 'white', borderRadius: "10px", fontSize: "10px", maxWidth: "80px", height: "20px" }}>{value?.Label}</p>
+                                                                <p style={{ backgroundColor: "#7a26bf", padding: "0px 8px", color: 'white', borderRadius: "10px", fontSize: "10px", maxWidth: "80px", height: "20px" }}>{value?.Label}</p>
                                                             }
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <p style={{ fontWeight: "500", fontSize: "1rem" }}>${finalPrice}</p>
+                                                        <p style={{ fontWeight: "500", fontSize: "1.4rem" }}>${finalPrice}</p>
                                                         {value?.type !== "5" &&
-                                                            <p style={{ fontWeight: "500", fontSize: "1rem", textDecoration: "line-through" }}>${multiplyPrice.toFixed(2)}</p>
+                                                            <p style={{ textAlign: "end", fontWeight: "400", fontSize: "1rem", textDecoration: "line-through" }}>${multiplyPrice.toFixed(2)}</p>
                                                         }
                                                     </div>
                                                 </div>
@@ -511,8 +513,12 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                                     </>
                                                 }
                                                 {value?.Badge &&
-                                                    <div style={{ backgroundColor: "#7a26bf", display: "flex", justifyContent: 'center', alignItems: "center", height: "20px", position: "absolute", right: "10px", top: "-10px", padding: '7px', fontSize: "11px", color: "white", borderRadius: "4px", fontWeight: "500" }}>
-                                                        {value?.Badge}
+                                                    <div style={{
+                                                        height: "50px", width: "130px", position: "absolute", overflow: "hidden", right: "30px", top: "-10px"
+                                                    }}>
+                                                        <div class="badge-ribbon badge-ribbon-top-right" style={{ "--ribbon-bgcolor": "#7a26bf", "--ribbon-color": "white" }}>
+                                                            <span style={{ font: "500 12px/1 'Lato'" }}>{value?.Badge}</span>
+                                                        </div>
                                                     </div>
                                                 }
                                             </div>

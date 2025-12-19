@@ -107,7 +107,6 @@ const ProductSelection = ({
                 }
             });
         } catch (err) {
-            console.error("Failed to load products for collection:", err);
         }
     };
 

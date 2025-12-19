@@ -6,7 +6,6 @@ export const getTotalPrice = (list = []) => {
             return sum + variantPrice * count;
         }, 0);
     } catch (err) {
-        console.error("Error calculating total price:", err);
         return 0;
     }
 };

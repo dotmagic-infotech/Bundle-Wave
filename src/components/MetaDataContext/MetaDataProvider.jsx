@@ -49,7 +49,6 @@ export const DiscountProvider = ({ children }) => {
                 setDiscountOptions(data?.discount_options);
                 setMetaData(data?.metadata);
             } catch (err) {
-                console.error("Error in initial metadata fetch:", err);
             }
         };
 
@@ -69,7 +68,6 @@ export const DiscountProvider = ({ children }) => {
                 setDiscountOptions(data?.discount_options);
                 setMetaData(data?.metadata);
             } catch (err) {
-                console.error("Error in subscription metadata fetch:", err);
             }
         };
 

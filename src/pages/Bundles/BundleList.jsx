@@ -40,7 +40,7 @@ const BundleList = () => {
                 });
                 setBundleData(data);
             } catch (error) {
-                console.error("Error fetching bundles:", error);
+                // console.error("Error fetching bundles:", error);
             } finally {
                 setLoading(false);
             }

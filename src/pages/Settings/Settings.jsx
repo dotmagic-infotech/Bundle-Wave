@@ -2,7 +2,7 @@
 import { useState, useEffect, useContext } from "react";
 
 // Shopify Imports
-import { Box, Card, Page, Text, BlockStack, InlineGrid, TextField, Divider, Button, Checkbox, RadioButton } from "@shopify/polaris";
+import { Box, Card, Page, Text, BlockStack, InlineGrid, TextField, Divider, Button, Checkbox, RadioButton, Label } from "@shopify/polaris";
 
 // Custom Component
 import { ShopifyContext } from "../../components/ShopifyProvider/ShopifyProvider";
@@ -46,7 +46,7 @@ const Settings = () => {
                 label: data?.label,
             });
         } catch (error) {
-            console.error("Failed to fetch bundle details:", error);
+            // console.error("Failed to fetch bundle details:", error);
         }
     };
 
@@ -137,9 +137,9 @@ const Settings = () => {
                         </BlockStack>
                     </Card>
                 </InlineGrid>
-                {/* <Divider borderWidth="050" borderColor="border-secondary" /> */}
+                <Divider borderWidth="050" borderColor="border-secondary" />
                 {/* Button action */}
-                {/* <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
+                <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
                     <Box as="section" paddingInlineStart={{ xs: "400", sm: "0" }} paddingInlineEnd={{ xs: "400", sm: "0" }}>
                         <BlockStack gap="100">
                             <Text as="h3" variant="headingMd">
@@ -154,11 +154,12 @@ const Settings = () => {
                         <div style={{ display: "flex", flexDirection: "column" }}>
                             <RadioButton label="Cart" checked={formState?.button_action === "cart"} onChange={() => handleChangeValue("button_action", "cart")} />
                             <RadioButton label="Checkout" checked={formState?.button_action === "checkout"} onChange={() => handleChangeValue("button_action", "checkout")} />
-                            <RadioButton label="Cart drawer (mini cart)" helpText="Please contact support in order to activate this option." checked={formState?.button_action === "cart_drawer"} onChange={() => handleChangeValue("button_action", "cart_drawer")} />
+                            <RadioButton disabled label="Cart drawer (mini cart)" checked={formState?.button_action === "cart_drawer"} onChange={() => handleChangeValue("button_action", "cart_drawer")} />
+                            <Label>Please contact support in order to activate this option.</Label>
                         </div>
                     </Card>
-                </InlineGrid> */}
-                {/* Variant selector type */}
+                </InlineGrid>
+                {/* Variant selector type
                 <Divider borderWidth="050" borderColor="border-secondary" />
                 <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
                     <Box as="section" paddingInlineStart={{ xs: "400", sm: "0" }} paddingInlineEnd={{ xs: "400", sm: "0" }}>

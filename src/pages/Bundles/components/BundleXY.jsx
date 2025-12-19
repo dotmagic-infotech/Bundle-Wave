@@ -100,7 +100,7 @@ const BundleXY = () => {
         display_on: data?.bundle_subtype,
       });
     } catch (error) {
-      console.error("Failed to fetch bundle details:", error);
+      // console.error("Failed to fetch bundle details:", error);
     } finally {
       setLoading(false);
     }
@@ -171,7 +171,7 @@ const BundleXY = () => {
         if (col.id) await fetchProductsForCollection(col.id);
       }
     } catch (error) {
-      console.error("Error selecting collection:", error);
+      // console.error("Error selecting collection:", error);
     }
   };
 
@@ -201,7 +201,7 @@ const BundleXY = () => {
         }
       });
     } catch (err) {
-      console.error("Failed to load products for collection:", err);
+      // console.error("Failed to load products for collection:", err);
     }
   };
 
@@ -653,7 +653,7 @@ const BundleXY = () => {
                               />
                             )}
                           </div>
-                          <div style={{ width: "100%", display: "flex", flexDirection: "column", marginTop: "10px", gap: "10px" }}>
+                          <div style={{ width: "100%", display: "flex", flexDirection: "column", marginTop: "10px", padding: "0px 10px", gap: "10px" }}>
                             {data?.bundle_name &&
                               <p style={{ fontSize: "1.5rem", fontWeight: "500", lineHeight: "normal" }}>{data?.bundle_name}</p>
                             }
@@ -698,7 +698,7 @@ const BundleXY = () => {
                             <div style={{ display: "flex", justifyContent: "center", margin: "-15px 0px" }}>
                               <button disabled style={{ backgroundColor: "rgb(122, 38, 191)", border: "none", color: "rgb(255, 255, 255)", cursor: "pointer", width: "40px", height: "40px", borderRadius: "50%", padding: "8px 8px 16px", fontWeight: 500, fontSize: "33px", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1 }}>+</button>
                             </div>
-                            <div style={{ border: "1px solid #7a26bf", borderRadius: "10px", display: "flex", flexDirection: "column", marginTop: "-6px", position: "relative", overflow: "hidden" }}>
+                            <div style={{ border: "1px solid #7a26bf", borderRadius: "10px", display: "flex", flexDirection: "column", marginTop: "-6px", position: "relative" }}>
                               {productsgets.map((value, index) => (
                                 <div key={index} style={{ position: "relative" }}>
                                   <div style={{ padding: "12px 10px" }}>
@@ -719,10 +719,10 @@ const BundleXY = () => {
                                   </div>
 
                                   {(index === 0 && data.discount_option_id !== "5") && (
-                                    <div style={{
-                                      position: 'absolute', top: "10px", right: "-19px", width: "95px", height: "23px", transform: "rotate(39deg)", backgroundColor: "rgb(122, 38, 191)", color: "white", padding: "10px", fontWeight: "500", display: "flex", justifyContent: "center", alignItems: "center"
-                                    }}>
-                                      {data?.discount_value === "100" ? "FREE" : `${data.discount_option_id === "1" ? `${data?.discount_value}% OFF` : `$${data?.discount_value} OFF`}`}
+                                    <div style={{ height: "110px", width: "110px", position: "absolute", overflow: "hidden", right: "-10px", top: "-10px" }}>
+                                      <div class="ribbon ribbon-top-right" style={{ "--ribbon-bgcolor": "#7a26bf", "--ribbon-color": "white" }}>
+                                        <span>{data?.discount_value === "100" ? "FREE" : `${data.discount_option_id === "1" ? `${data?.discount_value}% OFF` : `$${data?.discount_value} OFF`}`}</span>
+                                      </div>
                                     </div>
                                   )}
 

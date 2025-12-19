@@ -70,7 +70,7 @@ const Frequently = () => {
         display_on: data?.bundle_subtype,
       });
     } catch (error) {
-      console.error("Failed to fetch bundle details:", error);
+      // console.error("Failed to fetch bundle details:", error);
     } finally {
       setLoading(false);
     }
