@@ -45,7 +45,7 @@ function BuyXgetY() {
       border_color: "#7a26bf",
       unselected_background_color: "#FFFFFF",
       unselected_text_color: "#000000",
-      unselected_border_color: "#7a26bf",
+      unselected_border_color: "#000000",
     },
     button: {
       width: 100,
@@ -212,9 +212,12 @@ function BuyXgetY() {
               { label: "Dropdown", value: "dropdown" },
             ]}
             value={data?.variants?.type}
-            onChange={(value) =>
-              handleChangeValue("variants", "type", value)
-            }
+            onChange={(value) => {
+              handleChangeValue("variants", "type", value);
+              if (value === "color_swatch") {
+                handleChangeValue("variants", "selection_mode", "selected")
+              }
+            }}
           />
           {data?.variants?.type === "color_swatch" &&
             <>

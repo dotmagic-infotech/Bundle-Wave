@@ -34,14 +34,14 @@ export default function VariantItems({ variantType, variant = [], data, defultSe
                                     :
                                     <div><Icon source={ChevronRightIcon} /></div>
                                 }
-                                <p style={{ fontWeight: "500" }}>Select Variant</p>
+                                <p style={{ fontWeight: "500", color: `${data?.title?.fontColor || 'black'}` }}>Select Variant</p>
                             </div>
                             {open &&
                                 <>
                                     <div style={{ marginTop: "5px", maxHeight: open ? "500px" : "0", opacity: open ? 1 : 0, overflow: "hidden", transition: "all 0.3s ease" }}>
                                         {firstVariant?.size?.length > 0 && (
                                             <div>
-                                                <p style={{ fontSize: "15px", fontWeight: "400", marginBottom: "5px" }}>Size</p>
+                                                <p style={{ fontSize: "15px", fontWeight: "400", marginBottom: "5px", color: `${data?.title?.fontColor || 'black'}` }}>Size</p>
                                                 <div style={{ display: "flex", gap: "8px" }}>
                                                     {firstVariant.size.map((s, i) => (
                                                         <button key={i} style={{ padding: "5px 10px", borderRadius: "4px", border: `1px solid ${i === 0 ? data?.variants?.border_color : data?.variants?.unselected_border_color || 'black'}`, cursor: "pointer", backgroundColor: `${i === 0 ? data?.variants?.background_color : data?.variants?.unselected_background_color}`, color: `${i === 0 ? data?.variants?.text_color : data?.variants?.unselected_text_color || 'black'}`, fontSize: "14px", fontWeight: "500" }}>
@@ -55,7 +55,7 @@ export default function VariantItems({ variantType, variant = [], data, defultSe
                                     <div style={{ marginTop: "5px", maxHeight: open ? "500px" : "0", opacity: open ? 1 : 0, overflow: "hidden", transition: "all 0.3s ease" }}>
                                         {firstVariant?.color?.length > 0 && (
                                             <div>
-                                                <p style={{ fontSize: "15px", fontWeight: "400", marginBottom: "5px" }}>Color</p>
+                                                <p style={{ fontSize: "15px", fontWeight: "400", marginBottom: "5px", color: `${data?.title?.fontColor || 'black'}` }}>Color</p>
                                                 <div style={{ display: "flex", gap: "8px" }}>
                                                     {firstVariant.color.map((c, i) => (
                                                         <div key={i} style={{ border: `2px solid ${i === 0 ? data?.variants?.border_color : "transparent"}`, padding: "2px", borderRadius: "50%", cursor: "pointer" }}>
