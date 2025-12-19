@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, ButtonGroup, Button, Select, Divider } from "@shopify/polaris";
-import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon, XIcon } from "@shopify/polaris-icons";
+import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
@@ -38,10 +38,14 @@ function BuyXgetY() {
       borderRadius: 10,
     },
     variants: {
+      selection_mode: "selected",
       type: "color_swatch",
       background_color: "#FFFFFF",
       text_color: "#000000",
-      border_color: "#7a26bf"
+      border_color: "#7a26bf",
+      unselected_background_color: "#FFFFFF",
+      unselected_text_color: "#000000",
+      unselected_border_color: "#7a26bf",
     },
     button: {
       width: 100,
@@ -212,30 +216,84 @@ function BuyXgetY() {
               handleChangeValue("variants", "type", value)
             }
           />
-          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
-          <ColorPickerPopover
-            lable="Background Color"
-            color={data?.variants?.background_color}
-            onChange={(color) =>
-              handleChangeValue("variants", "background_color", color)
-            }
-          />
-          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
-          <ColorPickerPopover
-            lable="Text Color"
-            color={data.variants.text_color}
-            onChange={(color) =>
-              handleChangeValue("variants", "text_color", color)
-            }
-          />
-          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
-          <ColorPickerPopover
-            lable="Border Color"
-            color={data.variants?.border_color}
-            onChange={(color) =>
-              handleChangeValue("variants", "border_color", color)
-            }
-          />
+          {data?.variants?.type === "color_swatch" &&
+            <>
+              <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+              <ButtonGroup variant="segmented" fullWidth>
+                {["Selected", "Not Selected"].map((label, index) => {
+                  const value = label.toLowerCase();
+                  const isActive = data?.variants?.selection_mode === value;
+
+                  return (
+                    <Button
+                      key={index}
+                      variant={isActive ? "primary" : "secondary"}
+                      pressed={isActive}
+                      onClick={() => handleChangeValue("variants", "selection_mode", value)}
+                    >
+                      {label}
+                    </Button>
+                  );
+                })}
+              </ButtonGroup>
+            </>
+          }
+          {(data?.variants?.type === "color_swatch" && data?.variants?.selection_mode === "selected") && (
+            <div style={{ marginTop: "10px" }}>
+              <ColorPickerPopover
+                lable="Background Color"
+                color={data?.variants?.background_color}
+                onChange={(color) =>
+                  handleChangeValue("variants", "background_color", color)
+                }
+              />
+              <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+              <ColorPickerPopover
+                lable="Text Color"
+                color={data.variants.text_color}
+                onChange={(color) =>
+                  handleChangeValue("variants", "text_color", color)
+                }
+              />
+              <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+              <ColorPickerPopover
+                lable="Border Color"
+                color={data.variants?.border_color}
+                onChange={(color) =>
+                  handleChangeValue("variants", "border_color", color)
+                }
+              />
+            </div>
+          )}
+          {(data?.variants?.type === "color_swatch" && data?.variants?.selection_mode === "not selected") && (
+            <>
+              <div style={{ marginTop: "10px" }}>
+                <ColorPickerPopover
+                  lable="Background Color"
+                  color={data?.variants?.unselected_background_color}
+                  onChange={(color) =>
+                    handleChangeValue("variants", "unselected_background_color", color)
+                  }
+                />
+                <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                <ColorPickerPopover
+                  lable="Text Color"
+                  color={data.variants?.unselected_text_color}
+                  onChange={(color) =>
+                    handleChangeValue("variants", "unselected_text_color", color)
+                  }
+                />
+                <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                <ColorPickerPopover
+                  lable="Border Color"
+                  color={data.variants?.unselected_border_color}
+                  onChange={(color) =>
+                    handleChangeValue("variants", "unselected_border_color", color)
+                  }
+                />
+              </div>
+            </>
+          )}
         </>
       ),
     },
@@ -309,7 +367,10 @@ function BuyXgetY() {
         type: data.variants.type,
         background_color: data.variants?.background_color,
         text_color: data.variants.text_color,
-        border_color: data.variants?.border_color
+        border_color: data.variants?.border_color,
+        unselected_background_color: data.variants?.unselected_background_color,
+        unselected_text_color: data.variants.unselected_text_color,
+        unselected_border_color: data.variants?.unselected_border_color
       },
       button: {
         width: data.button.width,

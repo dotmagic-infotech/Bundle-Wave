@@ -248,18 +248,18 @@ function Frequently() {
                     />
                     <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
                     <ColorPickerPopover
-                        lable="Text Color"
-                        color={data.variants.text_color}
-                        onChange={(color) =>
-                            handleChangeValue("variants", "text_color", color)
-                        }
-                    />
-                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
-                    <ColorPickerPopover
                         lable="Background Color"
                         color={data.variants.background_color}
                         onChange={(color) =>
                             handleChangeValue("variants", "background_color", color)
+                        }
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    <ColorPickerPopover
+                        lable="Text Color"
+                        color={data.variants.text_color}
+                        onChange={(color) =>
+                            handleChangeValue("variants", "text_color", color)
                         }
                     />
                     <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />

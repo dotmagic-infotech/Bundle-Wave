@@ -225,6 +225,49 @@ function Volumediscount() {
             ),
         },
         {
+            label: "Variant selector",
+            icon: VariantIcon,
+            content: (
+                <>
+                    <Select
+                        label="Select Variant Type"
+                        options={[
+                            { label: "Color Swatch", value: "color_swatch" },
+                            { label: "Dropdown", value: "dropdown" },
+                        ]}
+                        value={data?.variants?.type}
+                        onChange={(value) =>
+                            handleChangeValue("variants", "type", value)
+                        }
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    <ColorPickerPopover
+                        lable="Background Color"
+                        color={data.variants.background_color}
+                        onChange={(color) =>
+                            handleChangeValue("variants", "background_color", color)
+                        }
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    <ColorPickerPopover
+                        lable="Text Color"
+                        color={data.variants.text_color}
+                        onChange={(color) =>
+                            handleChangeValue("variants", "text_color", color)
+                        }
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    <ColorPickerPopover
+                        lable="Border Color"
+                        color={data.variants.border_color}
+                        onChange={(color) =>
+                            handleChangeValue("variants", "border_color", color)
+                        }
+                    />
+                </>
+            ),
+        },
+        {
             label: "Button",
             icon: ButtonIcon,
             content: (
@@ -294,7 +337,9 @@ function Volumediscount() {
                 borderRadius: data.border.borderRadius
             },
             variants: {
+                type: data?.variants?.type,
                 background_color: data.variants.background_color,
+                text_color: data.variants.text_color,
                 border_color: data.variants.border_color
             },
             button: {

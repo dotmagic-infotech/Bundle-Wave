@@ -44,7 +44,7 @@ export default function VariantItems({ variantType, variant = [], data, defultSe
                                                 <p style={{ fontSize: "15px", fontWeight: "400", marginBottom: "5px" }}>Size</p>
                                                 <div style={{ display: "flex", gap: "8px" }}>
                                                     {firstVariant.size.map((s, i) => (
-                                                        <button key={i} style={{ padding: "5px 10px", borderRadius: "4px", border: `1px solid ${data?.variants?.border_color}`, cursor: "pointer", backgroundColor: `${i === 0 ? data?.variants?.background_color : "transparent"}`, color: `${i === 0 ? data?.variants?.text_color : "black"}`, fontSize: "14px", fontWeight: "500" }}>
+                                                        <button key={i} style={{ padding: "5px 10px", borderRadius: "4px", border: `1px solid ${i === 0 ? data?.variants?.border_color : data?.variants?.unselected_border_color || 'black'}`, cursor: "pointer", backgroundColor: `${i === 0 ? data?.variants?.background_color : data?.variants?.unselected_background_color}`, color: `${i === 0 ? data?.variants?.text_color : data?.variants?.unselected_text_color || 'black'}`, fontSize: "14px", fontWeight: "500" }}>
                                                             {s}
                                                         </button>
                                                     ))}
