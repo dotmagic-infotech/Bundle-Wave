@@ -511,17 +511,15 @@ function Mixmatch() {
       <Grid.Cell columnSpan={{ xs: 6, md: 6, lg: 8, xl: 8 }}>
         <div style={{ marginBottom: "1rem" }}>
           <Card>
-            <div style={{ display: "flex", justifyContent: "end", padding: "0px 10px 10px", borderBottom: "1px solid black", margin: "0px -16px 10px -16px" }}>
-              <ButtonGroup>
-                <Button>Cancel</Button>
-                <Button variant="primary" onClick={handleSubmit}>Save</Button>
-              </ButtonGroup>
-            </div>
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", padding: "0px 10px 10px", borderBottom: "1px solid black", margin: "0px -16px 10px -16px" }}>
               <Banner
                 title="Preview uses sample content for layout demonstration. Your store's real data will appear after publishing."
                 tone="warning"
               ></Banner>
+              <ButtonGroup>
+                <Button>Cancel</Button>
+                <Button variant="primary" onClick={handleSubmit}>Save</Button>
+              </ButtonGroup>
             </div>
             <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem", }}>
               {data.selectDisplay.type === "included_product_page" ? (
@@ -628,30 +626,12 @@ function Mixmatch() {
                       width: "500px", padding: "20px", border: `${data.border.borderWidth}px solid ${data.border.color}`, borderRadius: `${data.border.borderRadius}px`,
                       backgroundColor: data.background.background_type === "colored" ? data.background.background_color : "transparent", display: "flex", flexDirection: "column", gap: '0.2rem', position: "relative"
                     }}>
-                      <div
-                        style={{
-                          width: "fit-content",
-                          backgroundColor: data.badge_selectore.background_color,
-                          color: data.badge_selectore.fontColor,
-                          padding: "5px 8px",
-                          borderRadius: "0px 0px 10px 10px",
-                          position: "absolute",
-                          top: "-1px",
-                          left:
-                            data.badge_selectore.alignment === "left"
-                              ? "30px"
-                              : data.badge_selectore.alignment === "center"
-                                ? "50%"
-                                : "unset",
-                          right: data.badge_selectore.alignment === "right" ? "30px" : "unset",
-                          transform:
-                            data.badge_selectore.alignment === "center"
-                              ? "translateX(-50%)"
-                              : "none",
-                          fontWeight: 600,
-                        }}
-                      >
-                        Save 10%
+                      <div style={{
+                        height: "50px", width: "130px", position: "absolute", overflow: "hidden", left: data.badge_selectore.alignment === "left" ? "30px" : data.badge_selectore.alignment === "center" ? "50%" : "unset", right: data.badge_selectore.alignment === "right" ? "30px" : "unset", transform: data.badge_selectore.alignment === "center" ? "translateX(-50%)" : "none", top: "-10px"
+                      }}>
+                        <div class="badge-ribbon badge-ribbon-top-right" style={{ "--ribbon-bgcolor": data.badge_selectore.background_color, "--ribbon-color": data.badge_selectore.fontColor }}>
+                          <span>Save 10%</span>
+                        </div>
                       </div>
                       <p style={{
                         fontSize: '25px', fontWeight: "700", marginTop: '20px', marginBottom: "10px", color: data.title.fontColor, lineHeight: "normal", textAlign:

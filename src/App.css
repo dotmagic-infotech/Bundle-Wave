@@ -259,3 +259,64 @@
     top: 20px;
     transform: rotate(45deg);
 }
+
+/* ____________________________ */
+
+.badge-ribbon::before,
+.badge-ribbon::after {
+    position: absolute;
+    content: '';
+    display: block;
+    border: 5px solid var(--ribbon-bgcolor);
+}
+
+.badge-ribbon span {
+    position: absolute;
+    display: block;
+    width: 110px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 0;
+    border-radius: 0px 0px 30px 30px;
+    background-color: var(--ribbon-bgcolor);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+    color: var(--ribbon-color, #fff);
+    font: 500 14px/1 'Lato';
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* top right*/
+.badge-ribbon-top-right {
+    top: -10px;
+    right: -10px;
+}
+
+.badge-ribbon-top-right::after {
+    border-top-color: transparent;
+    border-right-color: transparent;
+}
+
+.badge-ribbon-top-right::before {
+    border-top-color: transparent;
+    border-left-color: transparent;
+}
+
+.badge-ribbon-top-right::before {
+    top: 0px;
+    left: 0px;
+}
+
+.badge-ribbon-top-right::after {
+    top: 0px;
+    right: 0;
+}
+
+.badge-ribbon-top-right span {
+    left: 10px;
+    top: 0px;
+    transform: rotate(360deg);
+}
