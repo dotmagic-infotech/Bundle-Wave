@@ -41,7 +41,6 @@ const BundleAddons = () => {
     start_time: "12:00 AM",
     end_time: "12:00 PM",
     endTime_status: "0",
-    display_onShop: "product_page",
     bundle_title: "Product Add-ons",
     selection_type: 'multiple',
     status: "Published",
@@ -94,7 +93,6 @@ const BundleAddons = () => {
         products: selectedProducts,
         bundle_title: data?.bundle_title,
         bundle_description: data?.bundle_description,
-        display_onShop: data?.display_onShop,
         selection_type: data?.selection_type,
         endTime_status: data?.endTime_status,
         start_time: data?.start_time,
@@ -281,7 +279,6 @@ const BundleAddons = () => {
         addons: selectedAddons,
         bundle_title: data?.bundle_title,
         bundle_description: data?.bundle_description || "",
-        display_onShop: data?.display_onShop,
         selection_type: data?.selection_type,
         start_date: formatDate(selectedDates?.start),
         endTime_status: data?.endTime_status,
@@ -569,32 +566,6 @@ const BundleAddons = () => {
                     />
                   </BlockStack>
                 </Card>
-
-                {/* Display on your shop */}
-                {data?.bundle_subtype !== "all_product" &&
-                  <Card>
-                    <BlockStack gap="300">
-                      <Text as="span" variant="headingMd">Display on your shop</Text>
-                      <div style={{ display: "flex", flexDirection: "column" }}>
-                        <RadioButton
-                          label="Inline block on the main product’s page"
-                          checked={data?.display_onShop === "product_page"}
-                          id="product_page"
-                          onChange={() => handleChangeValue("display_onShop", "product_page")}
-                        />
-                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                          <RadioButton
-                            label="Pop-up after clicking on Add To Cart button"
-                            id="cart_button"
-                            checked={data?.display_onShop === "cart_button"}
-                            onChange={() => handleChangeValue("display_onShop", "cart_button")}
-                          />
-                          <Badge tone="info">New</Badge>
-                        </div>
-                      </div>
-                    </BlockStack>
-                  </Card>
-                }
 
                 {/* Advanced settings */}
                 <div style={{ marginBottom: "10px" }}>

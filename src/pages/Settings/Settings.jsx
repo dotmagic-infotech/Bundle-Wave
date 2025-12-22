@@ -159,7 +159,7 @@ const Settings = () => {
                         </div>
                     </Card>
                 </InlineGrid>
-                {/* Variant selector type
+                {/* Variant selector type */}
                 <Divider borderWidth="050" borderColor="border-secondary" />
                 <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
                     <Box as="section" paddingInlineStart={{ xs: "400", sm: "0" }} paddingInlineEnd={{ xs: "400", sm: "0" }}>
