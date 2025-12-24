@@ -1,5 +1,5 @@
 // React Imports
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 // Third Party Imports
 import debounce from "lodash/debounce";
@@ -10,6 +10,7 @@ import {
     IndexTable, LegacyCard, useIndexResourceState, Page, Tabs, Icon, TextField, Popover, ActionList, ButtonGroup, Button, Modal, TextContainer, Spinner, InlineStack, Banner, BlockStack, Divider, Text, Tooltip, Badge,
 } from '@shopify/polaris';
 import { SaveBar, useAppBridge } from '@shopify/app-bridge-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 // Shopify Icons
 import { AlertCircleIcon, ClipboardIcon, ClockIcon, DeleteIcon, DuplicateIcon, EditIcon, SearchIcon, ViewIcon } from '@shopify/polaris-icons';
@@ -24,38 +25,43 @@ function BundleTable() {
     const navigate = useNavigate();
     const { shopName } = useContext(ShopifyContext);
     const apiRequest = useApiRequest();
+    const queryClient = useQueryClient();
     const shopify = useAppBridge();
     const { metaData } = useContext(MetaContext);
 
     // State
     const [selectedTabs, setSelectedTabs] = useState("All");
     const [searchValue, setSearchValue] = useState("");
-    const [bundleData, setBundleData] = useState([]);
-    const [pagination, setPagination] = useState({});
+    const [debouncedSearch, setDebouncedSearch] = useState('');
     const [popoverActive, setPopoverActive] = useState(false);
     const [activePopoverId, setActivePopoverId] = useState(null);
     const [active, setActive] = useState(false);
     const [activeDublicate, setActiveDublicate] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [loading, setLoading] = useState(false);
     const [displayBanner, setDisplayBanner] = useState("");
     const [copiedId, setCopiedId] = useState(null);
-    const [loadData, setLoadData] = useState(false);
-    const [loadingButton, setLoadingButton] = useState({ id: null, type: null });
-    const [loadingBundleId, setLoadingBundleId] = useState(null);
 
     const handleTabChange = (selectedTabIndex) => setSelectedTabs(tabs[selectedTabIndex].id);
     const togglePopoverActive = (() => setPopoverActive((popoverActive) => !popoverActive));
-    const toggleViewActiveFor = (id) => {
-        setActivePopoverId(prev => (prev === id ? null : id));
-    };
+    const toggleViewActiveFor = (id) => setActivePopoverId(prev => (prev === id ? null : id));
     const closeView = () => setActivePopoverId(null);
     const handleChange = (() => setActive(!active));
-    const handleDublicateChange = (() => setActiveDublicate(!activeDublicate));
+
+    const debouncedSetSearch = useMemo(
+        () => debounce((value) => {
+            setDebouncedSearch(value);
+            setCurrentPage(1);
+        }, 500),
+        []
+    );
 
     const updateText = useCallback((value) => {
-        setSearchValue(value || '');
-    }, []);
+        const v = value || '';
+        setSearchValue(v);
+        debouncedSetSearch(v);
+    }, [debouncedSetSearch]);
+
+    useEffect(() => () => debouncedSetSearch.cancel(), [debouncedSetSearch]);
 
     const tabs = [
         { id: 'All', content: 'All' },
@@ -63,65 +69,247 @@ function BundleTable() {
         { id: 'Draft', content: 'Draft' },
     ];
 
-    const fetchData = async (search = "") => {
-        setLoading(true);
-        try {
-            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles?limit=10&pagenumber=${currentPage}&status=${selectedTabs}&search=${encodeURIComponent(search)}&shop=${shopName}`;
-            const { status, data } = await apiRequest(url, 'GET');
+    const fetchBundles = async ({ queryKey }) => {
+        const [_key, { page, status, search, shop }] = queryKey;
 
-            if (status) {
-                setBundleData(data?.bundles);
-                setDisplayBanner(data?.message);
-                setPagination(data?.pagination);
-            }
-        } catch (error) {
-            // console.error("Error fetching data:", error);
-        } finally {
-            setLoading(false);
-        }
+        const url = `https://bundle-wave-backend.xavierapps.com/api/bundles?limit=10&pagenumber=${page}&status=${status}&search=${encodeURIComponent(search)}&shop=${shop}`;
+
+        const { status: ok, data } = await apiRequest(url, 'GET');
+        if (!ok) throw new Error('Failed to fetch bundles');
+
+        return data;
     };
 
-    useEffect(() => {
-        shopify.saveBar.hide("save");
-        fetchData();
-    }, [currentPage, selectedTabs]);
+    const { data, isLoading: bundleLoadnig } = useQuery({
+        queryKey: [
+            'bundles',
+            { page: currentPage, status: selectedTabs, search: debouncedSearch, shop: shopName },
+        ],
+        queryFn: fetchBundles,
+        staleTime: 0
+    });
 
-    const debouncedFetchData = useCallback(
-        debounce((value) => {
-            fetchData(value);
-        }, 500),
-        []
-    );
+    const bundleData = data?.bundles ?? [];
+    const pagination = data?.pagination ?? {};
 
-    useEffect(() => {
-        if (searchValue === "" || searchValue) {
-            debouncedFetchData(searchValue);
-        }
-    }, [searchValue, debouncedFetchData]);
+    /* ----------------------- MUTATIONS ----------------------- */
 
-    const handleStatusChange = async (newStatus, bundle_id, bundle_table) => {
-        setLoadingButton({ id: bundle_id, type: newStatus });
-        try {
-            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/status?shop=${shopName}`;
-            const { data } = await apiRequest(url, 'POST', {
-                bundle_id: bundle_id,
-                status: newStatus,
-                bundle_table: bundle_table
+    const deleteMutation = useMutation({
+        mutationFn: (payload) =>
+            apiRequest(
+                'https://bundle-wave-backend.xavierapps.com/api/bundles/delete-multiple',
+                'POST',
+                payload
+            ),
+
+        onMutate: async (variables) => {
+            await queryClient.cancelQueries({
+                queryKey: ['bundles'],
+                exact: false,
             });
 
-            if (data?.status) {
-                fetchData();
-            } else {
-                shopify.toast.show(data?.message, {
+            const previous = queryClient.getQueriesData({
+                queryKey: ['bundles'],
+            });
+
+            queryClient.setQueriesData(
+                { queryKey: ['bundles'], exact: false },
+                (old) => {
+                    if (!old?.bundles) return old;
+
+                    return {
+                        ...old,
+                        bundles: old.bundles.filter(
+                            (b) =>
+                                !variables.bundle_data.some(
+                                    (d) => Number(d.bundle_id) === Number(b.bundle_id)
+                                )
+                        ),
+                    };
+                }
+            );
+
+            return { previous };
+        },
+
+        onError: (_err, _vars, ctx) => {
+            ctx?.previous?.forEach(([key, data]) => {
+                queryClient.setQueryData(key, data);
+            });
+        },
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['bundles'],
+                exact: false,
+                refetchType: 'active',
+            });
+
+            shopify.toast.show('Bundles deleted');
+            handleChange();
+            clearSelection();
+            setCurrentPage(1);
+        },
+    });
+
+    const handleDeleteConfirm = () => {
+        if (deleteMutation.isPending) return;
+
+        deleteMutation.mutate({
+            bundle_data: bundleData
+                .filter((b) => selectedResources.includes(String(b.bundle_id)))
+                .map((b) => ({
+                    bundle_id: b.bundle_id,
+                    bundle_table: b.bundle_table,
+                })),
+        });
+    };
+
+    const duplicateMutation = useMutation({
+        mutationFn: (payload) =>
+            apiRequest(
+                `https://bundle-wave-backend.xavierapps.com/api/bundles/duplicate-multiple?shop=${shopName}`,
+                'POST',
+                payload
+            ),
+
+        onError: (error, _vars, ctx) => {
+            shopify.toast.show(
+                error?.message || 'Failed to update bundle status',
+                {
                     isError: true,
-                    duration: 8000
-                });
-            }
-        } catch (error) {
-            // console.error("Error updating status:", error);
-        } finally {
-            setLoadingButton({ id: null, type: null });
+                    duration: 5000,
+                }
+            );
+        },
+
+        onSuccess: (res) => {
+            queryClient.invalidateQueries({
+                queryKey: ['bundles'],
+                exact: false,
+                refetchType: 'active',
+            });
+
+            shopify.toast.show(res?.data?.message || 'Bundles duplicated');
+            clearSelection();
+            setActiveDublicate(false);
+        },
+    });
+
+    const handleDuplicateConfirm = (bundle_id = null, bundle_table = null) => {
+        if (duplicateMutation.isPending) return;
+
+        let payload = [];
+
+        if (bundle_id && bundle_table) {
+            payload = [{ bundle_id, bundle_table }];
         }
+        else {
+            payload = bundleData
+                .filter((b) => selectedResources.includes(String(b.bundle_id)))
+                .map((b) => ({
+                    bundle_id: b.bundle_id,
+                    bundle_table: b.bundle_table,
+                }));
+        }
+
+        if (!payload.length) {
+            shopify.toast.show('Please select at least one bundle to clone', {
+                isError: true,
+            });
+            return;
+        }
+
+        duplicateMutation.mutate({
+            bundle_data: payload,
+        });
+    };
+
+    const statusMutation = useMutation({
+        mutationFn: ({ bundle_id, bundle_table, status }) =>
+            apiRequest(
+                `https://bundle-wave-backend.xavierapps.com/api/bundles/status?shop=${shopName}`,
+                'POST',
+                { bundle_id, bundle_table, status }
+            ),
+
+        onMutate: async ({ bundle_id, status }) => {
+            await queryClient.cancelQueries({
+                queryKey: ['bundles'],
+                exact: false,
+            });
+
+            const previous = queryClient.getQueriesData({
+                queryKey: ['bundles'],
+            });
+
+            queryClient.setQueriesData(
+                { queryKey: ['bundles'], exact: false },
+                (old) => {
+                    if (!old?.bundles) return old;
+
+                    return {
+                        ...old,
+                        bundles: old.bundles.map((b) =>
+                            String(b.bundle_id) === String(bundle_id)
+                                ? { ...b, status }
+                                : b
+                        ),
+                    };
+                }
+            );
+
+            return { previous };
+        },
+
+        onError: (error, _vars, ctx) => {
+            ctx?.previous?.forEach(([key, data]) => {
+                queryClient.setQueryData([
+                    'bundles',
+                    { page: currentPage, status: selectedTabs, search: searchValue, shop: shopName },
+                ], data);
+            });
+
+            shopify.toast.show(
+                error?.message || 'Failed to update bundle status',
+                {
+                    isError: true,
+                    duration: 5000,
+                }
+            );
+        },
+
+        onSuccess: (res) => {
+            queryClient.invalidateQueries({
+                queryKey: ['bundles'],
+                exact: false,
+            });
+            shopify.toast.show(res?.data?.message || 'Bundle status updated');
+        },
+    });
+
+    const updatingBundleId = statusMutation.isPending ? statusMutation.variables?.bundle_id : null;
+
+    const updatingStatus = statusMutation.isPending ? statusMutation.variables?.status : null;
+
+    const handlePublish = (bundle) => {
+        if (statusMutation.isPending) return;
+
+        statusMutation.mutate({
+            bundle_id: bundle.bundle_id,
+            bundle_table: bundle.bundle_table,
+            status: 'Published',
+        });
+    };
+
+    const handleDraft = (bundle) => {
+        if (statusMutation.isPending) return;
+
+        statusMutation.mutate({
+            bundle_id: bundle.bundle_id,
+            bundle_table: bundle.bundle_table,
+            status: 'Draft',
+        });
     };
 
     const handleCopy = (id, textToCopy) => {
@@ -138,10 +326,10 @@ function BundleTable() {
             });
     };
 
-    // IndexTable State
     const resourceData = bundleData?.map(item => ({
         id: String(item.bundle_id),
     }));
+
     const { selectedResources, allResourcesSelected, handleSelectionChange, clearSelection } = useIndexResourceState(resourceData);
 
     const MediaIcons = ({ media }) => (
@@ -183,96 +371,6 @@ function BundleTable() {
             )}
         </div>
     );
-
-    const handleDelete = async () => {
-        try {
-            setLoadData(true);
-            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/delete-multiple`;
-
-            const { data } = await apiRequest(url, 'POST', {
-                bundle_data: bundleData
-                    .filter(({ bundle_id }) => selectedResources.includes(bundle_id))
-                    .map(({ bundle_id, bundle_table }) => ({ bundle_id, bundle_table }))
-            });
-
-            setLoadData(false);
-            if (data?.status) {
-                fetchData();
-                handleChange();
-                clearSelection();
-                setCurrentPage(1);
-            } else {
-                clearSelection();
-                handleChange();
-                shopify.toast.show(data?.message, {
-                    isError: true,
-                    duration: 8000
-                });
-            }
-        } catch (error) {
-            // console.error("Failed to fetch bundle details:", error);
-        }
-    }
-
-    const handleDublicate = async () => {
-        try {
-            setLoadData(true);
-            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/duplicate-multiple?shop=${shopName}`;
-            const { data } = await apiRequest(url, 'POST', {
-                bundle_data: bundleData
-                    .filter(({ bundle_id }) => selectedResources.includes(bundle_id))
-                    .map(({ bundle_id, bundle_table }) => ({ bundle_id, bundle_table }))
-            });
-
-            setLoadData(false);
-
-            if (data?.status) {
-                fetchData();
-                handleDublicateChange();
-                clearSelection();
-                setCurrentPage(1);
-            } else {
-                clearSelection();
-                handleDublicateChange();
-                shopify.toast.show(data?.message, {
-                    isError: true,
-                    duration: 8000
-                });
-            }
-        } catch (error) {
-            // console.error("Failed to fetch bundle details:", error);
-        }
-    }
-
-    const handleDuplicateSingle = async (bundle_id, bundle_table) => {
-        try {
-            setLoadingBundleId(bundle_id);
-
-            const url = `https://bundle-wave-backend.xavierapps.com/api/bundles/duplicate-multiple?shop=${shopName}`;
-            const payload = {
-                bundle_data: [{ bundle_id, bundle_table }]
-            };
-
-            const { data } = await apiRequest(url, 'POST', payload);
-
-            if (data?.status) {
-                fetchData();
-                clearSelection();
-                setCurrentPage(1);
-            } else {
-                clearSelection();
-                shopify.toast.show(data?.message, {
-                    isError: true,
-                    duration: 8000
-                });
-            }
-        } catch (error) {
-            // console.error("Failed to duplicate bundle:", error);
-            setLoadingBundleId(null);
-        } finally {
-            setLoadingBundleId(null);
-        }
-    };
 
     const handleNextPage = () => {
         if (pagination.current_page < pagination.total_pages) {
@@ -397,11 +495,14 @@ function BundleTable() {
                         <ButtonGroup variant="segmented">
                             <Button
                                 variant={status === "Published" ? "primary" : "secondary"}
-                                loading={loadingButton.id === bundle_id && loadingButton.type === "Published"} // ✅ only show loader if matching
+                                loading={updatingBundleId === bundle_id && updatingStatus === 'Published'}
+                                disabled={updatingBundleId === bundle_id && updatingStatus === 'Published'}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    status === "Published" ? undefined :
-                                        handleStatusChange("Published", bundle_id, bundle_table);
+                                    if (status !== 'Published') handlePublish({
+                                        bundle_id,
+                                        bundle_table,
+                                    });
                                 }}
                             >
                                 Published
@@ -409,11 +510,14 @@ function BundleTable() {
 
                             <Button
                                 variant={status === "Draft" ? "primary" : "secondary"}
-                                loading={loadingButton.id === bundle_id && loadingButton.type === "Draft"} // ✅ same idea
+                                loading={updatingBundleId === bundle_id && updatingStatus === 'Draft'}
+                                disabled={updatingBundleId === bundle_id && updatingStatus === 'Draft'}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    status === "Draft" ? undefined :
-                                        handleStatusChange("Draft", bundle_id, bundle_table);
+                                    if (status !== 'Draft') handleDraft({
+                                        bundle_id,
+                                        bundle_table,
+                                    });
                                 }}
                             >
                                 Draft
@@ -498,18 +602,11 @@ function BundleTable() {
                         </Tooltip>
 
                         <Tooltip content="Clone">
-                            <Button disabled={selectedResources.length > 0} loading={loadingBundleId === bundle_id} icon={DuplicateIcon} onClick={(event) => {
+                            <Button disabled={selectedResources.length > 0} icon={DuplicateIcon} onClick={(event) => {
                                 event.stopPropagation();
-                                handleDuplicateSingle(bundle_id, bundle_table)
+                                handleDuplicateConfirm(bundle_id, bundle_table)
                             }}></Button>
                         </Tooltip>
-
-                        {/* <Tooltip content="Delete Bundle">
-                            <Button disabled={selectedResources.length > 0} icon={DeleteIcon} onClick={(event) => {
-                                event.stopPropagation();
-                                handleChange();
-                            }}></Button>
-                        </Tooltip> */}
                     </InlineStack>
                 </IndexTable.Cell>
             </IndexTable.Row>
@@ -572,14 +669,17 @@ function BundleTable() {
                                         >
                                             <ActionList
                                                 actionRole="menuitem"
-                                                items={[{ content: 'Delete', icon: DeleteIcon, onAction: handleChange }, { content: 'Clone', icon: DuplicateIcon, onAction: handleDublicateChange }]}
+                                                items={[
+                                                    { content: 'Delete', icon: DeleteIcon, onAction: handleChange },
+                                                    { content: 'Clone', icon: DuplicateIcon, onAction: () => setActiveDublicate(true) }
+                                                ]}
                                             />
                                         </Popover>
                                     </div>
                                 </div>
                             )}
                         </div>
-                        {loading ? (
+                        {bundleLoadnig ? (
                             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "calc(100vh - 350px)" }}>
                                 <Spinner accessibilityLabel="Small spinner example" size="small" />
                             </div>
@@ -630,8 +730,9 @@ function BundleTable() {
                 title={`Are you sure you want to delete ${selectedResources.length > 0 ? selectedResources.length : 1} bundles?`}
                 primaryAction={{
                     content: 'Delete',
-                    loading: loadData,
-                    onAction: handleDelete,
+                    destructive: true,
+                    loading: deleteMutation.isPending,
+                    onAction: handleDeleteConfirm,
                 }}
                 secondaryActions={[
                     {
@@ -650,17 +751,17 @@ function BundleTable() {
             </Modal>
             <Modal
                 open={activeDublicate}
-                onClose={handleDublicateChange}
+                onClose={() => setActiveDublicate(false)}
                 title={`Are you sure you want to duplicate ${selectedResources.length} bundles?`}
                 primaryAction={{
                     content: 'Clone',
-                    loading: loadData,
-                    onAction: handleDublicate,
+                    loading: duplicateMutation.isPending,
+                    onAction: handleDuplicateConfirm,
                 }}
                 secondaryActions={[
                     {
                         content: 'Cancel',
-                        onAction: handleDublicateChange,
+                        onAction: () => setActiveDublicate(false),
                     },
                 ]}
             >

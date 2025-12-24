@@ -15,6 +15,7 @@
     "@shopify/app-bridge-utils": "^3.5.1",
     "@shopify/polaris": "^13.9.3",
     "@shopify/polaris-icons": "^9.3.0",
+    "@tanstack/react-query": "^5.90.12",
     "apexcharts": "^4.5.0",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
