@@ -74,7 +74,6 @@ function App() {
 
         {/* Bundle  */}
         <Route path="/bundles" element={<BundleTable />} />
-        {/* <Route path="/bundlesList" element={<BundleListCopyy />} /> */}
         <Route path="/bundlesList" element={<BundleList />} />
 
         <Route path="/analytics" element={metaData?.analytics === "1" ? <Analytics /> : <NotAccess />} />

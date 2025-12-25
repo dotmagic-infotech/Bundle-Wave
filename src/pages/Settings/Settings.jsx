@@ -175,7 +175,7 @@ const Settings = () => {
                     <Card roundedAbove="sm">
                         <div style={{ display: "flex", flexDirection: "column" }}>
                             <RadioButton label="Dropdown" checked={formState?.variant_selector === "dropdown"} onChange={() => handleChangeValue("variant_selector", "dropdown")} />
-                            <RadioButton label="Color swatch" checked={formState?.variant_selector === "color"} onChange={() => handleChangeValue("variant_selector", "color")} />
+                            <RadioButton label="Swatches" checked={formState?.variant_selector === "color"} onChange={() => handleChangeValue("variant_selector", "color")} />
                         </div>
                     </Card>
                 </InlineGrid>

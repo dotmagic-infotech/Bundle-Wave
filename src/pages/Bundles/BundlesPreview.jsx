@@ -160,7 +160,7 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                             {type === "Single" && (
                                 <>
                                     <p style={{ marginTop: '10px', lineHeight: 1, fontSize: "2rem", fontWeight: "500", marginBottom: "25px" }}>{title}</p>
-                                    <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "5px", marginBottom: "-6px" }}>
                                         {sections.map((value, index) => {
                                             const sectionImg = getSectionImage(value);
                                             const collection0 = value?.collection?.[0];
@@ -171,8 +171,8 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                             const collectionProducts = collection0?.products || [];
 
                                             return (
-                                                <div key={value?.id ?? index}>
-                                                    <div style={{ display: "flex", padding: "10px" }}>
+                                                <div key={value?.id ?? index} style={{ border: "2px solid #7a26bf", borderRadius: "10px", }}>
+                                                    <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
                                                         <div style={{ cursor: "pointer", display: "flex" }}>
                                                             {selectedFirst === index ? (
                                                                 <Button icon={ChevronDownIcon} variant="plain" onClick={() => setSelectedFirst(null)} />
@@ -189,18 +189,16 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                                             }}
                                                         />
 
-                                                        <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
+                                                        <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "5px", width: "calc(100% - 80px)" }}>
                                                             <p style={{ fontWeight: "500", fontSize: "15px", }}>{sectionTitle}</p>
                                                             <span>{sectionDescription}</span>
                                                         </div>
                                                     </div>
 
-                                                    <div style={{ margin: "0px 10px" }}>
-                                                        <Divider />
-                                                    </div>
-
                                                     {selectedFirst === index && (
                                                         <div>
+                                                            <Divider />
+
                                                             {products.length > 0 && products.map((product, pIndex) => (
                                                                 <div key={product?.id ?? `p-${pIndex}`}>
                                                                     <div style={{ display: "flex", justifyContent: "space-between", padding: "15px 10px" }}>
@@ -258,8 +256,6 @@ const BundlesPreview = ({ bundle_type_id, modalSize = "fullScreen", type = "", t
                                                             ))}
                                                         </div>
                                                     )}
-
-                                                    {index !== sections.length - 1 && <Divider />}
                                                 </div>
                                             );
                                         })}

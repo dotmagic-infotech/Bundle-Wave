@@ -13,10 +13,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-// Images
-import oneimage from "../../../assets/PngImage/1.svg"
-import twoimage from "../../../assets/PngImage/2.svg"
-
 // Custom Component
 import { MetaContext } from '../../../components/MetaDataContext/MetaDataProvider';
 import { useFetchWithToken } from '../../../components/FetchDataAPIs/FetchWithToken';
@@ -425,7 +421,7 @@ function BundleMixMatch() {
                     <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
                       <Card padding={0}>
                         <label htmlFor="Single" style={{ display: "block", cursor: "pointer" }}>
-                          <img src={oneimage} />
+                          <img src="https://bundle-wave-backend.xavierapps.com/assets/mixmatch_single.svg" />
                           <div style={{ padding: "7px 10px 10px 15px" }}>
                             <RadioButton
                               label="Single Discount"
@@ -444,7 +440,7 @@ function BundleMixMatch() {
                       </Card>
                       <Card padding={0}>
                         <label htmlFor="Tiered" style={{ display: "block", cursor: "pointer" }}>
-                          <img src={twoimage} />
+                          <img src="https://bundle-wave-backend.xavierapps.com/assets/mixmatch_tiered.svg" />
                           <div style={{ padding: "7px 10px 10px 15px" }}>
                             <RadioButton label="Tiered Discount" id="Tiered" name="accounts" checked={data.bundle_subtype === 'Tiered'}
                               onChange={() => {
@@ -830,7 +826,7 @@ function BundleMixMatch() {
                               {data?.bundle_name &&
                                 <p style={{ margin: '10px 0px', fontSize: "1.5rem", fontWeight: "500", lineHeight: "1" }}>{data?.bundle_name}</p>
                               }
-                              <div style={{ border: "1px solid gray", borderRadius: "10px", display: "flex", flexDirection: "column", marginBottom: "-6px" }}>
+                              <div style={{ display: "flex", flexDirection: "column", gap: "5px", marginBottom: "-6px" }}>
                                 {sections.map((value, index) => {
                                   const sectionImg = getSectionImage(value);
                                   const collection0 = value?.collection?.[0]; // safe reference
@@ -842,8 +838,8 @@ function BundleMixMatch() {
                                   const collectionProducts = collection0?.products || [];
 
                                   return (
-                                    <div key={value?.id ?? index}>
-                                      <div style={{ display: "flex", padding: "10px" }}>
+                                    <div key={value?.id ?? index} style={{ border: "2px solid #7a26bf", borderRadius: "10px", }}>
+                                      <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
                                         <div style={{ cursor: "pointer", display: 'flex' }}>
                                           {selectedFirst === index ? (
                                             <Button icon={ChevronDownIcon} variant="plain" onClick={() => setSelectedFirst(null)} />
@@ -855,23 +851,24 @@ function BundleMixMatch() {
                                         <div
                                           className='xa_product_img'
                                           style={{
+                                            width: "50px",
+                                            height: "50px",
                                             backgroundImage: `url(${sectionImg})`,
                                             marginLeft: "10px"
                                           }}
                                         />
 
-                                        <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
+                                        <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "5px", width: "calc(100% - 80px)" }}>
                                           <p style={{ fontWeight: "500" }}>{sectionTitle}</p>
                                           <span>{sectionDescription}</span>
                                         </div>
                                       </div>
 
-                                      <div style={{ margin: "0px 10px" }}>
-                                        <Divider />
-                                      </div>
-
                                       {selectedFirst === index && (
                                         <div>
+                                          <div style={{ margin: "0px" }}>
+                                            <Divider />
+                                          </div>
                                           {products.length > 0 && products.map((product, pIndex) => (
                                             <div key={product?.id ?? `p-${pIndex}`}>
                                               <div style={{ display: "flex", padding: "15px 10px" }}>
@@ -899,8 +896,6 @@ function BundleMixMatch() {
                                           ))}
                                         </div>
                                       )}
-
-                                      {index !== sections.length - 1 && <Divider />}
                                     </div>
                                   );
                                 })}

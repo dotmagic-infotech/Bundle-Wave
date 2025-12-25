@@ -794,9 +794,9 @@ function Mixmatch() {
                         <p style={{ fontSize: '25px', fontWeight: "700", lineHeight: "normal", }}>Mix & Match - Earrings Collection</p>
                         <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
                           <div style={{ display: "flex", flexDirection: "column", gap: '0.5rem' }}>
-                            <div style={{ border: "1px solid black", padding: "10px", borderRadius: "10px" }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "10px", borderRadius: "10px" }}>
                               {[{ name: "Sterling Silver Stud Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766", price: "$30.00" }, { name: "Rose Gold Drop Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758", price: "$42.00" }].map((_, index, arr) => (
-                                <div key={index}>
+                                <div key={index} style={{ border: `${data?.border?.borderWidth}px solid ${data?.border?.color}`, borderRadius: `${data?.border?.borderRadius}px`, padding: "5px" }}>
                                   <div style={{ display: "flex", alignItems: "center", }}>
                                     <div>
                                       <Icon source={ChevronRightIcon} />
@@ -807,11 +807,6 @@ function Mixmatch() {
                                       <p style={{ fontWeight: data?.title?.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>{_?.price}</p>
                                     </div>
                                   </div>
-                                  {index !== arr.length - 1 && (
-                                    <div style={{ margin: "10px -10px" }}>
-                                      <Divider borderColor="border-hover" />
-                                    </div>
-                                  )}
                                 </div>
                               ))}
                             </div>
