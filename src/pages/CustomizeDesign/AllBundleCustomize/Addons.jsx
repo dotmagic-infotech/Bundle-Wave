@@ -18,6 +18,7 @@ function Addons() {
 
     // State
     const [openIndex, setOpenIndex] = useState(null);
+    const [selection, setSelection] = useState("selected");
     const [data, setData] = useState({
         selectDisplay: {
             type: "main_product_page",
@@ -242,7 +243,7 @@ function Addons() {
                         onChange={(value) => {
                             handleChangeValue("variants", "type", value);
                             if (value === "color_swatch") {
-                                handleChangeValue("variants", "selection_mode", "selected")
+                                setSelection("selected");
                             }
                         }}
                     />
@@ -252,14 +253,14 @@ function Addons() {
                             <ButtonGroup variant="segmented" fullWidth>
                                 {["Selected", "Not Selected"].map((label, index) => {
                                     const value = label.toLowerCase();
-                                    const isActive = data?.variants?.selection_mode === value;
+                                    const isActive = selection === value;
 
                                     return (
                                         <Button
                                             key={index}
                                             variant={isActive ? "primary" : "secondary"}
                                             pressed={isActive}
-                                            onClick={() => handleChangeValue("variants", "selection_mode", value)}
+                                            onClick={() => setSelection(value)}
                                         >
                                             {label}
                                         </Button>
@@ -268,7 +269,7 @@ function Addons() {
                             </ButtonGroup>
                         </>
                     }
-                    {(data?.variants?.type === "color_swatch" && data?.variants?.selection_mode === "selected") && (
+                    {(data?.variants?.type === "color_swatch" && selection === "selected") && (
                         <div style={{ marginTop: "10px" }}>
                             <ColorPickerPopover
                                 lable="Background Color"
@@ -295,7 +296,7 @@ function Addons() {
                             />
                         </div>
                     )}
-                    {(data?.variants?.type === "color_swatch" && data?.variants?.selection_mode === "not selected") && (
+                    {(data?.variants?.type === "color_swatch" && selection === "not selected") && (
                         <div style={{ marginTop: "10px" }}>
                             <ColorPickerPopover
                                 lable="Background Color"

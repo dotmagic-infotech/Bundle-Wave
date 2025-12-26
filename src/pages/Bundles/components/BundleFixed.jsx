@@ -78,6 +78,7 @@ const BundleFixed = () => {
       }));
 
       setMedia(data.media);
+      setFiles([]);
       setSelectedDates({
         start: data.start_date ? new Date(data.start_date) : new Date(),
         end: data.end_date ? new Date(data.end_date) : new Date(),
@@ -108,6 +109,7 @@ const BundleFixed = () => {
 
   useEffect(() => {
     if (id) {
+      setFiles([]);
       fetchBundleDetails(id);
     }
   }, [id]);

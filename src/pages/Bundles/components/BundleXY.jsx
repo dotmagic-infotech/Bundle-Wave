@@ -73,6 +73,7 @@ const BundleXY = () => {
 
       const selectedOption = discountOptions.find(option => option.id === data.discount_option_id);
       setMedia(data.media);
+      setFiles([]);
       setSelectedDates({
         start: data.start_date ? new Date(data.start_date) : new Date(),
         end: data.end_date ? new Date(data.end_date) : new Date(),
@@ -108,6 +109,7 @@ const BundleXY = () => {
 
   useEffect(() => {
     if (id) {
+      setFiles([]);
       fetchBundleDetails(id);
     }
   }, [id]);
