@@ -173,7 +173,7 @@ function Volumediscount() {
                     <RangeSlider
                         label="Font Size"
                         min={10}
-                        max={20}
+                        max={30}
                         value={data.title.fontSize}
                         onChange={(value) => handleChangeValue("title", "fontSize", value)}
                         output
@@ -527,7 +527,7 @@ function Volumediscount() {
                                             ))}
                                         </div>
                                         <p style={{
-                                            margin: '10px 0px', fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "500", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
+                                            margin: '10px 0px', fontSize: `${data.title.fontSize}px`, fontWeight: "500", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
                                                 : data.tite_alignment.alignment === "center"
                                                     ? "center"
                                                     : "end"
@@ -549,12 +549,12 @@ function Volumediscount() {
                                                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                                             <div style={{ display: "flex", alignItems: "center" }}>
                                                                 <RadioButton checked={index === 0} />
-                                                                <p style={{ fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginRight: "10px" }}>Buy {index + 1} items</p>
+                                                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginRight: "10px" }}>Buy {index + 1} items</p>
                                                                 <div style={{ backgroundColor: data?.button?.buttonColor, color: data?.button?.textColor, borderRadius: "10px", padding: "2px 8px" }}>Save {_?.discount}%</div>
                                                             </div>
                                                             <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                                                                <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize + 7}px`, color: data.title.fontColor }}>{_?.price}</p>
-                                                                <p style={{ textAlign: "end", fontWeight: data.title.fontWeight - 100, fontSize: `${data.title.fontSize + 3}px`, color: data.title.fontColor, marginLeft: "3px", textDecoration: "line-through" }}>{_?.oPrice}</p>
+                                                                <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>{_?.price}</p>
+                                                                <p style={{ textAlign: "end", fontWeight: data.title.fontWeight - 100, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, marginLeft: "3px", textDecoration: "line-through" }}>{_?.oPrice}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -573,7 +573,7 @@ function Volumediscount() {
                             ) : data?.selectDisplay.type === "included_product_page" ? (
                                 <div style={{ display: "flex", flexDirection: "column", width: "50%", gap: "1rem", border: "1px solid black", padding: "12px", borderRadius: `8px`, background: data?.background?.background_type === "transparent" ? 'transparent' : data?.background?.background_color }}>
                                     <p style={{
-                                        fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "500", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
+                                        fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
                                             : data.tite_alignment.alignment === "center"
                                                 ? "center"
                                                 : "end"
@@ -599,12 +599,12 @@ function Volumediscount() {
                                                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                                         <div style={{ display: "flex", alignItems: "center" }}>
                                                             <input type="radio" checked={index === 1} style={{ accentColor: `${data.button.buttonColor}`, marginRight: "8px", width: "1rem", height: "1rem" }} />
-                                                            <p style={{ fontSize: `${5 + Number(data.title.fontSize ?? 0)}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginRight: "10px" }}>Buy {index + 1} items</p>
+                                                            <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginRight: "10px" }}>Buy {index + 1} items</p>
                                                             <div style={{ backgroundColor: data?.button?.buttonColor, color: data?.button?.textColor, borderRadius: "10px", padding: "2px 8px" }}>Save {offer?.discount}%</div>
                                                         </div>
                                                         <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                                                            <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize + 7}px`, color: data.title.fontColor }}>{offer?.price}</p>
-                                                            <p style={{ textAlign: "center", fontWeight: data.title.fontWeight - 100, fontSize: `${data.title.fontSize + 3}px`, color: data.title.fontColor, marginLeft: "3px", textDecoration: "line-through" }}>{offer?.oPrice}</p>
+                                                            <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>{offer?.price}</p>
+                                                            <p style={{ textAlign: "center", fontWeight: data.title.fontWeight - 100, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, marginLeft: "3px", textDecoration: "line-through" }}>{offer?.oPrice}</p>
                                                         </div>
                                                     </div>
                                                     {index === 1 &&

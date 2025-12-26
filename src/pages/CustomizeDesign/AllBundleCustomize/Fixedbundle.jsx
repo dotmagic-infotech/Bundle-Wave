@@ -652,7 +652,7 @@ function Fixedbundle() {
                         </div>
                       ))}
                     </div>
-                    <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize + 2}px`, cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
+                    <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize}px`, cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
                       Add bundle to cart | Save 20%
                     </button>
                   </div>

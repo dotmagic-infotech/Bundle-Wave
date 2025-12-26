@@ -97,7 +97,7 @@ const FileUploadDropZone = ({ media, setMedia, files, setFiles, setSections = []
     return (
         <DropZone onDrop={handleDropZoneDrop} label="Upload Files">
             {uploadedFiles}
-            {(!media?.length && !files?.length) && <DropZone.FileUpload actionTitle="Upload Files" />}
+            {(!media?.length && !files?.length) && <DropZone.FileUpload actionTitle="Upload Files" actionHint="Max file size: 2MB " />}
         </DropZone>
     );
 };
