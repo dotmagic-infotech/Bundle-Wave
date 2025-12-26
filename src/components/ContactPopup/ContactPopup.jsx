@@ -177,7 +177,7 @@ const ContactPopup = ({ showPopup, onClose }) => {
         </LegacyStack>
 
         {data?.selectMedia === 'upload' ? (
-          <FileUploadDropZone media={media} setMedia={setMedia} files={files} setFiles={setFiles} />
+          <FileUploadDropZone media={media} setMedia={setMedia} files={files} setFiles={setFiles} savebtn={false} />
         ) : (
           <TextField
             label="Link"

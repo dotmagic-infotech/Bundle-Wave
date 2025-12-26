@@ -531,8 +531,7 @@ function Frequently() {
             <Grid.Cell columnSpan={{ xs: 6, md: 6, lg: 8, xl: 8 }}>
                 <div style={{ marginBottom: "1rem" }}>
                     <Card>
-                        <div style={{ display: "flex", justifyContent: "space-between", padding: "0px 10px 10px", borderBottom: "1px solid black", margin: "0px -16px 10px -16px" }}>
-                            <Banner title="Preview uses sample content for layout demonstration. Your store's real data will appear after publishing." tone="warning"></Banner>
+                        <div style={{ display: "flex", justifyContent: "end", padding: "0px 10px 10px", borderBottom: "1px solid black", margin: "0px -16px 10px -16px" }}>
                             <ButtonGroup>
                                 <Button>Cancel</Button>
                                 <Button variant="primary" onClick={handleSubmit}>Save</Button>

@@ -7,7 +7,7 @@ import { DeleteIcon } from "@shopify/polaris-icons";
 
 const validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/svg+xml", "image/webp"];
 
-const FileUploadDropZone = ({ media, setMedia, files, setFiles, setSections = [], editingSectionId = null }) => {
+const FileUploadDropZone = ({ media, setMedia, files, setFiles, setSections = [], editingSectionId = null, savebtn = true }) => {
 
     // State
     const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -15,11 +15,15 @@ const FileUploadDropZone = ({ media, setMedia, files, setFiles, setSections = []
 
     const handleDropZoneDrop = (_dropFiles, acceptedFiles, _rejectedFiles) => {
         setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
-        shopify.saveBar.show('save');
+        if (savebtn) {
+            shopify.saveBar.show('save');
+        }
     };
 
     const handleRemoveMedia = (index, type) => {
-        shopify.saveBar.show('save');
+        if (savebtn) {
+            shopify.saveBar.show('save');
+        }
         if (type === "media") {
             setMedia((prevMedia) => {
                 const updated = prevMedia.filter((_, i) => i !== index);

@@ -543,11 +543,7 @@ function Fixedbundle() {
       <Grid.Cell columnSpan={{ xs: 6, md: 6, lg: 8, xl: 8 }}>
         <div style={{ marginBottom: "1rem" }}>
           <Card>
-            <div style={{ display: "flex", justifyContent: "space-between", padding: "0px 10px 10px", borderBottom: "1px solid black", margin: "0px -16px 10px -16px" }}>
-              <Banner
-                title="Preview uses sample content for layout demonstration. Your store's real data will appear after publishing."
-                tone="warning"
-              ></Banner>
+            <div style={{ display: "flex", justifyContent: "end", padding: "0px 10px 10px", borderBottom: "1px solid black", margin: "0px -16px 10px -16px" }}>
               <ButtonGroup>
                 <Button>Cancel</Button>
                 <Button variant="primary" onClick={handleSubmit}>Save</Button>
@@ -598,9 +594,7 @@ function Fixedbundle() {
 
                             <VariantItems variantType={data?.variants?.type} variant={_?.variant} data={data} />
 
-                            {index !== arr.length - 1 && (
-                              <div style={{ margin: "10px 0px" }}> <Divider borderColor="border-hover" /></div>
-                            )}
+                            <div style={{ margin: "10px 0px" }}> <Divider borderColor="border-hover" /></div>
                           </div>
                         ))}
                       </div>
@@ -615,9 +609,9 @@ function Fixedbundle() {
                 </div>
               ) : data?.selectDisplay?.type === "included_product_page" ? (
                 <div style={{ display: "flex", flexDirection: "column", width: "50%" }}>
-                  <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "12px", borderRadius: `${data.border.borderRadius}px`, display: "flex", flexDirection: "column", gap: "1rem", backgroundColor: data?.background?.background_type === "colored" ? data.background.background_color : "transparent", color: data.title.fontColor, }}>
+                  <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "12px", borderRadius: `${data.border.borderRadius}px`, display: "flex", flexDirection: "column", backgroundColor: data?.background?.background_type === "colored" ? data.background.background_color : "transparent", color: data.title.fontColor, }}>
                     <p style={{
-                      fontSize: "25px", fontWeight: "700", lineHeight: "normal", textAlign:
+                      fontSize: "25px", fontWeight: "700", lineHeight: "normal", marginBottom: "1rem", textAlign:
                         data.tite_alignment.alignment === "left"
                           ? "start"
                           : data.tite_alignment.alignment === "center"
@@ -627,31 +621,24 @@ function Fixedbundle() {
                       Elegant Earrings Bundle
                     </p>
 
-                    <div style={{ marginTop: "10px" }}>
-                      {products.map((_, index, arr) => (
-                        <div key={index}>
-                          <div style={{ display: "flex", gap: "10px" }}>
-                            <img
-                              src={_?.image}
-                              width="70px"
-                              height="70px"
-                            />
-                            <div>
-                              <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
-                              <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
-                            </div>
+                    {products.map((_, index, arr) => (
+                      <div key={index}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                          <img src={_?.image} width="70px" height="70px" />
+                          <div>
+                            <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
+                            <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
                           </div>
-
-                          <VariantItems variantType={data?.variants?.type} variant={_?.variant} data={data} />
-
-                          {index !== arr.length - 1 && (
-                            <div style={{ margin: "15px 0px" }}>
-                              <Divider />
-                            </div>
-                          )}
                         </div>
-                      ))}
-                    </div>
+
+                        <VariantItems variantType={data?.variants?.type} variant={_?.variant} data={data} />
+
+                        <div style={{ margin: "15px -12px" }}>
+                          <Divider />
+                        </div>
+                      </div>
+                    ))}
+
                     <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize}px`, cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
                       Add bundle to cart | Save 20%
                     </button>

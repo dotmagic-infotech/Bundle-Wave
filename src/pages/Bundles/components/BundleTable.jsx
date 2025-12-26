@@ -8,6 +8,10 @@ import { useNavigate } from 'react-router-dom';
 // Shopify Polaris
 import {
     IndexTable, LegacyCard, useIndexResourceState, Page, Tabs, Icon, TextField, Popover, ActionList, ButtonGroup, Button, Modal, TextContainer, Spinner, InlineStack, Banner, BlockStack, Divider, Text, Tooltip, Badge,
+    Card,
+    ResourceList,
+    ResourceItem,
+    Avatar,
 } from '@shopify/polaris';
 import { SaveBar, useAppBridge } from '@shopify/app-bridge-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -413,33 +417,34 @@ function BundleTable() {
                     {hasTitle ? (
                         <Tooltip
                             width='wide'
+                            padding=''
                             content={
-                                <div style={{ padding: '4px 8px' }}>
-                                    {media.map((v, index) => (
-                                        <div key={index}>
-                                            <div style={{ display: 'flex', alignItems: "center", marginBottom: '6px' }}>
-                                                <div style={{ width: '40px', height: '40px' }}>
-                                                    <img src={v.url} alt="" style={{ width: '100%', height: '100%', borderRadius: '4px' }} />
-                                                </div>
-                                                <div style={{ marginLeft: "10px" }}>
-                                                    <p style={{ fontSize: '13px', fontWeight: 600, margin: 0 }}>{v.title}</p>
-                                                    {v?.variants?.length > 0 && (
-                                                        <ul style={{ margin: 0, paddingLeft: '16px' }}>
-                                                            {v.variants.map((variant, i) => (
-                                                                <li key={i} style={{ fontSize: '12px', color: 'gray' }}>{variant}</li>
-                                                            ))}
-                                                        </ul>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            {index !== media.length - 1 &&
-                                                <div style={{ margin: "8px 0px" }}>
-                                                    <Divider />
-                                                </div>
-                                            }
-                                        </div>
-                                    ))}
-                                </div>
+                                <ResourceList
+                                    resourceName={{ singular: 'customer', plural: 'customers' }}
+                                    items={media}
+                                    renderItem={(item, index) => {
+                                        return (
+                                            <ResourceItem
+                                                key={index}
+                                                url={item.url}
+                                                media={
+                                                    <img alt={item.title} src={item.url} style={{ width: '40px', height: '40px', borderRadius: "8px" }} />
+                                                }
+                                                accessibilityLabel={`View details for ${item.title}`}
+                                                name={item.title}
+                                            >
+                                                <Text variant="bodyMd" fontWeight="bold" as="h3">
+                                                    {item.title}
+                                                </Text>
+                                                {item?.variants?.length > 0 && item.variants.map((variant, i) => (
+                                                    <Text key={i} as="p" fontWeight="regular">
+                                                        {variant}
+                                                    </Text>
+                                                ))}
+                                            </ResourceItem>
+                                        );
+                                    }}
+                                />
                             }
                             preferredPosition="above"
                         >
@@ -450,9 +455,9 @@ function BundleTable() {
                     )}
                 </IndexTable.Cell>
                 <IndexTable.Cell>
-                    <div style={{ display: "flex", gap: "1rem" }}>
+                    <Text variant="bodyMd" fontWeight="medium" as="h3" tone='magic'>
                         {bundle_name}
-                    </div>
+                    </Text>
                 </IndexTable.Cell>
                 <IndexTable.Cell>
                     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -526,7 +531,9 @@ function BundleTable() {
                     )}
                 </IndexTable.Cell>
                 <IndexTable.Cell>
-                    {bundle_type_name}
+                    <Text variant="bodyMd" fontWeight="medium" as="h3" tone='magic'>
+                        {bundle_type_name}
+                    </Text>
                 </IndexTable.Cell>
                 <IndexTable.Cell>
                     <InlineStack gap={100}>
