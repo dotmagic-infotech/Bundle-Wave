@@ -7,11 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Shopify Polaris
 import {
-    IndexTable, LegacyCard, useIndexResourceState, Page, Tabs, Icon, TextField, Popover, ActionList, ButtonGroup, Button, Modal, TextContainer, Spinner, InlineStack, Banner, BlockStack, Divider, Text, Tooltip, Badge,
-    Card,
-    ResourceList,
-    ResourceItem,
-    Avatar,
+    IndexTable, LegacyCard, useIndexResourceState, Page, Tabs, Icon, TextField, Popover, ActionList, ButtonGroup, Button, Modal, TextContainer, Spinner, InlineStack, Banner, BlockStack, Text, Tooltip, Badge, ResourceList, ResourceItem, Scrollable,
 } from '@shopify/polaris';
 import { SaveBar, useAppBridge } from '@shopify/app-bridge-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -39,6 +35,7 @@ function BundleTable() {
     const [debouncedSearch, setDebouncedSearch] = useState('');
     const [popoverActive, setPopoverActive] = useState(false);
     const [activePopoverId, setActivePopoverId] = useState(null);
+    const [activeBundleId, setActiveBundleId] = useState(null);
     const [active, setActive] = useState(false);
     const [activeDublicate, setActiveDublicate] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -337,44 +334,71 @@ function BundleTable() {
     const { selectedResources, allResourcesSelected, handleSelectionChange, clearSelection } = useIndexResourceState(resourceData);
 
     const MediaIcons = ({ media }) => (
-        <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+        <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginRight: '6rem', height: 40, }}>
             {media?.slice(0, 2).map((v, index) => (
                 <div
                     key={index}
                     style={{
-                        width: "40px",
-                        height: "40px",
+                        width: 40,
+                        height: 40,
                         overflow: "hidden",
-                        position: index === 0 ? "static" : "absolute",
-                        left: index === 0 ? "0px" : "20px",
-                        zIndex: index,
-                        borderRadius: "50%",
-                        backgroundColor: "#f6f6f7"
+                        position: "absolute",
+                        left: index * 30,
+                        zIndex: 10 - index,
+                        borderRadius: 8,
+                        border: "1px solid #ddd",
                     }}
                 >
-                    <img src={v.url} style={{ width: "100%", height: "100%" }} />
+                    <img
+                        src={v.url}
+                        alt=""
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
                 </div>
             ))}
 
             {media?.length > 2 && (
-                <div style={{
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "50%",
-                    fontSize: "16px",
-                    fontWeight: "600",
-                    backgroundColor: "#f6f6f7",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    border: "1px solid gray",
-                    zIndex: 1
-                }}>
+                <div
+                    style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 8,
+                        fontSize: 14,
+                        fontWeight: 500,
+                        backgroundColor: "#f6f6f7",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        border: "1px solid #ccc",
+                        position: "absolute",
+                        left: 60,
+                        zIndex: 8,
+                    }}
+                >
                     +{media.length - 2}
                 </div>
             )}
         </div>
     );
+
+    const getEditUrl = (bundle_type_id, bundle_id) => {
+        switch (bundle_type_id) {
+            case "1":
+                return `/bundlesList/fixed_bundle/edit/${bundle_id}`;
+            case "2":
+                return `/bundlesList/mix-match/edit/${bundle_id}`;
+            case "3":
+                return `/bundlesList/buy_xy/edit/${bundle_id}`;
+            case "4":
+                return `/bundlesList/volume_bundle/edit/${bundle_id}`;
+            case "5":
+                return `/bundlesList/addons_bundle/edit/${bundle_id}`;
+            case "6":
+                return `/bundlesList/frequently_bundle/edit/${bundle_id}`;
+            default:
+                return null;
+        }
+    };
 
     const handleNextPage = () => {
         if (pagination.current_page < pagination.total_pages) {
@@ -388,7 +412,7 @@ function BundleTable() {
         }
     };
 
-    const rowMarkup = bundleData?.length > 0 && bundleData?.map(({ bundle_id, media, bundle_subtype, discount_options, bundle_name, discount_option_id, discount_value, status, active_status, bundle_type_id, bundle_table, bundle_type_name, page_type, url }, index) => {
+    const rowMarkup = bundleData?.length > 0 && bundleData?.map(({ bundle_id, media, bundle_subtype, discount_options, bundle_name, discount_option_id, discount_value, status, active_status, bundle_type_id, bundle_table, bundle_type_name, url }, index) => {
 
         const hasTitle = media?.some(v => v.title?.trim());
         const mediaIcons = <MediaIcons media={media} />;
@@ -400,56 +424,65 @@ function BundleTable() {
                 selected={selectedResources.includes(bundle_id.toString())}
                 position={index}
                 onClick={() => {
-                    let url = "";
-
-                    if (bundle_type_id === "1") url = `/bundlesList/fixed_bundle/edit/${bundle_id}`;
-                    else if (bundle_type_id === "2") url = `/bundlesList/mix-match/edit/${bundle_id}`;
-                    else if (bundle_type_id === "3") url = `/bundlesList/buy_xy/edit/${bundle_id}`;
-                    else if (bundle_type_id === "4") url = `/bundlesList/volume_bundle/edit/${bundle_id}`;
-                    else if (bundle_type_id === "5") url = `/bundlesList/addons_bundle/edit/${bundle_id}`;
-                    else if (bundle_type_id === "6") url = `/bundlesList/frequently_bundle/edit/${bundle_id}`;
-                    else return;
-
+                    const url = getEditUrl(bundle_type_id, bundle_id);
                     navigate(url);
                 }}
             >
                 <IndexTable.Cell>
                     {hasTitle ? (
-                        <Tooltip
-                            width='wide'
-                            padding=''
-                            content={
-                                <ResourceList
-                                    resourceName={{ singular: 'customer', plural: 'customers' }}
-                                    items={media}
-                                    renderItem={(item, index) => {
-                                        return (
+                        <Popover
+                            active={activeBundleId === bundle_id}
+                            preferredPosition="mostSpace"
+                            activator={
+                                <div
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setActiveBundleId((prev) =>
+                                            prev === bundle_id ? null : bundle_id
+                                        );
+                                    }}
+                                    style={{ cursor: "pointer", display: "inline-flex" }}
+                                >
+                                    {mediaIcons}
+                                </div>
+                            }
+                            onClose={() => setActiveBundleId(null)}
+                        >
+                            <Popover.Pane>
+                                <Scrollable style={{ maxHeight: "300px" }}>
+                                    <ResourceList
+                                        resourceName={{ singular: 'customer', plural: 'customers' }}
+                                        items={media}
+                                        renderItem={(item, index) => (
                                             <ResourceItem
                                                 key={index}
-                                                url={item.url}
                                                 media={
-                                                    <img alt={item.title} src={item.url} style={{ width: '40px', height: '40px', borderRadius: "8px" }} />
+                                                    <img
+                                                        alt={item.title}
+                                                        src={item.url}
+                                                        style={{ width: 40, height: 40, borderRadius: 8 }}
+                                                    />
                                                 }
                                                 accessibilityLabel={`View details for ${item.title}`}
                                                 name={item.title}
+                                                onClick={(e) => e.stopPropagation()}
                                             >
-                                                <Text variant="bodyMd" fontWeight="bold" as="h3">
+                                                <Text variant="bodyMd" fontWeight="bold">
                                                     {item.title}
                                                 </Text>
-                                                {item?.variants?.length > 0 && item.variants.map((variant, i) => (
-                                                    <Text key={i} as="p" fontWeight="regular">
-                                                        {variant}
-                                                    </Text>
-                                                ))}
+
+                                                {item?.variants?.length > 0 &&
+                                                    item.variants.map((variant, i) => (
+                                                        <Text key={i} as="p">
+                                                            {variant}
+                                                        </Text>
+                                                    ))}
                                             </ResourceItem>
-                                        );
-                                    }}
-                                />
-                            }
-                            preferredPosition="above"
-                        >
-                            {mediaIcons}
-                        </Tooltip>
+                                        )}
+                                    />
+                                </Scrollable>
+                            </Popover.Pane>
+                        </Popover>
                     ) : (
                         mediaIcons
                     )}

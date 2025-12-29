@@ -24,7 +24,9 @@ function Fixedbundle() {
     selectDisplay: {
       type: "product_page",
     },
-    tite_alignment: {
+    title_setting: {
+      titleSize: 30,
+      titleWeight: 600,
       alignment: "left"
     },
     background: {
@@ -109,21 +111,42 @@ function Fixedbundle() {
       ),
     },
     {
-      label: "Title alignment",
+      label: "Title settings",
       icon: TextAlignCenterIcon,
       content: (
         <>
+          <RangeSlider
+            label="Font Size"
+            min={10}
+            max={40}
+            value={data.title_setting?.titleSize}
+            onChange={(value) => handleChangeValue("title_setting", "titleSize", value)}
+            output
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+          <RangeSlider
+            label="Font Weight"
+            min={100}
+            max={900}
+            step={100}
+            value={data.title_setting?.titleWeight}
+            onChange={(value) =>
+              handleChangeValue("title_setting", "titleWeight", value)
+            }
+            output
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
           <ButtonGroup variant="segmented" fullWidth>
             {["Left", "Center", "Right"].map((label, index) => {
               const value = label.toLowerCase();
-              const isActive = data.tite_alignment.alignment === value;
+              const isActive = data.title_setting.alignment === value;
 
               return (
                 <Button
                   key={index}
                   variant={isActive ? "primary" : "secondary"}
                   pressed={isActive}
-                  onClick={() => handleChangeValue("tite_alignment", "alignment", value)}
+                  onClick={() => handleChangeValue("title_setting", "alignment", value)}
                 >
                   {label}
                 </Button>
@@ -163,7 +186,7 @@ function Fixedbundle() {
       ),
     },
     {
-      label: "Title",
+      label: "Font settings",
       icon: TextGrammarIcon,
       content: (
         <>
@@ -381,8 +404,10 @@ function Fixedbundle() {
       selectDisplay: {
         type: data.selectDisplay.type
       },
-      tite_alignment: {
-        alignment: data.tite_alignment.alignment
+      title_setting: {
+        titleSize: data.title_setting.titleSize,
+        titleWeight: data.title_setting.titleWeight,
+        alignment: data.title_setting.alignment,
       },
       background: {
         background_type: data.background.background_type,
@@ -611,10 +636,10 @@ function Fixedbundle() {
                 <div style={{ display: "flex", flexDirection: "column", width: "50%" }}>
                   <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "12px", borderRadius: `${data.border.borderRadius}px`, display: "flex", flexDirection: "column", backgroundColor: data?.background?.background_type === "colored" ? data.background.background_color : "transparent", color: data.title.fontColor, }}>
                     <p style={{
-                      fontSize: "25px", fontWeight: "700", lineHeight: "normal", marginBottom: "1rem", textAlign:
-                        data.tite_alignment.alignment === "left"
+                      fontSize: `${data?.title_setting?.titleSize}px`, fontWeight: data?.title_setting?.titleWeight, lineHeight: "normal", marginBottom: "1rem", textAlign:
+                        data.title_setting.alignment === "left"
                           ? "start"
-                          : data.tite_alignment.alignment === "center"
+                          : data.title_setting.alignment === "center"
                             ? "center"
                             : "end"
                     }}>

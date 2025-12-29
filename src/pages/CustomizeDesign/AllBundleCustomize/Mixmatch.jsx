@@ -29,7 +29,9 @@ function Mixmatch() {
       unapplied_background_color: "#efefef",
       unapplied_fontColor: "#000000",
     },
-    title_alignment: {
+    title_setting: {
+      titleSize: 30,
+      titleWeight: 600,
       alignment: "left"
     },
     background: {
@@ -122,21 +124,42 @@ function Mixmatch() {
       ),
     },
     {
-      label: "Title alignment",
+      label: "Title settings",
       icon: TextAlignCenterIcon,
       content: (
         <>
+          <RangeSlider
+            label="Font Size"
+            min={10}
+            max={40}
+            value={data.title_setting?.titleSize}
+            onChange={(value) => handleChangeValue("title_setting", "titleSize", value)}
+            output
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+          <RangeSlider
+            label="Font Weight"
+            min={100}
+            max={900}
+            step={100}
+            value={data.title_setting?.titleWeight}
+            onChange={(value) =>
+              handleChangeValue("title_setting", "titleWeight", value)
+            }
+            output
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
           <ButtonGroup variant="segmented" fullWidth>
             {["Left", "Center", "Right"].map((label, index) => {
               const value = label.toLowerCase();
-              const isActive = data.title_alignment.alignment === value;
+              const isActive = data.title_setting.alignment === value;
 
               return (
                 <Button
                   key={index}
                   variant={isActive ? "primary" : "secondary"}
                   pressed={isActive}
-                  onClick={() => handleChangeValue("title_alignment", "alignment", value)}
+                  onClick={() => handleChangeValue("title_setting", "alignment", value)}
                 >
                   {label}
                 </Button>
@@ -176,7 +199,7 @@ function Mixmatch() {
       ),
     },
     {
-      label: "Title",
+      label: "Font settings",
       icon: TextGrammarIcon,
       content: (
         <>
@@ -381,8 +404,10 @@ function Mixmatch() {
         unapplied_background_color: data.discount_options.unapplied_background_color,
         unapplied_fontColor: data.discount_options.unapplied_fontColor,
       },
-      title_alignment: {
-        alignment: data.title_alignment.alignment
+      title_setting: {
+        alignment: data.title_setting.alignment,
+        titleSize: data.title_setting.titleSize,
+        titleWeight: data.title_setting.titleWeight,
       },
       background: {
         background_type: data.background.background_type,
@@ -526,21 +551,16 @@ function Mixmatch() {
                       backgroundColor: data?.background?.background_type === "colored" ? data.background.background_color : "transparent", display: "flex", flexDirection: "column", gap: '0.5rem'
                     }}>
                       <p style={{
-                        fontSize: `${10 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign:
-                          data.title_alignment.alignment === "left"
+                        fontSize: `${data?.title_setting?.titleSize}px`, fontWeight: data?.title_setting?.titleWeight, color: data.title.fontColor, lineHeight: 1, textAlign:
+                          data.title_setting.alignment === "left"
                             ? "start"
-                            : data.title_alignment.alignment === "center"
+                            : data.title_setting.alignment === "center"
                               ? "center"
                               : "end"
                       }}>Mix and match - Product List</p>
                       <p style={{
                         fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight,
-                        color: data.title.fontColor, textAlign:
-                          data.title_alignment.alignment === "left"
-                            ? "start"
-                            : data.title_alignment.alignment === "center"
-                              ? "center"
-                              : "end"
+                        color: data.title.fontColor
                       }}>✨ Buy more, save more! Pick your favorite earrings and create a custom set while enjoying bigger discounts for multiple pairs.</p>
                       <div style={{ display: "flex", gap: "0.5rem", marginTop: "10px" }}>
                         <div style={{ backgroundColor: data.discount_options.applied_background_color, color: data.discount_options.applied_fontColor, borderRadius: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", padding: "15px", width: "50%" }}>
@@ -630,19 +650,19 @@ function Mixmatch() {
                         </div>
                       </div>
                       <p style={{
-                        fontSize: '25px', fontWeight: "700", marginTop: '20px', marginBottom: "10px", color: data.title.fontColor, lineHeight: "normal", textAlign:
-                          data.title_alignment.alignment === "left"
+                        fontSize: `${data?.title_setting?.titleSize}px`, fontWeight: data?.title_setting?.titleWeight, marginTop: '20px', marginBottom: "10px", color: data.title.fontColor, lineHeight: 1, textAlign:
+                          data.title_setting.alignment === "left"
                             ? "start"
-                            : data.title_alignment.alignment === "center"
+                            : data.title_setting.alignment === "center"
                               ? "center"
                               : "end"
                       }}>Mix & Match - Earrings Collection</p>
                       <p style={{
                         fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight,
                         color: data.title.fontColor, textAlign:
-                          data.title_alignment.alignment === "left"
+                          data.title_setting.alignment === "left"
                             ? "start"
-                            : data.title_alignment.alignment === "center"
+                            : data.title_setting.alignment === "center"
                               ? "center"
                               : "end"
                       }}>✨ Pick any 2 earrings from our curated collection and create your perfect mix & match set.<br />

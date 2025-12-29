@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
-import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, Button, ButtonGroup, Checkbox, Divider } from "@shopify/polaris";
+import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Select, Button, ButtonGroup, Checkbox, Divider } from "@shopify/polaris";
 import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
 
 // Custom Component
@@ -24,7 +24,9 @@ function Frequently() {
         selectDisplay: {
             type: "included_product_page",
         },
-        tite_alignment: {
+        title_setting: {
+            titleSize: 30,
+            titleWeight: 600,
             alignment: "left"
         },
         background: {
@@ -106,21 +108,42 @@ function Frequently() {
             ),
         },
         {
-            label: "Title alignment",
+            label: "Title settings",
             icon: TextAlignCenterIcon,
             content: (
                 <>
+                    <RangeSlider
+                        label="Font Size"
+                        min={10}
+                        max={40}
+                        value={data.title_setting?.titleSize}
+                        onChange={(value) => handleChangeValue("title_setting", "titleSize", value)}
+                        output
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    <RangeSlider
+                        label="Font Weight"
+                        min={100}
+                        max={900}
+                        step={100}
+                        value={data.title_setting?.titleWeight}
+                        onChange={(value) =>
+                            handleChangeValue("title_setting", "titleWeight", value)
+                        }
+                        output
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
                     <ButtonGroup variant="segmented" fullWidth>
                         {["Left", "Center", "Right"].map((label, index) => {
                             const value = label.toLowerCase();
-                            const isActive = data.tite_alignment.alignment === value;
+                            const isActive = data.title_setting.alignment === value;
 
                             return (
                                 <Button
                                     key={index}
                                     variant={isActive ? "primary" : "secondary"}
                                     pressed={isActive}
-                                    onClick={() => handleChangeValue("tite_alignment", "alignment", value)}
+                                    onClick={() => handleChangeValue("title_setting", "alignment", value)}
                                 >
                                     {label}
                                 </Button>
@@ -166,7 +189,7 @@ function Frequently() {
             ),
         },
         {
-            label: "Title",
+            label: "Font settings",
             icon: TextGrammarIcon,
             content: (
                 <>
@@ -384,8 +407,10 @@ function Frequently() {
             selectDisplay: {
                 type: data.selectDisplay?.type,
             },
-            tite_alignment: {
-                alignment: data.tite_alignment?.alignment
+            title_setting: {
+                titleSize: data.title_setting?.titleSize,
+                titleWeight: data.title_setting?.titleWeight,
+                alignment: data.title_setting?.alignment,
             },
             title: {
                 fontColor: data.title?.fontColor,
@@ -589,11 +614,11 @@ function Frequently() {
                                     </div>
                                     <div style={{ display: "flex", flexDirection: "column" }}>
                                         <p style={{
-                                            fontSize: `${16 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", margin: '1.5rem 0px', color: data.title.fontColor,
+                                            fontSize: `${data.title_setting.titleSize}px`, fontWeight: data.title_setting.titleWeight, margin: '1.5rem 0px', color: data.title.fontColor,
                                             textAlign:
-                                                data.tite_alignment.alignment === "left"
+                                                data.title_setting.alignment === "left"
                                                     ? "start"
-                                                    : data.tite_alignment.alignment === "center"
+                                                    : data.title_setting.alignment === "center"
                                                         ? "center"
                                                         : "end"
                                         }}>Frequently bought together</p>

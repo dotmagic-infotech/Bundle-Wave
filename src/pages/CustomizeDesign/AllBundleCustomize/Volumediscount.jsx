@@ -24,7 +24,9 @@ function Volumediscount() {
         selectDisplay: {
             type: "product_page",
         },
-        tite_alignment: {
+        title_setting: {
+            titleSize: 30,
+            titleWeight: 600,
             alignment: "left"
         },
         title: {
@@ -106,21 +108,42 @@ function Volumediscount() {
             ),
         },
         {
-            label: "Title alignment",
+            label: "Title settings",
             icon: TextAlignCenterIcon,
             content: (
                 <>
+                    <RangeSlider
+                        label="Font Size"
+                        min={10}
+                        max={40}
+                        value={data.title_setting?.titleSize}
+                        onChange={(value) => handleChangeValue("title_setting", "titleSize", value)}
+                        output
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    <RangeSlider
+                        label="Font Weight"
+                        min={100}
+                        max={900}
+                        step={100}
+                        value={data.title_setting?.titleWeight}
+                        onChange={(value) =>
+                            handleChangeValue("title_setting", "titleWeight", value)
+                        }
+                        output
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
                     <ButtonGroup variant="segmented" fullWidth>
                         {["Left", "Center", "Right"].map((label, index) => {
                             const value = label.toLowerCase();
-                            const isActive = data.tite_alignment.alignment === value;
+                            const isActive = data.title_setting.alignment === value;
 
                             return (
                                 <Button
                                     key={index}
                                     variant={isActive ? "primary" : "secondary"}
                                     pressed={isActive}
-                                    onClick={() => handleChangeValue("tite_alignment", "alignment", value)}
+                                    onClick={() => handleChangeValue("title_setting", "alignment", value)}
                                 >
                                     {label}
                                 </Button>
@@ -160,7 +183,7 @@ function Volumediscount() {
             ),
         },
         {
-            label: "Title",
+            label: "Font settings",
             icon: TextGrammarIcon,
             content: (
                 <>
@@ -378,8 +401,10 @@ function Volumediscount() {
             selectDisplay: {
                 type: data.selectDisplay.type
             },
-            tite_alignment: {
-                alignment: data.tite_alignment.alignment
+            title_setting: {
+                titleSize: data.title_setting.titleSize,
+                titleWeight: data.title_setting.titleWeight,
+                alignment: data.title_setting.alignment,
             },
             title: {
                 fontColor: data.title.fontColor,
@@ -523,8 +548,8 @@ function Volumediscount() {
                                             ))}
                                         </div>
                                         <p style={{
-                                            margin: '10px 0px', fontSize: `${data.title.fontSize}px`, fontWeight: "500", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
-                                                : data.tite_alignment.alignment === "center"
+                                            margin: '10px 0px', fontSize: `${data.title.fontSize}px`, fontWeight: "500", color: data.title.fontColor, textAlign: data.title_setting.alignment === "left" ? "start"
+                                                : data.title_setting.alignment === "center"
                                                     ? "center"
                                                     : "end"
                                         }}>Buy more, Save more</p>
@@ -569,8 +594,8 @@ function Volumediscount() {
                             ) : data?.selectDisplay.type === "included_product_page" ? (
                                 <div style={{ display: "flex", flexDirection: "column", width: "50%", gap: "1rem", border: "1px solid black", padding: "12px", borderRadius: `8px`, background: data?.background?.background_type === "transparent" ? 'transparent' : data?.background?.background_color }}>
                                     <p style={{
-                                        fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
-                                            : data.tite_alignment.alignment === "center"
+                                        fontSize: `${data.title_setting.titleSize}px`, fontWeight: data.title_setting.titleWeight, lineHeight: 1, color: data.title.fontColor, padding: "10px 0px", textAlign: data.title_setting.alignment === "left" ? "start"
+                                            : data.title_setting.alignment === "center"
                                                 ? "center"
                                                 : "end"
                                     }}>Buy more, Save more</p>

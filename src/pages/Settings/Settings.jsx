@@ -8,6 +8,7 @@ import { Box, Card, Page, Text, BlockStack, InlineGrid, TextField, Divider, Butt
 import { ShopifyContext } from "../../components/ShopifyProvider/ShopifyProvider";
 import { useFetchWithToken } from "../../components/FetchDataAPIs/FetchWithToken";
 import { SaveBar } from "@shopify/app-bridge-react";
+import { LockIcon } from "@shopify/polaris-icons";
 
 const Settings = () => {
 
@@ -217,7 +218,15 @@ const Settings = () => {
                             <Text as="p" variant="bodyMd" fontWeight="bold">Discount application settings</Text>
                             <div style={{ display: "flex", flexDirection: "column" }}>
                                 <RadioButton label="Apply the discount only if the bundle is clicked by the customer" checked={formState?.discount_application === "one"} onChange={() => handleChangeValue("discount_application", "one")} />
-                                <RadioButton label="Always apply the discount" helpText="This option is only available for the" checked={formState?.discount_application === "two"} onChange={() => handleChangeValue("discount_application", "two")} />
+                                <RadioButton label="Always apply the discount" disabled
+                                    helpText={
+                                        <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                                            This option is only available for
+                                            <LockIcon style={{ width: "20px" }} />
+                                        </span>
+                                    }
+                                    checked={formState?.discount_application === "two"} onChange={() => handleChangeValue("discount_application", "two")}
+                                />
                             </div>
                         </BlockStack>
                     </Card>

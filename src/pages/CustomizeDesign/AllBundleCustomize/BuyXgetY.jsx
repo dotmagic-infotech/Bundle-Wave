@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, ButtonGroup, Button, Select, Divider } from "@shopify/polaris";
-import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
+import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
@@ -28,6 +28,11 @@ function BuyXgetY() {
       fontColor: "#000000",
       fontSize: 14,
       fontWeight: 400,
+    },
+    title_setting: {
+      titleSize: 30,
+      titleWeight: 600,
+      alignment: "left"
     },
     background: {
       background_type: "transparent",
@@ -103,6 +108,52 @@ function BuyXgetY() {
       ),
     },
     {
+      label: "Title settings",
+      icon: TextAlignCenterIcon,
+      content: (
+        <>
+          <RangeSlider
+            label="Font Size"
+            min={10}
+            max={40}
+            value={data.title_setting?.titleSize}
+            onChange={(value) => handleChangeValue("title_setting", "titleSize", value)}
+            output
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+          <RangeSlider
+            label="Font Weight"
+            min={100}
+            max={900}
+            step={100}
+            value={data.title_setting?.titleWeight}
+            onChange={(value) =>
+              handleChangeValue("title_setting", "titleWeight", value)
+            }
+            output
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+          <ButtonGroup variant="segmented" fullWidth>
+            {["Left", "Center", "Right"].map((label, index) => {
+              const value = label.toLowerCase();
+              const isActive = data.title_setting.alignment === value;
+
+              return (
+                <Button
+                  key={index}
+                  variant={isActive ? "primary" : "secondary"}
+                  pressed={isActive}
+                  onClick={() => handleChangeValue("title_setting", "alignment", value)}
+                >
+                  {label}
+                </Button>
+              );
+            })}
+          </ButtonGroup>
+        </>
+      ),
+    },
+    {
       label: "Background (Included Product Page)",
       icon: ColorIcon,
       content: (
@@ -132,7 +183,7 @@ function BuyXgetY() {
       ),
     },
     {
-      label: "Title",
+      label: "Font settings",
       icon: TextGrammarIcon,
       content: (
         <>
@@ -356,6 +407,11 @@ function BuyXgetY() {
         fontColor: data.title.fontColor,
         fontSize: data.title.fontSize,
         fontWeight: data.title.fontWeight,
+      },
+      title_setting: {
+        alignment: data.title_setting.alignment,
+        titleSize: data.title_setting.titleSize,
+        titleWeight: data.title_setting.titleWeight,
       },
       background: {
         background_type: data?.background?.background_type,
@@ -602,7 +658,9 @@ function BuyXgetY() {
                 </div>
               ) : data?.selectDisplay.type === "include_product_page" ? (
                 <div style={{ display: "flex", flexDirection: "column", width: "50%", gap: "1rem", border: "1px solid black", padding: "12px", borderRadius: `8px`, background: data?.background?.background_type === "transparent" ? 'transparent' : data?.background?.background_color }}>
-                  <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal", color: data.title.fontColor }}>🎁 Buy 2 Earrings Bundle</p>
+                  <p style={{
+                    fontSize: `${data?.title_setting?.titleSize}px`, fontWeight: data?.title_setting?.titleWeight, textAlign: data.title_setting.alignment === "left" ? "start" : data.title_setting.alignment === "center" ? "center" : "end", lineHeight: "normal", color: data.title.fontColor
+                  }}>🎁 Buy 2 Earrings Bundle</p>
                   <div style={{ width: "100%", height: "auto", display: "flex", flexDirection: "column", gap: "10px" }}>
                     <div style={{ border: `${data?.border?.borderWidth}px solid ${data?.border?.color}`, padding: "10px", borderRadius: `${data?.border?.borderRadius}px` }}>
                       {products.map((_, index, arr) => (

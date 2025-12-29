@@ -23,7 +23,9 @@ function Addons() {
         selectDisplay: {
             type: "main_product_page",
         },
-        tite_alignment: {
+        title_setting: {
+            titleSize: 30,
+            titleWeight: 600,
             alignment: "left"
         },
         background: {
@@ -106,21 +108,42 @@ function Addons() {
             ),
         },
         {
-            label: "Title alignment",
+            label: "Title settings",
             icon: TextAlignCenterIcon,
             content: (
                 <>
+                    <RangeSlider
+                        label="Font Size"
+                        min={10}
+                        max={40}
+                        value={data.title_setting?.titleSize}
+                        onChange={(value) => handleChangeValue("title_setting", "titleSize", value)}
+                        output
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+                    <RangeSlider
+                        label="Font Weight"
+                        min={100}
+                        max={900}
+                        step={100}
+                        value={data.title_setting?.titleWeight}
+                        onChange={(value) =>
+                            handleChangeValue("title_setting", "titleWeight", value)
+                        }
+                        output
+                    />
+                    <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
                     <ButtonGroup variant="segmented" fullWidth>
                         {["Left", "Center", "Right"].map((label, index) => {
                             const value = label.toLowerCase();
-                            const isActive = data.tite_alignment.alignment === value;
+                            const isActive = data.title_setting.alignment === value;
 
                             return (
                                 <Button
                                     key={index}
                                     variant={isActive ? "primary" : "secondary"}
                                     pressed={isActive}
-                                    onClick={() => handleChangeValue("tite_alignment", "alignment", value)}
+                                    onClick={() => handleChangeValue("title_setting", "alignment", value)}
                                 >
                                     {label}
                                 </Button>
@@ -160,7 +183,7 @@ function Addons() {
             ),
         },
         {
-            label: "Title",
+            label: "Font settings",
             icon: TextGrammarIcon,
             content: (
                 <>
@@ -378,8 +401,10 @@ function Addons() {
             selectDisplay: {
                 type: data.selectDisplay.type,
             },
-            tite_alignment: {
-                alignment: data.tite_alignment.alignment
+            title_setting: {
+                titleSize: data.title_setting.titleSize,
+                titleWeight: data.title_setting.titleWeight,
+                alignment: data.title_setting.alignment,
             },
             background: {
                 background_type: data?.background?.background_type,
@@ -566,8 +591,8 @@ function Addons() {
                                         <p style={{ fontSize: `${data?.title?.fontSize}`, fontWeight: `${data?.title?.fontWeight}`, margin: '10px 0px' }}>Complete your look with our exclusive add-ons! Pair your favorite earrings with matching styles for extra sparkle and savings.</p>
                                         <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "10px 0px" }}>
                                             <p style={{
-                                                fontSize: `${8 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
-                                                    : data.tite_alignment.alignment === "center"
+                                                fontSize: `${8 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.title_setting.alignment === "left" ? "start"
+                                                    : data.title_setting.alignment === "center"
                                                         ? "center"
                                                         : "end"
                                             }}>Product Add-ons</p>
@@ -601,12 +626,14 @@ function Addons() {
                                 </div>
                             ) : data.selectDisplay.type === "included_product_page" ? (
                                 <div style={{ display: "flex", flexDirection: "column", width: "50%", border: `1px solid black`, padding: "12px", borderRadius: `8px`, background: data?.background?.background_type === "transparent" ? 'transparent' : data?.background?.background_color }}>
-                                    <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+                                    <div style={{
+                                        display: "flex", justifyContent: data.title_setting.alignment === "left" ? "start"
+                                            : data.title_setting.alignment === "center"
+                                                ? "center"
+                                                : "end", alignItems: "center", gap: "10px", marginBottom: "12px"
+                                    }}>
                                         <p style={{
-                                            fontSize: `${8 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
-                                                : data.tite_alignment.alignment === "center"
-                                                    ? "center"
-                                                    : "end"
+                                            fontSize: `${data.title_setting.titleSize}px`, fontWeight: data.title_setting.titleWeight, color: data.title.fontColor, lineHeight: 1,
                                         }}>Product Add-ons</p>
                                         <div style={{ backgroundColor: `${data?.button?.buttonColor}`, color: `${data?.button?.textColor}`, borderRadius: "5px", padding: "2px 7px" }}>20% OFF</div>
                                     </div>
@@ -657,8 +684,8 @@ function Addons() {
                                     </div>
                                     <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "10px 0px" }}>
                                         <p style={{
-                                            fontSize: `${8 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.tite_alignment.alignment === "left" ? "start"
-                                                : data.tite_alignment.alignment === "center"
+                                            fontSize: `${8 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.title_setting.alignment === "left" ? "start"
+                                                : data.title_setting.alignment === "center"
                                                     ? "center"
                                                     : "end"
                                         }}>Product Add-ons</p>
