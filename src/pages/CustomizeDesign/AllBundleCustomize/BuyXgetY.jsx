@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
-import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, ButtonGroup, Button, Select, Divider } from "@shopify/polaris";
+import { Collapsible, Icon, RangeSlider, Text, Card, Grid, ButtonGroup, Button, Select, Divider } from "@shopify/polaris";
 import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
 
 // Custom Component
@@ -420,7 +420,7 @@ function BuyXgetY() {
       border: {
         color: data.border.color,
         borderWidth: data.border.borderWidth,
-        borderRadius: 10,
+        borderRadius: data.border.borderRadius,
       },
       variants: {
         type: data.variants.type,

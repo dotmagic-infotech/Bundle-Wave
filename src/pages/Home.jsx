@@ -185,18 +185,50 @@ const Home = () => {
                   alignItems: "center",
                   gap: "0.5rem",
                   flexWrap: "wrap",
+                  padding: "1.2rem",
+                  position: "relative"
                 }}
               >
                 {Array.isArray(media) && media.slice(0, 2).map((imgSrc, index) => (
-                  <img key={index} src={imgSrc?.url} width="40px" height="40px" alt="Bundle Item" style={{
-                    borderRadius: "50%", objectFit: "cover", marginRight: index < media.slice(0, 2).length - 1 ? "-25px" : "0",
-                  }} />
+                  <div
+                    key={index}
+                    style={{
+                      width: 40,
+                      height: 40,
+                      overflow: "hidden",
+                      position: "absolute",
+                      left: index * 30,
+                      zIndex: 10 - index,
+                      borderRadius: 8,
+                      border: "1px solid #ddd",
+                    }}
+                  >
+                    <img
+                      src={imgSrc.url}
+                      alt=""
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                  </div>
                 ))}
 
                 {Array.isArray(media) && media.length > 2 && (
-                  <div style={{
-                    width: '40px', zIndex: 1, height: "40px", borderRadius: "50%", display: "flex", justifyContent: "center", alignItems: "center", border: "1px solid gray", fontWeight: "600", backgroundColor: "#f6f6f7", marginRight: "0", marginLeft: "-25px",
-                  }}>
+                  <div
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 8,
+                      fontSize: 14,
+                      fontWeight: 500,
+                      backgroundColor: "#f6f6f7",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      border: "1px solid #ccc",
+                      position: "absolute",
+                      left: 60,
+                      zIndex: 8,
+                    }}
+                  >
                     +{media.length - 2}
                   </div>
                 )}

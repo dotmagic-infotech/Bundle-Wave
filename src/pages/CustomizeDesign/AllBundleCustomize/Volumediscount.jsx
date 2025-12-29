@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
-import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, RadioButton, ButtonGroup, Button, Badge } from "@shopify/polaris";
+import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Select, RadioButton, ButtonGroup, Button } from "@shopify/polaris";
 import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
 
 // Custom Component

@@ -71,9 +71,9 @@ function BundleTable() {
     ];
 
     const fetchBundles = async ({ queryKey }) => {
-        const [_key, { page, status, search, shop }] = queryKey;
+        const [_key, { page, status, search }] = queryKey;
 
-        const url = `https://bundle-wave-backend.xavierapps.com/api/bundles?limit=10&pagenumber=${page}&status=${status}&search=${encodeURIComponent(search)}&shop=${shop}`;
+        const url = `https://bundle-wave-backend.xavierapps.com/api/bundles?limit=10&pagenumber=${page}&status=${status}&search=${encodeURIComponent(search)}`;
 
         const { status: ok, data } = await apiRequest(url, 'GET');
         if (!ok) throw new Error('Failed to fetch bundles');
@@ -84,7 +84,7 @@ function BundleTable() {
     const { data, isLoading: bundleLoadnig } = useQuery({
         queryKey: [
             'bundles',
-            { page: currentPage, status: selectedTabs, search: debouncedSearch, shop: shopName },
+            { page: currentPage, status: selectedTabs, search: debouncedSearch },
         ],
         queryFn: fetchBundles,
         staleTime: 0
@@ -169,7 +169,7 @@ function BundleTable() {
     const duplicateMutation = useMutation({
         mutationFn: (payload) =>
             apiRequest(
-                `https://bundle-wave-backend.xavierapps.com/api/bundles/duplicate-multiple?shop=${shopName}`,
+                `https://bundle-wave-backend.xavierapps.com/api/bundles/duplicate-multiple`,
                 'POST',
                 payload
             ),
@@ -229,7 +229,7 @@ function BundleTable() {
     const statusMutation = useMutation({
         mutationFn: ({ bundle_id, bundle_table, status }) =>
             apiRequest(
-                `https://bundle-wave-backend.xavierapps.com/api/bundles/status?shop=${shopName}`,
+                `https://bundle-wave-backend.xavierapps.com/api/bundles/status`,
                 'POST',
                 { bundle_id, bundle_table, status }
             ),
@@ -267,7 +267,7 @@ function BundleTable() {
             ctx?.previous?.forEach(([key, data]) => {
                 queryClient.setQueryData([
                     'bundles',
-                    { page: currentPage, status: selectedTabs, search: searchValue, shop: shopName },
+                    { page: currentPage, status: selectedTabs, search: searchValue },
                 ], data);
             });
 
@@ -334,7 +334,7 @@ function BundleTable() {
     const { selectedResources, allResourcesSelected, handleSelectionChange, clearSelection } = useIndexResourceState(resourceData);
 
     const MediaIcons = ({ media }) => (
-        <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginRight: '6rem', height: 40, }}>
+        <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginRight: '6rem', padding: "1.2rem" }}>
             {media?.slice(0, 2).map((v, index) => (
                 <div
                     key={index}
@@ -441,7 +441,7 @@ function BundleTable() {
                                             prev === bundle_id ? null : bundle_id
                                         );
                                     }}
-                                    style={{ cursor: "pointer", display: "inline-flex" }}
+                                    style={{ cursor: "pointer", }}
                                 >
                                     {mediaIcons}
                                 </div>

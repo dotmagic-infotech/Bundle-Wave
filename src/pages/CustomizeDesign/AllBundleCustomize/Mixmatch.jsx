@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 
 // Shopify Component
-import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Banner, Select, Divider, InlineStack, Button, ButtonGroup, Badge } from "@shopify/polaris";
+import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Select, Divider, InlineStack, Button, ButtonGroup, Badge } from "@shopify/polaris";
 import { AdjustIcon, AppsFilledIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ChevronRightIcon, ColorIcon, DiscountIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon } from "@shopify/polaris-icons";
 
 // Custom Component
@@ -738,7 +738,7 @@ function Mixmatch() {
                                 <p style={{ fontWeight: "500", fontSize: '1.2rem', textAlign: "center" }}>30% OFF</p>
                               </div>
                             </div>
-                            <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "10px", borderRadius: `${data.border.borderRadius}px` }}>
+                            <div>
                               {[{ name: "18k Fluid Lines Necklace", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-fluid-lines-necklace.jpg?v=1758263767", price: "$45.00" }, {
                                 name: "18k Dangling Pendant Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-infinite-link-earrings---2_197e4e51-6b44-4e54-9244-d3666bc5b514.jpg?v=1758263763", price: "$22.00"
                               }, { name: "18k Dangling Obsidian Earrings", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-limelight-sequin-motif-earrings.jpg?v=1758263767", price: "$25.00" }].map((_, index) => (
