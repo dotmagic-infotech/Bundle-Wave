@@ -594,7 +594,7 @@ function BundleTable() {
                                                 items={[
                                                     {
                                                         content: 'Home page',
-                                                        disabled: bundle_subtype === "all_product",
+                                                        disabled: bundle_subtype === "all_product" || bundle_type_id === "6",
                                                         onAction: () => {
                                                             toggleViewActiveFor(bundle_id);
                                                             window.open(`https://${shopName}/?id=${bundle_id}`, '_blank');

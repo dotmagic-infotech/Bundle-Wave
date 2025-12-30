@@ -61,7 +61,8 @@ export const SessionTokenProvider = ({ children }) => {
         fetchToken();
 
         // Refresh token every 50 minutes (tokens typically expire after 1 hour)
-        intervalRef.current = setInterval(fetchToken, 50 * 60 * 1000);
+        // intervalRef.current = setInterval(fetchToken, 50 * 60 * 1000);
+        intervalRef.current = setInterval(fetchToken, 60 * 1000);
 
         // Cleanup interval on unmount
         return () => {

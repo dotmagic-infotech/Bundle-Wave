@@ -82,16 +82,32 @@ const Home = () => {
       <Page title="Home">
         <BlockStack gap={500}>
           <Banner
-            title="Bundle Wave in not activated"
-            tone="warning"
+            title={homeData?.embeded?.is_app_embeded_disabled ? "Bundle Wave is not activated" : "Bundle Wave is activated"}
+            tone={homeData?.embeded?.is_app_embeded_disabled ? "warning" : "success"}
             onDismiss={() => { }}
           >
-            <p>Bundle Wave theame extension needs to be activated in your theame to work properly. to activate the app, click the 'Activate' button below, and then click <strong>'Save'</strong> on the following page.</p>
-            <div style={{ marginTop: "1rem" }}>
-              <InlineStack gap={200}>
-                <Button variant='primary' onClick={redirectTheme} disabled={!homeData?.embeded?.is_app_embeded_disabled}>Activate</Button>
-              </InlineStack>
-            </div>
+            {homeData?.embeded?.is_app_embeded_disabled ? (
+              <>
+                <p>
+                  Bundle Wave theme extension needs to be activated in your theme to work
+                  properly. To activate the app, click the <strong>Activate</strong> button
+                  below, and then click <strong>Save</strong> on the following page.
+                </p>
+
+                <div style={{ marginTop: "1rem" }}>
+                  <InlineStack gap={200}>
+                    <Button variant="primary" onClick={redirectTheme}>
+                      Activate
+                    </Button>
+                  </InlineStack>
+                </div>
+              </>
+            ) : (
+              <p>
+                Bundle Wave theme extension is active and working properly. No further
+                action is required.
+              </p>
+            )}
           </Banner>
 
           <CalloutCard
@@ -101,17 +117,6 @@ const Home = () => {
             <Text as='p' variant='headingMd' fontWeight='medium'>There's several ways to create bundles, we have some suggestions for you to get started.</Text>
             <Text as='p'>You are 42% more likely to increase conversions if you have at least 3 bundles.</Text>
           </CalloutCard>
-
-          <Card>
-            <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", gap: "1rem", padding: "20px 0px" }}>
-              <img src='https://cdn.shopify.com/s/assets/admin/checkout/settings-customizecart-705f57c725ac05be5a34ec20c05b94298cb8afd10aac7bd9c7ad02030f48cfa0.svg' width="150px" />
-              <div>
-                <Text as='h2' fontWeight='bold' alignment='center'>Get started with bundles</Text>
-                <Text as='h2' fontWeight='regular' alignment='center'>Welcome to Bundle Wave, get started by creating your 1st bundle.</Text>
-              </div>
-              <Button icon={PlusIcon} variant='primary' onClick={() => navigate('/bundlesList')}>Create Bundle</Button>
-            </div>
-          </Card>
 
           <Grid>
             <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
@@ -157,7 +162,8 @@ const Home = () => {
         </BlockStack>
       </Page>
 
-      <Page title="Recent bundles">
+      <Page title="Recent bundles"
+        primaryAction={{ content: 'Create Bundle', icon: PlusIcon, onAction: () => navigate("/bundlesList") }} >
         <div style={{ marginBottom: "1rem" }}>
           <DataTable
             columnContentTypes={[

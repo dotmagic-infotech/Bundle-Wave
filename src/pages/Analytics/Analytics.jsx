@@ -567,7 +567,7 @@ const Analytics = () => {
                                                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
                                                     {Array.isArray(media)
                                                         ? media.slice(0, 6).map((imgSrc, index) => (
-                                                            <img key={index} src={imgSrc?.url} width="50px" height="50px" alt="Bundle Item" style={{ borderRadius: "5px" }} />
+                                                            <img key={index} src={imgSrc?.url} width="40px" height="40px" alt="Bundle Item" style={{ borderRadius: "5px" }} />
                                                         ))
                                                         : <img src={bundleItem} width="50px" height="50px" alt="Bundle Item" />}
                                                 </div>,
