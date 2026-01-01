@@ -263,7 +263,7 @@ const Settings = () => {
                     </Card>
                 </InlineGrid>
                 {/* Restore pages */}
-                <Divider borderWidth="050" borderColor="border-secondary" />
+                {/* <Divider borderWidth="050" borderColor="border-secondary" />
                 <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
                     <Box as="section" paddingInlineStart={{ xs: "400", sm: "0" }} paddingInlineEnd={{ xs: "400", sm: "0" }}>
                         <BlockStack gap="100">
@@ -282,7 +282,7 @@ const Settings = () => {
                             <Button>Reset to default</Button>
                         </div>
                     </Card>
-                </InlineGrid>
+                </InlineGrid> */}
                 {/* <InlineGrid columns={{ xs: "1fr", md: "2fr 5fr" }} gap="400">
                     <Box as="section" paddingInlineStart={{ xs: "400", sm: "0" }} paddingInlineEnd={{ xs: "400", sm: "0" }}>
                     </Box>

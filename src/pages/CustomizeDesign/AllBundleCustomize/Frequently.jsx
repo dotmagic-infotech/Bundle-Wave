@@ -558,7 +558,6 @@ function Frequently() {
                     <Card>
                         <div style={{ display: "flex", justifyContent: "end", padding: "0px 10px 10px", borderBottom: "1px solid black", margin: "0px -16px 10px -16px" }}>
                             <ButtonGroup>
-                                <Button>Cancel</Button>
                                 <Button variant="primary" onClick={handleSubmit}>Save</Button>
                             </ButtonGroup>
                         </div>
@@ -569,93 +568,49 @@ function Frequently() {
                             }}
                         >
                             {data.selectDisplay.type === "included_product_page" ? (
-                                <div style={{ width: "100%", overflow: "auto", scrollbarWidth: "thin" }}>
-                                    <div style={{ display: "flex", gap: "10px" }}>
-                                        <div style={{ maxWidth: "400px" }}>
-                                            <img
-                                                src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch4.webp?v=1758271387"
-                                                width="100%"
-                                            />
-                                            <div style={{ display: "flex", gap: "0.2rem" }}>
-                                                <img
-                                                    src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch5.jpg?v=1758271387"
-                                                    width="60px"
-                                                    height="60px"
-                                                />
-                                                <img
-                                                    src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/watch.webp?v=1758271387"
-                                                    width="60px"
-                                                    height="60px"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
-                                            <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal" }}>Classic Leather Strap Watch</p>
-                                            <div style={{ display: "flex", justifyContent: "space-between", }}>
-                                                <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
-                                                <p style={{ fontSize: "20px", fontWeight: "600" }}>$85.00</p>
-                                            </div>
-                                            <Divider borderColor="border-hover" />
-                                            <div style={{ display: "flex", gap: "10px" }}>
-                                                {["Case Material", "Strap", "Dial Color", "Size"].map((_, index, arr) => (
-                                                    <div key={index} style={{ border: `2px solid ${data?.border?.color}`, backgroundColor: index === 0 ? `${data?.button?.buttonColor}` : "transparent", color: index === 0 ? `${data?.button?.textColor}` : "black", padding: "5px 10px", borderRadius: "10px", cursor: "pointer" }}>
-                                                        {_}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div style={{ display: "flex", justifyContent: "center" }}>
-                                                <button style={{
-                                                    backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", fontWeight: "400", cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`,
-                                                }}>
-                                                    Add to cart
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style={{ display: "flex", flexDirection: "column" }}>
-                                        <p style={{
-                                            fontSize: `${data.title_setting.titleSize}px`, fontWeight: data.title_setting.titleWeight, margin: '1.5rem 0px', color: data.title.fontColor,
-                                            textAlign:
-                                                data.title_setting.alignment === "left"
-                                                    ? "start"
-                                                    : data.title_setting.alignment === "center"
-                                                        ? "center"
-                                                        : "end"
-                                        }}>Frequently bought together</p>
-                                        <div style={{ display: "flex", gap: "1.5rem" }}>
-                                            <div style={{ display: "flex", gap: "30px" }}>
-                                                {product.map((imgSrc, index, arr) => (
-                                                    <div key={index} style={{ width: "150px" }}>
-                                                        <div style={{ flex: "0 0 auto" }}>
-                                                            <div style={{ display: "flex", alignItems: "center", position: "relative" }}>
-                                                                <img src={imgSrc?.image} width="150px" height="150px" style={{ borderRadius: data.border.borderRadius, border: `${data.border.borderWidth}px solid ${data.border.color}` }}
-                                                                />
-                                                                <div style={{ position: "absolute", top: "6px", right: "0px" }}>
-                                                                    <Checkbox checked={index === 0} />
-                                                                </div>
-                                                                {index !== arr.length - 1 && (
-                                                                    <p style={{ fontSize: "1.5rem", fontWeight: "bold", margin: "0px -10px", position: "absolute", right: "-13px", color: data.title.fontColor }}>+</p>
-                                                                )}
+                                <div style={{ width: "100%", display: "flex", flexDirection: "column", overflow: "auto", scrollbarWidth: "thin", margin: "1rem 0px" }}>
+                                    <p style={{
+                                        fontSize: `${data.title_setting.titleSize}px`, fontWeight: data.title_setting.titleWeight, marginBottom: '1.5rem', color: data.title.fontColor,
+                                        textAlign:
+                                            data.title_setting.alignment === "left"
+                                                ? "start"
+                                                : data.title_setting.alignment === "center"
+                                                    ? "center"
+                                                    : "end"
+                                    }}>Frequently bought together</p>
+                                    <div style={{ display: "flex", gap: "1.5rem" }}>
+                                        <div style={{ display: "flex", gap: "30px" }}>
+                                            {product.map((imgSrc, index, arr) => (
+                                                <div key={index} style={{ width: "150px" }}>
+                                                    <div style={{ flex: "0 0 auto" }}>
+                                                        <div style={{ display: "flex", alignItems: "center", position: "relative" }}>
+                                                            <img src={imgSrc?.image} width="150px" height="150px" style={{ borderRadius: data.border.borderRadius, border: `${data.border.borderWidth}px solid ${data.border.color}` }}
+                                                            />
+                                                            <div style={{ position: "absolute", top: "6px", right: "0px" }}>
+                                                                <Checkbox checked={index === 0} />
                                                             </div>
-                                                            <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", color: data.title.fontColor }}>{imgSrc?.name}</p>
-                                                            <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "5px", color: data.title.fontColor }}>{imgSrc?.price}</p>
+                                                            {index !== arr.length - 1 && (
+                                                                <p style={{ fontSize: "1.5rem", fontWeight: "bold", margin: "0px -10px", position: "absolute", right: "-13px", color: data.title.fontColor }}>+</p>
+                                                            )}
                                                         </div>
-                                                        <VariantItems variantType={data?.variants?.type} variant={imgSrc?.variant} data={data} defultSelect={false} />
+                                                        <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", color: data.title.fontColor }}>{imgSrc?.name}</p>
+                                                        <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "5px", color: data.title.fontColor }}>{imgSrc?.price}</p>
                                                     </div>
-                                                ))}
-                                            </div>
-                                            <div style={{ background: data?.background?.background_type === "transparent" ? 'transparent' : data?.background?.background_color, color: data?.background?.background_type === "transparent" ? 'black' : data?.background?.text_color, borderRadius: "12px", padding: "24px", minWidth: "240px", height: "fit-content", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column", gap: "7px" }}>
-                                                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
-                                                    <span style={{ fontSize: "18px" }}>Total:</span>
-                                                    <div>
-                                                        <span style={{ fontSize: "20px", fontWeight: "600" }}>$42.00</span>
-                                                        <span style={{ fontSize: "14px", textDecoration: "line-through", marginLeft: "5px" }}>$84.00</span>
-                                                    </div>
+                                                    <VariantItems variantType={data?.variants?.type} variant={imgSrc?.variant} data={data} defultSelect={false} />
                                                 </div>
-                                                <div style={{ fontSize: "13px" }}>Save 10% when buying together!</div>
-                                                <button style={{ width: "100%", background: data.button.buttonColor, color: data.button.textColor, border: "none", padding: "10px 24px", fontSize: "15px", fontWeight: 500, cursor: "pointer", transition: "background 0.2s" }}>Add selected to cart</button>
-                                                <div style={{ textAlign: "center", fontSize: "13px" }}>1 items selected</div>
+                                            ))}
+                                        </div>
+                                        <div style={{ background: data?.background?.background_type === "transparent" ? 'transparent' : data?.background?.background_color, color: data?.background?.background_type === "transparent" ? 'black' : data?.background?.text_color, borderRadius: "12px", padding: "24px", minWidth: "240px", height: "fit-content", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column", gap: "7px" }}>
+                                            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
+                                                <span style={{ fontSize: "18px" }}>Total:</span>
+                                                <div>
+                                                    <span style={{ fontSize: "20px", fontWeight: "600" }}>$42.00</span>
+                                                    <span style={{ fontSize: "14px", textDecoration: "line-through", marginLeft: "5px" }}>$84.00</span>
+                                                </div>
                                             </div>
+                                            <div style={{ fontSize: "13px" }}>Save 10% when buying together!</div>
+                                            <button style={{ width: "100%", background: data.button.buttonColor, color: data.button.textColor, border: "none", padding: "10px 24px", fontSize: "15px", fontWeight: 500, cursor: "pointer", transition: "background 0.2s" }}>Add selected to cart</button>
+                                            <div style={{ textAlign: "center", fontSize: "13px" }}>1 items selected</div>
                                         </div>
                                     </div>
                                 </div>

@@ -538,7 +538,6 @@ function Mixmatch() {
           <Card>
             <div style={{ display: "flex", justifyContent: "end", padding: "0px 10px 10px", borderBottom: "1px solid black", margin: "0px -16px 10px -16px" }}>
               <ButtonGroup>
-                <Button>Cancel</Button>
                 <Button variant="primary" onClick={handleSubmit}>Save</Button>
               </ButtonGroup>
             </div>
