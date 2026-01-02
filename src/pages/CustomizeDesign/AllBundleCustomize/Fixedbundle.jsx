@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 
 // Shopify Component
-import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Divider, Select, ButtonGroup, Button } from "@shopify/polaris";
+import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Divider, Select, ButtonGroup, Button, Box, InlineStack, BlockStack } from "@shopify/polaris";
 import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -26,7 +26,7 @@ const defaultData = {
     unselected_text_color: "#000000",
     unselected_border_color: "#000000",
   },
-  button: { buttonColor: "#7a26bf", textColor: "#ffffff", height: 10, width: 100 },
+  button: { buttonColor: "#7a26bf", textColor: "#ffffff", height: 10, width: 100, radius: 0 },
 };
 
 function Fixedbundle() {
@@ -130,6 +130,7 @@ function Fixedbundle() {
       button: {
         width: data.button.width,
         height: data.button.height,
+        radius: data.button.radius,
         buttonColor: data.button.buttonColor,
         textColor: data.button.textColor
       }
@@ -435,6 +436,17 @@ function Fixedbundle() {
             output
           />
           <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
+          <RangeSlider
+            label="Button Radius"
+            min={0}
+            max={30}
+            value={data?.button?.radius}
+            onChange={(value) =>
+              handleChangeValue("button", "radius", value)
+            }
+            output
+          />
+          <hr style={{ margin: "13px 0px", borderTop: "1px solid #DDDDDD" }} />
           <ColorPickerPopover
             lable="Button color"
             color={data.button.buttonColor}
@@ -478,167 +490,147 @@ function Fixedbundle() {
   ];
 
   return (
-    <Grid gap={100}>
-      <Grid.Cell columnSpan={{ xs: 6, md: 6, lg: 4, xl: 4 }}>
-        <Card padding={0}>
-          <div
-            style={{
-              padding: "8px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "5px",
-            }}
-          >
-            {sections.map(({ label, content, icon }, index) => (
-              <div key={index}>
-                <div
-                  onClick={() =>
-                    setOpenIndex(openIndex === index ? null : index)
-                  }
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    cursor: "pointer",
-                    padding: "8px",
-                    backgroundColor:
-                      openIndex === index ? "#EBEBEB" : "transparent",
-                    borderRadius: "10px 10px 0px 0px",
-                  }}
-                >
-                  <div
+    <Box style={{ marginBottom: "1rem" }}>
+      <Grid gap={100}>
+        <Grid.Cell columnSpan={{ xs: 6, md: 6, lg: 4, xl: 4 }}>
+          <Card padding={"200"}>
+            <BlockStack gap="100">
+              {sections.map(({ label, content, icon }, index) => (
+                <Box key={index}>
+                  <Box
+                    onClick={() =>
+                      setOpenIndex(openIndex === index ? null : index)
+                    }
                     style={{
                       display: "flex",
-                      alignItems: "center",
-                      gap: "5px",
+                      justifyContent: "space-between",
+                      cursor: "pointer",
+                      padding: "8px",
+                      backgroundColor: openIndex === index ? "#EBEBEB" : "transparent",
+                      borderRadius: "10px 10px 0px 0px",
                     }}
                   >
-                    <Icon source={icon} />
-                    <Text as="h6" fontWeight="medium">
-                      {label}
-                    </Text>
-                  </div>
-                  <div style={{ cursor: "pointer" }}>
-                    <Icon
-                      source={openIndex === index ? CaretUpIcon : CaretDownIcon}
-                    />
-                  </div>
-                </div>
+                    <Box style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
+                      <InlineStack gap="100" align="center">
+                        <Icon source={icon} />
+                        <Text as="h6" fontWeight="medium">
+                          {label}
+                        </Text>
+                      </InlineStack>
+                      <Box>
+                        <Icon source={openIndex === index ? CaretUpIcon : CaretDownIcon} />
+                      </Box>
+                    </Box>
+                  </Box>
 
-                <Collapsible
-                  open={openIndex === index}
-                  transition={{
-                    duration: "500ms",
-                    timingFunction: "ease-in-out",
-                  }}
-                  expandOnPrint
-                >
-                  <div
-                    style={{
-                      padding: "12px 18px",
-                      border: "1px solid #EBEBEB",
-                      borderRadius: "0px 0px 10px 10px",
+                  <Collapsible
+                    open={openIndex === index}
+                    transition={{
+                      duration: "500ms",
+                      timingFunction: "ease-in-out",
                     }}
+                    expandOnPrint
                   >
-                    {content}
-                  </div>
-                </Collapsible>
-              </div>
-            ))}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                cursor: "pointer",
-                padding: "12px 20px 7px",
-                margin: "0px -10px",
-                borderTop: "1px solid #ebebeb"
-              }}
-              onClick={handleUndo}
-            >
-              <Text as="h6" fontWeight="medium">
-                Undo
-              </Text>
-              <div style={{ cursor: "pointer" }}>
-                <Icon source={ResetIcon} />
-              </div>
-            </div>
-          </div>
-        </Card>
-      </Grid.Cell>
+                    <Box style={{ padding: "12px 18px", border: "1px solid #EBEBEB", borderRadius: "0 0 10px 10px" }}>
+                      {content}
+                    </Box>
+                  </Collapsible>
+                </Box>
+              ))}
+              <Box className="bw_reset_btn">
+                <Text as="h6" fontWeight="medium">
+                  Undo
+                </Text>
+                <Box onClick={handleUndo}>
+                  <Icon source={ResetIcon} />
+                </Box>
+              </Box>
+            </BlockStack>
+          </Card>
+        </Grid.Cell>
 
-      <Grid.Cell columnSpan={{ xs: 6, md: 6, lg: 8, xl: 8 }}>
-        <div style={{ marginBottom: "1rem" }}>
-          <Card>
-            <div style={{ display: "flex", justifyContent: "end", padding: "0px 10px 10px", borderBottom: "1px solid black", margin: "0px -16px 10px -16px" }}>
-              <ButtonGroup>
-                <Button variant="primary" onClick={handleSubmit} loading={isLoading}>Save</Button>
-              </ButtonGroup>
-            </div>
-            <div style={{ display: "flex", justifyContent: "center" }}>
+        <Grid.Cell columnSpan={{ xs: 6, md: 6, lg: 8, xl: 8 }}>
+          <Card padding={0}>
+            <Box padding="300" borderBlockEndWidth="050" borderColor="border">
+              <InlineStack align="end">
+                <ButtonGroup>
+                  <Button variant="primary" onClick={handleSubmit} loading={isLoading}>Save</Button>
+                </ButtonGroup>
+              </InlineStack>
+            </Box>
+
+            <Box style={{ display: "flex", justifyContent: "center", width: "100%", padding: "1rem" }}>
               {data?.selectDisplay?.type === "product_page" ? (
-                <div style={{ display: "flex", gap: "15px" }}>
-                  <div style={{ maxWidth: "400px" }}>
-                    <img
-                      src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766"
-                      width="100%"
-                    />
-                    <div style={{ display: "flex", gap: "0.2rem" }}>
-                      <img
-                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766"
-                        width="80px"
-                        height="80px"
-                      />
-                      <img
-                        src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758"
-                        width="80px"
-                        height="80px"
-                      />
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", color: data.title.fontColor, }}>
-                    <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal" }}>Elegant Earrings Bundle</p>
-                    <div style={{ display: "flex", justifyContent: "space-between", }}>
-                      <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>
-                      <div style={{ display: "flex", alignItems: 'center', gap: "10px" }}>
-                        <p style={{ fontSize: "20px", fontWeight: "600" }}>$57.50</p>
-                        <p style={{ fontSize: "20px", fontWeight: "600", textDecoration: "line-through" }}>$72.00</p>
-                      </div>
-                    </div>
+                <Box className="bw_main_screen">
+                  <Box className="bw_left_screen">
+                    <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766" width="100%" />
+                    <InlineStack gap="100" paddingBlockStart="200" align="start">
+                      <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-interlinked-earrings.jpg?v=1758263766" width="80px" height="80px" />
+                      <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758" width="80px" height="80px" />
+                    </InlineStack>
+                  </Box>
+                  <Box className="bw_right_screen" style={{ color: data.title.fontColor }}>
+                    <Text as="p" variant="headingLg">
+                      <span style={{ fontSize: `${data.title_setting.titleSize}px`, fontWeight: data.title_setting.titleWeight, lineHeight: "normal" }}>
+                        Elegant Earrings Bundle
+                      </span>
+                    </Text>
+
+                    <InlineStack align="space-between">
+                      <Text variant="headingLg" fontWeight="medium">Total Price</Text>
+                      <InlineStack gap="200">
+                        <Text variant="headingLg" fontWeight="medium">$57.50</Text>
+                        <Text variant="headingLg" fontWeight="medium">$72.00</Text>
+                      </InlineStack>
+                    </InlineStack>
+
                     <Divider borderColor="border-hover" />
-                    <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
-                      <div>
-                        {products.map((_, index, arr) => (
-                          <div key={index}>
-                            <div style={{ display: "flex", gap: "10px" }}>
-                              <img src={_?.image} width="70px" height="70px" />
-                              <div>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
-                              </div>
+
+                    <BlockStack>
+                      {products.map((_, index, arr) => (
+                        <BlockStack key={index}>
+                          <InlineStack gap="300" align="start">
+                            <img src={_?.image} width="70px" height="70px" />
+                            <BlockStack gap="200" style={{ minWidth: 0, flex: 1, flexDirection: 'column', gap: '0.5rem' }}>
+                              <span style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>
+                                {_.name}
+                              </span>
+                              <span style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>
+                                {_.price}
+                              </span>
+                            </BlockStack>
+                          </InlineStack>
+
+                          <VariantItems variantType={data?.variants?.type} variant={_?.variant} data={data} defultSelect={false} />
+
+                          {index !== arr.length - 1 && (
+                            <div style={{ margin: "10px 0px" }}>
+                              <Divider borderColor="border-hover" />
                             </div>
+                          )}
+                        </BlockStack>
+                      ))}
+                    </BlockStack>
 
-                            <VariantItems variantType={data?.variants?.type} variant={_?.variant} data={data} />
-
-                            {index !== arr.length - 1 && (
-                              <div style={{ margin: "10px 0px" }}>
-                                <Divider borderColor="border-hover" />
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                      <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "18px", cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
+                    <InlineStack align="center">
+                      <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "18px", cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, borderRadius: `${data.button.radius}px` }}>
                         Add bundle to cart | Save 20%
                       </button>
-                    </div>
-                    <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>✨ Elevate your style with our elegant earring collection – from timeless gold hoops for everyday wear, to minimalist sterling silver studs for a classic touch, and sparkling rose gold drop earrings perfect for special occasions. Designed for comfort, crafted with quality materials, and made to suit every outfit.</p>
-                  </div>
-                </div>
+                    </InlineStack>
+
+                    <Text as="p" variant="headingLg">
+                      <span style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>
+                        ✨ Elevate your style with our elegant earring collection – from timeless gold hoops for everyday wear, to minimalist sterling silver studs for a classic touch, and sparkling rose gold drop earrings perfect for special occasions. Designed for comfort, crafted with quality materials, and made to suit every outfit.
+                      </span>
+                    </Text>
+                  </Box>
+                </Box>
               ) : data?.selectDisplay?.type === "included_product_page" ? (
-                <div style={{ display: "flex", flexDirection: "column", width: "50%" }}>
-                  <div style={{ border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "12px", borderRadius: `${data.border.borderRadius}px`, display: "flex", flexDirection: "column", backgroundColor: data?.background?.background_type === "colored" ? data.background.background_color : "transparent", color: data.title.fontColor, }}>
+                <Box style={{
+                  border: `${data.border.borderWidth}px solid ${data.border.color}`, padding: "12px", borderRadius: `${data.border.borderRadius}px`, display: "flex", flexDirection: "column", backgroundColor: data?.background?.background_type === "colored" ? data.background.background_color : "transparent", color: data.title.fontColor, flex: "1 1 320px", maxWidth: "500px", width: "100%"
+                }}>
+
+                  <Text as="p" variant="headingLg">
                     <p style={{
                       fontSize: `${data?.title_setting?.titleSize}px`, fontWeight: data?.title_setting?.titleWeight, lineHeight: "normal", marginBottom: "1rem", textAlign:
                         data.title_setting.alignment === "left"
@@ -649,36 +641,42 @@ function Fixedbundle() {
                     }}>
                       Elegant Earrings Bundle
                     </p>
+                  </Text>
 
-                    {products.map((_, index, arr) => (
-                      <div key={index}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                          <img src={_?.image} width="70px" height="70px" />
-                          <div>
-                            <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
-                            <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
-                          </div>
-                        </div>
+                  {products.map((_, index, arr) => (
+                    <BlockStack key={index}>
+                      <InlineStack gap="300" align="start">
+                        <img src={_?.image} width="70px" height="70px" />
+                        <BlockStack gap="200" style={{ minWidth: 0, flex: 1, flexDirection: 'column', gap: '0.5rem' }}>
+                          <span style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>
+                            {_.name}
+                          </span>
+                          <span style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>
+                            {_.price}
+                          </span>
+                        </BlockStack>
+                      </InlineStack>
 
-                        <VariantItems variantType={data?.variants?.type} variant={_?.variant} data={data} />
+                      <VariantItems variantType={data?.variants?.type} variant={_?.variant} data={data} defultSelect={false} />
 
-                        <div style={{ margin: "15px -12px" }}>
-                          <Divider />
-                        </div>
-                      </div>
-                    ))}
+                      <Box style={{ margin: "15px -12px" }}>
+                        <Divider borderColor="border-hover" />
+                      </Box>
+                    </BlockStack>
+                  ))}
 
-                    <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: data.button.textColor, fontSize: `${data.title.fontSize}px`, cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, }}>
+                  <InlineStack align="center">
+                    <button style={{ backgroundColor: `${data.button.buttonColor}`, border: "none", color: `${data.button.textColor}`, fontSize: "18px", cursor: "pointer", width: `${data?.button?.width}%`, padding: `${data?.button?.height}px 5px`, borderRadius: `${data.button.radius}px` }}>
                       Add bundle to cart | Save 20%
                     </button>
-                  </div>
-                </div>
+                  </InlineStack>
+                </Box>
               ) : null}
-            </div>
+            </Box>
           </Card>
-        </div>
-      </Grid.Cell>
-    </Grid>
+        </Grid.Cell>
+      </Grid>
+    </Box>
   );
 }
 
