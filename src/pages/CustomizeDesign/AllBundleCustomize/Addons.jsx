@@ -582,15 +582,15 @@ function Addons() {
                                             />
                                         </div>
                                     </div>
-                                    <div style={{ width: "400px" }}>
-                                        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                                            <p style={{ fontSize: "25px", fontWeight: "700" }}>✨ Add-Ons Bundle</p>
-
+                                    <div style={{ width: "400px", color: data.title.fontColor, }}>
+                                        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", lineHeight: "normal" }}>
+                                            <p style={{ fontSize: `${data.title_setting.titleSize}px`, fontWeight: data.title_setting.titleWeight }}>✨ Add-Ons Bundle</p>
+                                            <p style={{ fontSize: `${data.title_setting.titleSize}px`, fontWeight: data.title_setting.titleWeight }}>$85.00</p>
                                         </div>
                                         <p style={{ fontSize: `${data?.title?.fontSize}`, fontWeight: `${data?.title?.fontWeight}`, margin: '10px 0px' }}>Complete your look with our exclusive add-ons! Pair your favorite earrings with matching styles for extra sparkle and savings.</p>
                                         <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "10px 0px" }}>
                                             <p style={{
-                                                fontSize: `${8 + Number(data.title.fontSize ?? 0)}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.title_setting.alignment === "left" ? "start"
+                                                fontSize: `${data.title.fontSize}px`, fontWeight: "600", color: data.title.fontColor, textAlign: data.title_setting.alignment === "left" ? "start"
                                                     : data.title_setting.alignment === "center"
                                                         ? "center"
                                                         : "end"
@@ -602,7 +602,7 @@ function Addons() {
                                                 <div key={index}>
                                                     <div style={{ border: index === 0 ? `${data.border.borderWidth}px solid ${data.border.color}` : `${data.border.borderWidth}px solid black`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
                                                         <div style={{ display: "flex", alignItems: "center", }}>
-                                                            <Checkbox checked={index === 0} />
+                                                            <input type="checkbox" checked={index === 0} style={{ width: "1rem", height: "1rem", accentColor: `${data.button.buttonColor}`, color: `${data.button.textColor}`, marginRight: "10px" }} />
                                                             <img src={imgSrc?.image} style={{ width: "60px", height: "60px" }} />
                                                             <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                                                                 <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{imgSrc?.name}</p>
@@ -696,7 +696,7 @@ function Addons() {
                                             <div key={index}>
                                                 <div style={{ border: index === 1 ? `${data.border.borderWidth}px solid ${data.border.color}` : `${data.border.borderWidth}px solid black`, borderRadius: `${data.border.borderRadius}px`, padding: "10px", backgroundColor: "transparent" }}>
                                                     <div style={{ display: "flex", alignItems: "center", }}>
-                                                        <Checkbox checked={index === 0} />
+                                                        <input type="checkbox" checked={index === 0} style={{ width: "1rem", height: "1rem", accentColor: `${data.button.buttonColor}`, color: `${data.button.textColor}`, marginRight: "10px" }} />
                                                         <img src={imgSrc?.image}
                                                             style={{ width: "60px", height: "60px", objectFit: "fill" }}
                                                         />

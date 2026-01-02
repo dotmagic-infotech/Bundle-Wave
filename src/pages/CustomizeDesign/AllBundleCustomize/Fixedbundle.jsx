@@ -594,7 +594,7 @@ function Fixedbundle() {
                       />
                     </div>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", color: data.title.fontColor, }}>
                     <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal" }}>Elegant Earrings Bundle</p>
                     <div style={{ display: "flex", justifyContent: "space-between", }}>
                       <p style={{ fontSize: "20px", fontWeight: "500" }}>Total Price</p>
@@ -618,7 +618,11 @@ function Fixedbundle() {
 
                             <VariantItems variantType={data?.variants?.type} variant={_?.variant} data={data} />
 
-                            <div style={{ margin: "10px 0px" }}> <Divider borderColor="border-hover" /></div>
+                            {index !== arr.length - 1 && (
+                              <div style={{ margin: "10px 0px" }}>
+                                <Divider borderColor="border-hover" />
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>

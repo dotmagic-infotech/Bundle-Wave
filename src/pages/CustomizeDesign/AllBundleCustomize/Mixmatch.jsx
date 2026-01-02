@@ -590,27 +590,17 @@ function Mixmatch() {
                                     </div>
                                     {index === 2 ? (
                                       <button style={{
-                                        backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "15px", cursor: "pointer", borderRadius: "8px", padding: "5px 15px",
+                                        backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, cursor: "pointer", borderRadius: "0.5rem", padding: "6px 1rem",
                                       }}>
                                         Add
                                       </button>
                                     ) : (
-                                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
-                                        <button
-                                          style={{
-                                            backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", fontWeight: "500", cursor: "pointer", borderRadius: "8px", width: "26px", height: "26px", paddingBottom: "4px", display: "flex", alignItems: "center", justifyContent: "center",
-                                          }}
-                                        >
-                                          -
-                                        </button>
-                                        <p style={{ fontWeight: "500", fontSize: "15px", margin: 0, lineHeight: "1" }}>1</p>
-                                        <button
-                                          style={{
-                                            backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", fontWeight: "500", cursor: "pointer", borderRadius: "8px", width: "26px", height: "26px", paddingBottom: "4px", display: "flex", alignItems: "center", justifyContent: "center"
-                                          }}
-                                        >
-                                          +
-                                        </button>
+                                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", backgroundColor: data.button.buttonColor, borderRadius: "0.5rem", padding: "6px" }}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={data?.button?.textColor} stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path></svg>
+
+                                        <p style={{ fontWeight: "500", fontSize: "15px", margin: 0, lineHeight: "1", color: data.button.textColor }}>1</p>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={data?.button?.textColor} stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                                       </div>
                                     )}
                                   </div>
@@ -721,7 +711,7 @@ function Mixmatch() {
                           <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-white-gold-limelight-sequin-motif-earrings.jpg?v=1758263767' width="80px" height="80px" />
                         </div>
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem", width: "50%" }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem", width: "50%", color: data.title.fontColor }}>
                         <p style={{ fontSize: '25px', fontWeight: "700", lineHeight: "normal" }}>Mix & Match Tiered Discount</p>
                         <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
                           <div style={{
@@ -745,32 +735,22 @@ function Mixmatch() {
                                   <div style={{ display: "flex", alignItems: "center", }}>
                                     <img src={_?.image} style={{ width: "65px", height: "65px", objectFit: "fill" }} />
                                     <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", width: "100%" }}>
-                                      <p style={{ fontSize: `${data.title.fontSize}px`, color: data.title.fontColor, fontWeight: data.title.fontWeight }}>{_?.name}</p>
+                                      <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
                                       <div style={{ display: 'flex', justifyContent: "space-between" }}>
-                                        <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>{_?.price}</p>
+                                        <p style={{ fontWeight: data.title.fontWeight, fontSize: `${data.title.fontSize}px` }}>{_?.price}</p>
                                         {index === 2 ? (
                                           <button style={{
-                                            backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "15px", cursor: "pointer", borderRadius: "8px", padding: "5px 15px",
+                                            backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, cursor: "pointer", borderRadius: "0.5rem", padding: "6px 1rem",
                                           }}>
                                             Add
                                           </button>
                                         ) : (
-                                          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
-                                            <button
-                                              style={{
-                                                backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", fontWeight: "500", cursor: "pointer", borderRadius: "8px", width: "26px", height: "26px", paddingBottom: "4px", display: "flex", alignItems: "center", justifyContent: "center",
-                                              }}
-                                            >
-                                              -
-                                            </button>
-                                            <p style={{ fontWeight: "500", fontSize: "15px", margin: 0, lineHeight: "1" }}>1</p>
-                                            <button
-                                              style={{
-                                                backgroundColor: data.button.buttonColor, border: "none", color: data.button.textColor, fontSize: "18px", fontWeight: "500", cursor: "pointer", borderRadius: "8px", width: "26px", height: "26px", paddingBottom: "4px", display: "flex", alignItems: "center", justifyContent: "center"
-                                              }}
-                                            >
-                                              +
-                                            </button>
+                                          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", backgroundColor: data.button.buttonColor, borderRadius: "0.5rem", padding: "6px" }}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={data?.button?.textColor} stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path></svg>
+
+                                            <p style={{ fontWeight: "500", fontSize: "15px", margin: 0, lineHeight: "1", color: data.button.textColor }}>1</p>
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={data?.button?.textColor} stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                                           </div>
                                         )}
                                       </div>
@@ -783,8 +763,8 @@ function Mixmatch() {
                               ))}
                             </div>
                             <div style={{ backgroundColor: `#efefef`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%" }}>
-                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$67.00 - 20% OFF</p>
-                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>2 items added</p>
+                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: "black" }}>$67.00 - 20% OFF</p>
+                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: "black" }}>2 items added</p>
                             </div>
                           </div>
                           <div style={{ display: "flex", justifyContent: "center" }}>
@@ -805,7 +785,7 @@ function Mixmatch() {
                           <img src='https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-wire-bloom-earrings_afcace12-edfb-4c82-aba0-11462409947f.jpg?v=1758263758' width="80px" height="80px" />
                         </div>
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem", width: "400px" }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem", width: "400px", color: data.title.fontColor }}>
                         <p style={{ fontSize: '25px', fontWeight: "700", lineHeight: "normal", }}>Mix & Match - Earrings Collection</p>
                         <div style={{ backgroundColor: "white", width: "100%", height: "auto" }}>
                           <div style={{ display: "flex", flexDirection: "column", gap: '0.5rem' }}>
@@ -818,16 +798,16 @@ function Mixmatch() {
                                     </div>
                                     <img src={_?.image} width="60px" height="60px" style={{ marginLeft: "10px", objectFit: "fill" }} />
                                     <div style={{ marginLeft: "10px", display: "flex", flexDirection: "column", gap: "0.5rem", width: "100%" }}>
-                                      <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data?.title?.fontWeight, color: data.title.fontColor }}>{_?.name}</p>
-                                      <p style={{ fontWeight: data?.title?.fontWeight, fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>{_?.price}</p>
+                                      <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data?.title?.fontWeight }}>{_?.name}</p>
+                                      <p style={{ fontWeight: data?.title?.fontWeight, fontSize: `${data.title.fontSize}px` }}>{_?.price}</p>
                                     </div>
                                   </div>
                                 </div>
                               ))}
                             </div>
                             <div style={{ backgroundColor: `#efefef`, display: "flex", justifyContent: "space-between", padding: "10px", borderRadius: "5px", width: "100%" }}>
-                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>$30.00</p>
-                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px`, color: data.title.fontColor }}>1 items added</p>
+                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px` }}>$30.00</p>
+                              <p style={{ fontWeight: "500", fontSize: `${data.title.fontSize}px` }}>1 items added</p>
                             </div>
                           </div>
                         </div>

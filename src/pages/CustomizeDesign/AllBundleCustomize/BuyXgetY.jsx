@@ -581,7 +581,7 @@ function BuyXgetY() {
                       <img src="https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-bloom-pendant.jpg?v=1758263772" width="80px" height="80px" />
                     </div>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", color: data.title.fontColor }}>
                     <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal" }}>🎁 Buy 2 Earrings Bundle</p>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                       <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
@@ -595,8 +595,8 @@ function BuyXgetY() {
                             <div style={{ display: "flex", gap: "10px" }}>
                               <img src={_?.image} width="60px" height="60px" />
                               <div>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor }}>{_?.name}</p>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginTop: "10px", }}>{_?.price}</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>{_?.price}</p>
                               </div>
                             </div>
 
@@ -628,10 +628,10 @@ function BuyXgetY() {
                             <div style={{ display: "flex", gap: "10px" }}>
                               <img src={_?.image} width="60px" height="60px" />
                               <div>
-                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor }}>{_?.name}</p>
+                                <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight }}>{_?.name}</p>
                                 <div style={{ display: "flex", gap: "5px" }}>
-                                  <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight + 100, color: data.title.fontColor, marginTop: "10px", }}>Free</p>
-                                  <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, color: data.title.fontColor, marginTop: "10px", textDecoration: "line-through" }}>{_?.price}</p>
+                                  <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", }}>Free</p>
+                                  <p style={{ fontSize: `${data.title.fontSize}px`, fontWeight: data.title.fontWeight, marginTop: "10px", textDecoration: "line-through" }}>{_?.price}</p>
                                 </div>
                               </div>
                             </div>

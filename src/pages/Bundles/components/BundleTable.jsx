@@ -456,6 +456,7 @@ function BundleTable() {
                                         renderItem={(item, index) => (
                                             <ResourceItem
                                                 key={index}
+                                                verticalAlignment="center"
                                                 media={
                                                     <img
                                                         alt={item.title}
@@ -471,12 +472,11 @@ function BundleTable() {
                                                     {item.title}
                                                 </Text>
 
-                                                {item?.variants?.length > 0 &&
-                                                    item.variants.map((variant, i) => (
-                                                        <Text key={i} as="p">
-                                                            {variant}
-                                                        </Text>
-                                                    ))}
+                                                {item?.variants?.length > 0 && item.variants.map((variant, i) => (
+                                                    <Text key={i} as="p">
+                                                        {variant}
+                                                    </Text>
+                                                ))}
                                             </ResourceItem>
                                         )}
                                     />
