@@ -1,90 +1,146 @@
 // React Imports
-import { useContext, useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Select, RadioButton, ButtonGroup, Button } from "@shopify/polaris";
 import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
-import { ShopifyContext } from "../../../components/ShopifyProvider/ShopifyProvider";
 import { useFetchWithToken } from "../../../components/FetchDataAPIs/FetchWithToken";
 import VariantItems from "../../../components/VariantItems/VariantItems";
+
+const defaultData = {
+    selectDisplay: { type: "product_page" },
+    title_setting: { titleSize: 30, titleWeight: 600, alignment: "left" },
+    title: { fontColor: "#000000", fontSize: 12, fontWeight: 600 },
+    background: { background_type: "transparent", background_color: "#FFFFFF" },
+    border: { color: "#7a26bf", borderWidth: 2, borderRadius: 10 },
+    variants: {
+        type: "color_swatch",
+        background_color: "#FFFFFF",
+        text_color: "#000000",
+        border_color: "#7a26bf",
+        unselected_background_color: "#FFFFFF",
+        unselected_text_color: "#000000",
+        unselected_border_color: "#000000",
+    },
+    button: { width: 100, height: 10, buttonColor: "#7a26bf", textColor: "#ffffff" },
+};
 
 function Volumediscount() {
 
     // Hooks
     const fetchWithToken = useFetchWithToken();
-    const { shopName } = useContext(ShopifyContext);
+    const queryClient = useQueryClient();
 
     // State
     const [openIndex, setOpenIndex] = useState(null);
     const [selection, setSelection] = useState("selected");
-    const [data, setData] = useState({
-        selectDisplay: {
-            type: "product_page",
-        },
-        title_setting: {
-            titleSize: 30,
-            titleWeight: 600,
-            alignment: "left"
-        },
-        title: {
-            fontColor: "#000000",
-            fontSize: 12,
-            fontWeight: 600,
-        },
-        background: {
-            background_type: "transparent",
-            background_color: "#FFFFFF",
-        },
-        border: {
-            color: "#7a26bf",
-            borderWidth: 2,
-            borderRadius: 10,
-        },
-        variants: {
-            type: "color_swatch",
-            background_color: "#FFFFFF",
-            text_color: "#000000",
-            border_color: "#7a26bf",
-            unselected_background_color: "#FFFFFF",
-            unselected_text_color: "#000000",
-            unselected_border_color: "#000000",
-        },
-        button: {
-            width: 100,
-            height: 10,
-            buttonColor: "#7a26bf",
-            textColor: "#ffffff",
-        },
-    });
+    const [localData, setLocalData] = useState(null);
 
-    const fetchCustomizeData = async () => {
-        try {
-            const data = await fetchWithToken({
-                url: `https://bundle-wave-backend.xavierapps.com/api/get_customize?shop=${shopName}&path=VolumeDiscount`,
-                method: 'GET',
-            });
-
-            setData(data);
-        } catch (error) {
-            // console.error("Failed to fetch bundle details:", error);
-        }
+    const fetchCustomize = async () => {
+        return await fetchWithToken({
+            url: `https://bundle-wave-backend.xavierapps.com/api/get_customize?path=VolumeDiscount`,
+            method: "GET",
+        });
     };
 
-    useEffect(() => {
-        fetchCustomizeData();
-    }, []);
+    const { data: apiData, isLoading, refetch } = useQuery({
+        queryKey: ["customize", "VolumeDiscount"],
+        queryFn: fetchCustomize,
+        staleTime: 0,
+    });
+
+    const data = useMemo(() => {
+        return {
+            ...defaultData,
+            ...(apiData || {}),
+            ...(localData || {}),
+        };
+    }, [apiData, localData]);
 
     const handleChangeValue = (section, key, value) => {
-        setData((prev) => ({
-            ...prev,
+        setLocalData(prev => ({
+            ...(prev ?? {}),
             [section]: {
-                ...prev[section],
+                ...(prev?.[section] ?? data[section]),
                 [key]: value,
             },
         }));
+    };
+
+    const updateCustomizeMutation = useMutation({
+        mutationFn: async (payload) => {
+            return await fetchWithToken({
+                url: `https://bundle-wave-backend.xavierapps.com/api/update_customize?path=VolumeDiscount`,
+                method: "POST",
+                body: payload,
+                isFormData: false,
+            });
+        },
+        onSuccess: (result) => {
+            if (result?.status) {
+                queryClient.invalidateQueries(["customize", "VolumeDiscount"]);
+                shopify.toast.show("Update Successful Customization Volume Discount Bundle");
+                setLocalData(null);
+            } else {
+                shopify.toast.show("Failed to Update Customization Volume Discount Bundle");
+            }
+        },
+        onError: () => {
+            shopify.toast.show("Something went wrong");
+        },
+    });
+
+    const handleSubmit = async () => {
+        const passData = {
+            selectDisplay: {
+                type: data.selectDisplay.type
+            },
+            title_setting: {
+                titleSize: data.title_setting.titleSize,
+                titleWeight: data.title_setting.titleWeight,
+                alignment: data.title_setting.alignment,
+            },
+            title: {
+                fontColor: data.title.fontColor,
+                fontSize: data.title.fontSize,
+                fontWeight: data.title.fontWeight
+            },
+            background: {
+                background_type: data?.background?.background_type,
+                background_color: data?.background?.background_color,
+            },
+            border: {
+                color: data.border.color,
+                borderWidth: data.border.borderWidth,
+                borderRadius: data.border.borderRadius
+            },
+            variants: {
+                type: data?.variants?.type,
+                background_color: data.variants.background_color,
+                text_color: data.variants.text_color,
+                border_color: data.variants.border_color,
+                unselected_background_color: data.variants?.unselected_background_color,
+                unselected_text_color: data.variants.unselected_text_color,
+                unselected_border_color: data.variants?.unselected_border_color
+            },
+            button: {
+                width: data.button.width,
+                height: data.button.height,
+                buttonColor: data.button.buttonColor,
+                textColor: data.button.textColor
+            }
+        }
+
+        updateCustomizeMutation.mutate(passData);
+    }
+
+    const handleUndo = () => {
+        setLocalData(null);
+        refetch();
     };
 
     const sections = [
@@ -396,61 +452,6 @@ function Volumediscount() {
         },
     ];
 
-    const handleSubmit = async () => {
-        const passData = {
-            selectDisplay: {
-                type: data.selectDisplay.type
-            },
-            title_setting: {
-                titleSize: data.title_setting.titleSize,
-                titleWeight: data.title_setting.titleWeight,
-                alignment: data.title_setting.alignment,
-            },
-            title: {
-                fontColor: data.title.fontColor,
-                fontSize: data.title.fontSize,
-                fontWeight: data.title.fontWeight
-            },
-            background: {
-                background_type: data?.background?.background_type,
-                background_color: data?.background?.background_color,
-            },
-            border: {
-                color: data.border.color,
-                borderWidth: data.border.borderWidth,
-                borderRadius: data.border.borderRadius
-            },
-            variants: {
-                type: data?.variants?.type,
-                background_color: data.variants.background_color,
-                text_color: data.variants.text_color,
-                border_color: data.variants.border_color,
-                unselected_background_color: data.variants?.unselected_background_color,
-                unselected_text_color: data.variants.unselected_text_color,
-                unselected_border_color: data.variants?.unselected_border_color
-            },
-            button: {
-                width: data.button.width,
-                height: data.button.height,
-                buttonColor: data.button.buttonColor,
-                textColor: data.button.textColor
-            }
-        }
-
-        const result = await fetchWithToken({
-            url: `https://bundle-wave-backend.xavierapps.com/api/update_customize?path=VolumeDiscount&shop=${shopName}`,
-            method: 'POST',
-            body: passData,
-            isFormData: false,
-        });
-
-        if (result.status) {
-            shopify.toast.show(`Update Successful Customization Volume Discounts`);
-        } else {
-            shopify.toast.show(`Failed to Update Customization Volume Discounts`);
-        }
-    }
-
     return (
         <Grid gap={100}>
             <Grid.Cell columnSpan={{ xs: 6, md: 6, lg: 4, xl: 4 }}>
@@ -510,7 +511,7 @@ function Volumediscount() {
                                 margin: "0px -10px",
                                 borderTop: "1px solid #ebebeb"
                             }}
-                            onClick={() => fetchCustomizeData()}
+                            onClick={handleUndo}
                         >
                             <Text as="h6" fontWeight="medium">
                                 Undo
@@ -528,7 +529,7 @@ function Volumediscount() {
                     <Card>
                         <div style={{ display: "flex", justifyContent: "end", padding: "0px 10px 10px", borderBottom: "1px solid black", margin: "0px -16px 10px -16px" }}>
                             <ButtonGroup>
-                                <Button variant="primary" onClick={handleSubmit}>Save</Button>
+                                <Button variant="primary" onClick={handleSubmit} loading={isLoading}>Save</Button>
                             </ButtonGroup>
                         </div>
                         <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem", }}>

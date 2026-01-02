@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from 'react'
 
 // Shopify Imports
-import { Page, Card, BlockStack, Text, InlineStack, Grid, Icon, Box, DataTable, useBreakpoints, Banner, Button, CalloutCard, Modal, Badge } from "@shopify/polaris"
+import { Page, Card, BlockStack, Text, InlineStack, Grid, Icon, Box, DataTable, useBreakpoints, Banner, Button, CalloutCard, Modal, Badge, SkeletonDisplayText, SkeletonBodyText, TextContainer } from "@shopify/polaris"
 import { ButtonIcon, ClipboardChecklistIcon, ExternalIcon, PlusIcon, PriceListIcon, ViewIcon } from '@shopify/polaris-icons';
 
 // Third Party Imports
@@ -11,8 +11,9 @@ import Confetti from 'react-confetti'
 import { useWindowSize } from 'react-use'
 
 // Custom Component
-import { useFetchWithToken } from '../components/FetchDataAPIs/FetchWithToken';
 import { ShopifyContext } from '../components/ShopifyProvider/ShopifyProvider';
+import { useQuery } from '@tanstack/react-query';
+import { useApiRequest } from '../components/FetchDataAPIs';
 
 const Home = () => {
 
@@ -20,35 +21,36 @@ const Home = () => {
   const navigate = useNavigate();
   const { width, height } = useWindowSize();
   const { shopName, currencySymbol } = useContext(ShopifyContext);
-  const fetchWithToken = useFetchWithToken();
+  const apiRequest = useApiRequest();
 
   // state
   const [welocomePopup, setWelocomePopup] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [homeData, setHomeData] = useState(true);
-
   const { lgDown } = useBreakpoints();
+
   const fixedFirstColumns = lgDown ? 2 : 0;
 
-  useEffect(() => {
-    const fetchUserDashBoard = async () => {
-      try {
-        const data = await fetchWithToken({
-          url: `https://bundle-wave-backend.xavierapps.com/api/user_dashboard?limit=5&shop=${shopName}`,
-          method: 'GET',
-        });
-        setHomeData(data);
-        if (data?.show_popup) {
-          setWelocomePopup(true);
-          setShowModal(true);
-        }
-      } catch (error) {
-        // console.error("Failed to fetch bundle details:", error);
-      }
-    };
+  const fetchDashboard = async () => {
+    const url = 'https://bundle-wave-backend.xavierapps.com/api/user_dashboard?limit=5';
+    const { status: ok, data } = await apiRequest(url, 'GET');
 
-    fetchUserDashBoard();
-  }, []);
+    if (!ok) throw new Error('Failed to fetch dashboard');
+
+    return data;
+  };
+
+  const { data: homeData, isLoading } = useQuery({
+    queryKey: ['dashboard'],
+    queryFn: fetchDashboard,
+    staleTime: 0,
+  });
+
+  useEffect(() => {
+    if (homeData?.show_popup) {
+      setWelocomePopup(true);
+      setShowModal(true);
+    }
+  }, [homeData]);
 
   const redirectTheme = () => {
     const url = `https://${shopName}/admin/themes/current/editor?context=apps&activateAppId=d0627ca0-a5b7-4ed2-89b1-91187e230657/bundle-wave`;
@@ -81,34 +83,47 @@ const Home = () => {
 
       <Page title="Home">
         <BlockStack gap={500}>
-          <Banner
-            title={homeData?.embeded?.is_app_embeded_disabled ? "Bundle Wave is not activated" : "Bundle Wave is activated"}
-            tone={homeData?.embeded?.is_app_embeded_disabled ? "warning" : "success"}
-            onDismiss={() => { }}
-          >
-            {homeData?.embeded?.is_app_embeded_disabled ? (
-              <>
-                <p>
-                  Bundle Wave theme extension needs to be activated in your theme to work
-                  properly. To activate the app, click the <strong>Activate</strong> button
-                  below, and then click <strong>Save</strong> on the following page.
-                </p>
 
-                <div style={{ marginTop: "1rem" }}>
-                  <InlineStack gap={200}>
-                    <Button variant="primary" onClick={redirectTheme}>
-                      Activate
-                    </Button>
-                  </InlineStack>
-                </div>
-              </>
-            ) : (
-              <p>
-                Bundle Wave theme extension is active and working properly. No further
-                action is required.
-              </p>
-            )}
-          </Banner>
+          {isLoading ? (
+            <Card>
+              <TextContainer>
+                <SkeletonBodyText lines={2} />
+                <SkeletonDisplayText size="small" />
+              </TextContainer>
+            </Card>
+          ) : (
+            <Banner
+              title={isLoading ? "" : (
+                homeData?.embeded?.is_app_embeded_disabled
+                  ? "Bundle Wave is not activated"
+                  : "Bundle Wave is activated"
+              )}
+              tone={homeData?.embeded?.is_app_embeded_disabled ? "warning" : "success"}
+            >
+              {homeData?.embeded?.is_app_embeded_disabled ? (
+                <>
+                  <p>
+                    Bundle Wave theme extension needs to be activated in your theme to work
+                    properly. To activate the app, click the <strong>Activate</strong> button
+                    below, and then click <strong>Save</strong> on the following page.
+                  </p>
+
+                  <div style={{ marginTop: "1rem" }}>
+                    <InlineStack gap={200}>
+                      <Button variant="primary" onClick={redirectTheme} loading={isLoading}>
+                        Activate
+                      </Button>
+                    </InlineStack>
+                  </div>
+                </>
+              ) : (
+                <p>
+                  Bundle Wave theme extension is active and working properly. No further
+                  action is required.
+                </p>
+              )}
+            </Banner>
+          )}
 
           <CalloutCard
             title="Need some ideas?"

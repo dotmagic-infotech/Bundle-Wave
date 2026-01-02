@@ -1,91 +1,140 @@
 // React Imports
-import { useContext, useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, Select, Divider, InlineStack, Button, ButtonGroup, Badge } from "@shopify/polaris";
 import { AdjustIcon, AppsFilledIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ChevronRightIcon, ColorIcon, DiscountIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon } from "@shopify/polaris-icons";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
 import { useFetchWithToken } from "../../../components/FetchDataAPIs/FetchWithToken";
-import { ShopifyContext } from "../../../components/ShopifyProvider/ShopifyProvider";
+
+const defaultData = {
+  selectDisplay: { structure: "single_discount", type: "product_page" },
+  discount_options: { applied_background_color: "#7a26bf", applied_fontColor: "#FFFFFF", unapplied_background_color: "#efefef", unapplied_fontColor: "#000000" },
+  title_setting: { titleSize: 30, titleWeight: 600, alignment: "left" },
+  background: { background_type: "transparent", background_color: "#ffffff" },
+  title: { fontColor: "#000000", fontSize: 14, fontWeight: 400 },
+  border: { color: "#000000", borderWidth: 2, borderRadius: 10 },
+  badge_selectore: { alignment: "left", background_color: "#7a26bf", fontColor: "#ffffff" },
+  button: { width: 100, height: 10, buttonColor: "#000000", textColor: "#ffffff" },
+};
 
 function Mixmatch() {
 
   // Hooks
   const fetchWithToken = useFetchWithToken();
-  const { shopName } = useContext(ShopifyContext);
+  const queryClient = useQueryClient();
 
   // State
   const [openIndex, setOpenIndex] = useState(null);
-  const [data, setData] = useState({
-    selectDisplay: {
-      structure: "single_discount",
-      type: "product_page",
-    },
-    discount_options: {
-      applied_background_color: "#7a26bf",
-      applied_fontColor: "#FFFFFF",
-      unapplied_background_color: "#efefef",
-      unapplied_fontColor: "#000000",
-    },
-    title_setting: {
-      titleSize: 30,
-      titleWeight: 600,
-      alignment: "left"
-    },
-    background: {
-      background_type: "transparent",
-      background_color: "#ffffff",
-    },
-    title: {
-      fontColor: "#000000",
-      fontSize: 14,
-      fontWeight: 400,
-    },
-    border: {
-      color: "#000000",
-      borderWidth: 2,
-      borderRadius: 10,
-    },
-    badge_selectore: {
-      alignment: "left",
-      background_color: "#7a26bf",
-      fontColor: "#ffffff"
-    },
-    button: {
-      width: 100,
-      height: 10,
-      buttonColor: "#000000",
-      textColor: "#ffffff",
-    },
-  });
+  const [localData, setLocalData] = useState(null);
 
-  const fetchCustomizeData = async () => {
-    try {
-      const data = await fetchWithToken({
-        url: `https://bundle-wave-backend.xavierapps.com/api/get_customize?shop=${shopName}&path=mixAndMatch`,
-        method: 'GET',
-      });
-
-      setData(data);
-    } catch (error) {
-      // console.error("Failed to fetch bundle details:", error);
-    }
+  const fetchCustomize = async () => {
+    return await fetchWithToken({
+      url: `https://bundle-wave-backend.xavierapps.com/api/get_customize?path=mixAndMatch`,
+      method: "GET",
+    });
   };
 
-  useEffect(() => {
-    fetchCustomizeData();
-  }, []);
+  const { data: apiData, isLoading, refetch } = useQuery({
+    queryKey: ["customize", "mixAndMatch"],
+    queryFn: fetchCustomize,
+    staleTime: 0,
+  });
+
+  const data = useMemo(() => {
+    return {
+      ...defaultData,
+      ...(apiData || {}),
+      ...(localData || {}),
+    };
+  }, [apiData, localData]);
 
   const handleChangeValue = (section, key, value) => {
-    setData((prev) => ({
-      ...prev,
+    setLocalData(prev => ({
+      ...(prev ?? {}),
       [section]: {
-        ...prev[section],
+        ...(prev?.[section] ?? data[section]),
         [key]: value,
       },
     }));
+  };
+
+  const updateCustomizeMutation = useMutation({
+    mutationFn: async (payload) => {
+      return await fetchWithToken({
+        url: `https://bundle-wave-backend.xavierapps.com/api/update_customize?path=mixAndMatch`,
+        method: "POST",
+        body: payload,
+        isFormData: false,
+      });
+    },
+    onSuccess: (result) => {
+      if (result?.status) {
+        queryClient.invalidateQueries(["customize", "mixAndMatch"]);
+        shopify.toast.show("Update Successful Customization Mix and Match Bundle");
+        setLocalData(null);
+      } else {
+        shopify.toast.show("Failed to Update Customization Mix and Match Bundle");
+      }
+    },
+    onError: () => {
+      shopify.toast.show("Something went wrong");
+    },
+  });
+
+  const handleSubmit = async () => {
+    const passData = {
+      selectDisplay: {
+        structure: data.selectDisplay.structure,
+        type: data.selectDisplay.type,
+      },
+      discount_options: {
+        applied_background_color: data.discount_options.applied_background_color,
+        applied_fontColor: data.discount_options.applied_fontColor,
+        unapplied_background_color: data.discount_options.unapplied_background_color,
+        unapplied_fontColor: data.discount_options.unapplied_fontColor,
+      },
+      title_setting: {
+        alignment: data.title_setting.alignment,
+        titleSize: data.title_setting.titleSize,
+        titleWeight: data.title_setting.titleWeight,
+      },
+      background: {
+        background_type: data.background.background_type,
+        background_color: data.background.background_color,
+      },
+      title: {
+        fontColor: data.title.fontColor,
+        fontSize: data.title.fontSize,
+        fontWeight: data.title.fontWeight,
+      },
+      border: {
+        color: data.border.color,
+        borderWidth: data.border.borderWidth,
+        borderRadius: data.border.borderRadius,
+      },
+      badge_selectore: {
+        alignment: data.badge_selectore.alignment,
+        background_color: data.badge_selectore.background_color,
+        fontColor: data.badge_selectore.fontColor
+      },
+      button: {
+        width: data.button.width,
+        height: data.button.height,
+        buttonColor: data.button.buttonColor,
+        textColor: data.button.textColor,
+      },
+    }
+
+    updateCustomizeMutation.mutate(passData);
+  }
+
+  const handleUndo = () => {
+    setLocalData(null);
+    refetch();
   };
 
   const sections = [
@@ -392,64 +441,6 @@ function Mixmatch() {
     },
   ];
 
-  const handleSubmit = async () => {
-    const passData = {
-      selectDisplay: {
-        structure: data.selectDisplay.structure,
-        type: data.selectDisplay.type,
-      },
-      discount_options: {
-        applied_background_color: data.discount_options.applied_background_color,
-        applied_fontColor: data.discount_options.applied_fontColor,
-        unapplied_background_color: data.discount_options.unapplied_background_color,
-        unapplied_fontColor: data.discount_options.unapplied_fontColor,
-      },
-      title_setting: {
-        alignment: data.title_setting.alignment,
-        titleSize: data.title_setting.titleSize,
-        titleWeight: data.title_setting.titleWeight,
-      },
-      background: {
-        background_type: data.background.background_type,
-        background_color: data.background.background_color,
-      },
-      title: {
-        fontColor: data.title.fontColor,
-        fontSize: data.title.fontSize,
-        fontWeight: data.title.fontWeight,
-      },
-      border: {
-        color: data.border.color,
-        borderWidth: data.border.borderWidth,
-        borderRadius: data.border.borderRadius,
-      },
-      badge_selectore: {
-        alignment: data.badge_selectore.alignment,
-        background_color: data.badge_selectore.background_color,
-        fontColor: data.badge_selectore.fontColor
-      },
-      button: {
-        width: data.button.width,
-        height: data.button.height,
-        buttonColor: data.button.buttonColor,
-        textColor: data.button.textColor,
-      },
-    }
-
-    const result = await fetchWithToken({
-      url: `https://bundle-wave-backend.xavierapps.com/api/update_customize?path=mixAndMatch&shop=${shopName}`,
-      method: 'POST',
-      body: passData,
-      isFormData: false,
-    });
-
-    if (result.status) {
-      shopify.toast.show(`Update Successful Customization Mix and Match`);
-    } else {
-      shopify.toast.show(`Failed to Update Customization Mix and Match`);
-    }
-  }
-
   return (
     <Grid gap={100}>
       <Grid.Cell columnSpan={{ xs: 6, md: 6, lg: 4, xl: 4 }}>
@@ -520,7 +511,7 @@ function Mixmatch() {
                 margin: "0px -10px",
                 borderTop: "1px solid #ebebeb"
               }}
-              onClick={() => fetchCustomizeData()}
+              onClick={handleUndo}
             >
               <Text as="h6" fontWeight="medium">
                 Undo
@@ -538,7 +529,7 @@ function Mixmatch() {
           <Card>
             <div style={{ display: "flex", justifyContent: "end", padding: "0px 10px 10px", borderBottom: "1px solid black", margin: "0px -16px 10px -16px" }}>
               <ButtonGroup>
-                <Button variant="primary" onClick={handleSubmit}>Save</Button>
+                <Button variant="primary" onClick={handleSubmit} loading={isLoading}>Save</Button>
               </ButtonGroup>
             </div>
             <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem", }}>

@@ -1,90 +1,146 @@
 // React Imports
-import { useContext, useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 // Shopify Component
 import { Collapsible, Icon, RangeSlider, Text, Card, Grid, ButtonGroup, Button, Select, Divider } from "@shopify/polaris";
 import { AdjustIcon, ButtonIcon, CaretDownIcon, CaretUpIcon, ColorIcon, ResetIcon, TextAlignCenterIcon, TextGrammarIcon, TextUnderlineIcon, VariantIcon } from "@shopify/polaris-icons";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // Custom Component
 import ColorPickerPopover from "../../../components/ColorPicker/ColorPickerPopover";
 import { useFetchWithToken } from "../../../components/FetchDataAPIs/FetchWithToken";
-import { ShopifyContext } from "../../../components/ShopifyProvider/ShopifyProvider";
 import VariantItems from "../../../components/VariantItems/VariantItems";
+
+const defaultData = {
+  selectDisplay: { type: "main_product_page" },
+  title: { fontColor: "#000000", fontSize: 14, fontWeight: 400 },
+  title_setting: { titleSize: 30, titleWeight: 600, alignment: "left" },
+  background: { background_type: "transparent", background_color: "#FFFFFF" },
+  border: { color: "#000000", borderWidth: 1, borderRadius: 10 },
+  variants: {
+    type: "color_swatch",
+    background_color: "#FFFFFF",
+    text_color: "#000000",
+    border_color: "#7a26bf",
+    unselected_background_color: "#FFFFFF",
+    unselected_text_color: "#000000",
+    unselected_border_color: "#000000",
+  },
+  button: { width: 100, height: 10, buttonColor: "#7a26bf", textColor: "#FFFFFF" },
+};
 
 function BuyXgetY() {
 
   // Hooks
   const fetchWithToken = useFetchWithToken();
-  const { shopName } = useContext(ShopifyContext);
+  const queryClient = useQueryClient();
 
   // State
   const [openIndex, setOpenIndex] = useState(null);
   const [selection, setSelection] = useState("selected");
-  const [data, setData] = useState({
-    selectDisplay: {
-      type: "main_product_page",
-    },
-    title: {
-      fontColor: "#000000",
-      fontSize: 14,
-      fontWeight: 400,
-    },
-    title_setting: {
-      titleSize: 30,
-      titleWeight: 600,
-      alignment: "left"
-    },
-    background: {
-      background_type: "transparent",
-      background_color: "#FFFFFF",
-    },
-    border: {
-      color: "#000000",
-      borderWidth: 1,
-      borderRadius: 10,
-    },
-    variants: {
-      type: "color_swatch",
-      background_color: "#FFFFFF",
-      text_color: "#000000",
-      border_color: "#7a26bf",
-      unselected_background_color: "#FFFFFF",
-      unselected_text_color: "#000000",
-      unselected_border_color: "#000000",
-    },
-    button: {
-      width: 100,
-      height: 10,
-      buttonColor: "#7a26bf",
-      textColor: "#FFFFFF",
-    },
-  });
+  const [localData, setLocalData] = useState(null);
 
-  const fetchCustomizeData = async () => {
-    try {
-      const data = await fetchWithToken({
-        url: `https://bundle-wave-backend.xavierapps.com/api/get_customize?shop=${shopName}&path=buyXgetY`,
-        method: 'GET',
-      });
-
-      setData(data);
-    } catch (error) {
-      // console.error("Failed to fetch bundle details:", error);
-    }
+  const fetchCustomize = async () => {
+    return await fetchWithToken({
+      url: `https://bundle-wave-backend.xavierapps.com/api/get_customize?path=buyXgetY`,
+      method: "GET",
+    });
   };
 
-  useEffect(() => {
-    fetchCustomizeData();
-  }, []);
+  const { data: apiData, isLoading, refetch } = useQuery({
+    queryKey: ["customize", "buyXgetY"],
+    queryFn: fetchCustomize,
+    staleTime: 0,
+  });
+
+  const data = useMemo(() => {
+    return {
+      ...defaultData,
+      ...(apiData || {}),
+      ...(localData || {}),
+    };
+  }, [apiData, localData]);
 
   const handleChangeValue = (section, key, value) => {
-    setData((prev) => ({
-      ...prev,
+    setLocalData(prev => ({
+      ...(prev ?? {}),
       [section]: {
-        ...prev[section],
+        ...(prev?.[section] ?? data[section]),
         [key]: value,
       },
     }));
+  };
+
+  const updateCustomizeMutation = useMutation({
+    mutationFn: async (payload) => {
+      return await fetchWithToken({
+        url: `https://bundle-wave-backend.xavierapps.com/api/update_customize?path=buyXgetY`,
+        method: "POST",
+        body: payload,
+        isFormData: false,
+      });
+    },
+    onSuccess: (result) => {
+      if (result?.status) {
+        queryClient.invalidateQueries(["customize", "buyXgetY"]);
+        shopify.toast.show("Update Successful Customization Buy X Get Y Bundle");
+        setLocalData(null);
+      } else {
+        shopify.toast.show("Failed to Update Customization Buy X Get Y Bundle");
+      }
+    },
+    onError: () => {
+      shopify.toast.show("Something went wrong");
+    },
+  });
+
+  const handleSubmit = async () => {
+    const passData = {
+      selectDisplay: {
+        type: data?.selectDisplay.type,
+      },
+      title: {
+        fontColor: data.title.fontColor,
+        fontSize: data.title.fontSize,
+        fontWeight: data.title.fontWeight,
+      },
+      title_setting: {
+        alignment: data.title_setting.alignment,
+        titleSize: data.title_setting.titleSize,
+        titleWeight: data.title_setting.titleWeight,
+      },
+      background: {
+        background_type: data?.background?.background_type,
+        background_color: data?.background?.background_color,
+      },
+      border: {
+        color: data.border.color,
+        borderWidth: data.border.borderWidth,
+        borderRadius: data.border.borderRadius,
+      },
+      variants: {
+        type: data.variants.type,
+        background_color: data.variants?.background_color,
+        text_color: data.variants.text_color,
+        border_color: data.variants?.border_color,
+        unselected_background_color: data.variants?.unselected_background_color,
+        unselected_text_color: data.variants.unselected_text_color,
+        unselected_border_color: data.variants?.unselected_border_color
+      },
+      button: {
+        width: data.button.width,
+        height: data.button.height,
+        buttonColor: data?.button?.buttonColor,
+        textColor: data?.button?.textColor,
+      },
+    }
+
+    updateCustomizeMutation.mutate(passData);
+  }
+
+  const handleUndo = () => {
+    setLocalData(null);
+    refetch();
   };
 
   const sections = [
@@ -398,61 +454,6 @@ function BuyXgetY() {
     },
   ];
 
-  const handleSubmit = async () => {
-    const passData = {
-      selectDisplay: {
-        type: data?.selectDisplay.type,
-      },
-      title: {
-        fontColor: data.title.fontColor,
-        fontSize: data.title.fontSize,
-        fontWeight: data.title.fontWeight,
-      },
-      title_setting: {
-        alignment: data.title_setting.alignment,
-        titleSize: data.title_setting.titleSize,
-        titleWeight: data.title_setting.titleWeight,
-      },
-      background: {
-        background_type: data?.background?.background_type,
-        background_color: data?.background?.background_color,
-      },
-      border: {
-        color: data.border.color,
-        borderWidth: data.border.borderWidth,
-        borderRadius: data.border.borderRadius,
-      },
-      variants: {
-        type: data.variants.type,
-        background_color: data.variants?.background_color,
-        text_color: data.variants.text_color,
-        border_color: data.variants?.border_color,
-        unselected_background_color: data.variants?.unselected_background_color,
-        unselected_text_color: data.variants.unselected_text_color,
-        unselected_border_color: data.variants?.unselected_border_color
-      },
-      button: {
-        width: data.button.width,
-        height: data.button.height,
-        buttonColor: data?.button?.buttonColor,
-        textColor: data?.button?.textColor,
-      },
-    }
-
-    const result = await fetchWithToken({
-      url: `https://bundle-wave-backend.xavierapps.com/api/update_customize?path=buyXgetY&shop=${shopName}`,
-      method: 'POST',
-      body: passData,
-      isFormData: false,
-    });
-
-    if (result.status) {
-      shopify.toast.show(`Update Successful Customization Buy X Get Y`);
-    } else {
-      shopify.toast.show(`Failed to Update Customization Buy X Get Y`);
-    }
-  }
-
   const products = [
     {
       name: "18k Pedal Ring", image: "https://cdn.shopify.com/s/files/1/0577/4242/6181/files/18k-rose-gold-rose-ring.jpg?v=1758263771", price: "$45.00",
@@ -542,7 +543,7 @@ function BuyXgetY() {
                 margin: "0px -10px",
                 borderTop: "1px solid #ebebeb"
               }}
-              onClick={() => fetchCustomizeData()}
+              onClick={handleUndo}
             >
               <Text as="h6" fontWeight="medium">
                 Undo
@@ -560,7 +561,7 @@ function BuyXgetY() {
           <Card>
             <div style={{ display: "flex", justifyContent: "end", padding: "0px 10px 10px", borderBottom: "1px solid black", margin: "0px -16px 10px -16px" }}>
               <ButtonGroup>
-                <Button variant="primary" onClick={handleSubmit}>Save</Button>
+                <Button variant="primary" onClick={handleSubmit} loading={isLoading}>Save</Button>
               </ButtonGroup>
             </div>
             <div
@@ -582,7 +583,7 @@ function BuyXgetY() {
                     </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "400px", color: data.title.fontColor }}>
-                    <p style={{ fontSize: "25px", fontWeight: "700", lineHeight: "normal" }}>🎁 Buy 2 Earrings Bundle</p>
+                    <p style={{ fontSize: `${data?.title_setting?.titleSize}px`, fontWeight: data?.title_setting?.titleWeight, lineHeight: "normal" }}>🎁 Buy 2 Earrings Bundle</p>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                       <p style={{ fontSize: "20px", fontWeight: "600" }}>Total Price</p>
                       <p style={{ fontSize: "20px", fontWeight: "600" }}>$67.00</p>
